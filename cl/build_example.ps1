@@ -9,5 +9,5 @@ if(!(Test-Path -Path ".\examples\gcc")) {
 }
 
 Push-Location -Path ".\examples\cl"
-& cl /Fe: ".\CKit_Test.exe" /Zi "..\*.c" "..\..\build_cl\CKit.lib"
+cl /Fe: ".\CKit_Test.exe" /Zi "..\*.c" "..\..\build_cl\ckit.lib"
 Pop-Location

@@ -1,3 +1,8 @@
+param(
+	[Parameter(Mandatory=$true)]
+	[string] $std_version
+)
+
 ./vars.ps1
 
 $extension = ".c"
@@ -21,14 +26,15 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
 
-Write-Host "running CKit build.ps1..." -ForegroundColor Green
+Write-Host "running ckit build.ps1..." -ForegroundColor Green
 
 $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
 Set-Location ".\build_gcc"
-# g++ -c -std=c++17 -g "../source/core/*.c"
-# ar rcs CKit.lib ".\*.o"
+# -DCUSTOM_PLATFORM_IMPL
+g++ -c -std=$std_version -g "../source/core/*$extension"
+ar rcs ckit.lib ".\*.o"
 Set-Location ..
 $timer.Stop()
 Write-Host "G++ Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor Blue

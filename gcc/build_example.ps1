@@ -1,9 +1,5 @@
 ./build.ps1
 
-if(!(Test-Path -Path ".\examples\cl")) {
-    mkdir ".\examples\cl"
-}
-
 if(!(Test-Path -Path ".\examples\gcc")) {
     mkdir ".\examples\gcc"
 }

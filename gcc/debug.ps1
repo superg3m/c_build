@@ -1,11 +1,9 @@
-@echo off
+$executableFilePath = ".\examples\cl\CKit_Test.exe"
 
-set "executable_file_path=.\examples\cl\test_ckg.exe"
-
-if not exist "%executable_file_path%" (
-    powershell -nologo -command "Write-Host 'ERROR: Can''t find exe, building...' -ForegroundColor Red"
-    call build_example.bat
-    raddbg "%executable_file_path%"
-) else (
-    raddbg "%executable_file_path%"
-)
+if (!(Test-Path -Path $executableFilePath)) {
+    Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
+    & "build_example.ps1"
+    & "raddbg" $executableFilePath
+} else {
+    & "raddbg" $executableFilePath
+}
