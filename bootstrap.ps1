@@ -1,5 +1,6 @@
-function param 
- compiler cl or gcc
+param(
+	[Parameter(Mandatory=$true)]
+	[string] $compiler_type
+)
 
-
-create all bat files 
+$build_directory = "../build/$compiler_type"
