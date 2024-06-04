@@ -1,11 +1,9 @@
-./build.ps1
+
+
+./vars.ps1
 
 if(!(Test-Path -Path ".\examples\cl")) {
     mkdir ".\examples\cl"
-}
-
-if(!(Test-Path -Path ".\examples\gcc")) {
-    mkdir ".\examples\gcc"
 }
 
 Push-Location -Path ".\examples\cl"
