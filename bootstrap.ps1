@@ -99,6 +99,7 @@ if (Test-Path -Path "../$configFilePath") {
 
 foreach ($templateFile in $templateFiles) {
     if ($has_exisiting_config -and $templateFile.Name -eq "config.json") {
+        Write-Host "Skipping config.json" -ForegroundColor Green
         continue
     }
 
