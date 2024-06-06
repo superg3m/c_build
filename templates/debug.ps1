@@ -10,9 +10,9 @@ $debug_build = $true
 $generate_object_files = $false
 
 $include_paths = ""
-$source_paths = "./source/*.c"
+$source_paths = "./examples/*.c"
 $lib_paths = ""
-$libs = ""
+$libs = "./build_cl/ckg.lib"
 
 Push-Location  ".\C-BUILD"
 git stash
