@@ -32,7 +32,7 @@ if(!(Test-Path -Path ".\examples\cl")) {
 }
 
 # Initialize the command with the standard version
-$clCommand = "cl /Fe$executable_name /std:$std_version"
+$clCommand = "cl /Fe:$executable_name /std:$std_version"
 
 if ($debug_build) {
     $clCommand += " /Od"
@@ -44,7 +44,7 @@ if ($debug_build) {
     $clCommand += " /Zi"
 }
 
-$clCommand += " /FC /I$include_paths ../$source_paths ../../$libs"
+$clCommand += " /FC /I$include_paths ../$source_paths "
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
