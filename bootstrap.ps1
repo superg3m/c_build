@@ -93,12 +93,24 @@ if (-not (Test-Path -Path $resolvedTemplatesDir)) {
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 
-foreach ($templateFile in $templateFiles) {
-    $templateContent = Get-Content -Path $templateFile.FullName -Raw
-    $resolvedContent = $templateContent -replace [regex]::Escape('$preset'), $preset -replace [regex]::Escape('$compiler_type'), $compiler_type
-    $resolvedFilePath = Join-Path -Path $resolvedTemplatesDir -ChildPath $templateFile.Name
-    Set-Content -Path $resolvedFilePath -Value $resolvedContent
-    Write-Host "Resolved script has been written to $resolvedFilePath"
+$configFilePath = "config.json"
+
+# Read the JSON content
+$jsonContent = Get-Content -Raw -Path $jsonFilePath | ConvertFrom-Json
+
+# Iterate over each property in the JSON object
+foreach ($property in $jsonContent.PSObject.Properties) {
+    $fileName = $property.Name
+    $fileContent = $property.Value
+
+    # Check if the file name is not config.json
+    if ($fileName -ne "config.json") {
+        # Update the file content
+        $fileContent | Set-Content -Path $fileName -Force
+        Write-Host "Updated $fileName"
+    } else {
+        Write-Host "Skipped $fileName"
+    }
 }
 Pop-Location
 
