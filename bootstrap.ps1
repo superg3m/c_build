@@ -76,9 +76,9 @@ if(!(Test-Path -Path "../examples")) {
     mkdir ../examples
 }
 
-if(!(Test-Path -Path "../examples/cl")) {
-    Write-Host "Creating examples/cl Directory"
-    mkdir ../examples/cl
+if(!(Test-Path -Path "../examples/$compiler_type")) {
+    Write-Host "Creating examples/$compiler_type Directory"
+    mkdir ../examples/$compiler_type
 }
 
 ###################################################
@@ -92,12 +92,13 @@ $templateFiles = Get-ChildItem -Path $templatesDir -File
 $configFilePath = Join-Path -Path ".." -ChildPath "config.json"
 
 # Check if config.json already exists in the destination directory
-if (-not (Test-Path -Path $configFilePath)) {
-    Copy-Item -Path "path_to_config.json" -Destination ".."
+$has_exisiting_config = $false
+if (Test-Path -Path "../$configFilePath") {
+    $has_exisiting_config = $true
 }
 
 foreach ($templateFile in $templateFiles) {
-    if ($templateFile.Name -eq "config.json") {
+    if ($has_exisiting_config -and $templateFile.Name -eq "config.json") {
         continue
     }
 
