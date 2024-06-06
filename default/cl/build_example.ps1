@@ -44,7 +44,7 @@ if ($debug_build) {
     $clCommand += " /Zi"
 }
 
-$clCommand += " /FC /I$include_paths ../$source_paths"
+$clCommand += " /FC /I$include_paths /../$source_paths"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
@@ -55,8 +55,8 @@ Write-Host "running CKit build.ps1..." -ForegroundColor Green
 $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
-Push-Location ".\examples\cl"
-    Write-Host "EXE: " .\examples\cl..\$executable_name
+Push-Location "./examples/cl"
+    Write-Host "EXE: " $PWD $executable_name
     Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
 Pop-Location
 
