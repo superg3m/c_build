@@ -1,10 +1,10 @@
 {
-    "$executable_name" : "",
+    "$executable_name" : "test_ckg.exe",
     "$include_paths" : "",
     "$source_paths" : "./source",
     "$lib_paths" : "",
     "$libs" : "",
-    "$std_version" : "",
+    "$std_version" : "c11",
     "$debug" : false,
     "$generate_object_files" : false,
 
