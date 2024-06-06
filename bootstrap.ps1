@@ -83,6 +83,7 @@ if(!(Test-Path -Path "../examples/cl")) {
 
 ###################################################
 
+Push-Location "./c-build"
 $templatesDir = "./templates"
 $resolvedTemplatesDir = "../"
 
@@ -99,5 +100,6 @@ foreach ($templateFile in $templateFiles) {
     Set-Content -Path $resolvedFilePath -Value $resolvedContent
     Write-Host "Resolved script has been written to $resolvedFilePath"
 }
+Pop-Location
 
 Write-Host "C-Build bootstrap is complete!" -ForegroundColor Green
