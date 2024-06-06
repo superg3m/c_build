@@ -2,10 +2,12 @@
 
 $executable_name = ""
 
+$debug_with_visual_studio = $false
+
 Push-Location  ".\C-BUILD"
 git stash
 git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/$preset/$compiler_type/debug.ps1 $executable_name
+./C-BUILD/$preset/$compiler_type/debug.ps1 $executable_name $debug_with_visual_studio
