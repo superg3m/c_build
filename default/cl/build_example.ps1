@@ -46,8 +46,6 @@ if ($debug_build) {
 
 $clCommand += " /c /FC /I$include_paths $source_paths /LIBPATH:$lib_paths /link /LIB:$libs"
 
-
-
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
@@ -58,7 +56,7 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
 Push-Location ".\examples\cl"
-    Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
+    Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
     lib /OUT:$lib_name $lib_paths ".\*.obj" | Out-Null
 Pop-Location
 
