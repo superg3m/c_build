@@ -56,7 +56,7 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
 Push-Location "./examples/cl"
-    Write-Host "EXE: " $PWD $executable_name
+    Write-Host "EXE: " "$PWD/$executable_name"
     Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
 Pop-Location
 
