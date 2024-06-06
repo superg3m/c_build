@@ -24,6 +24,7 @@ Pop-Location
 
 ./C-BUILD/$preset/$compiler_type/debug.ps1 `
     -executable_name $executable_name `
+    -debug_with_visual_studio $debug_with_visual_studio `
     -compile_time_define $compile_time_define `
     -std_version $std_version `
     -debug_build $debug_build `
