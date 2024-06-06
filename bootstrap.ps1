@@ -59,7 +59,7 @@ if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
 ###################################################
 
 $templatesDir = "./templates"
-$resolvedTemplatesDir = "resolved_templates"
+$resolvedTemplatesDir = "../"
 
 if (-not (Test-Path -Path $resolvedTemplatesDir)) {
     New-Item -ItemType Directory -Path $resolvedTemplatesDir
