@@ -14,7 +14,7 @@ param(
     [Parameter(Mandatory=$true)]
 	[bool] $generate_object_files,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $include_paths,
 
     [Parameter(Mandatory=$true)]
