@@ -5,6 +5,12 @@ param(
 	[string] $compiler_type
 )
 
+Push-Location  "./c-build"
+git stash
+git stash drop
+git pull
+Pop-Location
+
 if ($preset -eq "default" ) {
     # Do nothing
 } elseif ($preset -eq "ckg") {
