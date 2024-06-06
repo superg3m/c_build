@@ -6,7 +6,7 @@ param(
 	[string] $std_version,
 
     [Parameter(Mandatory=$true)]
-	[bool] $debug,
+	[bool] $debug_build ,
 
     [Parameter(Mandatory=$true)]
 	[bool] $generate_object_files,
@@ -34,13 +34,13 @@ if(!(Test-Path -Path ".\examples\cl")) {
 # Initialize the command with the standard version
 $clCommand = "cl /std:$std_version"
 
-if ($debug) {
+if ($debug_build) {
     $clCommand += " /Od"
 } else {
     $clCommand += " /O2"
 }
 
-if ($debug) {
+if ($debug_build) {
     $clCommand += " /Zi"
 }
 
