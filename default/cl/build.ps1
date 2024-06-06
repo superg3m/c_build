@@ -9,7 +9,7 @@ param(
 	[string] $std_version,
 
     [Parameter(Mandatory=$true)]
-	[bool] $debug,
+	[bool] $debug_build,
 
     [Parameter(Mandatory=$true)]
 	[bool] $generate_object_files,
@@ -36,13 +36,13 @@ if(!(Test-Path -Path ".\build_cl")) {
 # Initialize the command with the standard version
 $clCommand = "cl /std:$std_version"
 
-if ($debug) {
+if ($debug_build -eq $true) {
     $clCommand += " /Od"
 } else {
     $clCommand += " /O2"
 }
 
-if ($debug) {
+if ($debug_build -eq $true) {
     $clCommand += " /Zi"
 }
 
@@ -77,5 +77,5 @@ Write-Host "MSVC Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor
 Write-Host "========================================================"
 Write-Host ""
 
-./normalize_path.ps1
+# ./normalize_path.ps1
 
