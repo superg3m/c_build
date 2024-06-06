@@ -30,7 +30,7 @@ param(
 	[string] $libs
 )
 
-if (!(Test-Path -Path $executable_name)) {
+if (!(Test-Path -Path ./examples/cl/$executable_name)) {
     Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
 
     ./C-BUILD/default/cl/build_example.ps1 `
