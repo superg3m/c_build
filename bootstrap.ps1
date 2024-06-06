@@ -72,7 +72,7 @@ foreach ($templateFile in $templateFiles) {
     $resolvedContent = $templateContent -replace [regex]::Escape('$preset'), $preset -replace [regex]::Escape('$compiler_type'), $compiler_type
     $resolvedFilePath = Join-Path -Path $resolvedTemplatesDir -ChildPath $templateFile.Name
     Set-Content -Path $resolvedFilePath -Value $resolvedContent
-    Write-Output "Resolved script has been written to $resolvedFilePath"
+    Write-Host "Resolved script has been written to $resolvedFilePath"
 }
 
-Write-Output "C-Build bootstrap is complete!" -ForegroundColor Green
+Write-Host "C-Build bootstrap is complete!" -ForegroundColor Green
