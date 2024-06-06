@@ -6,8 +6,7 @@ param(
 )
 
 if ($preset -eq "default" ) {
-    Write-Error "preset is invalid should be either default, ckg, or ckit"
-    Break
+    # Do nothing
 } elseif ($preset -eq "ckg") {
     if(!(Test-Path -Path "..\ckg")) {
         Write-Host "missing ckg"
