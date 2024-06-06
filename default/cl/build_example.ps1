@@ -32,7 +32,7 @@ if(!(Test-Path -Path ".\examples\cl")) {
 }
 
 # Initialize the command with the standard version
-$clCommand = "cl /std:$std_version"
+$clCommand = "cl /Fe$executable_name /std:$std_version"
 
 if ($debug_build) {
     $clCommand += " /Od"
