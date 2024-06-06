@@ -10,7 +10,7 @@ $debug_build = $true
 $generate_object_files = $false
 
 $include_paths = ""
-$source_paths = "./examples/test_ckg.c"
+$source_paths = "./test_ckg.c"
 $lib_paths = ""
 $libs = "./build_cl/ckg.lib"
 
