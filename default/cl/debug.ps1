@@ -2,6 +2,9 @@ param(
 	[Parameter(Mandatory=$true)]
 	[string] $executable_name,
 
+    [Parameter(Mandatory=$true)]
+    [bool]$debug_with_visual_studio,
+
     [Parameter(Mandatory=$false)]
 	[string] $compile_time_defines,
 
