@@ -50,11 +50,30 @@ if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
 # Preset can either be default, ckit or ckg
 # if you enter default its not going to give you ckit or anythign its just goint ot make building and compiling easy
 
-# mkdir ../source
-# mkdir ../include
-# mkdir ../cl_build
-# mkdir ../examples
-# mkdir ../examples/cl
+if(!(Test-Path -Path "../source")) {
+    Write-Host "Creating source Directory"
+    mkdir ../source
+}
+
+if(!(Test-Path -Path "../include")) {
+    Write-Host "Creating include Directory"
+    mkdir ../include
+}
+
+if(!(Test-Path -Path "$compiler_type")) {
+    Write-Host "Creating $compiler_type Directory"
+   mkdir "../build_$compiler_type"
+}
+
+if(!(Test-Path -Path "../examples")) {
+    Write-Host "Creating examples Directory"
+    mkdir ../examples
+}
+
+if(!(Test-Path -Path "../examples/cl")) {
+    Write-Host "Creating examples/cl Directory"
+    mkdir ../examples/cl
+}
 
 ###################################################
 
