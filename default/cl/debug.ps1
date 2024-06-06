@@ -30,8 +30,6 @@ param(
 	[string] $libs
 )
 
-Write-Host $PWD
-
 if (!(Test-Path -Path $executable_name)) {
     Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
 

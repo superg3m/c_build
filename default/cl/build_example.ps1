@@ -56,6 +56,7 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
 Push-Location ".\examples\cl"
+    Write-Host $PWD
     Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
     lib /OUT:$lib_name $lib_paths ".\*.obj" | Out-Null
 Pop-Location
