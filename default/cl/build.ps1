@@ -1,15 +1,30 @@
-param (
+param(
+	[Parameter(Mandatory=$true)]
+	[string] $executable_name,
+
+    [Parameter(Mandatory=$false)]
+	[string] $compile_time_defines,
+
     [Parameter(Mandatory=$true)]
-    [string]$executable_name,
+	[string] $std_version,
+
+    [Parameter(Mandatory=$true)]
+	[bool] $debug_build,
+
+    [Parameter(Mandatory=$true)]
+	[bool] $generate_object_files,
+
+    [Parameter(Mandatory=$false)]
+	[string] $include_paths,
+
+    [Parameter(Mandatory=$true)]
+	[string] $source_paths,
+
+    [Parameter(Mandatory=$false)]
+	[string] $lib_paths,
     
-    [string]$compile_time_define = "",
-    [string]$std_version = "",
-    [bool]$debug_build = $false,
-    [bool]$generate_object_files = $false,
-    [string]$include_paths = "",
-    [string]$source_paths = "",
-    [string]$lib_paths = "",
-    [string]$libs = ""
+    [Parameter(Mandatory=$false)]
+	[string] $libs
 )
 
 ./vars.ps1

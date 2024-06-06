@@ -18,4 +18,13 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/$preset/$compiler_type/build.ps1 $executable_name $std_version $debug $generate_object_files $include_paths $source_paths $lib_paths $libs
+./C-BUILD/default/cl/run.ps1 `
+    -executable_name $executable_name `
+    -compile_time_define $compile_time_define `
+    -std_version $std_version `
+    -debug_build $debug_build `
+    -generate_object_files $generate_object_files `
+    -include_paths $include_paths `
+    -source_paths $source_paths `
+    -lib_paths $lib_paths `
+    -libs $libs
