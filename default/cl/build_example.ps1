@@ -57,7 +57,8 @@ $timer.Start() # Start the timer
 
 Push-Location "./examples/cl"
     Write-Host "EXE: " "$PWD/../test_ckg.c"
-    Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
+    cl /Fe:$executable_name ../test_ckg.c
+    # Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
 Pop-Location
 
 $timer.Stop()
