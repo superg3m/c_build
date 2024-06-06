@@ -27,7 +27,26 @@ param(
 
 ./vars.ps1
 
-$extension = ".c"
+# Initialize the command with the standard version
+$clCommand = "cl /std:$std_version"
+
+if ($debug) {
+    $clCommand += " /Od"
+} else {
+    $clCommand += " /O2"
+}
+
+if ($debug) {
+    $clCommand += " /Zi"
+}
+
+if ($generate_object_files) {
+    $clCommand += " /c"
+} else {
+    $clCommand += " /Fe$executable_name"
+}
+
+$clCommand += " /FC /I$include_paths $source_paths /LIBPATH:$lib_paths /link /LIB:$libs"
 
 if(!(Test-Path -Path ".\ckg")) {
     Write-Host "missing ckg"
@@ -56,7 +75,7 @@ $timer.Start() # Start the timer
 Push-Location ".\build_cl"
 # MAKE SURE YOU HAVE AN OPTION FOR DEBUG LIBS
 # cl -DCUSTOM_PLATFORM_IMPL /std:c++20 /c "..\source\*.cpp"
-cl /std:c11 /Zi /FC /c "..\source\core\*$extension" "..\ckg\source\*$extension" | Out-File -FilePath "..\compilation_errors.txt" -Append
+cl /std:$std_version /Zi /FC /c $source_paths | Out-File -FilePath "..\compilation_errors.txt" -Append
 lib /OUT:".\ckit.lib" "User32.lib" ".\*.obj" | Out-Null
 Pop-Location
 
