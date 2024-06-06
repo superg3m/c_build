@@ -47,7 +47,7 @@ if (!(Test-Path -Path $executable_name)) {
         ./vars.ps1
         devenv $executable_name
     } else {
-        & "raddbg" $executable_name
+        #& "raddbg" $executable_name
     }
     Pop-Location
 } else {
@@ -56,7 +56,7 @@ if (!(Test-Path -Path $executable_name)) {
         ./vars.ps1
         devenv $executable_name
     } else {
-        & "raddbg" $executable_name
+        #& "raddbg" $executable_name
     }
     Pop-Location
 }
