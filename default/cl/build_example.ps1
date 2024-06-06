@@ -35,16 +35,16 @@ if(!(Test-Path -Path ".\examples\cl")) {
 $clCommand = "cl /Fe:$executable_name /std:$std_version"
 
 if ($debug_build) {
-    $clCommand += " /Od"
+    #$clCommand += " /Od"
 } else {
-    $clCommand += " /O2"
+    #$clCommand += " /O2"
 }
 
 if ($debug_build) {
-    $clCommand += " /Zi"
+    #$clCommand += " /Zi"
 }
 
-$clCommand += " /FC /I$include_paths ../$source_paths ../../build_cl/ckg.lib"
+$clCommand += " ../$source_paths ../../build_cl/ckg.lib"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
