@@ -2,7 +2,7 @@ param(
 	[Parameter(Mandatory=$true)]
 	[string] $executable_name,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $compile_time_defines,
 
     [Parameter(Mandatory=$true)]
@@ -14,16 +14,16 @@ param(
     [Parameter(Mandatory=$true)]
 	[bool] $generate_object_files,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $include_paths,
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $lib_paths,
     
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $libs
 )
 
