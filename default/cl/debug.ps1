@@ -32,11 +32,11 @@ param(
 
 Write-Host $PWD
 
-Push-Location "./C-BUILD/default/cl"
+Push-Location ""
 if (!(Test-Path -Path $executable_name)) {
     Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
 
-    ./build_example.ps1 `
+    ./C-BUILD/default/cl/build_example.ps1 `
         -executable_name $executable_name `
         -std_version $std_version `
         -debug_build $debug_build `
@@ -47,13 +47,15 @@ if (!(Test-Path -Path $executable_name)) {
         -libs $libs
     
     if ($debug_with_visual_studio -eq $true) {
+        ./vars.ps1
         devenv $executable_name
     } else {
         & "raddbg" $executable_name
     }
 } else {
-    ./vars.ps1
+    
     if ($debug_with_visual_studio -eq $true) {
+        ./vars.ps1
         devenv $executable_name
     } else {
         & "raddbg" $executable_name

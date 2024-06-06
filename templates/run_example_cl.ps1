@@ -18,7 +18,7 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/default/cl/run.ps1 `
+./C-BUILD/default/cl/run_example.ps1 `
     -executable_name $executable_name `
     -compile_time_define $compile_time_define `
     -std_version $std_version `
