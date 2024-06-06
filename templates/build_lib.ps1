@@ -9,7 +9,7 @@ $lib_paths = ""
 $libs = ""
 
 $std_version = "c11"
-$debug = false; # compile with debug symbols
+$debug = $false; # compile with debug symbols
 
 Push-Location  ".\C-BUILD"
 git stash

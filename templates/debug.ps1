@@ -9,8 +9,8 @@ $lib_paths = ""
 $libs = ""
 
 $std_version = ""
-$debug = false; # compile with debug symbols
-$generate_object_files = false;
+$debug = $false; # compile with debug symbols
+$generate_object_files = $false;
 
 Push-Location  ".\C-BUILD"
 git stash
