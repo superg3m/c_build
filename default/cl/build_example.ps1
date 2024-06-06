@@ -44,7 +44,7 @@ if ($debug_build) {
     $clCommand += " /Zi"
 }
 
-$clCommand += " /FC /I$include_paths .\test_ckg.c"
+$clCommand += " /FC /I$include_paths ../test_ckg.c"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
@@ -56,7 +56,7 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
 Push-Location "./examples/cl"
-    Write-Host "EXE: " "$PWD/$executable_name"
+    Write-Host "EXE: " "$PWD/../test_ckg.c"
     Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
 Pop-Location
 
