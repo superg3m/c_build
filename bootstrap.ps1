@@ -66,9 +66,9 @@ if(!(Test-Path -Path "../include")) {
     mkdir ../include
 }
 
-if(!(Test-Path -Path "$compiler_type")) {
-    Write-Host "Creating $compiler_type Directory"
-   mkdir "../build_$compiler_type"
+if(!(Test-Path -Path "../build_$compiler_type")) {
+    Write-Host "Creating build_$compiler_type Directory"
+    mkdir "../build_$compiler_type"
 }
 
 if(!(Test-Path -Path "../examples")) {
