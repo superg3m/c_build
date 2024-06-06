@@ -10,7 +10,7 @@ $debug_build = $true
 $generate_object_files = $false
 
 $include_paths = ""
-$source_paths = "./source"
+$source_paths = "./source/*.c"
 $lib_paths = ""
 $libs = ""
 
