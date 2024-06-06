@@ -1,6 +1,6 @@
 param(
 	[Parameter(Mandatory=$true)]
-	[string] $lib_name,
+	[string] $executable_name,
 
     [Parameter(Mandatory=$true)]
 	[string] $std_version,
@@ -11,16 +11,16 @@ param(
     [Parameter(Mandatory=$true)]
 	[bool] $generate_object_files,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $include_paths,
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $lib_paths,
     
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $libs
 )
 
