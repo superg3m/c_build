@@ -89,7 +89,9 @@ $resolvedTemplatesDir = "../"
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 
-$configFilePath = Join-Path -Path ".." -ChildPath "config.json"
+$configFilePath = "config.json"
+
+Write-Host
 
 # Check if config.json already exists in the destination directory
 $has_exisiting_config = $false
