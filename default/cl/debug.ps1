@@ -1,25 +1,24 @@
 param(
+    [Parameter(Mandatory=$true)]
+	[string] $executable_name,
+
 	[Parameter(Mandatory=$false)]
 	[string] $debug_with_visual_studio
 )
 
-
-
-$executableFilePath = ".\examples\cl\test_ckg.exe"
-
-if (!(Test-Path -Path $executableFilePath)) {
+if (!(Test-Path -Path $executable_name)) {
     Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
     ./build_example.ps1
     if (debug_with_visual_studio -eq "vs") {
-        devenv $executableFilePath
+        devenv $executable_name
     } else {
-        & "raddbg" $executableFilePath
+        & "raddbg" $executable_name
     }
 } else {
     ./vars.ps1
     if (debug_with_visual_studio -eq "vs") {
-        devenv $executableFilePath
+        devenv $executable_name
     } else {
-        & "raddbg" $executableFilePath
+        & "raddbg" $executable_name
     }
 }

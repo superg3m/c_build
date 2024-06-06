@@ -3,6 +3,9 @@ param(
 	[string] $executable_name,
 
     [Parameter(Mandatory=$true)]
+	[string] $compile_time_defines,
+
+    [Parameter(Mandatory=$true)]
 	[string] $std_version,
 
     [Parameter(Mandatory=$true)]
@@ -24,8 +27,11 @@ param(
 	[string] $libs
 )
 
-
 ./vars.ps1
+
+if(!(Test-Path -Path ".\build_cl")) {
+    mkdir .\build_cl
+}
 
 # Initialize the command with the standard version
 $clCommand = "cl /std:$std_version"
@@ -40,6 +46,10 @@ if ($debug) {
     $clCommand += " /Zi"
 }
 
+foreach ($define in $compile_time_defines) {
+    $clCommand += " -D$define"
+}
+
 if ($generate_object_files) {
     $clCommand += " /c"
 } else {
@@ -48,20 +58,7 @@ if ($generate_object_files) {
 
 $clCommand += " /FC /I$include_paths $source_paths /LIBPATH:$lib_paths /link /LIB:$libs"
 
-if(!(Test-Path -Path ".\ckg")) {
-    Write-Host "missing ckg"
-    git clone https://github.com/superg3m/ckg.git
-} else {
-    Push-Location  ".\ckg"
-    git stash
-    git stash drop
-    git pull
-    Pop-Location
-}
 
-if(!(Test-Path -Path ".\build_cl")) {
-    mkdir .\build_cl
-}
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
@@ -73,10 +70,7 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
 Push-Location ".\build_cl"
-# MAKE SURE YOU HAVE AN OPTION FOR DEBUG LIBS
-# cl -DCUSTOM_PLATFORM_IMPL /std:c++20 /c "..\source\*.cpp"
-cl /std:$std_version /Zi /FC /c $source_paths | Out-File -FilePath "..\compilation_errors.txt" -Append
-lib /OUT:".\ckit.lib" "User32.lib" ".\*.obj" | Out-Null
+    Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
 Pop-Location
 
 $timer.Stop()

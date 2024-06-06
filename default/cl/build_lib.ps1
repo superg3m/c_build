@@ -27,8 +27,8 @@ param(
 
 ./vars.ps1
 
-if(!(Test-Path -Path ".\examples\cl")) {
-    mkdir ".\examples\cl"
+if(!(Test-Path -Path ".\build_cl")) {
+    mkdir .\build_cl
 }
 
 # Initialize the command with the standard version
@@ -46,8 +46,6 @@ if ($debug) {
 
 $clCommand += " /c /FC /I$include_paths $source_paths /LIBPATH:$lib_paths /link /LIB:$libs"
 
-
-
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
@@ -57,7 +55,7 @@ Write-Host "running CKit build.ps1..." -ForegroundColor Green
 $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
-Push-Location ".\examples\cl"
+Push-Location ".\build_cl"
     Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
     lib /OUT:$lib_name $lib_paths ".\*.obj" | Out-Null
 Pop-Location
@@ -69,3 +67,4 @@ Write-Host "========================================================"
 Write-Host ""
 
 ./normalize_path.ps1
+
