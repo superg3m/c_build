@@ -8,6 +8,7 @@ param(
 
 Write-Host $PWD
 
+Push-Location "./C-BUILD/default/cl"
 if (!(Test-Path -Path $executable_name)) {
     Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
     ./build_example.ps1
@@ -24,3 +25,4 @@ if (!(Test-Path -Path $executable_name)) {
         & "raddbg" $executable_name
     }
 }
+Pop-Location
