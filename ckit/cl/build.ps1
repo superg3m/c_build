@@ -24,7 +24,6 @@ param(
 	[string] $libs
 )
 
-
 ./vars.ps1
 
 $extension = ".c"
