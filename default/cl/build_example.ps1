@@ -44,7 +44,7 @@ if ($debug_build) {
     #$clCommand += " /Zi"
 }
 
-$clCommand += " /I$include_paths ../$source_paths ../../build_cl/ckg.lib"
+$clCommand += " ../$source_paths ../../build_cl/ckg.lib"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
