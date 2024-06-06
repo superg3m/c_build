@@ -56,6 +56,7 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 
 Push-Location ".\examples\cl"
+    Get-ChildItem -Force
     cl /Fe"test_ckg.exe" "./test_ckg.c"
     # Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
 Pop-Location
