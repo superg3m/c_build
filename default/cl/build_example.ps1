@@ -57,7 +57,7 @@ $timer.Start() # Start the timer
 
 Push-Location ".\examples\cl"
     Write-Host $PWD
-    cl /Fe"test_ckg.exe" "./test_ckg.c"
+    cl /Fe"test_ckg.exe" "../test_ckg.c"
     # Invoke-Expression "$clCommand | Out-File -FilePath '../../compilation_errors.txt' -Append"
 Pop-Location
 
