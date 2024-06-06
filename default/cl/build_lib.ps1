@@ -9,9 +9,6 @@ param(
 	[bool] $debug,
 
     [Parameter(Mandatory=$true)]
-	[bool] $generate_object_files,
-
-    [Parameter(Mandatory=$true)]
 	[string] $include_paths,
 
     [Parameter(Mandatory=$true)]
@@ -23,7 +20,6 @@ param(
     [Parameter(Mandatory=$true)]
 	[string] $libs
 )
-
 
 ./vars.ps1
 
