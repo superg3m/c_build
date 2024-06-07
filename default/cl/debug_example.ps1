@@ -3,7 +3,7 @@ param(
 	[string] $executable_name,
 
     [Parameter(Mandatory=$true)]
-    [bool]$debug_with_visual_studio,
+    [bool] $debug_with_visual_studio,
 
     [Parameter(Mandatory=$false)]
 	[string] $compile_time_defines,
@@ -22,6 +22,9 @@ param(
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
+
+    [Parameter(Mandatory=$true)]
+	[string] $source_example_paths,
     
     [Parameter(Mandatory=$false)]
 	[string] $additional_libs_for_example

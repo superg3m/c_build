@@ -22,6 +22,9 @@ param(
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
+
+    [Parameter(Mandatory=$true)]
+	[string] $source_example_paths,
     
     [Parameter(Mandatory=$false)]
 	[string] $additional_libs_for_example
