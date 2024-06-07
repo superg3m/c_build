@@ -20,14 +20,14 @@ $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key # value is json
 
-    $should_run = $value.'$should_run'
-
-    if ($should_run -eq $false) {
-        continue
-    }
 
     # If the value is an object, iterate over its properties as well
-    if ($value -is [PSCustomObject]) {
+    if ($value -is [PSCustomObject]) {     
+        $should_run = $value.'$should_run'
+
+        if ($should_run -eq $false) {
+            continue
+        }
 
         if(!(Test-Path -Path $key)) {
             Write-Host "Creating $value Directory"
