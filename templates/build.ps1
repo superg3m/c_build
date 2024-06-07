@@ -7,6 +7,7 @@ $executable_name = $jsonData.'$executable_name'
 $compile_time_defines = $jsonData.'$compile_time_defines'
 $std_version = $jsonData.'$std_version'
 $debug_build = $jsonData.'$debug_build'
+$build_lib = $jsonData.'$build_lib'
 $generate_object_files = $jsonData.'$generate_object_files'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
@@ -24,6 +25,7 @@ Pop-Location
     -compile_time_defines $compile_time_defines `
     -std_version $std_version `
     -debug_build $debug_build `
+    -build_lib $build_lib `
     -generate_object_files $generate_object_files `
     -include_paths $include_paths `
     -source_paths $source_paths `
