@@ -43,15 +43,15 @@ if ($debug_build -eq $true) {
 }
 
 if ($debug_build -eq $true) {
-    $clCommand += " /Zi"
+    #$clCommand += " /Zi"
 }
 
 foreach ($define in $compile_time_defines) {
-    $clCommand += " -D$define"
+    #$clCommand += " -D$define"
 }
 
 if ($generate_object_files -or $build_lib -eq $true) {
-    $clCommand += " /c"
+    #$clCommand += " /c"
 } else {
     $clCommand += " /Fe$executable_name"
 }
