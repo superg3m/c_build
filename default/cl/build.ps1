@@ -62,7 +62,7 @@ $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
 
 Push-Location $build_directory
-    Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
+    Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
     if ($build_lib -eq $true) {
         lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
     }
