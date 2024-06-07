@@ -20,9 +20,6 @@ $rootPath = $PSScriptRoot
 $tempFilePath = "$build_directory/compilation_errors_temp.txt"
 $realFilePath = "$build_directory/compilation_errors.txt"
 
-Write-Host $tempFilePath
-Write-Host $realFilePath
-
 New-Item -Path $tempFilePath -Force | Out-Null
 
 Get-Content -Path $realFilePath | ForEach-Object {

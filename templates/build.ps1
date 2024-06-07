@@ -19,7 +19,6 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key # value is json
-    Write-Host "Key: $key, Value: $value"
     
     # If the value is an object, iterate over its properties as well
     if ($value -is [PSCustomObject]) {
