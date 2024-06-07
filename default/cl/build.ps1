@@ -1,4 +1,7 @@
 param(
+    [Parameter(Mandatory=$false)]
+	[string] $lib_name,
+
 	[Parameter(Mandatory=$true)]
 	[string] $executable_name,
 
@@ -51,7 +54,7 @@ foreach ($define in $compile_time_defines) {
 }
 
 if ($generate_object_files -or $build_lib -eq $true) {
-    #$clCommand += " /c"
+    $clCommand += " /c"
 } else {
     $clCommand += " /Fe$executable_name"
 }
