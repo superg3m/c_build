@@ -25,6 +25,7 @@ param(
 )
 
 ./C-BUILD/default/cl/build.ps1 `
+    -lib_name $lib_name
     -executable_name $executable_name `
     -compile_time_defines $compile_time_defines `
     -std_version $std_version `
