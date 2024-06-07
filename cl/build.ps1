@@ -71,7 +71,6 @@ Pop-Location
 
 Push-Location $build_directory
     if ($build_lib -eq $false -and $run_exe -eq $true) {
-        Write-Host $PWD
-        & "$output_name"
+        & "./$output_name"
     }
 Pop-Location
