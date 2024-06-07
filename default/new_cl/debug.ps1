@@ -1,9 +1,16 @@
 param(
     [Parameter(Mandatory=$true)]
+    [string] $project_name,
+
+    [Parameter(Mandatory=$true)]
     [string] $build_json
 )
 
 $jsonData = $build_json | ConvertFrom-Json
+
+$build_name = $jsonData.'$build_name'
+
+Write-Host "running [$project_name - $build_name] debug.ps1..." -ForegroundColor Green
 
 $debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
 

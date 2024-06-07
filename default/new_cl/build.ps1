@@ -1,5 +1,8 @@
 param(
     [Parameter(Mandatory=$true)]
+    [string] $project_name,
+
+    [Parameter(Mandatory=$true)]
     [string] $build_json,
 
     [Parameter(Mandatory=$false)]
@@ -8,8 +11,9 @@ param(
 
 $jsonData = $build_json | ConvertFrom-Json
 
-$lib_name = $jsonData.'$lib_name'
-$executable_name = $jsonData.'$executable_name'
+$build_name = $jsonData.'$build_name'
+
+$output_name = $jsonData.'$output_name'
 $compile_time_defines = $jsonData.'$compile_time_defines'
 $std_version = $jsonData.'$std_version'
 $build_lib = $jsonData.'$build_lib'
@@ -17,6 +21,8 @@ $generate_object_files = $jsonData.'$generate_object_files'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
 $additional_libs = $jsonData.'$additional_libs_for_build'
+
+Write-Host "running [$project_name - $build_name] build.ps1..." -ForegroundColor Green
 
 ./vars.ps1
 
@@ -49,8 +55,6 @@ $clCommand += " /FC ../$source_paths $additional_libs"
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
-
-Write-Host "running CKit build.ps1..." -ForegroundColor Green
 
 $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
