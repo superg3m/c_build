@@ -18,7 +18,7 @@ Write-Host "running [$project_name - $build_name] normalize_path.ps1..." -Foregr
 Push-Location $build_directory
 
 $rootPath = $PSScriptRoot
-$tempFile = 'compilation_errors_temp.txt'
+$tempFile = "$build_directory/compilation_errors_temp.txt"
 New-Item -Path $tempFile -Force | Out-Null
 
 Get-Content -Path 'compilation_errors.txt' | ForEach-Object {
