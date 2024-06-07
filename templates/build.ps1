@@ -14,7 +14,7 @@ git stash drop
 git pull
 Pop-Location
 
-Write-Host "|--------------- Started Building $value ---------------|" -ForegroundColor Green
+Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Green
 $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
