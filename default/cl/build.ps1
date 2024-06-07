@@ -37,9 +37,9 @@ if(!(Test-Path -Path ".\build_cl")) {
 $clCommand = "cl /std:$std_version"
 
 if ($debug_build -eq $true) {
-    $clCommand += " /Od"
+    #$clCommand += " /Od"
 } else {
-    $clCommand += " /O2"
+    #$clCommand += " /O2"
 }
 
 if ($debug_build -eq $true) {
