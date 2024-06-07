@@ -9,7 +9,10 @@ param(
     [string] $build_json,
 
     [Parameter(Mandatory=$false)]
-    [bool] $debug_build
+    [bool] $debug_build,
+
+    [Parameter(Mandatory=$false)]
+    [bool] $run
 )
 
 $jsonData = $build_json | ConvertFrom-Json
@@ -65,3 +68,9 @@ Push-Location $build_directory
 Pop-Location
 
 ./C-BUILD/cl/normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
+
+Push-Location $build_directory
+    if ($build_lib -eq $false) {
+        & "$output_name"
+    }
+Pop-Location
