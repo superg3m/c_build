@@ -23,7 +23,6 @@ Pop-Location
 ./C-BUILD/$preset/$compiler_type/run_example.ps1 `
     -executable_name $executable_name `
     -compile_time_defines $compile_time_defines `
-    -compile_time_define $compile_time_define `
     -std_version $std_version `
     -debug_build $debug_build `
     -generate_object_files $generate_object_files `
