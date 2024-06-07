@@ -56,8 +56,8 @@ if ($generate_object_files -or $build_lib -eq $true) {
     $clCommand += " /Fe$executable_name"
 }
 
-$clCommand += " /I$include_paths"
-$clCommand += " /FC $source_paths $additional_libs_for_example"
+# $clCommand += " /I$include_paths"
+$clCommand += " /FC ../$source_paths $additional_libs_for_example"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
@@ -81,5 +81,5 @@ Write-Host "MSVC Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor
 Write-Host "========================================================"
 Write-Host ""
 
-# ./normalize_path.ps1
+./normalize_path.ps1
 
