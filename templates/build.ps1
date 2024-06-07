@@ -39,9 +39,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     continue
                 }
                 
-                Write-Host -NoNewline "Depends on: " -ForegroundColor Blue
+                Write-Host "Depends on: " -ForegroundColor Blue
                 foreach ($element in $nestedValue) {
-                    Write-Host -NoNewline "$element " -ForegroundColor Blue
+                    Write-Host "  - $element" -ForegroundColor Blue
                     
                     # Push-Location "$element"
                     # ./C-BUILD/bootstrap.ps1 -preset $preset -compiler_type $compiler_type
