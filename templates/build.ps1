@@ -26,7 +26,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
             mkdir $key
         }
 
-        Write-Host "Nested properties:"
         foreach ($nestedKey in $value.PSObject.Properties.Name) {
             $nestedValue = $value.$nestedKey
 
