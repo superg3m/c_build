@@ -16,9 +16,12 @@ $build_name = $jsonData.'$build_name'
 Write-Host "running [$project_name - $build_name] normalize_path.ps1..." -ForegroundColor Green
 
 $rootPath = $PSScriptRoot
-$tempFilePath = "$build_directory/compilation_errors_temp.txt"
 
+$tempFilePath = "$build_directory/compilation_errors_temp.txt"
 $realFilePath = "$build_directory/compilation_errors.txt"
+
+Write-Host $tempFilePath
+Write-Host $realFilePath
 
 New-Item -Path $tempFilePath -Force | Out-Null
 
