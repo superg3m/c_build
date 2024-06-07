@@ -2,6 +2,8 @@
 $clAvailable = $null -ne (Get-Command cl -ErrorAction SilentlyContinue)
 
 if (!$clAvailable) {
+    Write-Host "running vars.ps1..." -ForegroundColor Green
+
     $vcvarsallPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
 
     # Run the batch file and capture the environment variables it sets

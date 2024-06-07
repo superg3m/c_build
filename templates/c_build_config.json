@@ -1,5 +1,11 @@
 {
+    "$project_name" : "",
+
+    "$debug_with_visual_studio" : false,
+
     "./build_$compiler_type" : {
+        "$build_name" : "",
+
         "$projects_to_build" : ["ckit"],
 
         "$output_name" : "ckg.lib",
@@ -14,6 +20,8 @@
     },
 
     "./example/$preset" : {
+        "$build_name" : "",
+
         "$projects_to_build" : [""],
 
         "$output_name" : "test_ckg.exe",

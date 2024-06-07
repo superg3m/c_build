@@ -7,3 +7,5 @@ git pull
 Pop-Location
 
 ./C-BUILD/$preset/$compiler_type/clean.ps1
+
+# ok clean is not quiet right anymore you need to clean all build_procedures
