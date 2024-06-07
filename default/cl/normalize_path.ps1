@@ -15,20 +15,19 @@ $build_name = $jsonData.'$build_name'
 
 Write-Host "running [$project_name - $build_name] normalize_path.ps1..." -ForegroundColor Green
 
-Push-Location $build_directory
-
 $rootPath = $PSScriptRoot
-$tempFile = "$build_directory/compilation_errors_temp.txt"
-New-Item -Path $tempFile -Force | Out-Null
+$tempFilePath = "$build_directory/compilation_errors_temp.txt"
 
-Get-Content -Path 'compilation_errors.txt' | ForEach-Object {
+$realFilePath = "$build_directory/compilation_errors.txt"
+
+New-Item -Path $tempFilePath -Force | Out-Null
+
+Get-Content -Path $realFilePath | ForEach-Object {
     $line = $_
     $line = $line -replace [Regex]::Escape($rootPath), ''
-    Add-Content -Path $tempFile -Value $line
+    Add-Content -Path $tempFilePath -Value $line
 }
 
-Move-Item -Path $tempFile -Destination 'compilation_errors.txt' -Force
-Get-Content -Path 'compilation_errors.txt'
-Remove-Item -Path 'compilation_errors.txt'
-
-Pop-Location
+Move-Item -Path $tempFile -Destination $realFilePath -Force
+Get-Content -Path $realFilePath
+Remove-Item -Path $realFilePath
