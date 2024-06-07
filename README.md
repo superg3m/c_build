@@ -40,7 +40,7 @@ projects_to_build = ["ckit"]
 
 // From the current scope how do you get to the next build directory then it will cd into that directory
 {
-    "./build_$preset" : {
+    "./build_$compiler_type" : {
         "$projects_to_build" : ["ckit"],
 
         "$output_name" : "ckg.lib",
@@ -56,7 +56,7 @@ projects_to_build = ["ckit"]
 
     "./example/$preset" : {
         "$projects_to_build" : [""],
-        
+
         "$output_name" : "test_ckg.exe",
         "$include_paths" : "",
         "$source_paths" : "../*.c",

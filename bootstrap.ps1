@@ -44,8 +44,6 @@ if ($preset -eq "default" ) {
     Break
 }
 
-
-
 $build_directory = "../build/$compiler_type"
 
 if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
@@ -89,7 +87,7 @@ $resolvedTemplatesDir = "../"
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 
-$configFilePath = "config.json"
+$configFilePath = "c_build_config.json"
 
 Write-Host
 
@@ -100,8 +98,8 @@ if (Test-Path -Path "../$configFilePath") {
 }
 
 foreach ($templateFile in $templateFiles) {
-    if ($has_exisiting_config -and $templateFile.Name -eq "config.json") {
-        Write-Host "Skipping config.json" -ForegroundColor Green
+    if ($has_exisiting_config -and $templateFile.Name -eq $configFilePath ) {
+        Write-Host "Skipping $configFilePath " -ForegroundColor Green
         continue
     }
 
