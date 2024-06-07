@@ -12,6 +12,9 @@ param(
 	[bool] $debug_build,
 
     [Parameter(Mandatory=$true)]
+	[bool] $build_lib,
+
+    [Parameter(Mandatory=$true)]
 	[bool] $generate_object_files,
 
     [Parameter(Mandatory=$false)]
@@ -47,7 +50,7 @@ foreach ($define in $compile_time_defines) {
     $clCommand += " -D$define"
 }
 
-if ($generate_object_files) {
+if ($generate_object_files -or $build_lib) {
     $clCommand += " /c"
 } else {
     $clCommand += " /Fe$executable_name"
@@ -67,6 +70,9 @@ $timer.Start() # Start the timer
 
 Push-Location ".\build_cl"
     Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
+    if ($build_lib -eq $true) {
+        lib /OUT:$lib_name $additional_libs_for_build ".\*.obj" | Out-Null
+    }
 Pop-Location
 
 $timer.Stop()
