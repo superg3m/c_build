@@ -15,7 +15,7 @@ Write-Host "|--------------- Started Building $value ---------------|" -Foregrou
 $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
-    $value = $object.$key # value is json
+    $value = $jsonData.$key # value is json
     Write-Host "Key: $key, Value: $value"
     
     # If the value is an object, iterate over its properties as well
@@ -52,7 +52,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
 $timer.Stop()
 Write-Host "[]==========================================[]"
-Write-Host "          Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor Blue
+Write-Host "     $project_name Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor Blue
 Write-Host "[]==========================================[]"
 Write-Host ""
 Write-Host "|--------------- Finished Building $project_name ---------------|" -ForegroundColor Green
