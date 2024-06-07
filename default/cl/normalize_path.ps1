@@ -6,7 +6,7 @@ param(
     [string] $build_directory,
 
     [Parameter(Mandatory=$true)]
-    [string] $build_json,
+    [string] $build_json
 )
 
 $jsonData = $build_json | ConvertFrom-Json
