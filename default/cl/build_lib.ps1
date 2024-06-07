@@ -11,7 +11,7 @@ param(
     [Parameter(Mandatory=$true)]
 	[bool] $debug_build,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
 	[string] $include_paths,
 
     [Parameter(Mandatory=$true)]
