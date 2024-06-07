@@ -46,7 +46,6 @@ param(
 	-include_paths $include_paths `
 	-source_paths $source_paths `
 	-additional_libs_for_build $additional_libs_for_build `
-	-additional_libs_for_example $additional_libs_for_example
 
 ./C-BUILD/default/cl/build_example.ps1 `
 	-executable_name $executable_name `
