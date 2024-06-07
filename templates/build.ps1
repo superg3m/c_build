@@ -70,7 +70,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git pull
                         Pop-Location-Location ..
                     }
-                    ./C-BUILD/bootstrap.ps1 -preset -compiler_type $compiler_type
+                    ./C-BUILD/bootstrap.ps1 -compiler_type $compiler_type
                     ./build.ps1
                     Pop-Location
                 }
