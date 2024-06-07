@@ -50,7 +50,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
                     if(!(Test-Path -Path $element)) {
                         Write-Host "missing $element"
-                        git clone https://github.com/superg3m/ckg.git
+                        git clone https://github.com/superg3m/$element.git
                     } else {
                         Push-Location "$element"
                         git stash
