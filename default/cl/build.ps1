@@ -74,4 +74,4 @@ Write-Host "MSVC Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor
 Write-Host "========================================================"
 Write-Host ""
 
-./C-BUILD/$preset/$compiler_type/normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
+./C-BUILD/default/cl/normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
