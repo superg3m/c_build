@@ -56,7 +56,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git stash
                         git stash drop
                         git pull
-                        Pop-Location-Location ..
+                        Pop-Location
                     }
                     
                     Push-Location "$element"
@@ -68,7 +68,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git stash
                         git stash drop
                         git pull
-                        Pop-Location-Location ..
+                        Pop-Location
                     }
                     ./C-BUILD/bootstrap.ps1 -compiler_type $compiler_type
                     ./build.ps1
