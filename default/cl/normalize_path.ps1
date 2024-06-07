@@ -17,6 +17,7 @@ Write-Host "running [$project_name - $build_name] normalize_path.ps1..." -Foregr
 
 $rootPath = $PSScriptRoot
 $tempFile = 'compilation_errors_temp.txt'
+Push-Location $build_directory
 New-Item -Path $tempFile -Force | Out-Null
 
 Get-Content -Path 'compilation_errors.txt' | ForEach-Object {
@@ -24,6 +25,7 @@ Get-Content -Path 'compilation_errors.txt' | ForEach-Object {
     $line = $line -replace [Regex]::Escape($rootPath), ''
     Add-Content -Path $tempFile -Value $line
 }
+Pop-Location
 
 Move-Item -Path $tempFile -Destination 'compilation_errors.txt' -Force
 Get-Content -Path 'compilation_errors.txt'
