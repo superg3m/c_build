@@ -42,6 +42,6 @@ param(
 	-source_paths $source_paths `
 	-additional_libs_for_build $additional_libs_for_build `
 
-Push-Location ".\examples\cl"
+Push-Location ".\build_cl"
     & "./$executable_name"
 Pop-Location
