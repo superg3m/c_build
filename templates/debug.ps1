@@ -24,7 +24,7 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/$preset/$compiler_type/debug.ps1 `
+./C-BUILD/$compiler_type/debug.ps1 `
     -executable_name $executable_name `
     -debug_with_visual_studio $debug_with_visual_studio `
     -compile_time_defines $compile_time_defines `

@@ -47,12 +47,22 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                 Write-Host "Depends on: " -ForegroundColor Blue
                 foreach ($element in $nestedValue) {
                     Write-Host "  - $element" -ForegroundColor Blue
+
+                    if(!(Test-Path -Path $element)) {
+                        Write-Host "missing $element"
+                        git clone https://github.com/superg3m/ckg.git
+                    } else {
+                        Push-Location "$element"
+                        git stash
+                        git stash drop
+                        git pull
+                        Pop-Location-Location ..
+                    }
                     
-                    # Push-Location "$element"
-                    # ./C-BUILD/bootstrap.ps1 -preset $preset -compiler_type $compiler_type
-                    # ./build.ps1
-                    # 
-                    # Pop-Location
+                    Push-Location "$element"
+                    ./C-BUILD/bootstrap.ps1 -preset -compiler_type $compiler_type
+                    ./build.ps1
+                    Pop-Location
                 }
                 Write-Host ""
             }
@@ -61,7 +71,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         # Serialize the $value object to a JSON string
         $jsonValue = $value | ConvertTo-Json -Compress
 
-        ./C-BUILD/$preset/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+        ./C-BUILD/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
     }
 }
 $timer.Stop()
