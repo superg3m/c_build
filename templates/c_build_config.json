@@ -5,10 +5,10 @@
 
     "./build_$compiler_type" : {
         "$build_name" : "",
-
         "$projects_to_build" : ["ckit"],
 
         "$output_name" : "ckg.lib",
+        "$compile_time_defines" : "",
         "$include_paths" : "",
         "$source_paths" : "./source/*.c",
 
@@ -21,10 +21,10 @@
 
     "./example/$preset" : {
         "$build_name" : "",
-
         "$projects_to_build" : [""],
 
         "$output_name" : "test_ckg.exe",
+        "$compile_time_defines" : "",
         "$include_paths" : "",
         "$source_paths" : "../*.c",
 
