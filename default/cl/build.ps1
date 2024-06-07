@@ -50,7 +50,7 @@ foreach ($define in $compile_time_defines) {
     $clCommand += " -D$define"
 }
 
-if ($generate_object_files -or $build_lib) {
+if ($generate_object_files -or $build_lib -eq $true) {
     $clCommand += " /c"
 } else {
     $clCommand += " /Fe$executable_name"
