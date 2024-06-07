@@ -45,7 +45,6 @@ param(
 	-build_lib $build_lib `
 	-include_paths $include_paths `
 	-source_paths $source_paths `
-	-source_example_paths $source_example_paths `
 	-additional_libs_for_build $additional_libs_for_build `
 	-additional_libs_for_example $additional_libs_for_example
 
