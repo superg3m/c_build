@@ -52,7 +52,7 @@ if ($generate_object_files -or $build_lib -eq $true) {
 }
 
 # $clCommand += " /I$include_paths"
-$clCommand += " /FC ../$source_paths $additional_libs"
+$clCommand += " /FC $source_paths $additional_libs"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
