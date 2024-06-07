@@ -20,11 +20,7 @@ $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key # value is json
 
-    $should_run = $value.'$should_run'
 
-    if ($should_run -eq $false) {
-        break
-    }
     
     # If the value is an object, iterate over its properties as well
     if ($value -is [PSCustomObject]) {
@@ -36,6 +32,12 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
         foreach ($nestedKey in $value.PSObject.Properties.Name) {
             $nestedValue = $value.$nestedKey
+
+            $should_run = $nestedValue.'$should_run'
+
+            if ($should_run -eq $false) {
+                break
+            }
 
             if ($nestedValue -is [Array]) {
                 Write-Host ""
