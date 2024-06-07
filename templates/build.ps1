@@ -33,7 +33,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         foreach ($nestedKey in $value.PSObject.Properties.Name) {
             $nestedValue = $value.$nestedKey
 
-            $should_run = $nestedValue.'$should_run'
+            $should_run = $nestedKey.'$should_run'
 
             if ($should_run -eq $false) {
                 break
