@@ -57,20 +57,11 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
 
-$timer = [Diagnostics.Stopwatch]::new()
-$timer.Start()
-
 Push-Location $build_directory
     Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
     if ($build_lib -eq $true) {
         lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
     }
 Pop-Location
-
-$timer.Stop()
-Write-Host "========================================================"
-Write-Host "MSVC Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor Blue
-Write-Host "========================================================"
-Write-Host ""
 
 ./C-BUILD/default/cl/normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
