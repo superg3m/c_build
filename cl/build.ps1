@@ -70,7 +70,7 @@ Pop-Location
 ./C-BUILD/cl/normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
 
 Push-Location $build_directory
-    if ($build_lib -eq $false) {
+    if ($build_lib -eq $false -and $run_exe -eq $true) {
         & "$output_name"
     }
 Pop-Location
