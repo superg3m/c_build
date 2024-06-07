@@ -22,7 +22,7 @@
     },
 
     "./example/$preset" : {
-        "should_run" : true,
+        "$should_run" : false,
 
         "$build_name" : "",
         "$projects_to_build" : [""],
