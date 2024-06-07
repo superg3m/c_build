@@ -2,6 +2,9 @@ param(
 	[Parameter(Mandatory=$true)]
 	[string] $lib_name,
 
+    [Parameter(Mandatory=$false)]
+	[string] $compile_time_defines,
+
     [Parameter(Mandatory=$true)]
 	[string] $std_version,
 

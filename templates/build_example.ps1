@@ -9,7 +9,7 @@ $lib_paths = ""
 $libs = ""
 
 $std_version = ""
-$debug = $false; # compile with debug symbols
+$debug_build = $false; # compile with debug symbols
 $generate_object_files = $false;
 
 Push-Location  ".\C-BUILD"
@@ -18,4 +18,11 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/$preset/$compiler_type/build_example.ps1 $executable_name $std_version $debug $generate_object_files $include_paths $source_paths $lib_paths $libs
+./C-BUILD/$preset/$compiler_type/build_example.ps1 `
+    -executable_name $executable_name `
+    -std_version $std_version `
+    -debug_build $debug_build `
+    -generate_object_files $generate_object_files `
+    -include_paths $include_paths `
+    -source_paths $source_paths `
+    -lib_paths $lib_paths $libs

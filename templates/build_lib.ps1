@@ -18,3 +18,12 @@ git pull
 Pop-Location
 
 ./C-BUILD/$preset/$compiler_type/build_lib.ps1 $lib_name $std_version $debug $include_paths $source_paths $lib_paths $libs
+
+./C-BUILD/$preset/$compiler_type/build_lib.ps1 `
+    -lib_name $lib_name `
+    -std_version $std_version `
+    -debug_build $debug_build `
+    -generate_object_files $generate_object_files `
+    -include_paths $include_paths `
+    -source_paths $source_paths `
+    -lib_paths $lib_paths $libs
