@@ -20,7 +20,7 @@
         "$additional_libs" : "./ckg.lib"
     },
 
-    "./example/$preset" : {
+    "./example/$compiler_type" : {
         "$should_run" : false,
 
         "$build_name" : "",
