@@ -35,6 +35,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                 Write-Host ""
                 if (!$nestedValue) {
                     Write-Host "Depends on Nothing!" -ForegroundColor Blue
+                    Write-Host ""
                     continue
                 }
                 
