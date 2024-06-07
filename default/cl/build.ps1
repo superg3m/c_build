@@ -21,7 +21,7 @@ $build_lib = $jsonData.'$build_lib'
 $generate_object_files = $jsonData.'$generate_object_files'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
-$additional_libs = $jsonData.'$additional_libs_for_build'
+$additional_libs = $jsonData.'$additional_libs'
 
 $build_name = $jsonData.'$build_name'
 Write-Host "running [$project_name - $build_name] build.ps1..." -ForegroundColor Green
@@ -64,7 +64,7 @@ $timer.Start()
 Push-Location ".\build_cl"
     Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
     if ($build_lib -eq $true) {
-        lib /OUT:$output_name $additional_libs_for_build ".\*.obj" | Out-Null
+        lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
     }
 Pop-Location
 
