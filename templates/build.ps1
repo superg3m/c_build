@@ -3,6 +3,7 @@
 $configPath = "config.json"
 $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
+$lib_name = $jsonData.'$lib_name'
 $executable_name = $jsonData.'$executable_name'
 $compile_time_defines = $jsonData.'$compile_time_defines'
 $std_version = $jsonData.'$std_version'
@@ -20,6 +21,7 @@ git pull
 Pop-Location
 
 ./C-BUILD/$preset/$compiler_type/build.ps1 `
+    -lib_name $lib_name `
     -executable_name $executable_name `
     -compile_time_defines $compile_time_defines `
     -std_version $std_version `
