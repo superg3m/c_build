@@ -31,6 +31,6 @@ Get-Content -Path $realFilePath | ForEach-Object {
     Add-Content -Path $tempFilePath -Value $line
 }
 
-Move-Item -Path $tempFile -Destination $realFilePath -Force
+Move-Item -Path $tempFilePath -Destination $realFilePath -Force
 Get-Content -Path $realFilePath
 Remove-Item -Path $realFilePath
