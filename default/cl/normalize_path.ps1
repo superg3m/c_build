@@ -25,8 +25,9 @@ Get-Content -Path 'compilation_errors.txt' | ForEach-Object {
     $line = $line -replace [Regex]::Escape($rootPath), ''
     Add-Content -Path $tempFile -Value $line
 }
-Pop-Location
+
 
 Move-Item -Path $tempFile -Destination 'compilation_errors.txt' -Force
 Get-Content -Path 'compilation_errors.txt'
 Remove-Item -Path 'compilation_errors.txt'
+Pop-Location
