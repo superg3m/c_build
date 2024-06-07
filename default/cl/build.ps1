@@ -29,7 +29,7 @@ Write-Host "running [$project_name - $build_name] build.ps1..." -ForegroundColor
 ./vars.ps1
 
 # Initialize the command with the standard version
-$clCommand = "cl /std:$std_version"
+$clCommand = "cl /std:$std_version /nologo"
 
 if ($debug_build -eq $true) {
     $clCommand += " /Od"
