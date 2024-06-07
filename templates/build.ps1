@@ -32,7 +32,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
             $nestedValue = $value.$nestedKey
 
             if ($nestedValue -is [Array]) {
-                Write-Host "Array elements:"
+                Write-Host "Depends on:"
                 foreach ($element in $nestedValue) {
                     Write-Host "$element"
                     
