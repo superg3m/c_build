@@ -15,7 +15,7 @@ param(
 	[bool] $debug_build,
 
     [Parameter(Mandatory=$true)]
-	[string] $build_lib,
+	[bool] $build_lib,
 
     [Parameter(Mandatory=$true)]
 	[bool] $generate_object_files,
