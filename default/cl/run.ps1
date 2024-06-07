@@ -1,6 +1,9 @@
 param(
     [Parameter(Mandatory=$true)]
-	[string] $project_name,
+    [string] $project_name,
+
+    [Parameter(Mandatory=$true)]
+    [string] $build_directory,
 
     [Parameter(Mandatory=$true)]
     [string] $build_json

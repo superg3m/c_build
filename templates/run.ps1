@@ -4,7 +4,7 @@ $configPath = "config.json"
 $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
 $lib_name = $jsonData.'$lib_name'
-$executable_name = $jsonData.'$executable_name'
+$output_name = $jsonData.'$executable_name'
 $compile_time_defines = $jsonData.'$compile_time_defines'
 $std_version = $jsonData.'$std_version'
 $debug_build = $jsonData.'$debug_build'
@@ -20,15 +20,8 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/$preset/$compiler_type/run.ps1 `
-    -lib_name $lib_name `
-    -executable_name $executable_name `
-    -compile_time_defines $compile_time_defines `
-    -std_version $std_version `
-    -debug_build $debug_build `
-    -build_lib $build_lib `
-    -generate_object_files $generate_object_files `
-    -include_paths $include_paths `
-    -source_paths $source_paths `
-    -additional_libs_for_build $additional_libs_for_build
+./build.ps1
+& "./"
+
+# run is complicated because what do you want to run?
 

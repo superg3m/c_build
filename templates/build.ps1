@@ -20,6 +20,12 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     
     # If the value is an object, iterate over its properties as well
     if ($value -is [PSCustomObject]) {
+
+        if(!(Test-Path -Path $value)) {
+            Write-Host "Creating $value Directory"
+            mkdir $value
+        }
+
         Write-Host "Nested properties:"
         foreach ($nestedKey in $value.PSObject.Properties.Name) {
             $nestedValue = $value.$nestedKey
@@ -39,10 +45,11 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                 }
             }
         }
+        
+        ./C-BUILD/$preset/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $value
     }
-    
-    # ./C-BUILD/$preset/$compiler_type/build.ps1 $value
 }
+
 $timer.Stop()
 Write-Host "[]========================================================[]"
 Write-Host "Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor Blue
