@@ -56,5 +56,5 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     }
 }
 $timer.Stop()
-Write-Host "|--------------- Finished [Build time: $($timer.Elapsed.TotalSeconds)s] ---------------|" -ForegroundColor Green
+Write-Host "|--------------- [Build time: $($timer.Elapsed.TotalSeconds)s] ---------------|" -ForegroundColor Green
 
