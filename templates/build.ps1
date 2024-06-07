@@ -60,7 +60,16 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     }
                     
                     Push-Location "$element"
-                    ./clone_c_build.ps1
+                    if(!(Test-Path -Path "c-build")) {
+                        Write-Host "missing c-build"
+                        git clone "https://github.com/superg3m/c-build.git"
+                    } else {
+                        Push-Location "c-build"
+                        git stash
+                        git stash drop
+                        git pull
+                        Pop-Location-Location ..
+                    }
                     ./C-BUILD/bootstrap.ps1 -preset -compiler_type $compiler_type
                     ./build.ps1
                     Pop-Location
