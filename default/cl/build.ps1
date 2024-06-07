@@ -14,8 +14,6 @@ param(
 
 $jsonData = $build_json | ConvertFrom-Json
 
-$build_name = $jsonData.'$build_name'
-
 $output_name = $jsonData.'$output_name'
 $compile_time_defines = $jsonData.'$compile_time_defines'
 $std_version = $jsonData.'$std_version'
@@ -25,6 +23,7 @@ $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
 $additional_libs = $jsonData.'$additional_libs_for_build'
 
+$build_name = $jsonData.'$build_name'
 Write-Host "running [$project_name - $build_name] build.ps1..." -ForegroundColor Green
 
 ./vars.ps1
@@ -49,7 +48,7 @@ foreach ($define in $compile_time_defines) {
 if ($generate_object_files -or $build_lib -eq $true) {
     $clCommand += " /c"
 } else {
-    $clCommand += " /Fe$executable_name"
+    $clCommand += " /Fe$output_name"
 }
 
 # $clCommand += " /I$include_paths"
@@ -65,7 +64,7 @@ $timer.Start()
 Push-Location ".\build_cl"
     Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
     if ($build_lib -eq $true) {
-        lib /OUT:$lib_name $additional_libs_for_build ".\*.obj" | Out-Null
+        lib /OUT:$output_name $additional_libs_for_build ".\*.obj" | Out-Null
     }
 Pop-Location
 
