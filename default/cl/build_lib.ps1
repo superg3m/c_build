@@ -43,7 +43,7 @@ if ($debug_build) {
     $clCommand += " /Zi"
 }
 
-$clCommand += " /I$include_paths"
+# $clCommand += " /I$include_paths"
 $clCommand += " /c /FC ../$source_paths $libs_example"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
