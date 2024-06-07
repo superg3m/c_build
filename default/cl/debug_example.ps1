@@ -42,7 +42,7 @@ if (!(Test-Path -Path $executable_name)) {
         -source_paths $source_paths `
         -lib_paths $lib_paths `
         -libs $libs
-    Push-Location "./build_cl"
+    Push-Location "./examples/cl"
     if ($debug_with_visual_studio -eq $true) {
         ./vars.ps1
         devenv $executable_name
@@ -51,7 +51,7 @@ if (!(Test-Path -Path $executable_name)) {
     }
     Pop-Location
 } else {
-    Push-Location "./build_cl"
+    Push-Location "./examples/cl"
     if ($debug_with_visual_studio -eq $true) {
         ./vars.ps1
         devenv $executable_name
