@@ -14,13 +14,7 @@ git stash drop
 git pull
 Pop-Location
 
-
-Push-Location $build_directory
-    if ($build_lib -eq $false) {
-        & "./$output_name"
-    }
-Pop-Location
-./build.ps1 -project_name $project_name -build_directory $key -build_json $jsonData
+./build.ps1 -project_name $project_name -build_directory $key -build_json $jsonData -run_exe $true
 
 # run is complicated because what do you want to run?
 

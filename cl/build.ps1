@@ -12,7 +12,7 @@ param(
     [bool] $debug_build,
 
     [Parameter(Mandatory=$false)]
-    [bool] $run
+    [bool] $run_exe
 )
 
 $jsonData = $build_json | ConvertFrom-Json
