@@ -21,9 +21,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     # If the value is an object, iterate over its properties as well
     if ($value -is [PSCustomObject]) {
 
-        if(!(Test-Path -Path $value)) {
+        if(!(Test-Path -Path $key)) {
             Write-Host "Creating $value Directory"
-            mkdir $value
+            mkdir $key
         }
 
         Write-Host "Nested properties:"

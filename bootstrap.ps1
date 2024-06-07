@@ -56,27 +56,17 @@ if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
 
 if(!(Test-Path -Path "./source")) {
     Write-Host "Creating source Directory"
-    mkdir ../source
+    mkdir ./source
 }
 
 if(!(Test-Path -Path "./include")) {
     Write-Host "Creating include Directory"
-    mkdir ../include
+    mkdir ./include
 }
 
 if(!(Test-Path -Path "./build_$compiler_type")) {
     Write-Host "Creating build_$compiler_type Directory"
-    mkdir "../build_$compiler_type"
-}
-
-if(!(Test-Path -Path "./examples")) {
-    Write-Host "Creating examples Directory"
-    mkdir ../examples
-}
-
-if(!(Test-Path -Path "./examples/$compiler_type")) {
-    Write-Host "Creating examples/$compiler_type Directory"
-    mkdir ../examples/$compiler_type
+    mkdir "./build_$compiler_type"
 }
 
 ###################################################
