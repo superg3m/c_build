@@ -1,12 +1,16 @@
 {
+    "$lib_name" : "",
+
     "$executable_name" : "test_ckg.exe",
-    "$include_paths" : "",
-    "$source_paths" : "./source",
-    "$lib_paths" : "",
-    "$libs" : "",
+    "$compile_time_defines" : "",
     "$std_version" : "c11",
-    "$debug" : false,
+
+    "$debug_build" : false,
     "$generate_object_files" : false,
 
-    "$lib_name" : ""
+    "$include_paths" : "",
+    "$source_paths" : "./source",
+
+    "$lib_paths" : "",
+    "$libs" : ""
 }
