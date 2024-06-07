@@ -18,7 +18,6 @@ $output_name = $jsonData.'$output_name'
 $compile_time_defines = $jsonData.'$compile_time_defines'
 $std_version = $jsonData.'$std_version'
 $build_lib = $jsonData.'$build_lib'
-$generate_object_files = $jsonData.'$generate_object_files'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
 $additional_libs = $jsonData.'$additional_libs'
@@ -45,7 +44,7 @@ foreach ($define in $compile_time_defines) {
     #$clCommand += " -D$define"
 }
 
-if ($generate_object_files -or $build_lib -eq $true) {
+if ($build_lib -eq $true) {
     $clCommand += " /c"
 } else {
     $clCommand += " /Fe$output_name"

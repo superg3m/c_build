@@ -16,7 +16,6 @@
 
         "$std_version" : "c11",
         "$build_lib" : true,
-        "$generate_object_files" : false,
 
         "$additional_libs" : "./ckg.lib"
     },
@@ -34,7 +33,6 @@
 
         "$std_version" : "c11",
         "$build_lib" : true,
-        "$generate_object_files" : false,
 
         "$additional_libs" : ""
     }
