@@ -20,21 +20,17 @@ $additional_libs = $jsonData.'$additional_libs_for_build'
 
 ./vars.ps1
 
-if(!(Test-Path -Path ".\build_cl")) {
-    mkdir .\build_cl
-}
-
 # Initialize the command with the standard version
 $clCommand = "cl /std:$std_version"
 
 if ($debug_build -eq $true) {
-    #$clCommand += " /Od"
+    $clCommand += " /Od"
 } else {
-    #$clCommand += " /O2"
+    $clCommand += " /O2"
 }
 
 if ($debug_build -eq $true) {
-    #$clCommand += " /Zi"
+    $clCommand += " /Zi"
 }
 
 foreach ($define in $compile_time_defines) {
@@ -56,8 +52,8 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 
 Write-Host "running CKit build.ps1..." -ForegroundColor Green
 
-$timer = [Diagnostics.Stopwatch]::new() # Create a timer
-$timer.Start() # Start the timer
+$timer = [Diagnostics.Stopwatch]::new()
+$timer.Start()
 
 Push-Location ".\build_cl"
     Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
