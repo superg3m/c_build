@@ -25,4 +25,5 @@ Pop-Location
     -debug_build $debug_build `
     -include_paths $include_paths `
     -source_paths $source_paths `
-    -lib_paths $lib_paths $libs
+    -lib_paths $lib_paths `
+    -libs $libs
