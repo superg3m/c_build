@@ -45,7 +45,7 @@ foreach ($define in $compile_time_defines) {
 }
 
 if ($build_lib -eq $true) {
-    $clCommand += " /c $additional_libs"
+    $clCommand += " /c"
 } else {
     $clCommand += " /Fe$output_name"
 }
