@@ -20,7 +20,7 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/$preset/$compiler_type/build_lib.ps1 `
+./C-BUILD/$preset/$compiler_type/build.ps1 `
     -executable_name $executable_name `
     -compile_time_defines $compile_time_defines `
     -std_version $std_version `
