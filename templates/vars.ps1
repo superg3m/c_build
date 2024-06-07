@@ -1,4 +1,8 @@
 # Define the path to the vcvarsall.bat script
+$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
+$PSNativeCommandUseErrorActionPreference = $trues
+
 $clAvailable = $null -ne (Get-Command cl -ErrorAction SilentlyContinue)
 
 if (!$clAvailable) {
