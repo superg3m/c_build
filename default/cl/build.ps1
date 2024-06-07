@@ -74,5 +74,4 @@ Write-Host "MSVC Elapsed time: $($timer.Elapsed.TotalSeconds)s" -ForegroundColor
 Write-Host "========================================================"
 Write-Host ""
 
-./normalize_path.ps1
-
+./normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
