@@ -8,7 +8,6 @@ $compile_time_defines = $jsonData.'$compile_time_defines'
 $std_version = $jsonData.'$std_version'
 $debug_build = $jsonData.'$debug_build'
 $include_paths = $jsonData.'$include_paths'
-$source_paths = $jsonData.'$source_paths'
 $source_example_paths = $jsonData.'$source_example_paths'
 $additional_libs_for_example = $jsonData.'$additional_libs_for_example'
 
