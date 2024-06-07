@@ -9,7 +9,7 @@ param(
 	[string] $std_version,
 
     [Parameter(Mandatory=$true)]
-	[bool] $debug_build ,
+	[bool] $debug_build,
 
     [Parameter(Mandatory=$false)]
 	[string] $include_paths,
@@ -18,7 +18,7 @@ param(
 	[string] $source_paths,
     
     [Parameter(Mandatory=$false)]
-	[string] $libs
+	[string] $additional_libs_for_example
 )
 
 
@@ -42,7 +42,7 @@ if ($debug_build) {
 }
 
 #$clCommand += " /I$include_paths"
-$clCommand += " /FC ../$source_paths ../../build_cl/ckg.lib"
+$clCommand += " /FC ../$source_paths ../../build_cl/$additional_libs_for_example"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false

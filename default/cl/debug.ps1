@@ -24,7 +24,7 @@ param(
 	[string] $source_paths,
     
     [Parameter(Mandatory=$false)]
-	[string] $libs
+	[string] $additional_libs_for_example
 )
 
 if (!(Test-Path -Path $executable_name)) {
@@ -37,7 +37,7 @@ if (!(Test-Path -Path $executable_name)) {
         -generate_object_files $generate_object_files `
         -include_paths $include_paths `
         -source_paths $source_paths `
-        -libs $libs
+        -additional_libs_for_example $additional_libs_for_example
     Push-Location "./build_cl"
     if ($debug_with_visual_studio -eq $true) {
         ./vars.ps1

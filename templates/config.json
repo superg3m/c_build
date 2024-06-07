@@ -11,6 +11,6 @@
     "$include_paths" : "",
     "$source_paths" : "./source/*.c",
 
-    "$libs_example" : "",
-    "$libs" : ""
+    "$additional_libs_for_build" : "",
+    "$additional_libs_for_example" : ""
 }

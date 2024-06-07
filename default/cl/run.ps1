@@ -19,9 +19,12 @@ param(
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
+
+    [Parameter(Mandatory=$false)]
+	[string] $additional_libs_for_build,
     
     [Parameter(Mandatory=$false)]
-	[string] $libs
+	[string] $additional_libs_for_example
 )
 
 ./C-BUILD/default/cl/build.ps1 `
@@ -32,7 +35,7 @@ param(
     -generate_object_files $generate_object_files `
     -include_paths $include_paths `
     -source_paths $source_paths `
-    -libs $libs
+    -additional_libs_for_example $additional_libs_for_example
 
 Push-Location ".\examples\cl"
     & "./$executable_name"

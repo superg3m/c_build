@@ -21,7 +21,7 @@ param(
 	[string] $source_paths,
     
     [Parameter(Mandatory=$false)]
-	[string] $libs
+	[string] $additional_libs_for_build
 )
 
 ./vars.ps1
@@ -54,7 +54,7 @@ if ($generate_object_files) {
 }
 
 $clCommand += " /I$include_paths"
-$clCommand += " /FC $source_paths $libs"
+$clCommand += " /FC $source_paths $additional_libs_for_example"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false

@@ -9,8 +9,8 @@ $std_version = $jsonData.'$std_version'
 $debug_build = $jsonData.'$debug_build'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
-$libs = $jsonData.'$libs'
-$libs_example = $jsonData.'$libs_example'
+$additional_libs_for_example = $jsonData.'$additional_libs_for_example'
+
 
 Push-Location  ".\C-BUILD"
 git stash
@@ -25,5 +25,4 @@ Pop-Location
     -debug_build $debug_build `
     -include_paths $include_paths `
     -source_paths $source_paths `
-    -libs_example $libs_example `
-    -libs $libs
+    -additional_libs_for_example $additional_libs_for_example
