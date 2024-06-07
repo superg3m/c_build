@@ -50,9 +50,8 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
         # Serialize the $value object to a JSON string
         $jsonValue = $value | ConvertTo-Json -Compress
-        Push-Location $key
+
         ./C-BUILD/$preset/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
-        Push-Location
     }
 }
 
