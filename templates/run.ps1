@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
-$configPath = "config.json"
+$configPath = "c_build_config.json"
 $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
 $lib_name = $jsonData.'$lib_name'
