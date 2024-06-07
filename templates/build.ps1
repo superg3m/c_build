@@ -19,6 +19,12 @@ $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key # value is json
+
+    $should_run = $value.'$should_run'
+
+    if ($should_run -eq $false) {
+        break
+    }
     
     # If the value is an object, iterate over its properties as well
     if ($value -is [PSCustomObject]) {
@@ -57,11 +63,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         # Serialize the $value object to a JSON string
         $jsonValue = $value | ConvertTo-Json -Compress
 
-        $should_run = $value.'$should_run'
-
-        if ($should_run) {
-            ./C-BUILD/$preset/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
-        }
+        ./C-BUILD/$preset/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
     }
 }
 $timer.Stop()
