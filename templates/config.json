@@ -11,5 +11,6 @@
     "$include_paths" : "",
     "$source_paths" : "./source/*.c",
 
+    "$libs_example" : "",
     "$libs" : ""
 }
