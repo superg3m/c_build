@@ -9,6 +9,7 @@ $std_version = $jsonData.'$std_version'
 $debug_build = $jsonData.'$debug_build'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
+$source_example_paths = $jsonData.'$source_example_paths'
 $additional_libs_for_build = $jsonData.'$additional_libs_for_build'
 
 Push-Location  ".\C-BUILD"
@@ -24,4 +25,5 @@ Pop-Location
     -debug_build $debug_build `
     -include_paths $include_paths `
     -source_paths $source_paths `
+    -source_example_paths $source_example_paths `
     -additional_libs_for_build $additional_libs_for_build `

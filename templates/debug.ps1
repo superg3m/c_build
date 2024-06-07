@@ -10,6 +10,7 @@ $debug_build = $jsonData.'$debug_build'
 $generate_object_files = $jsonData.'$generate_object_files'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
+$source_example_paths = $jsonData.'$source_example_paths'
 $additional_libs_for_example = $jsonData.'$additional_libs_for_build'
 $additional_libs_for_example = $jsonData.'$additional_libs_for_example'
 
@@ -24,11 +25,11 @@ Pop-Location
     -executable_name $executable_name `
     -debug_with_visual_studio $debug_with_visual_studio `
     -compile_time_defines $compile_time_defines `
-    -compile_time_define $compile_time_define `
     -std_version $std_version `
     -debug_build $debug_build `
     -generate_object_files $generate_object_files `
     -include_paths $include_paths `
     -source_paths $source_paths `
+    -source_example_paths $source_example_paths `
     -additional_libs_for_build $additional_libs_for_build
     -additional_libs_for_example $additional_libs_for_example

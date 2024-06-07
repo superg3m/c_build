@@ -3,7 +3,7 @@
     "$executable_name" : "test_ckg.exe",
     "$include_paths" : "",
     "$source_paths" : "./source/*.c",
-    "$source_example_paths" : "./source/*.c",
+    "$source_example_paths" : "./example/*.c",
 
     "$std_version" : "c11",
     "$debug_build" : false,

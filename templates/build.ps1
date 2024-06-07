@@ -10,6 +10,7 @@ $debug_build = $jsonData.'$debug_build'
 $generate_object_files = $jsonData.'$generate_object_files'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
+$source_example_paths = $jsonData.'$source_example_paths'
 $additional_libs_for_build = $jsonData.'$additional_libs_for_build'
 
 Push-Location  ".\C-BUILD"
@@ -26,4 +27,5 @@ Pop-Location
     -generate_object_files $generate_object_files `
     -include_paths $include_paths `
     -source_paths $source_paths `
+    -source_example_paths $source_example_paths `
     -additional_libs_for_build $additional_libs_for_build

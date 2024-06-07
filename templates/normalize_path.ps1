@@ -6,4 +6,5 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/default/cl/normalize_path.ps1
+./C-BUILD/$preset/$compiler_type/normalize_path.ps1
+

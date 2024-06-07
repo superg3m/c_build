@@ -11,6 +11,7 @@ $debug_build = $jsonData.'$debug_build'
 $generate_object_files = $jsonData.'$generate_object_files'
 $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
+$source_example_paths = $jsonData.'$source_example_paths'
 $additional_libs_for_build = $jsonData.'$additional_libs_for_build'
 $additional_libs_for_example = $jsonData.'$additional_libs_for_example'
 
@@ -20,7 +21,7 @@ git stash drop
 git pull
 Pop-Location
 
-./C-BUILD/default/cl/run.ps1 `
+./C-BUILD/$preset/$compiler_type/run.ps1 `
     -executable_name $executable_name `
     -compile_time_defines $compile_time_defines `
     -compile_time_define $compile_time_define `
@@ -29,5 +30,7 @@ Pop-Location
     -generate_object_files $generate_object_files `
     -include_paths $include_paths `
     -source_paths $source_paths `
+    -source_example_paths $source_example_paths `
     -additional_libs_for_build $additional_libs_for_build `
     -additional_libs_for_example $additional_libs_for_example
+
