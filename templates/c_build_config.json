@@ -4,7 +4,7 @@
     "$debug_with_visual_studio" : false,
 
     "./build_$compiler_type" : {
-        "should_run" : true,
+        "$should_run" : true,
 
         "$build_name" : "",
         "$projects_to_build" : ["ckit"],
