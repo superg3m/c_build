@@ -41,7 +41,7 @@ if ($debug_build) {
 }
 
 $clCommand += " /I$include_paths"
-$clCommand += " /c /FC $source_paths $libs"
+$clCommand += " /c /FC ../$source_paths $libs"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
