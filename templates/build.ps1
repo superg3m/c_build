@@ -32,9 +32,14 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
             $nestedValue = $value.$nestedKey
 
             if ($nestedValue -is [Array]) {
-                Write-Host "Depends on:"
+                if (!$nestedValue) {
+                    Write-Host "Depends on Nothing!" -ForegroundColor Blue
+                    continue
+                }
+                
+                Write-Host -NoNewline "Depends on: " -ForegroundColor Blue
                 foreach ($element in $nestedValue) {
-                    Write-Host "$element"
+                    Write-Host -NoNewline $element -ForegroundColor Blue
                     
                     # Push-Location "$element"
                     # ./C-BUILD/bootstrap.ps1 -preset $preset -compiler_type $compiler_type
@@ -42,6 +47,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     # 
                     # Pop-Location
                 }
+                Write-Host ""
             }
         }
 
