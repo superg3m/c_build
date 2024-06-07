@@ -1,4 +1,6 @@
 {
+    "$projects_to_build" : [""],
+
     "$lib_name" : "./ckg.lib",
     "$executable_name" : "test_ckg.exe",
     "$include_paths" : "",
