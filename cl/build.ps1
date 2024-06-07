@@ -45,13 +45,13 @@ foreach ($define in $compile_time_defines) {
 }
 
 if ($build_lib -eq $true) {
-    $clCommand += " /c"
+    $clCommand += " /c $additional_libs"
 } else {
     $clCommand += " /Fe$output_name"
 }
 
 # $clCommand += " /I$include_paths"
-$clCommand += " /FC $source_paths $additional_libs"
+$clCommand += " /FC $source_paths"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
