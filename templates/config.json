@@ -11,6 +11,5 @@
     "$include_paths" : "",
     "$source_paths" : "./source",
 
-    "$lib_paths" : "",
     "$libs" : ""
 }

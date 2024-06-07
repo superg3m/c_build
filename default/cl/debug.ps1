@@ -22,9 +22,6 @@ param(
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
-
-    [Parameter(Mandatory=$false)]
-	[string] $lib_paths,
     
     [Parameter(Mandatory=$false)]
 	[string] $libs
@@ -40,7 +37,6 @@ if (!(Test-Path -Path $executable_name)) {
         -generate_object_files $generate_object_files `
         -include_paths $include_paths `
         -source_paths $source_paths `
-        -lib_paths $lib_paths `
         -libs $libs
     Push-Location "./build_cl"
     if ($debug_with_visual_studio -eq $true) {

@@ -16,9 +16,6 @@ param(
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
-
-    [Parameter(Mandatory=$false)]
-	[string] $lib_paths,
     
     [Parameter(Mandatory=$false)]
 	[string] $libs
@@ -43,7 +40,8 @@ if ($debug_build) {
     $clCommand += " /Zi"
 }
 
-$clCommand += " /c /FC /I$include_paths $source_paths /LIBPATH:$lib_paths /link /LIB:$libs"
+$clCommand += " /I$include_paths"
+$clCommand += " /c /FC $source_paths $libs"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
@@ -56,7 +54,7 @@ $timer.Start() # Start the timer
 
 Push-Location ".\build_cl"
     Invoke-Expression "$clCommand | Out-File -FilePath '..\compilation_errors.txt' -Append"
-    lib /OUT:$lib_name $lib_paths ".\*.obj" | Out-Null
+    lib /OUT:$lib_name $libs ".\*.obj" | Out-Null
 Pop-Location
 
 $timer.Stop()

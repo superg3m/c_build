@@ -19,9 +19,6 @@ param(
 
     [Parameter(Mandatory=$true)]
 	[string] $source_paths,
-
-    [Parameter(Mandatory=$false)]
-	[string] $lib_paths,
     
     [Parameter(Mandatory=$false)]
 	[string] $libs
