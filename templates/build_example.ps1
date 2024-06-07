@@ -25,7 +25,6 @@ Pop-Location
     -std_version $std_version `
     -debug_build $debug_build `
     -include_paths $include_paths `
-    -source_paths $source_paths `
     -source_example_paths $source_example_paths `
     -additional_libs_for_example $additional_libs_for_example
 

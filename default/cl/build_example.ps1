@@ -15,9 +15,6 @@ param(
 	[string] $include_paths,
 
     [Parameter(Mandatory=$true)]
-	[string] $source_paths,
-
-    [Parameter(Mandatory=$true)]
 	[string] $source_example_paths,
     
     [Parameter(Mandatory=$false)]
@@ -45,7 +42,7 @@ if ($debug_build) {
 }
 
 #$clCommand += " /I$include_paths"
-$clCommand += " /FC ../$source_paths ../../build_cl/$additional_libs_for_example"
+$clCommand += " /FC ../$source_example_paths ../../build_cl/$additional_libs_for_example"
 
 if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
