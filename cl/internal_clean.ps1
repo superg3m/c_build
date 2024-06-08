@@ -15,4 +15,4 @@ $build_procedure_name = $jsonData.'$build_procedure_name'
 
 Write-Host "running [$project_name - $build_procedure_name] clean.ps1..." -ForegroundColor Green
 
-Remove-Item -Path ".\build_cl\*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
+Remove-Item -Path "$build_directory/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse

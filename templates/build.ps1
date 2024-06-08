@@ -5,7 +5,6 @@ Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
 $configPath = "c_build_config.json"
-$project_is_built_path = "c_build_is_build.flag"
 $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
 $project_name = $jsonData.'$project_name'
@@ -38,6 +37,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
             Write-Host "Creating $value Directory"
             mkdir $key
         }
+
+        # Serialize the $value object to a JSON string
+        $jsonValue = $value | ConvertTo-Json -Compress
 
         foreach ($nestedKey in $value.PSObject.Properties.Name) {
             $nestedValue = $value.$nestedKey
@@ -74,17 +76,17 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     }
 
                     if ($should_fully_rebuild_project_depedencies -eq $true) {
-                        if (Test-Path -Path $project_is_built_path) {
-                            Remove-Item -Path $project_is_built_path > $null
+                        if (Test-Path -Path "c_build_is_build.flag") {
+                            Remove-Item -Path "c_build_is_build.flag" > $null
                         }
                         ./c-build/bootstrap.ps1 -compiler_type $compiler_type
                     }
                     
-                    if (Test-Path -Path $project_is_built_path) {
+                    if (Test-Path -Path "c_build_is_build.flag") {
                         Write-Host "$element Depedency Already Build Skipping..." -ForegroundColor Magenta
                     } else {
                         ./build.ps1
-                        New-Item -Path $project_is_built_path > $null
+                        New-Item -Path "c_build_is_build.flag" > $null
                     }
                     
                     Pop-Location
@@ -93,10 +95,8 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
             }
         }
 
-        # Serialize the $value object to a JSON string
-        $jsonValue = $value | ConvertTo-Json -Compress
-
         if ($should_procedure_rebuild -eq $true) {
+            ./c-build/$compiler_type/internal_clean.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
             ./c-build/$compiler_type/internal_build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
         } else {
             Write-Host "Procedure Already Built Skipping $build_procedure_name..." -ForegroundColor Magenta
