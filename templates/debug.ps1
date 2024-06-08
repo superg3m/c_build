@@ -9,6 +9,8 @@ $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
 $project_name = $jsonData.'$project_name'
 
+$debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
+
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
@@ -32,7 +34,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         $jsonValue = $value | ConvertTo-Json -Compress
 
         if ($should_execute) {
-            ./c-build/$compiler_type/internal_debug.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+            ./c-build/$compiler_type/internal_debug.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue -debug_with_visual_studio $debug_with_visual_studio 
         }
     }
 }
