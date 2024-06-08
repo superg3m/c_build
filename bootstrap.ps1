@@ -52,7 +52,6 @@ if (Test-Path -Path "../$configFilePath") {
 
 foreach ($templateFile in $templateFiles) {
     if ($has_exisiting_config -and $templateFile.Name -eq $configFilePath ) {
-        Write-Host "Skipping $configFilePath " -ForegroundColor Green
         continue
     }
 
