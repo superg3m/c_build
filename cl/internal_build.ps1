@@ -64,4 +64,4 @@ Push-Location $build_directory
     }
 Pop-Location
 
-./c-build/cl/normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
+./c-build/cl/internal_normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
