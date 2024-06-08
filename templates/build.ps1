@@ -11,8 +11,8 @@ $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 $project_name = $jsonData.'$project_name'
 
 Push-Location  "./c-build"
-git fetch origin
-git reset --hard origin/main
+git fetch origin | out-null
+git reset --hard origin/main | out-null
 git pull
 Pop-Location
 
