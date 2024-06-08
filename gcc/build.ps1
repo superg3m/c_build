@@ -11,11 +11,11 @@ if(!(Test-Path -Path ".\ckg")) {
     Write-Host "missing ckg"
     git clone https://github.com/superg3m/ckg.git
 } else {
-    Set-Location ".\ckg"
-    git stash
-    git stash drop
+    Push-Location  "./c-build"
+    git fetch origin
+    git reset --hard origin/main
     git pull
-    Set-Location ..
+    Pop-Location
 }
 
 if(!(Test-Path -Path ".\build_gcc")) {

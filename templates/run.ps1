@@ -10,9 +10,9 @@ $project_name = $jsonData.'$project_name'
 
 Write-Host "running [$project_name] run.ps1..." -ForegroundColor Green
 
-Push-Location  ".\c-build"
-git stash
-git stash drop
+Push-Location  "./c-build"
+git fetch origin
+git reset --hard origin/main
 git pull
 Pop-Location
 

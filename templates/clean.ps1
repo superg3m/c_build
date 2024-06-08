@@ -3,9 +3,9 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
-Push-Location  ".\c-build"
-git stash
-git stash drop
+Push-Location  "./c-build"
+git fetch origin
+git reset --hard origin/main
 git pull
 Pop-Location
 

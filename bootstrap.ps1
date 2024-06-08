@@ -4,8 +4,8 @@ param(
 )
 
 Push-Location  "./c-build"
-git stash
-git stash drop
+git fetch origin
+git reset --hard origin/main
 git pull
 Pop-Location
 
