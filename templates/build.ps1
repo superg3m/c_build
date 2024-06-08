@@ -59,9 +59,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git clone https://github.com/superg3m/$element.git
                     } else {
                         Push-Location $element
-                        git fetch origin
-                        git reset --hard origin/main
-                        git pull
+                        git fetch origin > $null 2>&1
+                        git reset --hard origin/main > $null 2>&1
+                        git pull > $null 2>&1
                         Pop-Location
                     }
                     
@@ -70,9 +70,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git clone "https://github.com/superg3m/c-build.git"
                     } else {
                         Push-Location  "./c-build"
-                        git fetch origin
-                        git reset --hard origin/main
-                        git pull
+                        git fetch origin > $null 2>&1
+                        git reset --hard origin/main > $null 2>&1
+                        git pull > $null 2>&1
                         Pop-Location
                     }
 

@@ -12,9 +12,9 @@ if(!(Test-Path -Path ".\ckg")) {
     git clone https://github.com/superg3m/ckg.git
 } else {
     Push-Location  "./c-build"
-    git fetch origin
-    git reset --hard origin/main
-    git pull
+    git fetch origin > $null 2>&1
+    git reset --hard origin/main > $null 2>&1
+    git pull > $null 2>&1
     Pop-Location
 }
 
