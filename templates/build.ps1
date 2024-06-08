@@ -74,7 +74,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     }
 
                     if ($should_fully_rebuild_project_depedencies -eq $true) {
-                        Remove-Item -Path $project_is_built_path > $null
+                        if (Test-Path -Path $project_is_built_path) {
+                            Remove-Item -Path $project_is_built_path > $null
+                        }
                         ./c-build/bootstrap.ps1 -compiler_type $compiler_type
                     }
                     
