@@ -18,7 +18,7 @@ git reset --hard origin/main
 git pull
 Pop-Location
 
-Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Green
+Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Blue
 $timer = [Diagnostics.Stopwatch]::new() # Create a timer
 $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
@@ -89,5 +89,5 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     }
 }
 $timer.Stop()
-Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Green
+Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue
 
