@@ -18,26 +18,12 @@ $build_procedure_name = $jsonData.'$build_procedure_name'
 
 Write-Host "running [$project_name - $build_procedure_name] debug.ps1..." -ForegroundColor Green
 
-if (!(Test-Path -Path $executable_name)) {
-    Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
-
-    ./c-build/cl/internal_build.ps1 -build_json $jsonData -debug_build $true
-    
-    Push-Location $build_directory
-    if ($debug_with_visual_studio -eq $true) {
-        ./vars.ps1
-        devenv $executable_name
-    } else {
-        & "raddbg" $executable_name
-    }
-    Pop-Location
+./c-build/cl/internal_build.ps1 -build_json $jsonData -debug_build $true
+Push-Location $build_directory
+if ($debug_with_visual_studio -eq $true) {
+    ./vars.ps1
+    devenv $executable_name
 } else {
-    Push-Location $build_directory
-    if ($debug_with_visual_studio -eq $true) {
-        ./vars.ps1
-        devenv $executable_name
-    } else {
-        & "raddbg" $executable_name
-    }
-    Pop-Location
+    & "raddbg" $executable_name
 }
+Pop-Location
