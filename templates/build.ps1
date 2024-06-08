@@ -22,10 +22,8 @@ $timer.Start() # Start the timer
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key # value is json
 
-
-    # If the value is an object, iterate over its properties as well
+    # If the value is json, iterate over its properties as well
     if ($value -is [PSCustomObject]) {     
-
         $build_procedure_name = $value.'$build_procedure_name'
         $should_build_procedure = $value.'$should_build_procedure'
         $should_procedure_rebuild = $value.'$should_procedure_rebuild'
