@@ -98,7 +98,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         $jsonValue = $value | ConvertTo-Json -Compress
 
         if ($should_procedure_rebuild -eq $true) {
-            ./c-build/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+            ./c-build/$compiler_type/internal_build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
         } else {
             Write-Host "Procedure Already Built Skipping $build_procedure_name..." -ForegroundColor Magenta
         }
