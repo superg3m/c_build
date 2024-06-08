@@ -29,7 +29,7 @@ if(!(Test-Path -Path "./include")) {
 
 if(!(Test-Path -Path "./build_$compiler_type")) {
     Write-Host "Creating build_$compiler_type Directory"
-    mkdir "./build_$compiler_type"
+    mkdir "./build_$compiler_type" > $null
 }
 
 ###################################################
