@@ -46,12 +46,11 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
             if ($nestedValue -is [Array]) {
                 if (!$nestedValue) {
-                    Write-Host "Depends on Nothing!" -ForegroundColor Blue
                     Write-Host ""
                     continue
                 }
                 
-                Write-Host "Depends on: " -ForegroundColor Blue
+                Write-Host "[$build_procedure_name] depends on: " -ForegroundColor Blue
                 foreach ($element in $nestedValue) {
                     Write-Host "  - $element" -ForegroundColor Blue
 
