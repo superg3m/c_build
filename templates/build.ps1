@@ -74,7 +74,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git pull
                         Pop-Location
                     }
-                    ./C-BUILD/bootstrap.ps1 -compiler_type $compiler_type
+                    ./c-build/bootstrap.ps1 -compiler_type $compiler_type
                     ./build.ps1
                     Pop-Location
                 }
@@ -85,7 +85,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         # Serialize the $value object to a JSON string
         $jsonValue = $value | ConvertTo-Json -Compress
 
-        ./C-BUILD/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue -run_exe $run_exe
+        ./c-build/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue -run_exe $run_exe
     }
 }
 $timer.Stop()
