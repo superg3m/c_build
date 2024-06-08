@@ -71,3 +71,55 @@ projects_dependencies_to_build = ["ckit"]
 
 "$debug_build" : false,
 doesn't make any sense it should just force debug build if you are debugging otherwise optimized baby!
+
+
+{
+    "$project_name" : "CKG",
+
+    "$debug_with_visual_studio" : false,
+    "build procedures" : {
+        "./build_cl" : {
+            "$should_build_procedure" : true,
+            "$should_project_rebuild" : true,
+            "$should_fully_rebuild_project_depedencies" : false,
+
+            "$should_build_lib" : true,
+            "$should_execute" : false,
+
+            "$build_procedure_name" : "build ckg",
+            "$projects_dependencies_to_build" : [""],
+
+            "$output_name" : "ckg.lib",
+            "$compile_time_defines" : "",
+            "$include_paths" : "",
+            "$source_paths" : "../source/*.c",
+
+            "$std_version" : "c11",
+            "$build_lib" : true,
+
+            "$additional_libs" : ""
+        },
+
+        "./examples/cl" : {
+            "$should_build_procedure" : true,
+            "$should_project_rebuild" : true,
+            "$should_fully_rebuild_project_depedencies" : false,
+
+            "$should_build_lib" : false,
+            "$should_execute" : true,
+
+            "$build_procedure_name" : "test ckg",
+            "$projects_dependencies_to_build" : [""],
+
+            "$output_name" : "test_ckg.exe",
+            "$compile_time_defines" : "",
+            "$include_paths" : "",
+            "$source_paths" : "../test_ckg.c",
+
+            "$std_version" : "c11",
+            "$build_lib" : false,
+
+            "$additional_libs" : "../../build_cl/ckg.lib"
+        }
+    }
+}
