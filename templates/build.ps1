@@ -100,7 +100,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         if ($should_procedure_rebuild -eq $true) {
             ./c-build/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
         } else {
-            Write-Host "Skipping $project_name..." -ForegroundColor Magenta
+            Write-Host "Procedure Already Built Skipping $project_name..." -ForegroundColor Magenta
         }
     }
 }
