@@ -34,8 +34,8 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         }
 
         if(!(Test-Path -Path $key)) {
-            Write-Host "Creating $value Directory"
-            mkdir $key
+            Write-Host "Creating $key Directory"
+            mkdir $key > $null
         }
 
         # Serialize the $value object to a JSON string
