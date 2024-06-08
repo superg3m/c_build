@@ -15,6 +15,7 @@ param(
 $jsonData = $build_json | ConvertFrom-Json
 
 $build_procedure_name = $jsonData.'$build_procedure_name'
+$output_name = $jsonData.'$output_name'
 
 Write-Host "running [$project_name - $build_procedure_name] debug.ps1..." -ForegroundColor Green
 
@@ -22,8 +23,8 @@ Write-Host "running [$project_name - $build_procedure_name] debug.ps1..." -Foreg
 Push-Location $build_directory
 if ($debug_with_visual_studio -eq $true) {
     ./vars.ps1
-    devenv $executable_name
+    devenv $output_name
 } else {
-    & "raddbg" $executable_name
+    & "raddbg" $output_name
 }
 Pop-Location
