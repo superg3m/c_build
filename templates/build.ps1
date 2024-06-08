@@ -25,7 +25,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     if ($value -is [PSCustomObject]) {     
         $build_procedure_name = $value.'$build_procedure_name'
         $should_build_procedure = $value.'$should_build_procedure'
-        $should_procedure_rebuild = $value.'$should_procedure_rebuild'
         $should_fully_rebuild_project_depedencies = $value.'$should_fully_rebuild_project_depedencies'
 
         if ($should_build_procedure -eq $false) {
@@ -95,12 +94,8 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
             }
         }
 
-        if ($should_procedure_rebuild -eq $true) {
-            ./c-build/$compiler_type/internal_clean.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
-            ./c-build/$compiler_type/internal_build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
-        } else {
-            Write-Host "Procedure Already Built Skipping $build_procedure_name..." -ForegroundColor Magenta
-        }
+        ./c-build/$compiler_type/internal_clean.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+        ./c-build/$compiler_type/internal_build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
     }
 }
 $timer.Stop()
