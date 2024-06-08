@@ -18,7 +18,7 @@ $build_procedure_name = $jsonData.'$build_procedure_name'
 
 Write-Host "running [$project_name - $build_procedure_name] debug.ps1..." -ForegroundColor Green
 
-./c-build/cl/internal_build.ps1 -build_json $jsonData -debug_build $true
+./c-build/cl/internal_build.ps1 -project_name $project_name -build_directory $build_directory -build_json $jsonData -debug_build $true
 Push-Location $build_directory
 if ($debug_with_visual_studio -eq $true) {
     ./vars.ps1
