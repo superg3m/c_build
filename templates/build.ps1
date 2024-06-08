@@ -46,7 +46,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
             if ($nestedValue -is [Array]) {
                 if (!$nestedValue) {
-                    Write-Host ""
                     continue
                 }
                 
@@ -90,7 +89,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     
                     Pop-Location
                 }
-                Write-Host ""
             }
         }
 
