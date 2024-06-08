@@ -80,7 +80,7 @@ doesn't make any sense it should just force debug build if you are debugging oth
     "build procedures" : {
         "./build_cl" : {
             "$should_build_procedure" : true,
-            "$should_project_rebuild" : true,
+            "$should_procedure_rebuild" : true,
             "$should_fully_rebuild_project_depedencies" : false,
 
             "$should_build_lib" : true,
@@ -102,7 +102,7 @@ doesn't make any sense it should just force debug build if you are debugging oth
 
         "./examples/cl" : {
             "$should_build_procedure" : true,
-            "$should_project_rebuild" : true,
+            "$should_procedure_rebuild" : true,
             "$should_fully_rebuild_project_depedencies" : false,
 
             "$should_build_lib" : false,

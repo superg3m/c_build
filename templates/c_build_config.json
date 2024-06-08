@@ -8,7 +8,7 @@
         "$projects_dependencies_to_build" : [""],
 
         "$should_build_procedure" : false,
-        "$should_project_rebuild" : true,
+        "$should_procedure_rebuild" : true,
         "$should_fully_rebuild_project_depedencies" : false,
 
         "$should_build_lib" : true,
@@ -27,7 +27,7 @@
 
     "./example/$compiler_type" : {
         "$should_build_procedure" : false,
-        "$should_project_rebuild" : true,
+        "$should_procedure_rebuild" : true,
         "$should_fully_rebuild_project_depedencies" : false,
 
         "$should_build_lib" : true,

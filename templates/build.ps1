@@ -28,7 +28,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
         $build_procedure_name = $value.'$build_procedure_name'
         $should_build_procedure = $value.'$should_build_procedure'
-        $should_project_rebuild = $value.'$should_project_rebuild'
+        $should_procedure_rebuild = $value.'$should_procedure_rebuild'
         $should_fully_rebuild_project_depedencies = $value.'$should_fully_rebuild_project_depedencies'
 
         if ($should_build_procedure -eq $false) {
@@ -97,7 +97,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         # Serialize the $value object to a JSON string
         $jsonValue = $value | ConvertTo-Json -Compress
 
-        if ($should_project_rebuild -eq $true) {
+        if ($should_procedure_rebuild -eq $true) {
             ./c-build/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
         }
     }
