@@ -15,7 +15,7 @@ $output_name = $jsonData.'$output_name'
 
 if (Test-Path -Path "$build_directory/$output_name") {
     Write-Host "Missing $project_name exe | building..."
-    ./c-build/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+    ./c-build/cl/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
 }
 
 Push-Location $build_directory
