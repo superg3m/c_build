@@ -5,9 +5,9 @@ Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
 Push-Location  "./c-build"
-git fetch origin > $null 2>&1
-git reset --hard origin/main > $null 2>&1
-git pull > $null 2>&1
+git fetch origin -q
+git reset --hard origin/main -q
+git pull -q
 Pop-Location
 
 ./c-build/$compiler_type/internal_clean.ps1

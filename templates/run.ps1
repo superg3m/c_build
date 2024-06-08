@@ -10,9 +10,9 @@ $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 $project_name = $jsonData.'$project_name'
 
 Push-Location  "./c-build"
-git fetch origin > $null 2>&1
-git reset --hard origin/main > $null 2>&1
-git pull > $null 2>&1
+git fetch origin -q
+git reset --hard origin/main -q
+git pull -q
 Pop-Location
 
 Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Green

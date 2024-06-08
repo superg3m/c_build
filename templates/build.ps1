@@ -11,9 +11,9 @@ $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 $project_name = $jsonData.'$project_name'
 
 Push-Location  "./c-build"
-git fetch origin
-git reset --hard origin/main
-git pull
+git fetch origin -q
+git reset --hard origin/main -q
+git pull -q
 Pop-Location
 
 Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Blue
@@ -56,9 +56,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git clone https://github.com/superg3m/$element.git
                     } else {
                         Push-Location $element
-                        git fetch origin
-                        git reset --hard origin/main
-                        git pull
+                        git fetch origin -q
+                        git reset --hard origin/main -q
+                        git pull -q
                         Pop-Location
                     }
                     
@@ -67,9 +67,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git clone "https://github.com/superg3m/c-build.git"
                     } else {
                         Push-Location  "./c-build"
-                        git fetch origin
-                        git reset --hard origin/main
-                        git pull
+                        git fetch origin -q
+                        git reset --hard origin/main -q
+                        git pull -q
                         Pop-Location
                     }
 
