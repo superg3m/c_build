@@ -20,23 +20,23 @@ $debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
 if (!(Test-Path -Path $executable_name)) {
     Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
 
-    ./c-build/cl/build.ps1 -build_json $jsonData -debug_build $true
+    ./c-build/cl/internal_build.ps1 -build_json $jsonData -debug_build $true
     
-    Push-Location "./build_cl"
+    Push-Location $build_directory
     if ($debug_with_visual_studio -eq $true) {
         ./vars.ps1
         devenv $executable_name
     } else {
-        #& "raddbg" $executable_name
+        & "raddbg" $executable_name
     }
     Pop-Location
 } else {
-    Push-Location "./build_cl"
+    Push-Location $build_directory
     if ($debug_with_visual_studio -eq $true) {
         ./vars.ps1
         devenv $executable_name
     } else {
-        #& "raddbg" $executable_name
+        & "raddbg" $executable_name
     }
     Pop-Location
 }

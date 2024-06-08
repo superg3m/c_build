@@ -4,20 +4,10 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
-$configPath = "config.json"
+$configPath = "c_build_config.json"
 $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
-$executable_name = $jsonData.'$executable_name'
-$compile_time_defines = $jsonData.'$compile_time_defines'
-$std_version = $jsonData.'$std_version'
-$debug_build = $jsonData.'$debug_build'
-$generate_object_files = $jsonData.'$generate_object_files'
-$include_paths = $jsonData.'$include_paths'
-$source_paths = $jsonData.'$source_paths'
-$source_example_paths = $jsonData.'$source_example_paths'
-$additional_libs_for_example = $jsonData.'$additional_libs_for_build'
-$additional_libs_for_example = $jsonData.'$additional_libs_for_example'
-
+$project_name = $jsonData.'$project_name'
 
 Push-Location  "./c-build"
 git fetch origin -q
@@ -25,15 +15,27 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-./c-build/$compiler_type/debug.ps1 `
-    -executable_name $executable_name `
-    -debug_with_visual_studio $debug_with_visual_studio `
-    -compile_time_defines $compile_time_defines `
-    -std_version $std_version `
-    -debug_build $debug_build `
-    -generate_object_files $generate_object_files `
-    -include_paths $include_paths `
-    -source_paths $source_paths `
-    -source_example_paths $source_example_paths `
-    -additional_libs_for_build $additional_libs_for_build
-    -additional_libs_for_example $additional_libs_for_example
+Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Green
+$timer = [Diagnostics.Stopwatch]::new() # Create a timer
+$timer.Start() # Start the timer
+foreach ($key in $jsonData.PSObject.Properties.Name) {
+    $value = $jsonData.$key # value is json
+
+    if ($value -is [PSCustomObject]) {     
+        $should_build_procedure = $value.'$should_build_procedure'
+        $should_execute = $value.'$should_execute'
+
+        if ($should_build_procedure -eq $false) {
+            continue
+        }
+
+        $jsonValue = $value | ConvertTo-Json -Compress
+
+        if ($should_execute) {
+            ./c-build/$compiler_type/internal_debug.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+        }
+    }
+}
+$timer.Stop()
+Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Green
+
