@@ -18,7 +18,7 @@ $additional_libs_for_example = $jsonData.'$additional_libs_for_build'
 $additional_libs_for_example = $jsonData.'$additional_libs_for_example'
 
 
-Push-Location  ".\C-BUILD"
+Push-Location  ".\c-build"
 git stash
 git stash drop
 git pull

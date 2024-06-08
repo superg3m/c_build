@@ -30,6 +30,10 @@ Write-Host "running [$project_name - $build_name] build.ps1..." -ForegroundColor
 
 ./vars.ps1
 
+if ($run_exe -eq $true -and (Test-Path -Path $build_directory/$output_name)) {
+    goto :should_run_exe
+}
+
 # Initialize the command with the standard version
 $clCommand = "cl /std:$std_version /nologo"
 
@@ -69,6 +73,7 @@ Pop-Location
 
 ./C-BUILD/cl/normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
 
+:should_run_exe
 Push-Location $build_directory
     if ($build_lib -eq $false -and $run_exe -eq $true) {
         & "./$output_name"

@@ -12,7 +12,7 @@ $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
 $project_name = $jsonData.'$project_name'
 
-Push-Location  ".\C-BUILD"
+Push-Location  ".\c-build"
 git stash
 git stash drop
 git pull
