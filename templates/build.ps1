@@ -75,11 +75,12 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         Pop-Location
                     }
 
+                    ./c-build/bootstrap.ps1 -compiler_type $compiler_type
+
                     if ($should_fully_rebuild_project_depedencies -eq $true) {
                         if (Test-Path -Path "c_build_is_build.flag") {
                             Remove-Item -Path "c_build_is_build.flag" > $null
                         }
-                        ./c-build/bootstrap.ps1 -compiler_type $compiler_type
                     }
                     
                     if (Test-Path -Path "c_build_is_build.flag") {
