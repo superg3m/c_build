@@ -4,9 +4,10 @@
     "$debug_with_visual_studio" : false,
 
     "./build_$compiler_type" : {
-        "$should_run" : true,
-        "$build_lib" : true,
+        "$should_build_procedure" : true,
+        "$should_build_lib" : true,
         "$should_execute" : true,
+        "$full_rebuild" : true,
 
         "$build_name" : "",
         "$projects_to_build" : [""],
@@ -23,9 +24,11 @@
     },
 
     "./example/$compiler_type" : {
-        "$should_run" : false,
-        "$build_lib" : true,
+        "$should_build_procedure" : false,
+        "$should_build_lib" : true,
         "$should_execute" : true,
+        "$should_project_rebuild" : true,
+        "$should_fully_rebuilt_depedencies" : false,
 
         "$build_name" : "",
         "$projects_to_build" : [""],

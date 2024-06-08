@@ -10,7 +10,7 @@ I really just want
 
     "$std_version" : "c11",
     "$debug_build" : false,
-    "$build_lib" : true,
+    "$should_build_lib" : true,
     "$generate_object_files" : false,
 
     "$additional_libs_for_build" : "",
@@ -48,7 +48,7 @@ projects_to_build = ["ckit"]
         "$source_paths" : "./source/*.c",
 
         "$std_version" : "c11",
-        "$build_lib" : true,
+        "$should_build_lib" : true,
         "$generate_object_files" : false,
 
         "$additional_libs" : "./ckg.lib"
@@ -62,7 +62,7 @@ projects_to_build = ["ckit"]
         "$source_paths" : "../*.c",
 
         "$std_version" : "c11",
-        "$build_lib" : true,
+        "$should_build_lib" : true,
         "$generate_object_files" : false,
 
         "$additional_libs" : "",

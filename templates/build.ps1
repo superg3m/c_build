@@ -8,6 +8,7 @@ Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
 $configPath = "c_build_config.json"
+$project_is_built_path = "c_build_is_build.flag"
 $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
 $project_name = $jsonData.'$project_name'
@@ -27,9 +28,10 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
     # If the value is an object, iterate over its properties as well
     if ($value -is [PSCustomObject]) {     
-        $should_run = $value.'$should_run'
+        $should_build_procedure = $value.'$should_build_procedure'
+        $should_fully_rebuilt_depedencies = $value.'$should_fully_rebuilt_depedencies'
 
-        if ($should_run -eq $false) {
+        if ($should_build_procedure -eq $false) {
             continue
         }
 
@@ -65,7 +67,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     
                     Push-Location "$element"
                     if(!(Test-Path -Path "c-build")) {
-                        Write-Host "missing c-build"
                         git clone "https://github.com/superg3m/c-build.git"
                     } else {
                         Push-Location  "./c-build"
@@ -74,8 +75,15 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         git pull
                         Pop-Location
                     }
-                    ./c-build/bootstrap.ps1 -compiler_type $compiler_type
+
+                    if ($should_fully_rebuilt_depedencies -eq $true) {
+                        Remove-Item -Path $project_is_built_path
+                        ./c-build/bootstrap.ps1 -compiler_type $compiler_type
+                    }
+                    
                     ./build.ps1
+                    New-Item -Path $project_is_built_path
+                    
                     Pop-Location
                 }
                 Write-Host ""
@@ -85,7 +93,9 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         # Serialize the $value object to a JSON string
         $jsonValue = $value | ConvertTo-Json -Compress
 
-        ./c-build/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue -run_exe $run_exe
+        if ($should_project_rebuild -eq $true) {
+            ./c-build/$compiler_type/build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+        }
     }
 }
 $timer.Stop()
