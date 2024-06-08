@@ -74,7 +74,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                     }
 
                     if ($should_fully_rebuild_project_depedencies -eq $true) {
-                        Remove-Item -Path $project_is_built_path
+                        Remove-Item -Path $project_is_built_path > $null
                         ./c-build/bootstrap.ps1 -compiler_type $compiler_type
                     }
                     
@@ -82,7 +82,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         Write-Host "$element Depedency Already Build Skipping..." -ForegroundColor Magenta
                     } else {
                         ./build.ps1
-                        New-Item -Path $project_is_built_path
+                        New-Item -Path $project_is_built_path > $null
                     }
                     
                     Pop-Location
