@@ -18,8 +18,6 @@ $build_procedure_name = $jsonData.'$build_procedure_name'
 
 Write-Host "running [$project_name - $build_procedure_name] debug.ps1..." -ForegroundColor Green
 
-$debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
-
 if (!(Test-Path -Path $executable_name)) {
     Write-Host "ERROR: Can't find exe, building..." -ForegroundColor Red
 
