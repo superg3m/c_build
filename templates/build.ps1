@@ -26,11 +26,13 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     # If the value is an object, iterate over its properties as well
     if ($value -is [PSCustomObject]) {     
 
+        $build_procedure_name = $value.'$build_procedure_name'
         $should_build_procedure = $value.'$should_build_procedure'
         $should_project_rebuild = $value.'$should_project_rebuild'
-        $should_fully_rebuilt_depedencies = $value.'$should_fully_rebuilt_depedencies'
+        $should_fully_rebuild_project_depedencies = $value.'$should_fully_rebuild_project_depedencies'
 
         if ($should_build_procedure -eq $false) {
+            Write-Host "Skipping $build_procedure_name..." -ForegroundColor Magenta
             continue
         }
 
@@ -75,13 +77,13 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         Pop-Location
                     }
 
-                    if ($should_fully_rebuilt_depedencies -eq $true) {
+                    if ($should_fully_rebuild_project_depedencies -eq $true) {
                         Remove-Item -Path $project_is_built_path
                         ./c-build/bootstrap.ps1 -compiler_type $compiler_type
                     }
                     
                     if (Test-Path -Path $project_is_built_path) {
-                        Write-Host "$element Depedency Already Build Skipping..." 
+                        Write-Host "$element Depedency Already Build Skipping..." -ForegroundColor Magenta
                     } else {
                         ./build.ps1
                         New-Item -Path $project_is_built_path

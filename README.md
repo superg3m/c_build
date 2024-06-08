@@ -22,17 +22,17 @@ current project is implicit but you can specify other projects that use c-build 
 # Searches for all elements in the current directory of the project
 the it cds into that directory calls build bingo
 test if project has c_build_config.json
-projects_to_build = ["ckit"]
+projects_dependencies_to_build = ["ckit"]
 
 
 
 
 # Current Project Scope
     - build.ps1
-    projects_to_build = ["ckit"]
+    projects_dependencies_to_build = ["ckit"]
         - Ckit Scope
             - build.ps1
-            projects_to_build = ["ckg"]
+            projects_dependencies_to_build = ["ckg"]
                 - Ckg Scope
                     - build.ps1
     - build is resolved
@@ -41,7 +41,7 @@ projects_to_build = ["ckit"]
 // From the current scope how do you get to the next build directory then it will cd into that directory
 {
     "./build_$compiler_type" : {
-        "$projects_to_build" : ["ckit"],
+        "$projects_dependencies_to_build" : ["ckit"],
 
         "$output_name" : "ckg.lib",
         "$include_paths" : "",
@@ -55,7 +55,7 @@ projects_to_build = ["ckit"]
     },
 
     "./example/$preset" : {
-        "$projects_to_build" : [""],
+        "$projects_dependencies_to_build" : [""],
 
         "$output_name" : "test_ckg.exe",
         "$include_paths" : "",

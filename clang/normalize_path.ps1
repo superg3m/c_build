@@ -11,9 +11,9 @@ param(
 
 $jsonData = $build_json | ConvertFrom-Json
 
-$build_name = $jsonData.'$build_name'
+$build_procedure_name = $jsonData.'$build_procedure_name'
 
-Write-Host "running [$project_name - $build_name] normalize_path.ps1..." -ForegroundColor Green
+Write-Host "running [$project_name - $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
 
 $rootPath = $PSScriptRoot
 

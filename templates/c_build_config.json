@@ -4,13 +4,15 @@
     "$debug_with_visual_studio" : false,
 
     "./build_$compiler_type" : {
-        "$should_build_procedure" : true,
+        "$build_procedure_name" : "",
+        "$projects_dependencies_to_build" : [""],
+
+        "$should_build_procedure" : false,
+        "$should_project_rebuild" : true,
+        "$should_fully_rebuild_project_depedencies" : false,
+
         "$should_build_lib" : true,
         "$should_execute" : true,
-        "$full_rebuild" : true,
-
-        "$build_name" : "",
-        "$projects_to_build" : [""],
 
         "$output_name" : "ckg.lib",
         "$compile_time_defines" : "",
@@ -25,13 +27,15 @@
 
     "./example/$compiler_type" : {
         "$should_build_procedure" : false,
+        "$should_project_rebuild" : true,
+        "$should_fully_rebuild_project_depedencies" : false,
+
         "$should_build_lib" : true,
         "$should_execute" : true,
-        "$should_project_rebuild" : true,
-        "$should_fully_rebuilt_depedencies" : false,
 
-        "$build_name" : "",
-        "$projects_to_build" : [""],
+
+        "$build_procedure_name" : "",
+        "$projects_dependencies_to_build" : [""],
 
         "$output_name" : "test_ckg.exe",
         "$compile_time_defines" : "",

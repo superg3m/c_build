@@ -25,8 +25,8 @@ $include_paths = $jsonData.'$include_paths'
 $source_paths = $jsonData.'$source_paths'
 $additional_libs = $jsonData.'$additional_libs'
 
-$build_name = $jsonData.'$build_name'
-Write-Host "running [$project_name - $build_name] build.ps1..." -ForegroundColor Green
+$build_procedure_name = $jsonData.'$build_procedure_name'
+Write-Host "running [$project_name - $build_procedure_name] build.ps1..." -ForegroundColor Green
 
 ./vars.ps1
 
