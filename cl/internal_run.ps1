@@ -15,7 +15,7 @@ $output_name = $jsonData.'$output_name'
 
 $should_procedure_rebuild = $jsonData.'$should_procedure_rebuild'
 
-if (Test-Path -Path "$build_directory/$output_name" -or $should_procedure_rebuild -eq $true) {
+if ((Test-Path -Path "$build_directory/$output_name") -or ($should_procedure_rebuild -eq $true)) {
     Write-Host "building $project_name..." -ForegroundColor Magenta
     ./c-build/cl/internal_build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
 }
