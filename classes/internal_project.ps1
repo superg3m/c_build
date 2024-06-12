@@ -3,8 +3,6 @@ Import-Module -Name ./internal_build_procedure.psm1
 class Project {
     [string]$name
     [bool]$should_debug_with_visual_studio
-
-    [bool]$should_fully_rebuild_project_depedencies
     [string[]]$projects_dependencies_to_build
 
     [BuildProcedure[]]$build_procedures

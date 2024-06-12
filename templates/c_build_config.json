@@ -8,7 +8,6 @@
         "$projects_dependencies_to_build" : [""],
 
         "$should_build_procedure" : false,
-        "$should_procedure_rebuild" : true,
         "$should_fully_rebuild_project_depedencies" : false,
 
         "$should_build_lib" : true,
@@ -31,7 +30,6 @@
 
         "$should_build_lib" : true,
         "$should_execute" : true,
-
 
         "$build_procedure_name" : "",
         "$projects_dependencies_to_build" : [""],
