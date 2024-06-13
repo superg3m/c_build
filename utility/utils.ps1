@@ -35,6 +35,7 @@ class BuildProcedure {
     [bool]$should_build_procedure
     [bool]$should_build_lib
     [bool]$should_execute
+    [bool]$is_built
 
     [string]$output_name
     [string]$compile_time_defines
@@ -65,6 +66,24 @@ class BuildProcedure {
         }
 
         & "../$compiler_type/internal_build.ps1"
+
+        $this.is_built = $true
+    }
+
+    [void]InvokeClean([string]$compiler_type) {
+        Remove-Item -Path "$($this.build_directory)/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
+
+        $this.is_built = $false
+    }
+
+    [void]Execute([string]$compiler_type) {
+        if ($this.should_execute -eq $false) {
+            continue
+        }
+
+        Push-Location "$($this.build_directory)"
+        & "$($this.output_name)"
+        Pop-Location
     }
 
     [void]Print() {
