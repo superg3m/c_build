@@ -17,6 +17,10 @@ $jsonData = Parse_JsonFile($json_config_path);
 
 $project = [Project]::new($jsonData)
 
+if ($should_build_project -ne $null) {
+    $project.should_fully_rebuild_project_dependencies = $should_build_project
+}
+
 $timer = Start_Timer $project.name
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key
