@@ -1,15 +1,16 @@
 {
-    "$project_name" : "",
+    "$project_name" : "RMD",
 
     "$debug_with_visual_studio" : false,
+    "$should_fully_rebuild_project_depedencies" : false,
+
+    "$std_version" : "c11",
+    "$project_dependencies_to_build" : [""],
 
     "./build_$compiler_type" : {
         "$build_procedure_name" : "",
-        "$projects_dependencies_to_build" : [""],
 
         "$should_build_procedure" : false,
-        "$should_fully_rebuild_project_depedencies" : false,
-
         "$should_build_lib" : true,
         "$should_execute" : true,
 
@@ -18,28 +19,21 @@
         "$include_paths" : "",
         "$source_paths" : "./source/*.c",
 
-        "$std_version" : "c11",
-
-
         "$additional_libs" : "./ckg.lib"
     },
 
     "./example/$compiler_type" : {
         "$should_build_procedure" : false,
-        "$should_fully_rebuild_project_depedencies" : false,
 
         "$should_build_lib" : true,
         "$should_execute" : true,
 
         "$build_procedure_name" : "",
-        "$projects_dependencies_to_build" : [""],
 
         "$output_name" : "test_ckg.exe",
         "$compile_time_defines" : "",
         "$include_paths" : "",
         "$source_paths" : "../*.c",
-
-        "$std_version" : "c11",
 
         "$additional_libs" : ""
     }
