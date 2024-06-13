@@ -5,7 +5,7 @@
     "$should_fully_rebuild_project_depedencies" : false,
 
     "$std_version" : "c11",
-    "$project_dependencies_to_build" : [""],
+    "$project_dependencies_to_build" : ["testings", "hello"],
 
     "./build_$compiler_type" : {
         "$build_procedure_name" : "",

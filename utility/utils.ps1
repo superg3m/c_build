@@ -22,7 +22,9 @@ function Parse_JsonFile($file_path) {
     if (!(Test-Path -Path $file_path)) {
         throw "Configuration file not found: $file_path"
     }
-    return Get-Content -Path $file_path -Raw | ConvertFrom-Json
+    $json_object = Get-Content -Path $file_path -Raw
+
+    return $json_object
 }
 
 class BuildProcedure {
@@ -31,27 +33,12 @@ class BuildProcedure {
     [string]$name
     [string]$output_name
 
-    [bool]$should_fully_rebuild_project_dependencies
-
     BuildProcedure ($json) {
         $this.name = $json.'$build_procedure_name'
 
         $this.should_build_procedure = $json.'$should_build_procedure'
-        $this.should_fully_rebuild_project_dependencies = $json.'$should_fully_rebuild_project_dependencies'
 
         $this.output_name = $json.'$output_name'
-    }
-
-    BuildProcedure (
-        [bool]$should_build_procedure,
-        [bool]$should_fully_rebuild_project_dependencies,
-        [string]$name,
-        [string]$output_name
-    ) {
-        $this.should_build_procedure = $should_build_procedure
-        $this.should_fully_rebuild_project_dependencies = $should_fully_rebuild_project_dependencies
-        $this.name = $name
-        $this.output_name = $output_name
     }
 
     [void]InvokeBuild([string]$compiler_type) {
@@ -59,10 +46,11 @@ class BuildProcedure {
     }
 
     [void]Print() {
+        Write-Host "================================================"
         Write-Host "name: $($this.name)"
         Write-Host "should_build_procedure: $($this.should_build_procedure)"
-        Write-Host "should_fully_rebuild_project_dependencies: $($this.should_fully_rebuild_project_dependencies)"
         Write-Host "output_name: $($this.output_name)"
+        Write-Host "================================================"
     }
 }
 
@@ -70,27 +58,41 @@ class Project {
     [string]$name
 
     [bool]$debug_with_visual_studio
-    [string[string]]$project_dependencies_to_build
+    [bool]$should_fully_rebuild_project_dependencies
+
+    [string[]]$project_dependencies_to_build
     [string]$std_version
 
     [BuildProcedure[]]$BuildProcedures
 
-    Project ($json) {
-        $this.name = $json.'$project_name'
+    Project ([string]$jsonData) {
+        Write-Host $jsonData.'$project_name'
 
-        $this.debug_with_visual_studio = $json.'$debug_with_visual_studio'
-        $this.project_dependencies_to_build = $json.'$project_dependencies_to_build'
-        $this.std_version = $json.'$std_version'
+        #$this.name = $jsonData.'$project_name'
+
+        #Write-Host "sdfsdfd = $($this.name)" -ForegroundColor Red
+        #Write-Host "sdfsdfd = $( $json.'$project_name')" -ForegroundColor Red
+
+        $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
+        $this.should_fully_rebuild_project_dependencies = $jsonData.'$should_fully_rebuild_project_dependencies'
+
+        $this.project_dependencies_to_build = $jsonData.'$project_dependencies_to_build'
+        $this.std_version = $jsonData.'$std_version'
     }
 
-    [void]AddBuildProcedure([string]$build_proc) {
+    [void]AddBuildProcedure([BuildProcedure]$build_proc) {
         $this.BuildProcedures.Add($build_proc)
     }
 
     [void]Print() {
-        Write-Host "name: $($this.name)"
+        Write-Host "================== name: $($this.name) =================="
         Write-Host "should_build_procedure: $($this.should_build_procedure)"
+        Write-Host "debug_with_visual_studio: $($this.debug_with_visual_studio)"
         Write-Host "should_fully_rebuild_project_dependencies: $($this.should_fully_rebuild_project_dependencies)"
-        Write-Host "output_name: $($this.output_name)"
+        Write-Host "project_dependencies_to_build: $($this.project_dependencies_to_build)"
+        Write-Host "std_version: $($this.std_version)"
+        foreach ($build_proc in $this.BuildProcedures) {
+            $build_proc.Print()
+        }
     }
 }
