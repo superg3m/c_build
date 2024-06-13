@@ -28,6 +28,8 @@ function Parse_JsonFile($file_path) {
 }
 
 class BuildProcedure {
+    [Project]$project
+
     [string]$build_directory
 
     [string]$name
@@ -43,7 +45,9 @@ class BuildProcedure {
     [string]$source_paths
     [string]$additional_libs
 
-    BuildProcedure ([string]$build_directory, [PSCustomObject]$jsonData) {
+    BuildProcedure ([string]$project_name, [string]$build_directory, [PSCustomObject]$jsonData) {
+        $this.project_name = $project_name
+
         $this.build_directory = $build_directory
 
         $this.name = $jsonData.'$build_procedure_name'
@@ -65,7 +69,7 @@ class BuildProcedure {
             continue
         }
 
-        & "../$compiler_type/internal_build.ps1"
+        ../$compiler_type/internal_build.ps1 -project $this.project
 
         $this.is_built = $true
     }
