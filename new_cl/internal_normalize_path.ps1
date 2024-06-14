@@ -10,7 +10,7 @@ $build_directory = $build_procedure.build_directory
 
 $build_procedure_name = $build_procedure.name
 
-Write-Host "running [$($project.name) - $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
+Write-Host "running [$($project.name) -> $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
 
 $rootPath = $PSScriptRoot
 
@@ -27,4 +27,3 @@ Get-Content -Path $realFilePath | ForEach-Object {
 
 Move-Item -Path $tempFilePath -Destination $realFilePath -Force
 Get-Content -Path $realFilePath
-Remove-Item -Path $realFilePath
