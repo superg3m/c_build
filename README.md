@@ -116,3 +116,6 @@ based on the ChildProject
 I also think I will make that distinction of:
     Project 
     - ChildProjects (This should actually contain the information needed to build this project I want the object)
+
+ok it sort of works I need to clean it up a ton and think through this more don't worry I have plenty of time
+I really should write those essays tho sometime soon I think I vow to write those essays watching leo its a perfect time no excuses
