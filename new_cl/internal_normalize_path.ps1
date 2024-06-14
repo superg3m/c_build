@@ -28,5 +28,8 @@ Get-Content -Path $realFilePath | ForEach-Object {
 }
 
 Move-Item -Path $tempFilePath -Destination $realFilePath -Force
-Write-Host Get-Content -Path $realFilePath
+$contents = Get-Content -Path $realFilePath
+
+Write-Host $contents
+
 Remove-Item -Path $realFilePath
