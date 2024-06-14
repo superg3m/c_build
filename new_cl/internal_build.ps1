@@ -13,6 +13,8 @@ param(
 
 $build_procedure_name = $build_procedure.name
 
+$build_directory = $build_procedure.build_directory
+
 $output_name = $build_procedure.output_name
 $compile_time_defines = $build_procedure.compile_time_defines
 $std_version = $project.std_version
