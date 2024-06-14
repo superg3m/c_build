@@ -35,7 +35,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key
 
     if ($value -is [PSCustomObject]) {
-        $build_procedure = [BuildProcedure]::new($project.name, $key, $value)
+        $build_procedure = [BuildProcedure]::new($key, $value)
         if ($should_skip_build -eq $false) {
             $project.addBuildProcedure($build_procedure).InvokeBuild("$compiler_type")
         } else {
