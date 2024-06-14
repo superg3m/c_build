@@ -57,7 +57,7 @@ class BuildProcedure {
             continue
         }
 
-        $scriptPath = Join-Path -Path "./c-build/new_" -ChildPath ($compiler_type + "/internal_build.ps1")
+        $scriptPath =  join("./c-build/new_", $compiler_type, "/internal_build.ps1")
         & $scriptPath -build_procedure $this
     }
 
