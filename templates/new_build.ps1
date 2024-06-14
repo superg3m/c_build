@@ -12,7 +12,7 @@ Pop-Location
 
 $project = ./c-build/utility/decode_project.ps1
 
-Write-Host "Type: $($result.GetType())"
+Write-Host "Type: $($project.GetType())"
 
 # $project.Print()
 
