@@ -6,6 +6,10 @@ param (
     [bool]$should_rebuild_project_dependencies_override
 )
 
+$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
+$PSNativeCommandUseErrorActionPreference = $true
+
 # . ./c-build/utility/utils.ps1
 
 $json_config_path = "c_build_config.json"
