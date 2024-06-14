@@ -14,6 +14,8 @@ $jsonData = Parse_JsonFile($json_config_path);
 
 $project = [Project]::new($jsonData, $compiler_override, $should_rebuild_project_dependencies_override)
 
+Write-Host $project -ForegroundColor Magenta
+
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
@@ -29,6 +31,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     }
 }
 
-Write-Host $project -ForegroundColor Red
+# Write-Host $project -ForegroundColor Red
 
 return $project
