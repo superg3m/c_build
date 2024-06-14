@@ -50,6 +50,8 @@ class BuildProcedure {
     }
 
     [void]Build([string]$compiler_type) {
+        Write-Host $compiler_type -ForegroundColor Red
+
         if ($this.should_build_procedure -eq $false) {
             Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
             continue
