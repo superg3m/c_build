@@ -96,3 +96,14 @@ ok so with build procs what flags are set
     - specific_run_procedure
         - $should_run
         - $should_
+
+
+
+
+Next up I think I need to rethink how projects and build_procedures get returned and where they get returned
+I Have to be able to decline the output like this:
+    $null = function()
+
+Heres what i'm thinking there will be internal scripts that handle this and then discard the output for the user because you won't need it
+
+but you can use it as another fellow interal script. This is how you are going to pass around references to projects and build dependencies
