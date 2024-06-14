@@ -33,4 +33,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     }
 }
 
+Write-Host "Type: $($project.GetType())"
+
 return $project

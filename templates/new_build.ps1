@@ -10,11 +10,11 @@ Pop-Location
 
 . ./c-build/utility/utils.ps1
 
-$project_decode = ./c-build/utility/decode_project.ps1
+$project = ./c-build/utility/decode_project.ps1
 
-$project = $project_decode -as [Project]
+#$project = $project_decode -as [Project]
 
-Write-Host "Type: $($project.GetType())"
+#Write-Host "Type: $($project.GetType())"
 
 # $project.Print()
 
