@@ -2,9 +2,6 @@
 
 param(
     [Parameter(Mandatory=$true)]
-    [string] $project_name,
-
-    [Parameter(Mandatory=$true)]
     [BuildProcedure] $build_procedure,
 
     [Parameter(Mandatory=$false)]
@@ -21,7 +18,7 @@ $include_paths = $build_procedure.include_paths
 $source_paths = $build_procedure.source_paths
 $additional_libs = $build_procedure.additional_libs
 
-Write-Host "running [$project_name - $build_procedure_name] build.ps1..." -ForegroundColor Green
+Write-Host "running [$build_procedure_name] build.ps1..." -ForegroundColor Green
 
 ./vars.ps1
 
@@ -62,4 +59,4 @@ Push-Location $build_directory
     }
 Pop-Location
 
-./c-build/cl/internal_normalize_path.ps1 -project_name $project_name -build_procedure $build_procedure
+./c-build/cl/internal_normalize_path.ps1 -build_procedure $build_procedure
