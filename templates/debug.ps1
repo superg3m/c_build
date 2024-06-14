@@ -14,7 +14,7 @@ $debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
-git pull
+git pull -q
 Pop-Location
 
 Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Green

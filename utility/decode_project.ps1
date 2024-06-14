@@ -19,7 +19,7 @@ $project = [Project]::new($jsonData, $compiler_override, $should_rebuild_project
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
-git pull
+git pull -q
 Pop-Location
 
 foreach ($key in $jsonData.PSObject.Properties.Name) {
