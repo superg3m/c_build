@@ -1,6 +1,6 @@
 param (
     [Parameter(Mandatory=$false)]
-    [bool]$compiler_override,
+    [string]$compiler_override,
 
     [Parameter(Mandatory=$false)]
     [bool]$should_rebuild_project_dependencies_override
