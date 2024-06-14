@@ -55,7 +55,7 @@ class BuildProcedure {
             continue
         }
 
-        $script = "./c-build/new_$($compiler_type)/internal_build.ps1"
+        $script = "./"
 
         & $script -project $this.project
     }
