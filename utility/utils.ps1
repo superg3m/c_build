@@ -49,14 +49,14 @@ class BuildProcedure {
         return $directoryInfo.count -ne 0
     }
 
-    [void]Build([string]$compiler_type) {
+    [void]Build([Project]$project, [string]$compiler_type) {
         if ($this.should_build_procedure -eq $false) {
             Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
             continue
         }
 
         $scriptPath =  -join("./c-build/new_", $compiler_type, "/internal_build.ps1")
-        & $scriptPath -build_procedure $this
+        & $scriptPath -project $project -build_procedure $this
     }
 
     [void]Clean([string]$compiler_type) {
@@ -191,7 +191,7 @@ class Project {
 
     [void]BuildProcedures() {
         foreach ($build_procedure in $this.build_procedures) {
-            $build_procedure.Build($this.compiler)
+            $build_procedure.Build($this, $this.compiler)
         }
     }
 
