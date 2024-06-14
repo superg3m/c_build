@@ -10,7 +10,7 @@ Pop-Location
 
 . ./c-build/utility/utils.ps1
 
-$project = ./c-build/utility/decode_project.ps1
+./c-build/utility/decode_project.ps1
 
 #$project = $project_decode -as [Project]
 
