@@ -20,14 +20,12 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-$project.buildProjectDependencies()
-
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key
 
     if ($value -is [PSCustomObject]) {
         $build_procedure = [BuildProcedure]::new($key, $value)
-        $project.addBuildProcedure($build_procedure)
+        $project.AddBuildProcedure($build_procedure)
     }
 }
 
