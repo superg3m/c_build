@@ -6,7 +6,7 @@ param (
     [bool]$should_rebuild_project_dependencies_override
 )
 
-. ./c-build/utility/utils.ps1
+# . ./c-build/utility/utils.ps1
 
 $json_config_path = "c_build_config.json"
 
