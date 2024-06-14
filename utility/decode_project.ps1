@@ -31,4 +31,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     }
 }
 
+Write-Host $project -ForegroundColor Red
+
 return $project
