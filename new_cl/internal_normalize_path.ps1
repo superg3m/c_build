@@ -29,4 +29,9 @@ Get-Content -Path $realFilePath | ForEach-Object {
 
 Move-Item -Path $tempFilePath -Destination $realFilePath -Force
 Get-Content -Path $realFilePath
+
+$contents = Get-Content -Path $realFilePath
+
+Write-Host $contents -ForegroundColor Blue
+
 Remove-Item -Path $realFilePath
