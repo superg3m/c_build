@@ -18,8 +18,6 @@ $jsonData = Parse_JsonFile($json_config_path);
 
 $project = [Project]::new($jsonData, $compiler_override, $should_rebuild_project_dependencies_override)
 
-
-
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
@@ -34,7 +32,5 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         $project.AddBuildProcedure($build_procedure)
     }
 }
-
-$project.Print()
 
 return $project
