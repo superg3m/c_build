@@ -49,15 +49,14 @@ class BuildProcedure {
         return $directoryInfo.count -ne 0
     }
 
-    [void]Build([string]$compiler_type) {
+    [void]Build([string]$project_name, [string]$compiler_type) {
         if ($this.should_build_procedure -eq $false) {
             Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
             continue
         }
 
-        $script = "./"
-
-        & $script -project $this.project
+        $scriptPath = Join-Path -Path "./c-build/new_" -ChildPath ($compiler_type + "/internal_build.ps1")
+        & $scriptPath -project_name $this.project -build_procedure $this
     }
 
     [void]Clean([string]$compiler_type) {
