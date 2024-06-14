@@ -1,5 +1,3 @@
-. ../utility/utils.ps1
-
 param(
     [Parameter(Mandatory=$true)]
     [string] $project_name,
