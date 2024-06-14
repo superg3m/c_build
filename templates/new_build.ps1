@@ -12,12 +12,12 @@ Pop-Location
 
 $project = ./c-build/utility/decode_project.ps1
 
-Write-Host "|--------------- Started Building $($project.name) ---------------|" -ForegroundColor Blue
-$timer = [Diagnostics.Stopwatch]::new()
-$timer.Start()
-
-$project.BuildProjectDependencies()
-$project.BuildProcedures()
-
-$timer.Stop()
-Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue
+# Write-Host "|--------------- Started Building $($project.name) ---------------|" -ForegroundColor Blue
+# $timer = [Diagnostics.Stopwatch]::new()
+# $timer.Start()
+# 
+# $project.BuildProjectDependencies()
+# $project.BuildProcedures()
+# 
+# $timer.Stop()
+# Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue
