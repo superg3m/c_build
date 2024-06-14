@@ -1,11 +1,3 @@
-function Update_GitRepo($git_path) {
-    Push-Location $git_path
-    git fetch origin -q
-    git reset --hard origin/main -q
-    git pull -q
-    Pop-Location
-}
-
 function Parse_JsonFile($file_path) {
     if (!(Test-Path -Path $file_path)) {
         throw "Configuration file not found: $file_path"
@@ -53,7 +45,7 @@ class BuildProcedure {
         return $directoryInfo.count -ne 0
     }
 
-    [void]InvokeBuild([string]$compiler_type) {
+    [void]Build([string]$compiler_type) {
         if ($this.should_build_procedure -eq $false) {
             Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
             continue
@@ -62,13 +54,17 @@ class BuildProcedure {
         ./c-build/$compiler_type/internal_build.ps1 -project $this.project
     }
 
-    [void]InvokeClean([string]$compiler_type) {
+    [void]Clean([string]$compiler_type) {
         Remove-Item -Path "$($this.build_directory)/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
     }
 
     [void]Execute([string]$compiler_type) {
         if ($this.should_execute -eq $false) {
             continue
+        }
+
+        if (!$this.IsBuilt()) {
+            $this.Build($compiler_type)
         }
 
         Push-Location "$($this.build_directory)"
@@ -164,7 +160,7 @@ class Project {
 
             foreach ($build_procedure in $project_dependency.build_procedures) {
                 if ($this.should_rebuild_project_dependencies -eq $true) {
-                    $build_procedure.InvokeClean()
+                    $build_procedure.Clean()
                     continue
                 }
 
@@ -189,9 +185,15 @@ class Project {
         Write-Host ""
     }
 
-    [void]InvokeBuildProcedures() {
+    [void]BuildProcedures() {
         foreach ($build_procedure in $this.build_procedures) {
-            $build_procedure.InvokeBuild($this.compiler)
+            $build_procedure.Build($this.compiler)
+        }
+    }
+
+    [void]ExecuteProcedures() {
+        foreach ($build_procedure in $this.build_procedures) {
+            $build_procedure.Execute($this.compiler)
         }
     }
 

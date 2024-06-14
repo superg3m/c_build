@@ -13,7 +13,7 @@ $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
 
 $project.BuildProjectDependencies()
-$ptojrvy.InvokeBuildProcedures()
+$project.BuildProcedures()
 
 $timer.Stop()
 Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue
