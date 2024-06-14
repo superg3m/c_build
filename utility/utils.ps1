@@ -184,7 +184,6 @@ class Project {
             } else {
                 ./c-build/bootstrap.ps1 -compiler_type $this.compiler_type
                 $project_dependency = ./build.ps1 -compiler_type_override $this.compiler_type
-                New-Item -Path "c_build_is_build.flag" > $null
             }
             
             Pop-Location
@@ -193,6 +192,8 @@ class Project {
     }
 
     [void]BuildProcedures() {
+        Write-Host $this.compiler -ForegroundColor Blue
+
         foreach ($build_procedure in $this.build_procedures) {
             $build_procedure.Build($this.compiler)
         }
