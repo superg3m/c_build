@@ -2,10 +2,10 @@
     "$project_name" : "RMD",
 
     "$debug_with_visual_studio" : false,
-    "$should_fully_rebuild_project_depedencies" : false,
+    "$should_rebuild_project_dependencies" : false,
 
     "$std_version" : "c11",
-    "$project_dependencies_to_build" : ["testings", "hello"],
+    "$project_dependencies" : ["testings", "hello"],
 
     "./build_$compiler_type" : {
         "$build_procedure_name" : "building ckg.lib",

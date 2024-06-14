@@ -110,9 +110,9 @@ class Project {
     [string]$name
 
     [bool]$debug_with_visual_studio
-    [bool]$should_fully_rebuild_project_dependencies
+    [bool]$should_rebuild_project_dependencies
 
-    [string[]]$project_dependencies_to_build
+    [string[]]$project_dependencies
     [string]$std_version
 
     [BuildProcedure[]]$build_procedures
@@ -121,12 +121,58 @@ class Project {
         $this.name = $jsonData.'$project_name'
 
         $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
-        $this.should_fully_rebuild_project_dependencies = $jsonData.'$should_fully_rebuild_project_dependencies'
+        $this.should_rebuild_project_dependencies = $jsonData.'$should_rebuild_project_dependencies'
 
-        $this.project_dependencies_to_build = $jsonData.'$project_dependencies_to_build'
+        $this.project_dependencies_to_build = $jsonData.'$project_dependencies'
         $this.std_version = $jsonData.'$std_version'
 
         $this.build_procedures = [System.Collections.ArrayList]@()
+    }
+
+    [void]buildProjectDependencies() {
+        Write-Host "[$build_procedure_name] depends on: " -ForegroundColor Blue
+        foreach ($depednecy in $this.project_dependencies_to_build) {
+            Write-Host "  - $element" -ForegroundColor Blue
+
+            if(!(Test-Path -Path $element)) {
+                Write-Host "missing $element"
+                git clone https://github.com/superg3m/$element.git
+            } else {
+                Push-Location $element
+                git fetch origin -q
+                git reset --hard origin/main -q
+                git pull -q
+                Pop-Location
+            }
+            
+            Push-Location "$element"
+            if(!(Test-Path -Path "c-build")) {
+                git clone "https://github.com/superg3m/c-build.git"
+            } else {
+                Push-Location  "./c-build"
+                git fetch origin -q
+                git reset --hard origin/main -q
+                git pull -q
+                Pop-Location
+            }
+
+            if ($should_fully_rebuild_project_depedencies -eq $true) {
+                if (Test-Path -Path "c_build_is_build.flag") {
+                    Remove-Item -Path "c_build_is_build.flag" > $null
+                }
+            }
+            
+            if (Test-Path -Path "c_build_is_build.flag") {
+                Write-Host "$element Depedency Already Build Skipping..." -ForegroundColor Magenta
+            } else {
+                ./c-build/bootstrap.ps1 -compiler_type $compiler_type
+                ./build.ps1
+                New-Item -Path "c_build_is_build.flag" > $null
+            }
+            
+            Pop-Location
+        }
+        Write-Host ""
     }
 
     [BuildProcedure]addBuildProcedure([BuildProcedure]$build_proc) {
@@ -137,8 +183,8 @@ class Project {
     [void]Print() {
         Write-Host "================== name: $($this.name) ==================" -ForegroundColor Magenta
         Write-Host "debug_with_visual_studio: $($this.debug_with_visual_studio)"
-        Write-Host "should_fully_rebuild_project_dependencies: $($this.should_fully_rebuild_project_dependencies)"
-        Write-Host "project_dependencies_to_build: $($this.project_dependencies_to_build)"
+        Write-Host "should_rebuild_project_dependencies: $($this.should_rebuild_project_dependencies)"
+        Write-Host "project_dependencies: $($this.project_dependencies)"
         Write-Host "std_version: $($this.std_version)"
         foreach ($build_proc in $this.build_procedures) {
             $build_proc.Print()
