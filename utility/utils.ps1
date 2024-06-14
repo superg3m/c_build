@@ -144,7 +144,7 @@ class Project {
         foreach ($dependency in $this.project_dependencies) {
             Write-Host "  - $dependency" -ForegroundColor Blue
 
-            if(!(Test-Path -Path $dependency)) {
+            if(($null -eq $dependency) -and !(Test-Path -Path $dependency)) {
                 Write-Host "missing $dependency"
                 git clone https://github.com/superg3m/$dependency.git
             } else {
