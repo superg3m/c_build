@@ -1,9 +1,12 @@
 param (
     [Parameter(Mandatory=$false)]
-    [bool]$should_skip_build,
+    [bool]$should_build_project,
 
     [Parameter(Mandatory=$false)]
-    [bool]$should_build_project
+    [bool]$compiler_type_override,
+
+    [Parameter(Mandatory=$false)]
+    [bool]$should_rebuild_project_dependencies_override
 )
 . ../utility/utils.ps1
 
@@ -18,25 +21,29 @@ Pop-Location
 
 $jsonData = Parse_JsonFile($json_config_path);
 
-$project = [Project]::new($jsonData)
+$project = [Project]::new($jsonData, $compiler_type_override)
 
 if ($should_build_project -ne $null) { # Acts as an override flag
-    $project.should_rebuild_project_dependencies = $should_build_project
+    $project.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override
 }
 
 $timer = Start_Timer $project.name
+
+$project.buildProjectDependencies()
+
 foreach ($key in $jsonData.PSObject.Properties.Name) {
     $value = $jsonData.$key
 
     if ($value -is [PSCustomObject]) {
         $build_procedure = [BuildProcedure]::new($project.name, $key, $value)
-        if ($should_skip_build -eq $null -or $should_skip_build -eq $false) {
+        if ($should_skip_build -eq $false) {
             $project.addBuildProcedure($build_procedure).InvokeBuild("$compiler_type")
         } else {
             $project.addBuildProcedure($build_procedure)
         }
     }
 }
+
 
 $project.Print()
 

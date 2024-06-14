@@ -1,18 +1,14 @@
 param(
     [Parameter(Mandatory=$true)]
-    [string] $project_name,
-
-    [Parameter(Mandatory=$true)]
-    [string] $build_directory,
-
-    [Parameter(Mandatory=$true)]
-    [string] $build_json
+    [string] $project
 )
 
-$jsonData = $build_json | ConvertFrom-Json
+$project_name = $project.name
 
-$build_procedure_name = $jsonData.'$build_procedure_name'
+foreach ($build_procedure in $project.build_procedures) {
+    $build_procedure_name = $build_procedure.build_directory
+    $build_directory = $build_procedure.build_directory
 
-Write-Host "running [$project_name - $build_procedure_name] clean.ps1..." -ForegroundColor Green
-
-Remove-Item -Path "$build_directory/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
+    Write-Host "running [$project_name - $build_procedure_name] clean.ps1..." -ForegroundColor Green
+    $build_procedure.InvokeClean()
+}

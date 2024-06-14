@@ -37,7 +37,6 @@ class BuildProcedure {
     [bool]$should_build_procedure
     [bool]$should_build_lib
     [bool]$should_execute
-    [bool]$is_built
 
     [string]$output_name
     [string]$compile_time_defines
@@ -63,6 +62,13 @@ class BuildProcedure {
         $this.additional_libs = $jsonData.'$additional_libs'
     }
 
+    [bool]IsBuilt() {
+        $directoryInfo = Get-ChildItem $this.build_directory | Measure-Object
+        $directoryInfo.count
+
+        return $directoryInfo.count -ne 0
+    }
+
     [void]InvokeBuild([string]$compiler_type) {
         if ($this.should_build_procedure -eq $false) {
             Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
@@ -70,14 +76,10 @@ class BuildProcedure {
         }
 
         ./c-build/$compiler_type/internal_build.ps1 -project $this.project
-
-        $this.is_built = $true
     }
 
     [void]InvokeClean([string]$compiler_type) {
         Remove-Item -Path "$($this.build_directory)/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
-
-        $this.is_built = $false
     }
 
     [void]Execute([string]$compiler_type) {
@@ -109,6 +111,8 @@ class BuildProcedure {
 class Project {
     [string]$name
 
+    [string]$compiler_type
+
     [bool]$debug_with_visual_studio
     [bool]$should_rebuild_project_dependencies
 
@@ -117,35 +121,41 @@ class Project {
 
     [BuildProcedure[]]$build_procedures
 
-    Project ([PSCustomObject]$jsonData) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler_type) {
         $this.name = $jsonData.'$project_name'
+
+        if ($null -eq $compiler_type) {
+            $this.compiler_type = $jsonData.'$compiler_type'
+        } else {
+            $this.compiler_type = $compiler_type;
+        }
 
         $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
         $this.should_rebuild_project_dependencies = $jsonData.'$should_rebuild_project_dependencies'
 
-        $this.project_dependencies_to_build = $jsonData.'$project_dependencies'
+        $this.project_dependencies = $jsonData.'$project_dependencies'
         $this.std_version = $jsonData.'$std_version'
 
         $this.build_procedures = [System.Collections.ArrayList]@()
     }
 
     [void]buildProjectDependencies() {
-        Write-Host "[$build_procedure_name] depends on: " -ForegroundColor Blue
-        foreach ($depednecy in $this.project_dependencies_to_build) {
-            Write-Host "  - $element" -ForegroundColor Blue
+        Write-Host "[$($this.name)] depends on: " -ForegroundColor Blue
+        foreach ($dependency in $this.project_dependencies) {
+            Write-Host "  - $dependency" -ForegroundColor Blue
 
-            if(!(Test-Path -Path $element)) {
-                Write-Host "missing $element"
-                git clone https://github.com/superg3m/$element.git
+            if(!(Test-Path -Path $dependency)) {
+                Write-Host "missing $dependency"
+                git clone https://github.com/superg3m/$dependency.git
             } else {
-                Push-Location $element
+                Push-Location $dependency
                 git fetch origin -q
                 git reset --hard origin/main -q
                 git pull -q
                 Pop-Location
             }
             
-            Push-Location "$element"
+            Push-Location "$dependency"
             if(!(Test-Path -Path "c-build")) {
                 git clone "https://github.com/superg3m/c-build.git"
             } else {
@@ -156,17 +166,28 @@ class Project {
                 Pop-Location
             }
 
-            if ($should_fully_rebuild_project_depedencies -eq $true) {
-                if (Test-Path -Path "c_build_is_build.flag") {
-                    Remove-Item -Path "c_build_is_build.flag" > $null
+            $project_dependency = ./build.ps1 -should_build_project $false
+            $is_dependency_built_result = $false
+
+            foreach ($build_procedure in $project_dependency.build_procedures) {
+                if ($this.should_rebuild_project_dependencies -eq $true) {
+                    $build_procedure.InvokeClean()
+                    continue
+                }
+
+                $is_dependency_built_result = $build_procedure.IsBuilt()
+                if ($is_dependency_built_result -eq $false) {
+                    break
                 }
             }
+
+
             
-            if (Test-Path -Path "c_build_is_build.flag") {
-                Write-Host "$element Depedency Already Build Skipping..." -ForegroundColor Magenta
+            if ($is_dependency_built_result -eq $true) {
+                Write-Host "$dependency Depedency Already Build Skipping..." -ForegroundColor Magenta
             } else {
-                ./c-build/bootstrap.ps1 -compiler_type $compiler_type
-                ./build.ps1
+                ./c-build/bootstrap.ps1 -compiler_type $this.compiler_type
+                $project_dependency = ./build.ps1 -compiler_type_override $this.compiler_type
                 New-Item -Path "c_build_is_build.flag" > $null
             }
             

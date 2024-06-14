@@ -3,7 +3,7 @@ param(
     [string] $project_name,
 
     [Parameter(Mandatory=$true)]
-    [BuildProcedure] $build_procedure,
+    [BuildProcedure] $build_procedure
 )
 
 $build_directory = $build_procedure.build_directory
