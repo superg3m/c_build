@@ -76,7 +76,7 @@ class BuildProcedure {
         Pop-Location
     }
 
-    [void]Print() {
+    [void]PrintBuildProcedure() {
         Write-Host "================================================"
         Write-Host "build_directory: $($this.build_directory)"
         Write-Host "name: $($this.name)"
@@ -206,12 +206,15 @@ class Project {
         return $build_proc
     }
 
-    [void]Print() {
+    [void]PrintProject() {
         Write-Host "================== name: $($this.name) ==================" -ForegroundColor Magenta
+        Write-Host "name: $($this.name)"
+        Write-Host "compiler: $($this.compiler)"
         Write-Host "debug_with_visual_studio: $($this.debug_with_visual_studio)"
         Write-Host "should_rebuild_project_dependencies: $($this.should_rebuild_project_dependencies)"
         Write-Host "project_dependencies: $($this.project_dependencies)"
         Write-Host "std_version: $($this.std_version)"
+        Write-Host "build_procedures: $($this.build_procedures)"
         Write-Host "================================================" -ForegroundColor Magenta
     }
 }
