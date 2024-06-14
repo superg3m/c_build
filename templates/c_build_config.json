@@ -1,6 +1,6 @@
 {
     "$project_name" : "RMD",
-    "$compiler_type" : "cl",
+    "$compiler" : "cl",
 
     "$debug_with_visual_studio" : false,
     "$should_rebuild_project_dependencies" : false,

@@ -111,7 +111,7 @@ class BuildProcedure {
 class Project {
     [string]$name
 
-    [string]$compiler_type
+    [string]$compiler
 
     [bool]$debug_with_visual_studio
     [bool]$should_rebuild_project_dependencies
@@ -121,13 +121,13 @@ class Project {
 
     [BuildProcedure[]]$build_procedures
 
-    Project ([PSCustomObject]$jsonData, [string]$compiler_type) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler) {
         $this.name = $jsonData.'$project_name'
 
-        if ($null -eq $compiler_type) {
-            $this.compiler_type = $jsonData.'$compiler_type'
+        if ($null -eq $compiler) {
+            $this.compiler = $jsonData.'$compiler_type'
         } else {
-            $this.compiler_type = $compiler_type;
+            $this.compiler = $compiler;
         }
 
         $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
