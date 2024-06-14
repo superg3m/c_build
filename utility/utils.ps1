@@ -142,8 +142,8 @@ class Project {
     [void]buildProjectDependencies() {
         Write-Host "[$($this.name)] depends on: " -ForegroundColor Blue
         foreach ($dependency in $this.project_dependencies) {
-            if ($null -eq $dependency) {
-                break
+            if (!$dependency) {
+                continue
             }
             Write-Host "  - $dependency" -ForegroundColor Blue
 
