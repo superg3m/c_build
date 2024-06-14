@@ -64,6 +64,4 @@ Push-Location $build_directory
     }
 Pop-Location
 
-Write-Host "what the heck????"
-
 ./c-build/new_cl/internal_normalize_path.ps1 -project $project -build_procedure $build_procedure
