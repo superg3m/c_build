@@ -44,9 +44,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     }
 }
 
-
-$project.Print()
-
 End_Timer $timer
 
 return $project
