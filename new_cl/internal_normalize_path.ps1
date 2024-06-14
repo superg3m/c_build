@@ -3,15 +3,12 @@ param(
     [string] $project_name,
 
     [Parameter(Mandatory=$true)]
-    [string] $build_directory,
-
-    [Parameter(Mandatory=$true)]
-    [string] $build_json
+    [BuildProcedure] $build_procedure,
 )
 
-$jsonData = $build_json | ConvertFrom-Json
+$build_directory = $build_procedure.build_directory
 
-$build_procedure_name = $jsonData.'$build_procedure_name'
+$build_procedure_name = $build_procedure.name
 
 Write-Host "running [$project_name - $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
 
