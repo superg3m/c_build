@@ -1,5 +1,3 @@
-. ./c-build/utility/utils.ps1
-
 param(
     [Parameter(Mandatory=$true)]
     [BuildProcedure] $build_procedure,
@@ -7,6 +5,8 @@ param(
     [Parameter(Mandatory=$false)]
     [bool] $debug_build
 )
+
+. ./c-build/utility/utils.ps1
 
 $build_procedure_name = $build_procedure.name
 
