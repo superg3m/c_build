@@ -4,9 +4,9 @@ param(
 )
 
 Push-Location  "./c-build"
-git fetch origin
-git reset --hard origin/main
-git pull
+git fetch origin -q
+git reset --hard origin/main -q
+git pull -q
 Pop-Location
 
 if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
