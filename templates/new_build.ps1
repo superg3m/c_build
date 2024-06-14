@@ -3,7 +3,7 @@ param (
     [bool]$should_build_project,
 
     [Parameter(Mandatory=$false)]
-    [bool]$compiler_type_override,
+    [bool]$compiler_override,
 
     [Parameter(Mandatory=$false)]
     [bool]$should_rebuild_project_dependencies_override
@@ -21,7 +21,7 @@ Pop-Location
 
 $jsonData = Parse_JsonFile($json_config_path);
 
-$project = [Project]::new($jsonData, $compiler_type_override)
+$project = [Project]::new($jsonData, $compiler_override)
 
 if ($should_build_project -ne $null) { # Acts as an override flag
     $project.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override
