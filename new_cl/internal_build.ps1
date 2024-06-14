@@ -58,6 +58,8 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 }
 
 Write-Host $build_directory -ForegroundColor Magenta
+Write-Host $clCommand -ForegroundColor Magenta
+
 
 Push-Location $build_directory
     Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
