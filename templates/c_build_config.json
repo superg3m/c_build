@@ -6,7 +6,7 @@
     "$should_rebuild_project_dependencies" : false,
 
     "$std_version" : "c11",
-    "$project_dependencies" : ["testings", "hello"],
+    "$project_dependencies" : [""],
 
     "./build_$compiler_type" : {
         "$build_procedure_name" : "building ckg.lib",
