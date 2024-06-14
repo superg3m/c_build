@@ -115,11 +115,8 @@ class Project {
 
         if ($compiler_override) {
             $this.compiler = $compiler_override;
-            Write-Host "NOT POSSIBLE: $($this.compiler)" 
         } else {
             $this.compiler = $jsonData.'$compiler'
-
-            Write-Host "Compiler: $($this.compiler)" 
         }
 
         if ($should_rebuild_project_dependencies_override) {
@@ -198,7 +195,7 @@ class Project {
         Write-Host $this.compiler -ForegroundColor Blue
 
         foreach ($build_procedure in $this.build_procedures) {
-            #$build_procedure.Build($this.compiler)
+            $build_procedure.Build($this.compiler)
         }
     }
 
