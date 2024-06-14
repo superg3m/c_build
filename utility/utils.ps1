@@ -6,18 +6,6 @@ function Update_GitRepo($git_path) {
     Pop-Location
 }
 
-function Start_Timer($project_name) {
-    Write-Host "|--------------- Started Building $project_name ---------------|" -ForegroundColor Blue
-    $timer = [Diagnostics.Stopwatch]::new()
-    $timer.Start()
-    return $timer
-}
-
-function End_Timer($timer) {
-    $timer.Stop()
-    Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue
-}
-
 function Parse_JsonFile($file_path) {
     if (!(Test-Path -Path $file_path)) {
         throw "Configuration file not found: $file_path"
@@ -117,17 +105,22 @@ class Project {
 
     [BuildProcedure[]]$build_procedures
 
-    Project ([PSCustomObject]$jsonData, [string]$compiler_override) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [string]$should_rebuild_project_dependencies_override) {
         $this.name = $jsonData.'$project_name'
 
-        if ($null -eq $compiler_override) {
-            $this.compiler = $jsonData.'$compiler_type'
-        } else {
+        $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
+
+        if ($compiler_override) {
             $this.compiler = $compiler_override;
+        } else {
+            $this.compiler = $jsonData.'$compiler_type'
         }
 
-        $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
-        $this.should_rebuild_project_dependencies = $jsonData.'$should_rebuild_project_dependencies'
+        if ($should_rebuild_project_dependencies_override) {
+            $this.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override;
+        } else {
+            $this.should_rebuild_project_dependencies = $jsonData.'$should_rebuild_project_dependencies'
+        }
 
         $this.project_dependencies = $jsonData.'$project_dependencies'
         $this.std_version = $jsonData.'$std_version'
@@ -135,7 +128,7 @@ class Project {
         $this.build_procedures = [System.Collections.ArrayList]@()
     }
 
-    [void]buildProjectDependencies() {
+    [void]BuildProjectDependencies() {
         if (($this.project_dependencies.Count -eq 0) -or (!$this.project_dependencies[0])) {
             Write-Host "[$($this.name)] depends on nothing" -ForegroundColor Magenta
             return
@@ -144,7 +137,7 @@ class Project {
         foreach ($dependency in $this.project_dependencies) {
             Write-Host "  - $dependency" -ForegroundColor Blue
 
-            if(($null -eq $dependency) -and !(Test-Path -Path $dependency)) {
+            if(!(Test-Path -Path $dependency)) {
                 Write-Host "missing $dependency"
                 git clone https://github.com/superg3m/$dependency.git
             } else {
@@ -166,7 +159,7 @@ class Project {
                 Pop-Location
             }
 
-            $project_dependency = ./build.ps1 -should_build_project $false
+            $project_dependency = ./c-build/utility/decode_project.ps1
             $is_dependency_built_result = $false
 
             foreach ($build_procedure in $project_dependency.build_procedures) {
@@ -196,9 +189,14 @@ class Project {
         Write-Host ""
     }
 
-    [BuildProcedure]addBuildProcedure([BuildProcedure]$build_proc) {
+    [void]InvokeBuildProcedures() {
+        foreach ($build_procedure in $this.build_procedures) {
+            $build_procedure.InvokeBuild($this.compiler)
+        }
+    }
+
+    [BuildProcedure]AddBuildProcedure([BuildProcedure]$build_proc) {
         $this.build_procedures += $build_proc
-        $build_proc | Out-Null
         return $build_proc
     }
 

@@ -107,3 +107,12 @@ I Have to be able to decline the output like this:
 Heres what i'm thinking there will be internal scripts that handle this and then discard the output for the user because you won't need it
 
 but you can use it as another fellow interal script. This is how you are going to pass around references to projects and build dependencies
+
+
+its like 80% of the way there heres what I need to figure out
+- The replacing of $compiler_type is not going to work anymore. I think I want to just have an override switch and then force it to build
+based on the ChildProject
+
+I also think I will make that distinction of:
+    Project 
+    - ChildProjects (This should actually contain the information needed to build this project I want the object)
