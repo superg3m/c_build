@@ -198,7 +198,7 @@ class Project {
 
     [BuildProcedure]addBuildProcedure([BuildProcedure]$build_proc) {
         $this.build_procedures += $build_proc
-        return $build_proc
+        return $build_proc | Out-Null
     }
 
     [void]Print() {
