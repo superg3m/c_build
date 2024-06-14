@@ -12,7 +12,9 @@ Pop-Location
 
 $project = ./c-build/utility/decode_project.ps1
 
-$project.Print()
+Write-Host "Type: $($result.GetType())"
+
+# $project.Print()
 
 # Write-Host "|--------------- Started Building $($project.name) ---------------|" -ForegroundColor Blue
 # $timer = [Diagnostics.Stopwatch]::new()
