@@ -69,7 +69,7 @@ class BuildProcedure {
             continue
         }
 
-        ../$compiler_type/internal_build.ps1 -project $this.project
+        ./c-build/$compiler_type/internal_build.ps1 -project $this.project
 
         $this.is_built = $true
     }
