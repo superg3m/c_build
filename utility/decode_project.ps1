@@ -29,10 +29,8 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
     if ($value -is [PSCustomObject]) {
         $build_procedure = [BuildProcedure]::new($key, $value)
-        $project.AddBuildProcedure($build_procedure)
+        $null = $project.AddBuildProcedure($build_procedure)
     }
 }
-
-Write-Host "Type: $($project.GetType())"
 
 return $project
