@@ -28,8 +28,6 @@ function Parse_JsonFile($file_path) {
 }
 
 class BuildProcedure {
-    [Project]$project
-
     [string]$build_directory
 
     [string]$name
@@ -44,12 +42,10 @@ class BuildProcedure {
     [string]$source_paths
     [string]$additional_libs
 
-    BuildProcedure ([string]$project_name, [string]$build_directory, [PSCustomObject]$jsonData) {
-        $this.project_name = $project_name
+    BuildProcedure ([string]$build_directory, [PSCustomObject]$jsonData) {
+        $this.name = $jsonData.'$build_procedure_name'
 
         $this.build_directory = $build_directory
-
-        $this.name = $jsonData.'$build_procedure_name'
 
         $this.should_build_procedure = $jsonData.'$should_build_procedure'
         $this.should_build_lib = $jsonData.'$should_build_lib'
@@ -121,13 +117,13 @@ class Project {
 
     [BuildProcedure[]]$build_procedures
 
-    Project ([PSCustomObject]$jsonData, [string]$compiler) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler_override) {
         $this.name = $jsonData.'$project_name'
 
-        if ($null -eq $compiler) {
+        if ($null -eq $compiler_override) {
             $this.compiler = $jsonData.'$compiler_type'
         } else {
-            $this.compiler = $compiler;
+            $this.compiler = $compiler_override;
         }
 
         $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
