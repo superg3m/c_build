@@ -57,17 +57,11 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
 
-Write-Host $build_directory -ForegroundColor Magenta
-Write-Host $clCommand -ForegroundColor Magenta
-
-
 Push-Location $build_directory
-    Invoke-Expression "$clCommand"
+    Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
     if ($should_build_lib -eq $true) {
         lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
     }
 Pop-Location
-
-Write-Host "TESTSEITNESGSGSEGSEGSE" -ForegroundColor Magenta
 
 ./c-build/new_cl/internal_normalize_path.ps1 -project $project -build_procedure $build_procedure
