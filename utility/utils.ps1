@@ -195,7 +195,7 @@ class Project {
         Write-Host $this.compiler -ForegroundColor Blue
 
         foreach ($build_procedure in $this.build_procedures) {
-            $build_procedure.Build($this.compiler)
+            #$build_procedure.Build($this.compiler)
         }
     }
 
