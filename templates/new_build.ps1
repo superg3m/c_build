@@ -21,7 +21,6 @@ Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
 git pull -q
-./bootstrap.ps1 $project.compiler
 Pop-Location
 
 if ($should_build_project -ne $null) { # Acts as an override flag
