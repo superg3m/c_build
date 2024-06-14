@@ -62,7 +62,7 @@ Write-Host $clCommand -ForegroundColor Magenta
 
 
 Push-Location $build_directory
-    Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
+    Invoke-Expression "$clCommand"
     if ($should_build_lib -eq $true) {
         lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
     }
