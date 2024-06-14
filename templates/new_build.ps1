@@ -8,20 +8,21 @@ param (
     [Parameter(Mandatory=$false)]
     [bool]$should_rebuild_project_dependencies_override
 )
-. ../utility/utils.ps1
+
+. ./c-build/utility/utils.ps1
 
 $json_config_path = "c_build_config.json"
+
+$jsonData = Parse_JsonFile($json_config_path);
+
+$project = [Project]::new($jsonData, $compiler_override)
 
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
 git pull -q
-./bootstrap.ps1
+./bootstrap.ps1 $project.compiler_type
 Pop-Location
-
-$jsonData = Parse_JsonFile($json_config_path);
-
-$project = [Project]::new($jsonData, $compiler_override)
 
 if ($should_build_project -ne $null) { # Acts as an override flag
     $project.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override
