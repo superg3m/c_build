@@ -212,9 +212,6 @@ class Project {
         Write-Host "should_rebuild_project_dependencies: $($this.should_rebuild_project_dependencies)"
         Write-Host "project_dependencies: $($this.project_dependencies)"
         Write-Host "std_version: $($this.std_version)"
-        foreach ($build_proc in $this.build_procedures) {
-            $build_proc.Print()
-        }
         Write-Host "================================================" -ForegroundColor Magenta
     }
 }
