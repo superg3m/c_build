@@ -8,6 +8,8 @@ param(
 
 $build_directory = $build_procedure.build_directory
 
+Write-Host "FOR NOMRLAIZE: $build_directory"
+
 $build_procedure_name = $build_procedure.name
 
 Write-Host "running [$($project.name) -> $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
