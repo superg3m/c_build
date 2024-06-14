@@ -1,5 +1,8 @@
 param (
     [Parameter(Mandatory=$false)]
+    [bool]$should_skip_build,
+
+    [Parameter(Mandatory=$false)]
     [bool]$should_build_project
 )
 . ../utility/utils.ps1
@@ -27,7 +30,11 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
 
     if ($value -is [PSCustomObject]) {
         $build_procedure = [BuildProcedure]::new($project.name, $key, $value)
-        $project.addBuildProcedure($build_procedure).InvokeBuild("$compiler_type")
+        if ($should_skip_build -eq $null -or $should_skip_build -eq $false) {
+            $project.addBuildProcedure($build_procedure).InvokeBuild("$compiler_type")
+        } else {
+            $project.addBuildProcedure($build_procedure)
+        }
     }
 }
 
