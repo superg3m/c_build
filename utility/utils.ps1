@@ -116,7 +116,7 @@ class Project {
         if ($compiler_override) {
             $this.compiler = $compiler_override;
         } else {
-            $this.compiler = $jsonData.'$compiler_type'
+            $this.compiler = $jsonData.'$compiler'
         }
 
         if ($should_rebuild_project_dependencies_override) {
