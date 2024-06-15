@@ -119,3 +119,6 @@ I also think I will make that distinction of:
 
 ok it sort of works I need to clean it up a ton and think through this more don't worry I have plenty of time
 I really should write those essays tho sometime soon I think I vow to write those essays watching Leo its a perfect time no excuses
+
+
+FULL REWRITE INBOUND
