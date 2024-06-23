@@ -18,7 +18,7 @@ class Project {
     [string]$execute_procedure_string
     [Procedure]$execute_procedure
 
-    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override = $false) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler_override) {
         Write-Host "ACTUALLY GETTING CALLED HOW?" -ForegroundColor Green
         $this.name = $jsonData.'project_name'
 
@@ -26,11 +26,39 @@ class Project {
 
         $this.compiler = $compiler_override
 
-        if ($should_rebuild_project_dependencies_override) {
-            $this.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override;
-        } else {
-            $this.should_rebuild_project_dependencies = $jsonData.'should_rebuild_project_dependencies'
+        $this.should_rebuild_project_dependencies = $jsonData.'should_rebuild_project_dependencies'
+
+        $this.project_dependency_strings = $jsonData.'project_dependencies'
+        $this.std_version = $jsonData.'std_version'
+
+        $this.build_procedures = [System.Collections.ArrayList]@()
+        $this.project_dependencies = [System.Collections.ArrayList]@()
+
+        $this.execute_procedure_string = $jsonData.'execute'
+
+        foreach ($key in $jsonData.PSObject.Properties.Name) {
+            $value = $jsonData.$key
+
+            if ($value -is [PSCustomObject]) {
+                $build_procedure = [Procedure]::new($key, $this.compiler, $value)
+                $null = $this.AddBuildProcedure($build_procedure)
+                if ($build_procedure.output_name -eq $this.execute_procedure_string) {
+                    $this.execute_procedure = $build_procedure;
+                }
+            }
         }
+    }
+
+
+    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override) {
+        Write-Host "ACTUALLY GETTING CALLED HOW?" -ForegroundColor Green
+        $this.name = $jsonData.'project_name'
+
+        $this.debug_with_visual_studio = $jsonData.'debug_with_visual_studio'
+
+        $this.compiler = $compiler_override
+
+        $this.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override;
 
         $this.project_dependency_strings = $jsonData.'project_dependencies'
         $this.std_version = $jsonData.'std_version'
