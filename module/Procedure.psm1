@@ -18,6 +18,8 @@ class Procedure {
 
         $this.compiler = $compiler_type
 
+        Write-Host "$($this.compiler)" -ForegroundColor Yellow
+
         $this.output_name = $jsonData.'output_name'
 
         if ($this.output_name -Like "*.exe") {
@@ -50,7 +52,7 @@ class Procedure {
             continue
         }
 
-        $scriptPath = -join("./c-build/", $this.compiler_type, "/build_procedure.ps1")
+        $scriptPath = -join("./c-build/", $this.compiler, "/build_procedure.ps1")
         & $scriptPath -debug_build $debug -std_version $std_version -build_procedure $this 
     }
 
@@ -61,7 +63,7 @@ class Procedure {
     [void]Execute() {
         if (!$this.IsBuilt()) {
             $debug_mode = $false
-            $this.Build($this.compiler_type, $debug_mode)
+            $this.Build($this.compiler, $debug_mode)
         }
 
         Push-Location "$($this.directory)"
@@ -71,7 +73,7 @@ class Procedure {
 
     [void]Debug() {
         $debug_mode = $true
-        $this.Build($this.compiler_type, $debug_mode)
+        $this.Build($this.compiler, $debug_mode)
 
         Push-Location $this.directory
         if ($this.debug_with_visual_studio -eq $true) {

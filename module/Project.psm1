@@ -135,8 +135,8 @@ class Project {
             if ($is_dependency_built_result -eq $true) {
                 Write-Host "$dependency Depedency Already Build Skipping..." -ForegroundColor Magenta
             } else {
-                ./c-build/bootstrap.ps1 -compiler_type $this.compiler_type
-                $this.project_dependency = ./build.ps1 -compiler_type_override $this.compiler_type
+                ./c-build/bootstrap.ps1 -compiler_type $this.compiler
+                $this.project_dependency = ./build.ps1 -compiler_type_override $this.compiler
             }
             
             Pop-Location
