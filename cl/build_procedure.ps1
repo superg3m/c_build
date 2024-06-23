@@ -11,8 +11,6 @@ param(
     [bool] $debug_build
 )
 
-$build_procedure_name = $build_procedure.name
-
 $build_directory = $build_procedure.build_directory
 
 $output_name = $build_procedure.output_name
@@ -22,7 +20,7 @@ $include_paths = $build_procedure.include_paths
 $source_paths = $build_procedure.source_paths
 $additional_libs = $build_procedure.additional_libs
 
-Write-Host "running [$build_procedure_name] build.ps1..." -ForegroundColor Green
+Write-Host "running [$output_name] build.ps1..." -ForegroundColor Green
 
 ./vars.ps1
 

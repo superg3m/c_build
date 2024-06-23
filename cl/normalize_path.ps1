@@ -5,9 +5,9 @@ param(
 
 $build_directory = $build_procedure.build_directory
 
-$build_procedure_name = $build_procedure.name
+$output_name = $build_procedure.output_name
 
-Write-Host "running [$build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
+Write-Host "running [$output_name] normalize_path.ps1..." -ForegroundColor Green
 
 $rootPath = $PSScriptRoot
 
