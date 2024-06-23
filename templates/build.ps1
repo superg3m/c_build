@@ -17,7 +17,7 @@ $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
 
 $project.BuildProjectDependencies()
-# $project.BuildProcedures()
+$project.BuildProcedures()
 
 $timer.Stop()
 Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue
