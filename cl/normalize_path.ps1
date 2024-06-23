@@ -3,6 +3,9 @@ param(
     [Procedure] $build_procedure
 )
 
+
+$build_procedure.PrintProcedure()
+
 $build_directory = $build_procedure.build_directory
 
 $output_name = $build_procedure.output_name
