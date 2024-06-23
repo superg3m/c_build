@@ -64,8 +64,11 @@ class Procedure {
             $this.Build($this.compiler, $debug_mode)
         }
 
-        Push-Location "$($this.directory)"
+        Write-Host "WHATATATA: "
         Get-ChildItem | ForEach-Object { $_.Name }
+
+        Push-Location "$($this.directory)"
+        
         & ".\$($this.output_name)"
         Pop-Location
     }
