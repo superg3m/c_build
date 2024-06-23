@@ -145,8 +145,9 @@ class Project {
     }
 
     [void]BuildAllProcedures() {
+        $debug_mode = $false
         foreach ($build_procedure in $this.build_procedures) {
-            $build_procedure.Build($this.std_version)
+            $build_procedure.Build($this.std_version, $debug_mode)
         }
     }
 

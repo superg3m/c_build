@@ -44,7 +44,7 @@ class Procedure {
         return $directoryInfo.count -ne 0
     }
 
-    [void]Build([string]$std_version, [bool]$debug = $false) {
+    [void]Build([string]$std_version, [bool]$debug) {
         if ($this.should_build_procedure -eq $false) {
             Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
             continue
@@ -60,7 +60,8 @@ class Procedure {
 
     [void]Execute() {
         if (!$this.IsBuilt()) {
-            $this.Build($this.compiler_type)
+            $debug_mode = $false
+            $this.Build($this.compiler_type, $debug_mode)
         }
 
         Push-Location "$($this.directory)"
@@ -69,8 +70,8 @@ class Procedure {
     }
 
     [void]Debug() {
-        $debug = $true
-        $this.Build($this.compiler_type, $debug)
+        $debug_mode = $true
+        $this.Build($this.compiler_type, $debug_mode)
 
         Push-Location $this.directory
         if ($this.debug_with_visual_studio -eq $true) {
