@@ -53,7 +53,7 @@ class Procedure {
         }
 
         $scriptPath = -join("./c-build/", $this.compiler, "/build_procedure.ps1")
-        & $scriptPath -debug_build $debug -std_version $std_version -build_procedure $this 
+        & $scriptPath -build_procedure $this -std_version $std_version -debug_build $debug 
     }
 
     [void]Clean() {

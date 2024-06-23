@@ -93,7 +93,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
             }
         }
 
-        ./c-build/$compiler_type/clean_procedure.ps1 -project $project -build_procedure $build_procedure_name
+        ./c-build/$compiler_type/clean_procedure.ps1 -project $project -build_procedure $build_procedure_name)]
         ./c-build/$compiler_type/build_procedure.ps1 -project $project
     }
 }
