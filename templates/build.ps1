@@ -1,4 +1,4 @@
-Import-Module "./c-build/module/Procedure.psm1"
+Import-Module "./c-build/module/Project.psm1"
 
 Push-Location  "./c-build"
 git fetch origin -q
