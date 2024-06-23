@@ -12,6 +12,6 @@ $project = $json_config_path = "c_build_config.json"
 $jsonData = Parse_JsonFile($json_config_path);
 $project = [Project]::new($jsonData, "$compiler_type")
 
-$project.CleanAll()
+$project.CleanAllProcedure()
 
 # ok clean is not quiet right anymore you need to clean all build_procedures
