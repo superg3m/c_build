@@ -66,7 +66,8 @@ class Procedure {
 
         Write-Host "WHATATATA: $($this.directory)"
 
-        Get-Location
+        $currentDir = Get-Location
+        Write-Host "Current Directory: $currentDir"
 
         Push-Location "$($this.directory)"
         
