@@ -1,5 +1,5 @@
 param (
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [string]$compiler_override,
 
     [Parameter(Mandatory=$false)]

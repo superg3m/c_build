@@ -108,10 +108,12 @@ class Project {
 
     [BuildProcedure[]]$build_procedures
 
-    Project ([PSCustomObject]$jsonData, [bool]$should_rebuild_project_dependencies_override) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override) {
         $this.name = $jsonData.'$project_name'
 
         $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
+
+        $this.compiler = $compiler_override
 
         if ($should_rebuild_project_dependencies_override) {
             $this.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override;
