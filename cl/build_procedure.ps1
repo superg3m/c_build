@@ -29,12 +29,9 @@ $clCommand = "cl /std:$std_version /nologo"
 
 if ($debug_build -eq $true) {
     $clCommand += " /Od"
+    $clCommand += " /Zi"
 } else {
     $clCommand += " /O2"
-}
-
-if ($debug_build -eq $true) {
-    $clCommand += " /Zi"
 }
 
 foreach ($define in $compile_time_defines) {
