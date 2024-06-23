@@ -13,6 +13,7 @@ Pop-Location
 $project = ./c-build/utility/decode_project.ps1 -compiler_override $compiler_type
 
 Write-Host "|--------------- Started Building $($project.name) ---------------|" -ForegroundColor Blue
+Write-Host "Compiler: $compiler_type"
 $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
 

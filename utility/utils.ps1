@@ -55,8 +55,6 @@ class BuildProcedure {
             continue
         }
 
-        Write-Host "COMPILER: $compiler_type" -ForegroundColor Green
-
         $scriptPath = -join("./c-build/", $compiler_type, "/internal_build.ps1")
         & $scriptPath -project $project -build_procedure $this
     }
