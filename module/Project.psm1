@@ -19,7 +19,6 @@ class Project {
     [Procedure]$execute_procedure
 
     Project ([PSCustomObject]$jsonData, [string]$compiler_override) {
-        Write-Host "ACTUALLY GETTING CALLED HOW?" -ForegroundColor Green
         $this.name = $jsonData.'project_name'
 
         $this.debug_with_visual_studio = $jsonData.'debug_with_visual_studio'
