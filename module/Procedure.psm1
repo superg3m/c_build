@@ -68,7 +68,7 @@ class Procedure {
 
         $exe = -join(".\", $this.output_name)
 
-        & $exe
+        & $exe | Out-Default
         Pop-Location
     }
 
