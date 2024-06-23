@@ -10,9 +10,6 @@
     "project_dependencies" : [""],
 
     "./build_$compiler_type" : {
-        "should_build_procedure" : true,
-        "should_build_lib" : true,
-
         "output_name" : "ckg.lib",
         "compile_time_defines" : "",
         "include_paths" : "",
@@ -22,12 +19,6 @@
     },
 
     "./example/$compiler_type" : {
-        "should_build_procedure" : false,
-
-        "should_build_lib" : true,
-        "should_execute" : true,
-
-
         "output_name" : "test_ckg.exe",
         "compile_time_defines" : "",
         "include_paths" : "",

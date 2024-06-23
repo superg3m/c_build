@@ -5,7 +5,7 @@ param(
     [Parameter(Mandatory=$true)]
     [BuildProcedure] $build_procedure,
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [bool] $debug_build
 )
 

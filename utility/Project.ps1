@@ -1,3 +1,5 @@
+. ./Procedure.ps1
+
 class Project {
     [string]$name
 
@@ -114,11 +116,19 @@ class Project {
         }
     }
 
+    [void]CleanAllProcedure() {
+        foreach ($build_procedure in $this.build_procedures) {
+            $build_procedure.Clean()
+        }
+    }
+
     [void]ExecuteProcedure() {
         foreach ($build_procedure in $this.build_procedures) {
             $build_procedure.Execute($this.compiler)
         }
     }
+
+
 
     [BuildProcedure]AddBuildProcedure([BuildProcedure]$build_proc) {
         $this.build_procedures += $build_proc
