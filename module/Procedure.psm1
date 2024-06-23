@@ -74,7 +74,7 @@ class Procedure {
             Write-Host "NAME: $($item.name)"
         }
 
-        Invoke-Expression "$this.output_name"
+        Invoke-Expression $this.output_name
         Pop-Location
     }
 
