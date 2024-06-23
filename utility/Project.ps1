@@ -14,7 +14,9 @@ class Project {
     [string]$std_version
 
     [Procedure[]]$build_procedures
-    [string]$run_procedure
+
+    [string]$execute_procedure_string
+    [Procedure]$execute_procedure
 
     Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override) {
         $this.name = $jsonData.'project_name'
@@ -35,7 +37,7 @@ class Project {
         $this.build_procedures = [System.Collections.ArrayList]@()
         $this.project_dependencies = [System.Collections.ArrayList]@()
 
-        $this.run_procedure = $jsonData.'run'
+        $this.execute_procedure_string = $jsonData.'execute'
 
         foreach ($key in $jsonData.PSObject.Properties.Name) {
             $value = $jsonData.$key
@@ -43,6 +45,9 @@ class Project {
             if ($value -is [PSCustomObject]) {
                 $build_procedure = [BuildProcedure]::new($key, $value)
                 $null = $project.AddBuildProcedure($build_procedure)
+                if ($build_procedure.output_name -eq $this.execute_procedure_string) {
+                    $this.execute_procedure = $build_procedure;
+                }
             }
         }
     }
@@ -112,7 +117,7 @@ class Project {
 
     [void]BuildAllProcedures() {
         foreach ($build_procedure in $this.build_procedures) {
-            $build_procedure.Build($this, $this.compiler)
+            $build_procedure.Build($this.std_version)
         }
     }
 
@@ -123,12 +128,12 @@ class Project {
     }
 
     [void]ExecuteProcedure() {
-        foreach ($build_procedure in $this.build_procedures) {
-            $build_procedure.Execute($this.compiler)
-        }
+        $this.execute_procedure.Execute()
     }
 
-
+    [void]DebugProcedure() {
+        $this.execute_procedure.Debug()
+    }
 
     [BuildProcedure]AddBuildProcedure([BuildProcedure]$build_proc) {
         $this.build_procedures += $build_proc

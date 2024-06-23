@@ -1,8 +1,5 @@
 param(
     [Parameter(Mandatory=$true)]
-    [Project] $project,
-
-    [Parameter(Mandatory=$true)]
     [BuildProcedure] $build_procedure
 )
 
@@ -10,7 +7,7 @@ $build_directory = $build_procedure.build_directory
 
 $build_procedure_name = $build_procedure.name
 
-Write-Host "running [$($project.name) -> $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
+Write-Host "running [$build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
 
 $rootPath = $PSScriptRoot
 

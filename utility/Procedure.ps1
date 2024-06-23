@@ -7,7 +7,6 @@ class Procedure {
     [bool]$should_build_static_lib = $false
     [bool]$should_build_dynamic_lib = $false
 
-
     [string]$output_name
     [string]$compile_time_defines
     [string]$include_paths
@@ -45,14 +44,14 @@ class Procedure {
         return $directoryInfo.count -ne 0
     }
 
-    [void]Build([Project]$project, [bool]$debug = $false) {
+    [void]Build([string]$std_version, [bool]$debug = $false) {
         if ($this.should_build_procedure -eq $false) {
             Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
             continue
         }
 
         $scriptPath = -join("./c-build/", $this.compiler_type, "/build_procedure.ps1")
-        & $scriptPath -project $project -debug_build $debug -build_procedure $this 
+        & $scriptPath -debug_build $debug -std_version $std_version -build_procedure $this 
     }
 
     [void]Clean() {

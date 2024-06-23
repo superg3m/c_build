@@ -3,11 +3,23 @@ param(
 	[string] $compiler_type
 )
 
+function Parse_JsonFile($file_path) {
+    if (!(Test-Path -Path $file_path)) {
+        throw "Configuration file not found: $file_path"
+    }
+    
+    $json_object = Get-Content -Path $file_path -Raw
+
+    return ConvertFrom-Json -InputObject $json_object
+}
+
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
 git pull -q
 Pop-Location
+
+$c_build_version = 0.8
 
 if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
     Write-Error "Compiler type is invalid should be either cl or gcc"
@@ -45,6 +57,11 @@ Write-Host
 $has_exisiting_config = $false
 if (Test-Path -Path "../$configFilePath") {
     $has_exisiting_config = $true
+
+    $jsonData = Parse_JsonFile("../$($configFilePath)");
+    if ($c_build_version -ne $jsonData.'c_build_version') {
+        throw "c_build_version is not valid wanted: $c_build_version | got: $($jsonData.'c_build_version')"
+    }
 }
 
 foreach ($templateFile in $templateFiles) {

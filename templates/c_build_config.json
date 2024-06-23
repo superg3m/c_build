@@ -27,5 +27,5 @@
         "additional_libs" : ""
     },
 
-    "run" : "test_ckg.exe"
+    "execute" : "test_ckg.exe"
 }
