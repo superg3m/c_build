@@ -26,6 +26,8 @@ Write-Host "TYPE: $($jsonData.GetType())"
 
 $project = [Project]::new($jsonData, "$compiler_type")
 
+return
+
 Write-Host "TESTING: $project" -ForegroundColor Magenta
 
 Write-Host "|--------------- Started Building $($project.name) ---------------|" -ForegroundColor Blue

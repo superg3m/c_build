@@ -20,6 +20,9 @@ class Project {
 
     Project ([PSCustomObject]$jsonData, [string]$compiler_override) {
         Write-Host "ACTUALLY GETTING CALLED NOW" -ForegroundColor Green
+
+        return
+
         $this.name = $jsonData.'project_name'
 
         $this.debug_with_visual_studio = $jsonData.'debug_with_visual_studio'
@@ -49,7 +52,7 @@ class Project {
         }
     }
 
-    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override = $false) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override) {
         Write-Host "ACTUALLY GETTING CALLED HOW?" -ForegroundColor Green
         $this.name = $jsonData.'project_name'
 
