@@ -176,8 +176,6 @@ class Project {
                     break
                 }
             }
-
-
             
             if ($is_dependency_built_result -eq $true) {
                 Write-Host "$dependency Depedency Already Build Skipping..." -ForegroundColor Magenta

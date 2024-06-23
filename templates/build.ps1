@@ -1,3 +1,8 @@
+param (
+    [Parameter(Mandatory=$false)]
+    [string] $compiler_type_override
+);
+
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
@@ -11,6 +16,10 @@ Pop-Location
 . ./c-build/utility/utils.ps1
 
 $project = ./c-build/utility/decode_project.ps1
+
+if ($compiler_type_override) {
+    $project.compiler = $compiler_type_override
+}
 
 Write-Host "|--------------- Started Building $($project.name) ---------------|" -ForegroundColor Blue
 $timer = [Diagnostics.Stopwatch]::new()
