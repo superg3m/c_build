@@ -64,7 +64,7 @@ class Procedure {
             $this.Build($this.compiler, $debug_mode)
         }
 
-        Write-Host "WHATATATA: $($this.directory)"
+        Push-Location "$($this.directory)"
 
         $currentDir = Get-Location
         Write-Host "Current Directory: $currentDir"
@@ -73,10 +73,8 @@ class Procedure {
         foreach ($item in $items) {
             Write-Host "NAME: $($item.name)"
         }
-
-        Push-Location "$($this.directory)"
         
-        # & ".\$($this.output_name)"
+        & ".\$($this.output_name)"
         Pop-Location
     }
 
