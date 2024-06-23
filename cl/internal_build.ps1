@@ -1,29 +1,29 @@
 param(
     [Parameter(Mandatory=$true)]
-    [string] $project_name,
+    [Project] $project,
 
     [Parameter(Mandatory=$true)]
-    [string] $build_directory,
-
-    [Parameter(Mandatory=$true)]
-    [string] $build_json,
+    [BuildProcedure] $build_procedure,
 
     [Parameter(Mandatory=$false)]
     [bool] $debug_build
 )
 
-$jsonData = $build_json | ConvertFrom-Json
+. ./c-build/utility/utils.ps1
 
-$output_name = $jsonData.'$output_name'
-$compile_time_defines = $jsonData.'$compile_time_defines'
-$std_version = $jsonData.'$std_version'
-$should_build_lib = $jsonData.'$should_build_lib'
-$include_paths = $jsonData.'$include_paths'
-$source_paths = $jsonData.'$source_paths'
-$additional_libs = $jsonData.'$additional_libs'
+$build_procedure_name = $build_procedure.name
 
-$build_procedure_name = $jsonData.'$build_procedure_name'
-Write-Host "running [$project_name - $build_procedure_name] build.ps1..." -ForegroundColor Green
+$build_directory = $build_procedure.build_directory
+
+$output_name = $build_procedure.output_name
+$compile_time_defines = $build_procedure.compile_time_defines
+$std_version = $project.std_version
+$should_build_lib = $build_procedure.should_build_lib
+$include_paths = $build_procedure.include_paths
+$source_paths = $build_procedure.source_paths
+$additional_libs = $build_procedure.additional_libs
+
+Write-Host "running [$($project.name) -> $build_procedure_name] build.ps1..." -ForegroundColor Green
 
 ./vars.ps1
 
@@ -64,4 +64,4 @@ Push-Location $build_directory
     }
 Pop-Location
 
-./c-build/cl/internal_normalize_path.ps1 -project_name $project_name -build_directory $build_directory -build_json $build_json
+./c-build/new_cl/internal_normalize_path.ps1 -project $project -build_procedure $build_procedure

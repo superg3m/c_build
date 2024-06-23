@@ -1,19 +1,18 @@
 param(
     [Parameter(Mandatory=$true)]
-    [string] $project_name,
+    [Project] $project,
 
     [Parameter(Mandatory=$true)]
-    [string] $build_directory,
-
-    [Parameter(Mandatory=$true)]
-    [string] $build_json
+    [BuildProcedure] $build_procedure
 )
 
-$jsonData = $build_json | ConvertFrom-Json
+$build_directory = $build_procedure.build_directory
 
-$build_procedure_name = $jsonData.'$build_procedure_name'
+Write-Host "FOR NOMRLAIZE: $build_directory"
 
-Write-Host "running [$project_name - $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
+$build_procedure_name = $build_procedure.name
+
+Write-Host "running [$($project.name) -> $build_procedure_name] normalize_path.ps1..." -ForegroundColor Green
 
 $rootPath = $PSScriptRoot
 
@@ -29,5 +28,8 @@ Get-Content -Path $realFilePath | ForEach-Object {
 }
 
 Move-Item -Path $tempFilePath -Destination $realFilePath -Force
-Get-Content -Path $realFilePath
+$contents = Get-Content -Path $realFilePath
+
+Write-Host $contents
+
 Remove-Item -Path $realFilePath
