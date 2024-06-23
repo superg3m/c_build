@@ -16,7 +16,7 @@ Write-Host "|--------------- Started Building $($project.name) ---------------|"
 $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
 
-# $project.BuildProjectDependencies()
+$project.BuildProjectDependencies()
 # $project.BuildProcedures()
 
 $timer.Stop()
