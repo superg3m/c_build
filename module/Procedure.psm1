@@ -65,7 +65,7 @@ class Procedure {
         }
 
         Push-Location "$($this.directory)"
-        & "$($this.output_name)"
+        & "./$($this.output_name)"
         Pop-Location
     }
 
@@ -75,9 +75,9 @@ class Procedure {
 
         Push-Location $this.directory
         if ($this.debug_with_visual_studio -eq $true) {
-            devenv $this.output_name
+            devenv "./$($this.output_name)"
         } else {
-            & "raddbg" $this.output_name
+            & "raddbg" "./$($this.output_name)"
         }
         Pop-Location
     }
