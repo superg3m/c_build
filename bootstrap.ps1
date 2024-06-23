@@ -9,7 +9,7 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-if ($compiler_type -ne "cl" -and $compiler_type -ne "new_cl" -and $compiler_type -ne "gcc") {
+if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
     Write-Error "Compiler type is invalid should be either cl or gcc"
     Break
 }
