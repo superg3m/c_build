@@ -1,4 +1,6 @@
-using module ./Procedure.psm1
+using module "$PSScriptRoot\Procedure.psm1"
+
+Write-Host $PSScriptRoot -ForegroundColor Magenta
 
 class Project {
     [string]$name
