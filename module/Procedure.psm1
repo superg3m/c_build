@@ -58,10 +58,10 @@ class Procedure {
         Remove-Item -Path "$($this.directory)/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
     }
 
-    [void]Execute() {
+    [void]Execute($std_version) {
         if (!$this.IsBuilt()) {
             $debug_mode = $false
-            $this.Build($this.compiler, $debug_mode)
+            $this.Build($std_version, $debug_mode)
         }
 
         & "$($this.directory)/$($this.output_name)" | Out-Default

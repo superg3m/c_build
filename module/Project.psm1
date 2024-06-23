@@ -154,7 +154,7 @@ class Project {
     }
 
     [void]ExecuteProcedure() {
-        $this.execute_procedure.Execute()
+        $this.execute_procedure.Execute($this.std_version)
     }
 
     [void]DebugProcedure() {
