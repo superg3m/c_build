@@ -71,13 +71,11 @@ class Procedure {
         $debug_mode = $true
         $this.Build($this.compiler, $debug_mode)
 
-        Push-Location $this.directory
         if ($this.debug_with_visual_studio -eq $true) {
-            devenv "./$($this.directory)/$($this.output_name)"
+            devenv "$($this.directory)/$($this.output_name)"
         } else {
-            & "raddbg" "./$($this.output_name)"
+            & "raddbg" "$($this.directory)/$($this.output_name)"
         }
-        Pop-Location
     }
 
     [void]PrintProcedure() {
