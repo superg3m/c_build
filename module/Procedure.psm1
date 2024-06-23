@@ -65,7 +65,10 @@ class Procedure {
         }
 
         Push-Location "$($this.directory)"
-        & ".\$this.output_name"
+
+        $exe = -join(".\", $this.output_name)
+
+        & $exe
         Pop-Location
     }
 
