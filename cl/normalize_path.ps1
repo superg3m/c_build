@@ -13,8 +13,8 @@ $build_procedure.PrintProcedure()
 
 $rootPath = $PSScriptRoot
 
-$tempFilePath = "$build_directory/compilation_errors_temp.txt"
-$realFilePath = "$build_directory/compilation_errors.txt"
+$tempFilePath = -join($build_directory, "/compilation_errors_temp.txt")
+$realFilePath = -join($build_directory, "/compilation_errors.txt")
 
 New-Item -Path $tempFilePath -Force | Out-Null
 
