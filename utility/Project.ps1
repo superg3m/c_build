@@ -1,4 +1,4 @@
-. ./c-build/utility/Procedure.ps1
+. ./utility/Procedure.ps1
 
 class Project {
     [string]$name
