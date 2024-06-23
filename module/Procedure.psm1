@@ -73,8 +73,8 @@ class Procedure {
         foreach ($item in $items) {
             Write-Host "NAME: $($item.name)"
         }
-        
-        & .\$this.output_name
+
+        Invoke-Expression ".\$($this.output_name)"
         Pop-Location
     }
 
