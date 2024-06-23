@@ -1,4 +1,4 @@
-Import-Module ".\Procedure.psm1"
+Import-Module -Name Procedure
 
 class Project {
     [string]$name
@@ -153,3 +153,5 @@ class Project {
         Write-Host "================================================" -ForegroundColor Magenta
     }
 }
+
+Export-ModuleMember -Class Project
