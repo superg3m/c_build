@@ -10,15 +10,8 @@ Pop-Location
 
 $project = $json_config_path = "c_build_config.json"
 $jsonData = Parse_JsonFile($json_config_path);
-$project = [Project]::new($jsonData, $compiler_type)
+$project = [Project]::new($jsonData, "$compiler_type")
 
-$project.CleanAll
-
-foreach ($build_procedure in $project.build_procedures) {
-    $build_procedure_name = $build_procedure.build_directory
-
-    Write-Host "running [$project_name - $build_procedure_name] clean.ps1..." -ForegroundColor Green
-    $build_procedure.Clean()
-}
+$project.CleanAll()
 
 # ok clean is not quiet right anymore you need to clean all build_procedures
