@@ -15,7 +15,7 @@ $output_name = $jsonData.'$output_name'
 
 if ((Test-Path -Path "$build_directory/$output_name")) {
     Write-Host "building $project_name..." -ForegroundColor Magenta
-    ./c-build/cl/internal_build.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
+    ./c-build/cl/build_procedure.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue
 }
 
 Push-Location $build_directory

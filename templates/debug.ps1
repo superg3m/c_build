@@ -32,7 +32,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
         $jsonValue = $value | ConvertTo-Json -Compress
 
         if ($should_execute) {
-            ./c-build/$compiler_type/internal_debug.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue -debug_with_visual_studio $debug_with_visual_studio 
+            ./c-build/$compiler_type/debug_procedure.ps1 -project_name $project_name -build_directory $key -build_json $jsonValue -debug_with_visual_studio $debug_with_visual_studio 
         }
     }
 }

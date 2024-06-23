@@ -1,43 +1,40 @@
 {
-    "$c_build_version" : "0.8",
+    "c_build_version" : "0.8",
 
-    "$project_name" : "RMD",
+    "project_name" : "RMD",
     
-    "$debug_with_visual_studio" : false,
-    "$should_rebuild_project_dependencies" : false,
+    "debug_with_visual_studio" : false,
+    "should_rebuild_project_dependencies" : false,
 
-    "$std_version" : "c11",
-    "$project_dependencies" : [""],
+    "std_version" : "c11",
+    "project_dependencies" : [""],
 
     "./build_$compiler_type" : {
-        "$build_procedure_name" : "building ckg.lib",
+        "should_build_procedure" : true,
+        "should_build_lib" : true,
 
-        "$should_build_procedure" : true,
-        "$should_build_lib" : true,
-        "$should_execute" : true,
+        "output_name" : "ckg.lib",
+        "compile_time_defines" : "",
+        "include_paths" : "",
+        "source_paths" : "./source/*.c",
 
-        "$output_name" : "ckg.lib",
-        "$compile_time_defines" : "",
-        "$include_paths" : "",
-        "$source_paths" : "./source/*.c",
-
-        "$additional_libs" : "./ckg.lib"
+        "additional_libs" : "./ckg.lib"
     },
 
     "./example/$compiler_type" : {
-        "$build_procedure_name" : "running ckg.exe",
+        "should_build_procedure" : false,
 
-        "$should_build_procedure" : false,
-
-        "$should_build_lib" : true,
-        "$should_execute" : true,
+        "should_build_lib" : true,
+        "should_execute" : true,
 
 
-        "$output_name" : "test_ckg.exe",
-        "$compile_time_defines" : "",
-        "$include_paths" : "",
-        "$source_paths" : "../*.c",
+        "output_name" : "test_ckg.exe",
+        "compile_time_defines" : "",
+        "include_paths" : "",
+        "source_paths" : "../*.c",
 
-        "$additional_libs" : ""
-    }
+        "additional_libs" : ""
+    },
+
+    "run" : "test_ckg.exe"
 }

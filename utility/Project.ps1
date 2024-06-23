@@ -1,96 +1,3 @@
-
-
-function Parse_JsonFile($file_path) {
-    if (!(Test-Path -Path $file_path)) {
-        throw "Configuration file not found: $file_path"
-    }
-    $json_object = Get-Content -Path $file_path -Raw
-
-    return ConvertFrom-Json -InputObject $json_object
-}
-
-class BuildProcedure {
-    [string]$build_directory
-
-    [string]$name
-
-    [bool]$should_build_procedure
-    [bool]$should_build_lib
-    [bool]$should_execute
-
-    [string]$output_name
-    [string]$compile_time_defines
-    [string]$include_paths
-    [string]$source_paths
-    [string]$additional_libs
-
-    BuildProcedure ([string]$build_directory, [PSCustomObject]$jsonData) {
-        $this.name = $jsonData.'$build_procedure_name'
-
-        $this.build_directory = $build_directory
-
-        $this.should_build_procedure = $jsonData.'$should_build_procedure'
-        $this.should_build_lib = $jsonData.'$should_build_lib'
-        $this.should_execute = $jsonData.'$should_execute'
-
-        $this.output_name = $jsonData.'$output_name'
-        $this.compile_time_defines = $jsonData.'$compile_time_defines'
-        $this.include_paths = $jsonData.'$include_paths'
-        $this.source_paths = $jsonData.'$source_paths'
-        $this.additional_libs = $jsonData.'$additional_libs'
-    }
-
-    [bool]IsBuilt() {
-        $directoryInfo = Get-ChildItem $this.build_directory | Measure-Object
-        $directoryInfo.count
-
-        return $directoryInfo.count -ne 0
-    }
-
-    [void]Build([Project]$project, [string]$compiler_type) {
-        if ($this.should_build_procedure -eq $false) {
-            Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
-            continue
-        }
-
-        $scriptPath = -join("./c-build/", $compiler_type, "/internal_build.ps1")
-        & $scriptPath -project $project -build_procedure $this
-    }
-
-    [void]Clean([string]$compiler_type) {
-        Remove-Item -Path "$($this.build_directory)/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
-    }
-
-    [void]Execute([string]$compiler_type) {
-        if ($this.should_execute -eq $false) {
-            continue
-        }
-
-        if (!$this.IsBuilt()) {
-            $this.Build($compiler_type)
-        }
-
-        Push-Location "$($this.build_directory)"
-        & "$($this.output_name)"
-        Pop-Location
-    }
-
-    [void]PrintBuildProcedure() {
-        Write-Host "================================================"
-        Write-Host "build_directory: $($this.build_directory)"
-        Write-Host "name: $($this.name)"
-        Write-Host "should_build_procedure: $($this.should_build_procedure)"
-        Write-Host "should_build_lib: $($this.should_build_lib)"
-        Write-Host "should_execute: $($this.should_execute)"
-        Write-Host "output_name: $($this.output_name)"
-        Write-Host "compile_time_defines: $($this.compile_time_defines)"
-        Write-Host "include_paths: $($this.include_paths)"
-        Write-Host "source_paths: $($this.source_paths)"
-        Write-Host "additional_libs: $($this.additional_libs)"
-        Write-Host "================================================"
-    }
-}
-
 class Project {
     [string]$name
 
@@ -99,31 +6,51 @@ class Project {
     [bool]$debug_with_visual_studio
     [bool]$should_rebuild_project_dependencies
 
-    [string[]]$project_dependencies
+    [string[]]$project_dependency_strings
+    [Project[]]$project_dependencies
+
     [string]$std_version
 
-    [BuildProcedure[]]$build_procedures
+    [Procedure[]]$build_procedures
+    [string]$run_procedure
 
     Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override) {
-        $this.name = $jsonData.'$project_name'
+        $this.name = $jsonData.'project_name'
 
-        $this.debug_with_visual_studio = $jsonData.'$debug_with_visual_studio'
+        $this.debug_with_visual_studio = $jsonData.'debug_with_visual_studio'
 
         $this.compiler = $compiler_override
 
         if ($should_rebuild_project_dependencies_override) {
             $this.should_rebuild_project_dependencies = $should_rebuild_project_dependencies_override;
         } else {
-            $this.should_rebuild_project_dependencies = $jsonData.'$should_rebuild_project_dependencies'
+            $this.should_rebuild_project_dependencies = $jsonData.'should_rebuild_project_dependencies'
         }
 
-        $this.project_dependencies = $jsonData.'$project_dependencies'
-        $this.std_version = $jsonData.'$std_version'
+        $this.project_dependency_strings = $jsonData.'project_dependencies'
+        $this.std_version = $jsonData.'std_version'
 
         $this.build_procedures = [System.Collections.ArrayList]@()
+        $this.project_dependencies = [System.Collections.ArrayList]@()
+
+        $this.run_procedure = $jsonData.'run'
+
+        foreach ($key in $jsonData.PSObject.Properties.Name) {
+            $value = $jsonData.$key
+
+            if ($value -is [PSCustomObject]) {
+                $build_procedure = [BuildProcedure]::new($key, $value)
+                $null = $project.AddBuildProcedure($build_procedure)
+            }
+        }
     }
 
-    [void]BuildProjectDependencies() {
+    [Project]AddSubProject([Project]$sub_project) {
+        $this.project_dependencies += $sub_project
+        return $sub_project
+    }
+
+    [void]BuildAllProjectDependencies() {
         if (($this.project_dependencies.Count -eq 0) -or (!$this.project_dependencies[0])) {
             Write-Host "[$($this.name)] depends on nothing" -ForegroundColor Magenta
             return
@@ -181,13 +108,13 @@ class Project {
         Write-Host ""
     }
 
-    [void]BuildProcedures() {
+    [void]BuildAllProcedures() {
         foreach ($build_procedure in $this.build_procedures) {
             $build_procedure.Build($this, $this.compiler)
         }
     }
 
-    [void]ExecuteProcedures() {
+    [void]ExecuteProcedure() {
         foreach ($build_procedure in $this.build_procedures) {
             $build_procedure.Execute($this.compiler)
         }

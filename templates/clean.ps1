@@ -8,6 +8,6 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-./c-build/$compiler_type/internal_clean.ps1
+./c-build/$compiler_type/clean_procedure.ps1
 
 # ok clean is not quiet right anymore you need to clean all build_procedures
