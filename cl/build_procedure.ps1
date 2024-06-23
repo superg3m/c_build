@@ -11,7 +11,7 @@ param(
     [bool] $debug_build
 )
 
-$build_directory = $build_procedure.build_directory
+$build_directory = $build_procedure.directory
 
 $output_name = $build_procedure.output_name
 $compile_time_defines = $build_procedure.compile_time_defines

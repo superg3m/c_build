@@ -3,7 +3,7 @@ param(
     [Procedure] $build_procedure
 )
 
-$build_directory = $build_procedure.build_directory
+$build_directory = $build_procedure.directory
 
 $output_name = $build_procedure.output_name
 
