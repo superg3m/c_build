@@ -65,7 +65,7 @@ class Procedure {
         }
 
         Push-Location "$($this.directory)"
-        & $this.output_name
+        & ".\$this.output_name"
         Pop-Location
     }
 
