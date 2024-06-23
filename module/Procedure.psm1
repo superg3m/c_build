@@ -65,9 +65,9 @@ class Procedure {
         }
 
         Write-Host "WHATATATA: $($this.directory)"
-        $PWD
-        Get-ChildItem | ForEach-Object { $_.Name }
 
+        Write-Host Get-Location
+        
         Push-Location "$($this.directory)"
         
         # & ".\$($this.output_name)"
