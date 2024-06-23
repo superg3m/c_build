@@ -22,6 +22,8 @@ $jsonData = Parse_JsonFile($json_config_path);
 Write-Host "JSON Data: $jsonData" -ForegroundColor Yellow
 Write-Host "Compiler Type: $compiler_type" -ForegroundColor Yellow
 
+. ./c-build/utility/Project.psm1
+
 $project = [Project]::new($jsonData, "$compiler_type")
 
 Write-Host "TESTING: $project" -ForegroundColor Magenta
