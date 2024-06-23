@@ -64,11 +64,9 @@ class Procedure {
             $this.Build($this.compiler, $debug_mode)
         }
 
-        Get-ChildItem
-
         Push-Location "$($this.directory)"
-        Get-ChildItem
-        & "./$($this.output_name)"
+        Get-ChildItem | ForEach-Object { $_.Name }
+        & ".\$($this.output_name)"
         Pop-Location
     }
 
