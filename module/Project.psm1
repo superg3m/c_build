@@ -1,4 +1,4 @@
-Import-Module "./Procedure.psm1"
+Import-Module "./c-build/module/Procedure.psm1"
 
 class Project {
     [string]$name
