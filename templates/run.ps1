@@ -4,8 +4,8 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-. ./c-build/utility/utils.ps1
+. ./c-build/module/utils.ps1
 
-[Project] $project = ./c-build/utility/decode_project.ps1
+[Project] $project = ./c-build/module/decode_project.ps1
 
 $project.ExecuteProcedures()

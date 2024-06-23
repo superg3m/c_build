@@ -117,7 +117,7 @@ class Project {
                 Pop-Location
             }
 
-            $this.project_dependency = ./c-build/utility/decode_project.ps1
+            $this.project_dependency = ./c-build/module/decode_project.ps1
             $is_dependency_built_result = $false
 
             foreach ($build_procedure in $this.project_dependency.build_procedures) {

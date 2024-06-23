@@ -1,4 +1,4 @@
-using module "../utility/Procedure.ps1"
+using module "../module/Procedure.ps1"
 
 param(
     [Parameter(Mandatory=$true)]
