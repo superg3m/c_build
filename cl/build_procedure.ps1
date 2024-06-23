@@ -11,7 +11,7 @@ param(
     [bool] $debug_build
 )
 
-Write-Host "BRO: $build_procedure" -ForegroundColor Green
+$build_procedure.PrintProcedure()
 
 $build_directory = $build_procedure.build_directory
 
