@@ -1,6 +1,4 @@
-$ErrorActionPreference = "Stop"
-Set-StrictMode -Version Latest
-$PSNativeCommandUseErrorActionPreference = $true
+
 
 function Parse_JsonFile($file_path) {
     if (!(Test-Path -Path $file_path)) {

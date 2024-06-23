@@ -6,15 +6,14 @@ param (
     [bool]$should_rebuild_project_dependencies_override
 )
 
-$ErrorActionPreference = "Stop"
-Set-StrictMode -Version Latest
-$PSNativeCommandUseErrorActionPreference = $true
+
 
 . ./c-build/utility/utils.ps1
 
 $json_config_path = "c_build_config.json"
 $jsonData = Parse_JsonFile($json_config_path);
 $project = [Project]::new($jsonData, $compiler_override, $should_rebuild_project_dependencies_override)
+
 
 Push-Location  "./c-build"
 git fetch origin -q

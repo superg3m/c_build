@@ -1,6 +1,4 @@
-$ErrorActionPreference = "Stop"
-Set-StrictMode -Version Latest
-$PSNativeCommandUseErrorActionPreference = $true
+
 
 Push-Location  "./c-build"
 git fetch origin -q
