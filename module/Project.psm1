@@ -18,6 +18,10 @@ class Project {
     [string]$execute_procedure_string
     [Procedure]$execute_procedure
 
+    Project () {
+        Write-Host "ACTUALLY GETTING CALLED" -ForegroundColor Green
+    }
+
     Project ([PSCustomObject]$jsonData, [string]$compiler_override) {
         Write-Host "ACTUALLY GETTING CALLED" -ForegroundColor Green
         $this.name = $jsonData.'project_name'
