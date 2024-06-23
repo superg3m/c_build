@@ -85,7 +85,7 @@ class Procedure {
     [void]PrintProcedure() {
         Write-Host "================================================"
         Write-Host "directory: $($this.directory)"
-        Write-Host "name: $($this.name)"
+        Write-Host "compiler: $($this.compiler)"
 
         Write-Host "should_build_executable: $($this.should_build_executable)"
         Write-Host "should_build_static_lib: $($this.should_build_static_lib)"
