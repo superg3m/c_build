@@ -14,9 +14,6 @@ if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
     Break
 }
 
-# Preset can either be default, ckit or ckg
-# if you enter default its not going to give you ckit or anythign its just goint ot make building and compiling easy
-
 if(!(Test-Path -Path "./source")) {
     Write-Host "Creating source Directory"
     mkdir ./source

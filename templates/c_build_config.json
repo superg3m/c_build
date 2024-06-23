@@ -2,8 +2,7 @@
     "$c_build_version" : "0.8",
 
     "$project_name" : "RMD",
-    "$compiler" : "cl",
-
+    
     "$debug_with_visual_studio" : false,
     "$should_rebuild_project_dependencies" : false,
 
