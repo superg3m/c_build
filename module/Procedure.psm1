@@ -74,7 +74,7 @@ class Procedure {
             Write-Host "NAME: $($item.name)"
         }
         
-        & ".\$($this.output_name)"
+        & $this.output_name
         Pop-Location
     }
 
