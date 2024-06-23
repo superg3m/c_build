@@ -13,7 +13,7 @@ class Procedure {
     [string]$source_paths
     [string]$additional_libs
 
-    BuildProcedure ([string]$build_directory, [string]$compiler_type. [PSCustomObject]$jsonData) {
+    BuildProcedure ([string]$build_directory, [string]$compiler_type, [PSCustomObject]$jsonData) {
         $this.directory = $build_directory
 
         $this.compiler = $compiler_type
