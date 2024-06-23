@@ -1,6 +1,4 @@
-Import-Module "$PSScriptRoot\Project.psm1"
-
-Write-Host "TESTINGS: $PSScriptRoot"
+Import-Module ".\c-build\modules\Project.psm1"
 
 Push-Location  "./c-build"
 git fetch origin -q

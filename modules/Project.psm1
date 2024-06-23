@@ -1,4 +1,4 @@
-Import-Module "$PSScriptRoot\Procedure.psm1"
+Import-Module "$PSScriptRoot\c-build\modules\Project.psm1"
 
 class Project {
     [string]$name
