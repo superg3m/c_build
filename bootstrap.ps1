@@ -76,8 +76,4 @@ foreach ($templateFile in $templateFiles) {
 }
 Pop-Location
 
-$modules_path = "./c-build/module"
-
-[Environment]::SetEnvironmentVariable("PSModulePath", $modules_path)
-
 Write-Host "C-Build bootstrap is complete!" -ForegroundColor Green
