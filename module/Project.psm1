@@ -45,7 +45,7 @@ class Project {
 
             if ($value -is [PSCustomObject]) {
                 $build_procedure = [Procedure]::new($key, $value)
-                $null = $project.AddBuildProcedure($build_procedure)
+                $null = $this.AddBuildProcedure($build_procedure)
                 if ($build_procedure.output_name -eq $this.execute_procedure_string) {
                     $this.execute_procedure = $build_procedure;
                 }
@@ -89,10 +89,10 @@ class Project {
                 Pop-Location
             }
 
-            $project_dependency = ./c-build/utility/decode_project.ps1
+            $this.project_dependency = ./c-build/utility/decode_project.ps1
             $is_dependency_built_result = $false
 
-            foreach ($build_procedure in $project_dependency.build_procedures) {
+            foreach ($build_procedure in $this.project_dependency.build_procedures) {
                 if ($this.should_rebuild_project_dependencies -eq $true) {
                     $build_procedure.Clean()
                     continue
@@ -108,7 +108,7 @@ class Project {
                 Write-Host "$dependency Depedency Already Build Skipping..." -ForegroundColor Magenta
             } else {
                 ./c-build/bootstrap.ps1 -compiler_type $this.compiler_type
-                $project_dependency = ./build.ps1 -compiler_type_override $this.compiler_type
+                $this.project_dependency = ./build.ps1 -compiler_type_override $this.compiler_type
             }
             
             Pop-Location
