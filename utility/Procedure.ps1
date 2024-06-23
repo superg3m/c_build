@@ -13,7 +13,7 @@ class Procedure {
     [string]$source_paths
     [string]$additional_libs
 
-    BuildProcedure ([string]$build_directory, [string]$compiler_type, [PSCustomObject]$jsonData) {
+    Procedure ([string]$build_directory, [string]$compiler_type, [PSCustomObject]$jsonData) {
         $this.directory = $build_directory
 
         $this.compiler = $compiler_type
@@ -85,13 +85,15 @@ class Procedure {
         Pop-Location
     }
 
-    [void]PrintBuildProcedure() {
+    [void]PrintProcedure() {
         Write-Host "================================================"
-        Write-Host "build_directory: $($this.directory)"
+        Write-Host "directory: $($this.directory)"
         Write-Host "name: $($this.name)"
-        Write-Host "should_build_procedure: $($this.should_build_procedure)"
-        Write-Host "should_build_lib: $($this.should_build_lib)"
-        Write-Host "should_execute: $($this.should_execute)"
+
+        Write-Host "should_build_executable: $($this.should_build_executable)"
+        Write-Host "should_build_static_lib: $($this.should_build_static_lib)"
+        Write-Host "should_build_dynamic_lib: $($this.should_build_dynamic_lib)"
+        
         Write-Host "output_name: $($this.output_name)"
         Write-Host "compile_time_defines: $($this.compile_time_defines)"
         Write-Host "include_paths: $($this.include_paths)"

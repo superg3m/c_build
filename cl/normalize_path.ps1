@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory=$true)]
-    [BuildProcedure] $build_procedure
+    [Procedure] $build_procedure
 )
 
 $build_directory = $build_procedure.build_directory

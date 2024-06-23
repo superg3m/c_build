@@ -44,7 +44,7 @@ class Project {
             $value = $jsonData.$key
 
             if ($value -is [PSCustomObject]) {
-                $build_procedure = [BuildProcedure]::new($key, $value)
+                $build_procedure = [Procedure]::new($key, $value)
                 $null = $project.AddBuildProcedure($build_procedure)
                 if ($build_procedure.output_name -eq $this.execute_procedure_string) {
                     $this.execute_procedure = $build_procedure;
@@ -136,7 +136,7 @@ class Project {
         $this.execute_procedure.Debug()
     }
 
-    [BuildProcedure]AddBuildProcedure([BuildProcedure]$build_proc) {
+    [Procedure]AddBuildProcedure([Procedure]$build_proc) {
         $this.build_procedures += $build_proc
         return $build_proc
     }
