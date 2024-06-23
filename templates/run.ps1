@@ -1,11 +1,24 @@
+using module "./c-build/module/Project.psm1"
+
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-. ./c-build/module/utils.ps1
+function Parse_JsonFile($file_path) {
+    if (!(Test-Path -Path $file_path)) {
+        throw "Configuration file not found: $file_path"
+    }
+    
+    $json_object = Get-Content -Path $file_path -Raw
 
-[Project] $project = ./c-build/module/decode_project.ps1
+    return ConvertFrom-Json -InputObject $json_object
+}
 
-$project.ExecuteProcedures()
+$json_config_path = "c_build_config.json"
+$jsonData = Parse_JsonFile($json_config_path);
+
+$project = [Project]::new($jsonData, "$compiler_type")
+
+$project.ExecuteProcedure()
