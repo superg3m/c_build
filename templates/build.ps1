@@ -9,6 +9,8 @@ $jsonData = Get-Content -Path $configPath -Raw | ConvertFrom-Json
 
 $project_name = $jsonData.'$project_name'
 
+$should_rebuild_project_dependencies = $jsonData.'$should_rebuild_project_dependencies'
+
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
@@ -25,7 +27,6 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     if ($value -is [PSCustomObject]) {     
         $build_procedure_name = $value.'$build_procedure_name'
         $should_build_procedure = $value.'$should_build_procedure'
-        $should_rebuild_project_dependencies = $value.'$should_rebuild_project_dependencies'
 
         if ($should_build_procedure -eq $false) {
             Write-Host "Skipping $build_procedure_name..." -ForegroundColor Magenta
