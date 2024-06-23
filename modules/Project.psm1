@@ -1,4 +1,4 @@
-. ./Procedure.ps1
+using module ./Procedure.psm1
 
 class Project {
     [string]$name

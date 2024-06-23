@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory=$true)]
-    [BuildProcedure] $build_procedure,
+    [Procedure] $build_procedure,
 
     [Parameter(Mandatory=$true)]
     [string] $std_version,

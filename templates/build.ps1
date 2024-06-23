@@ -1,4 +1,4 @@
-
+using module ./c-build/modules/Project.psm1
 
 Push-Location  "./c-build"
 git fetch origin -q
@@ -15,8 +15,6 @@ function Parse_JsonFile($file_path) {
 
     return ConvertFrom-Json -InputObject $json_object
 }
-
-. ./c-build/utility/Project.ps1
 
 $json_config_path = "c_build_config.json"
 $jsonData = Parse_JsonFile($json_config_path);

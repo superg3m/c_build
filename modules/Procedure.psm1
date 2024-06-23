@@ -21,10 +21,10 @@ class Procedure {
         $this.output_name = $jsonData.'output_name'
 
         if ($this.output_name -Like "*.exe") {
-            $should_build_executable = $true
-        } else if ($this.output_name -Like "*.lib" -or $this.output_name -Like "*.a") {
+            $this.should_build_executable = $true
+        } elseif ($this.output_name -Like "*.lib" -or $this.output_name -Like "*.a") {
             $this.should_build_static_lib = $true
-        } else if ($this.output_name -Like "*.so" -or $this.output_name -Like "*.o" -or $this.output_name -Like "*.dylib") {
+        } elseif ($this.output_name -Like "*.so" -or $this.output_name -Like "*.o" -or $this.output_name -Like "*.dylib") {
             $this.should_build_dynamic_lib = $true
         } else {
             # linux
@@ -63,10 +63,6 @@ class Procedure {
             $this.Build($this.compiler_type)
         }
 
-        if ($debug_with_visual_studio -eq $true) {
-            ./vars.ps1
-        }
-
         Push-Location "$($this.directory)"
         & "$($this.output_name)"
         Pop-Location
@@ -76,11 +72,11 @@ class Procedure {
         $debug = $true
         $this.Build($this.compiler_type, $debug)
 
-        Push-Location $directory
-        if ($debug_with_visual_studio -eq $true) {
-            devenv $output_name
+        Push-Location $this.directory
+        if ($this.debug_with_visual_studio -eq $true) {
+            devenv $this.output_name
         } else {
-            & "raddbg" $output_name
+            & "raddbg" $this.output_name
         }
         Pop-Location
     }
