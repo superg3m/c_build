@@ -22,7 +22,7 @@ $json_config_path = "c_build_config.json"
 $jsonData = Parse_JsonFile($json_config_path);
 $project = [Project]::new($jsonData, "$compiler_type")
 
-Write-Host $project -ForegroundColor Magenta
+Write-Host "TESTING: $project" -ForegroundColor Magenta
 
 Write-Host "|--------------- Started Building $($project.name) ---------------|" -ForegroundColor Blue
 Write-Host "Compiler: $compiler_type"
