@@ -18,8 +18,6 @@ class Procedure {
 
         $this.compiler = $compiler_type
 
-        Write-Host "$($this.compiler)" -ForegroundColor Yellow
-
         $this.output_name = $jsonData.'output_name'
 
         if ($this.output_name -Like "*.exe") {
