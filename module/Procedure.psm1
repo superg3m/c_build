@@ -69,6 +69,11 @@ class Procedure {
         $currentDir = Get-Location
         Write-Host "Current Directory: $currentDir"
 
+        $items = Get-ChildItem 
+        foreach ($item in $items) {
+            Write-Host "NAME: $($item.name)"
+        }
+
         Push-Location "$($this.directory)"
         
         # & ".\$($this.output_name)"
