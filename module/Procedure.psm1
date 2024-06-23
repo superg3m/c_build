@@ -65,7 +65,7 @@ class Procedure {
         }
 
         Push-Location "$($this.directory)"
-        Write-Host "./$($this.output_name)" -ForegroundColor Yellow
+        Write-Host "./$($PWD)/$($this.output_name)" -ForegroundColor Yellow
         & "./$($this.output_name)"
         Pop-Location
     }
