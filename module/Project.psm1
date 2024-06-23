@@ -1,5 +1,15 @@
 using module  "./Procedure.psm1"
 
+function Parse_JsonFile($file_path) {
+    if (!(Test-Path -Path $file_path)) {
+        throw "Configuration file not found: $file_path"
+    }
+    
+    $json_object = Get-Content -Path $file_path -Raw
+
+    return ConvertFrom-Json -InputObject $json_object
+}
+
 class Project {
     [string]$name
 
