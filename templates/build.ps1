@@ -1,4 +1,4 @@
-Import-Module "$PSScriptRoot\Procedure.psm1"
+Import-Module "$PSScriptRoot\Project.psm1"
 
 Write-Host "TESTINGS: $PSScriptRoot"
 
