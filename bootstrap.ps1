@@ -50,7 +50,6 @@ $resolvedTemplatesDir = "../"
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 
 $configFilePath = "c_build_config.json"
-
 Write-Host
 
 # Check if config.json already exists in the destination directory
@@ -60,6 +59,7 @@ if (Test-Path -Path "../$configFilePath") {
 
     $jsonData = Parse_JsonFile("../$($configFilePath)");
     if ($c_build_version -ne $jsonData.'c_build_version') {
+        Pop-Location
         throw "c_build_version is not valid wanted: $c_build_version | got: $($jsonData.'c_build_version')"
     }
 }
