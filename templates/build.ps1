@@ -25,7 +25,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
     if ($value -is [PSCustomObject]) {     
         $build_procedure_name = $value.'$build_procedure_name'
         $should_build_procedure = $value.'$should_build_procedure'
-        $should_fully_rebuild_project_depedencies = $value.'$should_fully_rebuild_project_depedencies'
+        $should_rebuild_project_dependencies = $value.'$should_rebuild_project_dependencies'
 
         if ($should_build_procedure -eq $false) {
             Write-Host "Skipping $build_procedure_name..." -ForegroundColor Magenta
@@ -74,7 +74,7 @@ foreach ($key in $jsonData.PSObject.Properties.Name) {
                         Pop-Location
                     }
 
-                    if ($should_fully_rebuild_project_depedencies -eq $true) {
+                    if ($should_rebuild_project_dependencies -eq $true) {
                         if (Test-Path -Path "c_build_is_build.flag") {
                             Remove-Item -Path "c_build_is_build.flag" > $null
                         }

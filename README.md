@@ -16,7 +16,7 @@ rebuilding the project shouldalways happen if you run a build procedure for the 
         "$should_build_procedure" : true,
         
         "$should_build_lib" : true,
-        "$should_fully_rebuild_project_depedencies" : false,
+        "$should_rebuild_project_dependencies" : false,
         "$should_execute" : false,
 
         "$projects_dependencies_to_build" : [""],
@@ -35,7 +35,7 @@ rebuilding the project shouldalways happen if you run a build procedure for the 
         "$should_build_procedure" : true,
 
         "$should_build_lib" : false,
-        "$should_fully_rebuild_project_depedencies" : false,
+        "$should_rebuild_project_dependencies" : false,
         "$should_execute" : true,
 
         "$build_procedure_name" : "test ckg",
@@ -63,14 +63,14 @@ ok so with build procs what flags are set
         "standard flags" : {
             $should_build_lib
             $should_rebuild_procedure (put a file called c_build_procedure.flag in each of the build directories)
-            $should_fully_rebuild_project_depedencies : false
+            $should_rebuild_project_dependencies : false
             $should_statically_link_CRT : false (if true do /MT if false do /MD, then if its debug build then do /MTd, /MDd)
         },
 
         "override flags" : { (flags that effect how other project dependencies build)
             - $should_build_lib
             - $should_rebuild_procedure (put a file called c_build_procedure.flag in each of the build directories)
-            - $should_fully_rebuild_project_depedencies
+            - $should_rebuild_project_dependencies
             - $should_link_CRT
                 - $should_statically_link_CRT
                 - $should_statically_link_CRT

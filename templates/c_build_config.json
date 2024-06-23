@@ -1,4 +1,6 @@
 {
+    "$c_build_version" : "0.8",
+
     "$project_name" : "RMD",
     "$compiler" : "cl",
 
