@@ -98,5 +98,3 @@ class Procedure {
         Write-Host "================================================"
     }
 }
-
-Export-ModuleMember -Class Procedure
