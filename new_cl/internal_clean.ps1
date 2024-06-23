@@ -2,7 +2,7 @@
 
 param(
     [Parameter(Mandatory=$true)]
-    [Propject] $project
+    [Project] $project
 )
 
 $project_name = $project.name
