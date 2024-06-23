@@ -18,7 +18,8 @@ class Project {
     [string]$execute_procedure_string
     [Procedure]$execute_procedure
 
-    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override) {
+    Project ([PSCustomObject]$jsonData, [string]$compiler_override, [bool]$should_rebuild_project_dependencies_override = $false) {
+        Write-Host "ACTUALLY GETTING CALLED" -ForegroundColor Green
         $this.name = $jsonData.'project_name'
 
         $this.debug_with_visual_studio = $jsonData.'debug_with_visual_studio'

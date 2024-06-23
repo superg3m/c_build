@@ -9,7 +9,7 @@ param(
     [bool] $debug_build
 )
 
-. ./c-build/utility/utils.ps1
+. ../utility/Procedure.ps1
 
 $build_procedure_name = $build_procedure.name
 
