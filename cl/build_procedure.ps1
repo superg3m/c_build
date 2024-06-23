@@ -1,3 +1,5 @@
+using module "../utility/Procedure.ps1"
+
 param(
     [Parameter(Mandatory=$true)]
     [Procedure] $build_procedure,
@@ -8,8 +10,6 @@ param(
     [Parameter(Mandatory=$true)]
     [bool] $debug_build
 )
-
-. ../utility/Procedure.ps1
 
 $build_procedure_name = $build_procedure.name
 
