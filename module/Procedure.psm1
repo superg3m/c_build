@@ -74,7 +74,7 @@ class Procedure {
             Write-Host "NAME: $($item.name)"
         }
 
-        $output_expression = -join("./", $this.output_name)
+        $output_expression = -join(".\", $this.output_name)
 
         Invoke-Expression $output_expression
         Pop-Location
