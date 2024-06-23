@@ -16,6 +16,8 @@ function Parse_JsonFile($file_path) {
     return ConvertFrom-Json -InputObject $json_object
 }
 
+. ../utility/Project.ps1
+
 $json_config_path = "c_build_config.json"
 $jsonData = Parse_JsonFile($json_config_path);
 $project = [Project]::new($jsonData, "$compiler_type")
@@ -25,8 +27,8 @@ Write-Host "Compiler: $compiler_type"
 $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
 
-$project.BuildProjectDependencies()
-$project.BuildProcedures()
+$project.BuildAllProjectDependencies()
+$project.BuildAllProcedures()
 
 $timer.Stop()
 Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue
