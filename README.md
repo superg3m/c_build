@@ -36,3 +36,5 @@ function reload {
   }
   Write-Host;
 }
+
+WORKS PRETTY WELL RIGHT NOW
