@@ -56,10 +56,10 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 }
 
 Push-Location $build_directory
-    Invoke-Expression "$clCommand"
+    Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
     if ($should_build_static_lib -eq $true) {
-        lib /OUT:$output_name $additional_libs ".\*.obj"
+        lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
     }
 Pop-Location
 
-# ./c-build/cl/normalize_path.ps1 -build_procedure $build_procedure
+./c-build/cl/normalize_path.ps1 -build_procedure $build_procedure
