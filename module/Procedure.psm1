@@ -68,6 +68,8 @@ class Procedure {
             $this.Build($std_version, $debug_mode)
         }
 
+        Write-Host "BRO: $($this.directory)/$($this.output_name)"
+
         & "$($this.directory)/$($this.output_name)" | Out-Default
     }
 

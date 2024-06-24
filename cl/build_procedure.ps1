@@ -55,9 +55,6 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
 
-Write-Host "Build Directory: $build_directory" -ForegroundColor Magenta
-Write-Host "Current Directory: $(Get-Location)" -ForegroundColor Green
-
 if (!(Test-Path -Path $build_directory)) {
     mkdir $build_directory
 }
