@@ -45,7 +45,7 @@ class Procedure {
 
     [void]Build([string]$std_version, [bool]$debug) {
         if ($this.IsBuilt() -eq $true) {
-            Write-Host "Already built procedure: $($this.name)" -ForegroundColor Magenta
+            Write-Host "Already built procedure: $($this.output_name) skipping..." -ForegroundColor Magenta
             continue
         }
 
