@@ -55,10 +55,13 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
 
+Write-Host "BUILD DIR: $build_directory"
+
 Push-Location $build_directory
     Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
     if ($should_build_static_lib -eq $true) {
-        Write-Host "BUILDING LIB"
+        Write-Host "OUTPUT NAME: $output_name"
+
         lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
     }
 Pop-Location
