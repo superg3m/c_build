@@ -152,7 +152,6 @@ class Project {
 
     [void]BuildAllProcedures([bool]$debug_mode) {
         foreach ($build_procedure in $this.build_procedures) {
-            $build_procedure.Clean()
             $build_procedure.Build($this.std_version, $debug_mode)
         }
     }
@@ -170,6 +169,7 @@ class Project {
     }
 
     [void]DebugProcedure() {
+        $this.CleanAllProcedure()
         $this.BuildAllProcedures($false)
         $this.BuildAllProjectDependencies()
 
