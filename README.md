@@ -48,3 +48,8 @@ This is almost there it just needs a bit more nuance I think start with NoCheck 
 
 ok switching to cmake...
   - I get all platforms for free and its more organized theoretically
+
+
+I want to write GO now lmao 
+
+so your run, build, debug will be written in go.
