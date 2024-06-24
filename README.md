@@ -44,3 +44,7 @@ eventually add gcc, clang
 I need to be able to clean a depedency chain
 
 This is almost there it just needs a bit more nuance I think start with NoCheck than use that to build the Checks you need
+
+
+ok switching to cmake...
+  - I get all platforms for free and its more organized theoretically
