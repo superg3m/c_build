@@ -123,6 +123,7 @@ class Project {
                 Pop-Location
             }
 
+            ./c-build/bootstrap.ps1 -compiler_type $this.compiler
             ./build.ps1
             
             Pop-Location
