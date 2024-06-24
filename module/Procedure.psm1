@@ -68,17 +68,21 @@ class Procedure {
             $this.Build($std_version, $debug_mode)
         }
 
-        Write-Host "BRO: $($this.directory)/$($this.output_name)"
-
-        & "$($this.directory)/$($this.output_name)" | Out-Default
+        Push-Location $($this.directory)
+        & "./$($this.output_name)" | Out-Default
+        Pop-Location
     }
 
     [void]Debug($std_version, $debug_with_visual_studio) {
+
+        Push-Location $($this.directory)   
         if ($debug_with_visual_studio -eq $true) {
-            devenv "$($this.directory)/$($this.output_name)"
+            devenv "./$($this.output_name)"
         } else {
-            & "raddbg" "$($this.directory)/$($this.output_name)"
+            & "raddbg" "./$($this.output_name)"
         }
+        Pop-Location
+
     }
 
     [void]PrintProcedure() {
