@@ -98,7 +98,7 @@ class Project {
             return
         }
         Write-Host "[$($this.name)] depends on: " -ForegroundColor Blue
-        foreach ($dependency in $this.project_dependencies) {
+        foreach ($dependency in $this.project_dependency_strings) {
             Write-Host "  - $dependency" -ForegroundColor Blue
 
             if(!(Test-Path -Path $dependency)) {
