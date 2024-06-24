@@ -38,3 +38,5 @@ function reload {
 }
 
 WORKS PRETTY WELL RIGHT NOW
+
+eventually add gcc, clang
