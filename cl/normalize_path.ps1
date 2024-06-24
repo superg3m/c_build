@@ -27,4 +27,4 @@ $contents = Get-Content -Path $realFilePath
 
 Write-Host $contents
 
-# Remove-Item -Path $realFilePath
+Remove-Item -Path $realFilePath
