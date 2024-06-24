@@ -52,4 +52,4 @@ ok switching to cmake...
 
 I want to write GO now lmao 
 
-so your run, build, debug will be written in go.
+so your run, build, debug will be executables and written in go.
