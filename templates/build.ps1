@@ -2,7 +2,7 @@ using module "./c-build/module/Project.psm1"
 
 param(
     [Parameter(Mandatory=$false)]
-    [Procedure] $BuildNoCheck
+    [bool] $BuildNoCheck
 )
 
 Push-Location  "./c-build"
