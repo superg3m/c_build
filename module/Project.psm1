@@ -93,7 +93,7 @@ class Project {
     }
 
     [void]BuildAllProjectDependencies() {
-        if (($this.project_dependencies.Count -eq 0) -or (!$this.project_dependencies[0])) {
+        if (($this.project_dependency_strings.Count -eq 0) -or (!$this.project_dependency_strings[0])) {
             Write-Host "[$($this.name)] depends on nothing" -ForegroundColor Magenta
             return
         }
