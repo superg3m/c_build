@@ -55,6 +55,10 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 	Remove-Item -Path "./compilation_errors.txt" -Force -Confirm:$false
 }
 
+Write-Host "Build Directory: $build_directory" -ForegroundColor Magenta
+$items = Get-ChildItem
+Write-Host $items -ForegroundColor Magenta
+
 Push-Location $build_directory
     Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
     if ($should_build_static_lib -eq $true) {
