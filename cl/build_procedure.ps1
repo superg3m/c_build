@@ -62,7 +62,7 @@ Push-Location $build_directory
     if ($should_build_static_lib -eq $true) {
         Write-Host "OUTPUT NAME: $output_name"
 
-        lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Null
+        lib /OUT:$output_name $additional_libs ".\*.obj" | Out-Default
     }
 Pop-Location
 
