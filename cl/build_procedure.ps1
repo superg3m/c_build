@@ -58,6 +58,10 @@ if(Test-Path -Path ".\compilation_errors.txt") {
 Write-Host "Build Directory: $build_directory" -ForegroundColor Magenta
 Write-Host "Current Directory: $(Get-Location)" -ForegroundColor Green
 
+if (!(Test-Path -Path $build_directory)) {
+    mkdir $build_directory
+}
+
 Push-Location $build_directory
     Invoke-Expression "$clCommand | Out-File -FilePath 'compilation_errors.txt' -Append"
     if ($should_build_static_lib -eq $true) {
