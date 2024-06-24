@@ -15,7 +15,11 @@ $build_directory = $build_procedure.directory
 
 $output_name = $build_procedure.output_name
 $compile_time_defines = $build_procedure.compile_time_defines
+
 $should_build_static_lib = $build_procedure.should_build_static_lib
+$should_build_dynamic_lib = $build_procedure.should_build_dynamic_lib
+$should_build_executable = $build_procedure.should_build_executable
+
 $include_paths = $build_procedure.include_paths
 $source_paths = $build_procedure.source_paths
 $additional_libs = $build_procedure.additional_libs
