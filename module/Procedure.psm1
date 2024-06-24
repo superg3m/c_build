@@ -73,6 +73,7 @@ class Procedure {
         if ($this.debug_with_visual_studio -eq $true) {
             devenv "$($this.directory)/$($this.output_name)"
         } else {
+            Write-Host "BRO: $($this.directory)/$($this.output_name)"
             & "raddbg" "$($this.directory)/$($this.output_name)"
         }
     }
