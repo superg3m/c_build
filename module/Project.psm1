@@ -163,7 +163,7 @@ class Project {
     }
 
     [void]ExecuteProcedure() {
-        BuildAllProcedures($false)
+        $this.BuildAllProcedures($false)
         $this.execute_procedure.Execute($this.std_version)
     }
 
