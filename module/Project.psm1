@@ -164,6 +164,7 @@ class Project {
 
     [void]ExecuteProcedure() {
         $this.BuildAllProcedures($false)
+        $this.BuildAllProjectDependencies()
         $this.execute_procedure.Execute($this.std_version)
     }
 
