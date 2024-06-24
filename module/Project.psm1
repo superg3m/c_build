@@ -173,7 +173,7 @@ class Project {
         $this.CleanAllProcedure()
         Start-Sleep -Seconds 1
         $this.BuildAllProcedures($true)
-        $this.execute_procedure.Debug($this.std_version)
+        $this.execute_procedure.Debug($this.std_version, $this.debug_with_visual_studio)
     }
 
     [Procedure]AddBuildProcedure([Procedure]$build_proc) {

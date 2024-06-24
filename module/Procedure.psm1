@@ -66,8 +66,8 @@ class Procedure {
         & "$($this.directory)/$($this.output_name)" | Out-Default
     }
 
-    [void]Debug($std_version) {
-        if ($this.debug_with_visual_studio -eq $true) {
+    [void]Debug($std_version, $debug_with_visual_studio) {
+        if ($debug_with_visual_studio -eq $true) {
             devenv "$($this.directory)/$($this.output_name)"
         } else {
             & "raddbg" "$($this.directory)/$($this.output_name)"
