@@ -150,8 +150,7 @@ class Project {
         Write-Host ""
     }
 
-    [void]BuildAllProcedures() {
-        $debug_mode = $false
+    [void]BuildAllProcedures([bool]$debug_mode) {
         foreach ($build_procedure in $this.build_procedures) {
             $build_procedure.Build($this.std_version, $debug_mode)
         }
@@ -164,6 +163,7 @@ class Project {
     }
 
     [void]ExecuteProcedure() {
+        BuildAllProcedures($false)
         $this.execute_procedure.Execute($this.std_version)
     }
 

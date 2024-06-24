@@ -39,14 +39,13 @@ class Procedure {
 
     [bool]IsBuilt() {
         $directoryInfo = Get-ChildItem $this.directory | Measure-Object
-        $directoryInfo.count
 
         return $directoryInfo.count -ne 0
     }
 
     [void]Build([string]$std_version, [bool]$debug) {
-        if ($this.should_build_procedure -eq $false) {
-            Write-Host "Skipping build procedure: $($this.name)" -ForegroundColor Magenta
+        if ($this.IsBuilt() -eq $true) {
+            Write-Host "Already built procedure: $($this.name)" -ForegroundColor Magenta
             continue
         }
 
