@@ -170,9 +170,7 @@ class Project {
 
     [void]DebugProcedure() {
         $this.CleanAllProcedure()
-        $this.BuildAllProcedures($false)
-        $this.BuildAllProjectDependencies()
-
+        $this.BuildAllProcedures($true)
         $this.execute_procedure.Debug()
     }
 
