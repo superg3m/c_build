@@ -53,6 +53,11 @@ class Procedure {
         & $scriptPath -build_procedure $this -std_version $std_version -debug_build $debug 
     }
 
+    [void]BuildNoCheck([string]$std_version, [bool]$debug) {
+        $scriptPath = -join("./c-build/", $this.compiler, "/build_procedure.ps1")
+        & $scriptPath -build_procedure $this -std_version $std_version -debug_build $debug 
+    }
+
     [void]Clean() {
         Remove-Item -Path "$($this.directory)/*", -Force -ErrorAction SilentlyContinue -Confirm:$false -Recurse
     }

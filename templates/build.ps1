@@ -1,5 +1,10 @@
 using module "./c-build/module/Project.psm1"
 
+param(
+    [Parameter(Mandatory=$false)]
+    [Procedure] $BuildNoCheck
+)
+
 Push-Location  "./c-build"
 git fetch origin -q
 git reset --hard origin/main -q
@@ -17,7 +22,12 @@ $timer = [Diagnostics.Stopwatch]::new()
 $timer.Start()
 
 $project.BuildAllProjectDependencies()
-$project.BuildAllProcedures($false)
+if ($BuildNoCheck -eq $true) {
+    $project.BuildAllProceduresNoCheck($false)
+} else {
+    $project.BuildAllProcedures($false)
+}
+
 
 $timer.Stop()
 Write-Host "|--------------- Build time: $($timer.Elapsed.TotalSeconds)s ---------------|" -ForegroundColor Blue

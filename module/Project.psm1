@@ -124,7 +124,11 @@ class Project {
             }
 
             ./c-build/bootstrap.ps1 -compiler_type $this.compiler
-            ./build.ps1
+            if ($this.should_rebuild_project_dependencies) {
+                ./build.ps1 -BuildNoCheck $true
+            } else {
+                ./build.ps1
+            }
             
             Pop-Location
         }
@@ -134,6 +138,12 @@ class Project {
     [void]BuildAllProcedures([bool]$debug_mode) {
         foreach ($build_procedure in $this.build_procedures) {
             $build_procedure.Build($this.std_version, $debug_mode)
+        }
+    }
+
+    [void]BuildAllProceduresNoCheck([bool]$debug_mode) {
+        foreach ($build_procedure in $this.build_procedures) {
+            $build_procedure.BuildNoCheck($this.std_version, $debug_mode)
         }
     }
 
