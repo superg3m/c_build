@@ -123,27 +123,7 @@ class Project {
                 Pop-Location
             }
 
-            $this.project_dependency = ./c-build/module/decode_project.ps1
-            $is_dependency_built_result = $false
-
-            foreach ($build_procedure in $this.project_dependency.build_procedures) {
-                if ($this.should_rebuild_project_dependencies -eq $true) {
-                    $build_procedure.Clean()
-                    continue
-                }
-
-                $is_dependency_built_result = $build_procedure.IsBuilt()
-                if ($is_dependency_built_result -eq $false) {
-                    break
-                }
-            }
-            
-            if ($is_dependency_built_result -eq $true) {
-                Write-Host "$dependency Depedency Already Build Skipping..." -ForegroundColor Magenta
-            } else {
-                ./c-build/bootstrap.ps1 -compiler_type $this.compiler
-                $this.project_dependency = ./build.ps1 -compiler_type_override $this.compiler
-            }
+            ./build.ps1
             
             Pop-Location
         }
