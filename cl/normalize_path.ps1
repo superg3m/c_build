@@ -9,8 +9,6 @@ $output_name = $build_procedure.output_name
 
 Write-Host "running [$output_name] normalize_path.ps1..." -ForegroundColor Green
 
-$build_procedure.PrintProcedure()
-
 $rootPath = $PSScriptRoot
 
 $tempFilePath = -join($build_directory, "/compilation_errors_temp.txt")
