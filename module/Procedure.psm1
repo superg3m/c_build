@@ -69,7 +69,7 @@ class Procedure {
         }
 
         Push-Location $($this.directory)
-        & "./$($this.output_name)" | Out-Default
+        Invoke-Expression "./$($this.output_name)" | Out-Default
         Pop-Location
     }
 
