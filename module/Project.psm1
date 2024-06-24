@@ -157,7 +157,7 @@ class Project {
     }
 
     [void]CleanAllProcedure() {
-        Write-Host "runnig clean $($this.name)"
+        Write-Host "running clean $($this.name)"
         foreach ($build_procedure in $this.build_procedures) {
             $build_procedure.Clean()
         }
