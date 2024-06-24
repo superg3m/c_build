@@ -66,9 +66,9 @@ class Procedure {
         & "$($this.directory)/$($this.output_name)" | Out-Default
     }
 
-    [void]Debug() {
+    [void]Debug($std_version) {
         $debug_mode = $true
-        $this.Build($this.compiler, $debug_mode)
+        $this.Build($std_version, $debug_mode)
 
         if ($this.debug_with_visual_studio -eq $true) {
             devenv "$($this.directory)/$($this.output_name)"
