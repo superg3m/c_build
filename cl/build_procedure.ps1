@@ -62,7 +62,7 @@ Push-Location $build_directory
     if ($should_build_static_lib -eq $true) {
         Write-Host "OUTPUT NAME: $output_name"
 
-        lib /NOLOGO /OUT:$output_name ".\*.obj" | Out-Default
+        lib /NOLOGO /OUT:$output_name $additional_libs ".\*.obj" | Out-Default
     }
 Pop-Location
 
