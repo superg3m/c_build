@@ -170,6 +170,7 @@ class Project {
 
     [void]DebugProcedure() {
         $this.CleanAllProcedure()
+        Start-Sleep -Seconds 1
         $this.BuildAllProcedures($true)
         $this.execute_procedure.Debug()
     }
