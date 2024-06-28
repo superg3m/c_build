@@ -139,12 +139,10 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            UP_LEVEL()
             dependency: Project = Project()
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
             dependency.depth = self.depth + 4
             dependency.build_project(debug)
-            DOWN_LEVEL()
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
@@ -157,11 +155,13 @@ class Project:
     def build_project(self, debug):
         indent = " " * self.depth  # Indentation based on depth parameter
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|", GREEN)
+        UP_LEVEL()
         start_time = time.time()
         self.build_dependencies(debug)
         self.build_procedures(debug)
         end_time = time.time()
         elapsed_time = end_time - start_time
+        DOWN_LEVEL()
         FORMAT_PRINT(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|", GREEN)
 
     def __str__(self):
