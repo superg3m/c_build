@@ -159,9 +159,9 @@ class Project:
     def build_procedures(self, debug: bool):
         for procedure in self.procedures:
             if self.should_rebuild_project_dependencies:
-                procedure.build(debug)
-            else:
                 procedure.build_no_check(debug)
+            else:
+                procedure.build(debug)
 
     def build_project(self, debug):
         print(f"{GREEN}|--------------- Started Building {self.name} ---------------|{DEFAULT}")
