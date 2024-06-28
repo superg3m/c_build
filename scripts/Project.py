@@ -6,7 +6,7 @@ import time
 
 from Procedure import Procedure
 from typing import List, Dict, Union
-from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
+from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
 
 def parse_json_file(file_path: str):
     try:
@@ -14,10 +14,10 @@ def parse_json_file(file_path: str):
             data = json.load(file)
         return data
     except FileNotFoundError:
-        FORMAT_PRINT(f"File '{file_path}' not found.", RED)
+        FATAL_PRINT(f"File '{file_path}' not found.")
         return None
     except json.JSONDecodeError as e:
-        FORMAT_PRINT(f"Error decoding JSON in '{file_path}': {e}", RED)
+        FATAL_PRINT(f"Error decoding JSON in '{file_path}': {e}")
         return None
 
 
@@ -47,7 +47,7 @@ def set_vs_environment():
 
     vs_path = find_vs_path()
     if not vs_path:
-        FORMAT_PRINT(f"{RED}Visual Studio not found.{DEFAULT}", RED)
+        FATAL_PRINT(f"Visual Studio not found.")
         return
 
     vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
@@ -110,14 +110,14 @@ class Project:
 
     def build_dependencies(self, debug):
         if len(self.project_dependency_strings) == 0 or not self.project_dependency_strings[0]:
-            FORMAT_PRINT(f"[{self.name}] depends on nothing", CYAN)
+            FORMAT_PRINT(f"[{self.name}] depends on nothing")
             return
 
-        FORMAT_PRINT(f"{BLUE}[{self.name}] depends on: {DEFAULT}", BLUE)
+        FORMAT_PRINT(f"[{self.name}] depends on:")
         for dependency_string in self.project_dependency_strings:
-            FORMAT_PRINT(f"- {dependency_string}", BLUE)
+            FORMAT_PRINT(f"- {dependency_string}")
             if not os.path.exists(dependency_string):
-                FORMAT_PRINT(f"missing {dependency_string} cloning...", BLUE)
+                FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
             else:
                 cached_current_directory_local = os.getcwd()
@@ -154,29 +154,18 @@ class Project:
 
     def build_project(self, debug):
         indent = " " * self.depth  # Indentation based on depth parameter
-        FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|", GREEN)
+        FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|")
         UP_LEVEL()
         start_time = time.time()
-        FORMAT_PRINT(f"|--------------- Building [{self.name}] Dependencies ---------------|", MAGENTA)
+        FORMAT_PRINT(f"|--------------- Building [{self.name}] Dependencies ---------------|")
         self.build_dependencies(debug)
-        FORMAT_PRINT(f"|-----------------------------------------------------|\n", MAGENTA)
+        FORMAT_PRINT(f"|-----------------------------------------------------|\n")
 
-        FORMAT_PRINT(f"|--------------- Building [{self.name}] Procedures ---------------|", MAGENTA)
+        FORMAT_PRINT(f"|--------------- Building [{self.name}] Procedures ---------------|")
         self.build_procedures(debug)
-        FORMAT_PRINT(f"|-----------------------------------------------------|", MAGENTA)
+        FORMAT_PRINT(f"|-----------------------------------------------------|")
 
         end_time = time.time()
         elapsed_time = end_time - start_time
         DOWN_LEVEL()
-        FORMAT_PRINT(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|", GREEN)
-
-    def __str__(self):
-        output = f"{CYAN}================== name: {self.name} ==================\n"
-        output += f"{GREEN}name: {self.name}\n"
-        output += f"compiler: {self.compiler_type}\n"
-        output += f"debug_with_visual_studio: {self.debug_with_visual_studio}\n"
-        output += f"should_rebuild_project_dependencies: {self.should_rebuild_project_dependencies}\n"
-        output += f"project_dependencies: {self.project_dependencies}\n"
-        output += f"std_version: {self.std_version}\n"
-        output += f"{CYAN}================================================{DEFAULT}\n"
-        return output
+        FORMAT_PRINT(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|")

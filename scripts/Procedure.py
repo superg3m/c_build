@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 from typing import List, Dict, Union
-from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, FORMAT_PRINT
+from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT
 
 
 class Procedure:
@@ -77,18 +77,18 @@ class Procedure:
         try:
             subprocess.run(lib_command, capture_output=True, text=True, check=True)
         except FileNotFoundError:
-            FORMAT_PRINT(f"lib command not found", RED)
+            FATAL_PRINT(f"lib command not found")
             error_occurred = True
         except subprocess.CalledProcessError as e:
-            FORMAT_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======", RED)
+            FATAL_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======")
             if e.stdout:
                 error_lines = e.stdout.splitlines()
                 for line in error_lines:
                     if line.strip() and not line.endswith(".c"):
-                        FORMAT_PRINT(f"Compilation error | {line.strip()}", RED)
+                        FATAL_PRINT(f"Compilation error | {line.strip()}")
 
-            FORMAT_PRINT(f"Lib Command: {e.args[1]}", MAGENTA)
-            FORMAT_PRINT(f"==========================================================================", RED)
+            NORMAL_PRINT(f"Lib Command: {e.args[1]}")
+            FATAL_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
@@ -112,7 +112,7 @@ class Procedure:
         if self.std_is_valid():
             compiler_command.append(f"{standard_flag[compiler_index]}{self.std_version}")
         else:
-            FORMAT_PRINT(f"Std version: {self.std_version} not supported, falling back on default", MAGENTA)
+            FORMAT_PRINT(f"Std version: {self.std_version} not supported, falling back on default")
 
         for define in self.compile_time_defines:
             compiler_command.append(f"{compile_time_define_flag[compiler_index]}{define}")
@@ -150,20 +150,20 @@ class Procedure:
             if self.should_build_static_lib:
                 self.build_static_lib()
 
-            FORMAT_PRINT(f"Compilation of {self.output_name} successful", GREEN)
+            FORMAT_PRINT(f"Compilation of {self.output_name} successful")
         except FileNotFoundError:
-            FORMAT_PRINT(f"{self.compiler_type} compiler not found", RED)
+            FATAL_PRINT(f"{self.compiler_type} compiler not found")
             error_occurred = True
         except subprocess.CalledProcessError as e:
-            FORMAT_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========", RED)
+            FATAL_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========")
             if e.stdout:
                 error_lines = e.stdout.splitlines()
                 for line in error_lines:
                     if line.strip() and not line.endswith(".c"):
-                        FORMAT_PRINT(f"Compilation error | {line.strip()}", RED)
+                        FATAL_PRINT(f"Compilation error | {line.strip()}")
 
-            FORMAT_PRINT(f"Compiler Command: {e.args[1]}", MAGENTA)
-            FORMAT_PRINT(f"==========================================================================", RED)
+            NORMAL_PRINT(f"Compiler Command: {e.args[1]}")
+            FATAL_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
@@ -172,22 +172,7 @@ class Procedure:
 
     def build(self, debug: bool) -> None:
         if self.is_built():
-            FORMAT_PRINT(f"Already built procedure: {self.output_name}, skipping...", CYAN)
+            NORMAL_PRINT(f"Already built procedure: {self.output_name}, skipping...")
             return
 
         self.build_no_check(debug)
-
-    def __str__(self):
-        output = f"{CYAN}================================================\n"
-        output += f"{GREEN}directory: {self.build_directory}\n"
-        output += f"compiler: {self.compiler_type}\n"
-        output += f"should_build_executable: {self.should_build_executable}\n"
-        output += f"should_build_static_lib: {self.should_build_static_lib}\n"
-        output += f"should_build_dynamic_lib: {self.should_build_dynamic_lib}\n"
-        output += f"output_name: {self.output_name}\n"
-        output += f"compile_time_defines: {self.compile_time_defines}\n"
-        output += f"include_paths: {self.include_paths}\n"
-        output += f"source_paths: {self.source_paths}\n"
-        output += f"additional_libs: {self.additional_libs}{DEFAULT}\n"
-        output += f"{CYAN}================================================{DEFAULT}\n"
-        return output

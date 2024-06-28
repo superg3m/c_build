@@ -8,6 +8,7 @@ MAGENTA: str = '\033[95m'
 GREY: str = '\033[90m'
 BLACK: str = '\033[90m'
 DEFAULT: str = '\033[0m'
+FATAL = "\033[41m"
 
 JSON_CONFIG_PATH: str = "./c_build_config.json"
 
@@ -27,6 +28,18 @@ def DOWN_LEVEL():
     indent_spaces = " " * (level * 4)
 
 
-def FORMAT_PRINT(msg: str, color: str):
+def FORMAT_PRINT(msg: str):
     global indent_spaces
+    color_lookup = [GREEN, BLUE, CYAN, YELLOW, MAGENTA, RED]
+    color = color_lookup[level % len(color_lookup)]
     print(f"{color}{indent_spaces}{msg}{DEFAULT}")
+
+
+def NORMAL_PRINT(msg: str):
+    global indent_spaces
+    print(f"{indent_spaces}{msg}")
+
+
+def FATAL_PRINT(msg: str):
+    global indent_spaces
+    print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
