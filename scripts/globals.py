@@ -11,4 +11,16 @@ DEFAULT: str = '\033[0m'
 
 JSON_CONFIG_PATH: str = "./c_build_config.json"
 
-depth = 0
+level = 0
+indent_spaces = " " * (level * 4)
+
+
+def increase_global_level():
+    global level, indent_spaces
+    level += 1
+    indent_spaces = " " * (level * 4)
+
+
+def FORMAT_PRINT(msg: str, color: str):
+    global indent_spaces
+    print(f"{color}{indent_spaces}{msg}{DEFAULT}")

@@ -6,11 +6,7 @@ import time
 
 from Procedure import Procedure
 from typing import List, Dict, Union
-from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, depth, JSON_CONFIG_PATH
-
-def FORMAT_PRINT(color: str, message: str, depth: int):
-    indent: str = " " * depth
-    print(f"{color}{indent}{message}{DEFAULT}")
+from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, JSON_CONFIG_PATH, FORMAT_PRINT
 
 def parse_json_file(file_path: str):
     try:
@@ -18,10 +14,10 @@ def parse_json_file(file_path: str):
             data = json.load(file)
         return data
     except FileNotFoundError:
-        print(f"File '{file_path}' not found.")
+        FORMAT_PRINT(f"File '{file_path}' not found.", RED)
         return None
     except json.JSONDecodeError as e:
-        print(f"Error decoding JSON in '{file_path}': {e}")
+        FORMAT_PRINT(f"Error decoding JSON in '{file_path}': {e}", RED)
         return None
 
 
@@ -34,7 +30,7 @@ def find_vs_path():
     if result.returncode == 0:
         return result.stdout.strip()
     else:
-        print("Could not find Visual Studio installation path.")
+        FORMAT_PRINT("Could not find Visual Studio installation path.")
         return None
 
 
@@ -51,7 +47,7 @@ def set_vs_environment():
 
     vs_path = find_vs_path()
     if not vs_path:
-        print(f"{RED}Visual Studio not found.{DEFAULT}")
+        FORMAT_PRINT(f"{RED}Visual Studio not found.{DEFAULT}", RED)
         return
 
     vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
@@ -114,14 +110,14 @@ class Project:
 
     def build_dependencies(self, debug):
         if len(self.project_dependency_strings) == 0 or not self.project_dependency_strings[0]:
-            print(f"{CYAN}[{self.name}] depends on nothing{DEFAULT}")
+            FORMAT_PRINT(f"[{self.name}] depends on nothing", CYAN)
             return
 
-        print(f"{BLUE}[{self.name}] depends on: {DEFAULT}")
+        FORMAT_PRINT(f"{BLUE}[{self.name}] depends on: {DEFAULT}", BLUE)
         for dependency_string in self.project_dependency_strings:
-            print(f"{BLUE} - {dependency_string} {DEFAULT}")
+            FORMAT_PRINT(f"- {dependency_string}", BLUE)
             if not os.path.exists(dependency_string):
-                print(f"{BLUE}missing {dependency_string} cloning...{DEFAULT}")
+                FORMAT_PRINT(f"missing {dependency_string} cloning...", BLUE)
                 os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
             else:
                 cached_current_directory_local = os.getcwd()
@@ -159,14 +155,13 @@ class Project:
 
     def build_project(self, debug):
         indent = " " * self.depth  # Indentation based on depth parameter
-        print(f"{GREEN}{indent}|--------------- Started Building {self.name} ---------------|{DEFAULT}")
+        FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|", GREEN)
         start_time = time.time()
         self.build_dependencies(debug)
         self.build_procedures(debug)
         end_time = time.time()
         elapsed_time = end_time - start_time
-
-        print(f"{GREEN}{indent}|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|{DEFAULT}")
+        FORMAT_PRINT(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|", GREEN)
 
     def __str__(self):
         output = f"{CYAN}================== name: {self.name} ==================\n"

@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 from typing import List, Dict, Union
-from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, depth
+from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, FORMAT_PRINT
 
 
 class Procedure:
@@ -77,18 +77,18 @@ class Procedure:
         try:
             subprocess.run(lib_command, capture_output=True, text=True, check=True)
         except FileNotFoundError:
-            print(f"{RED}lib command not found{DEFAULT}")
+            FORMAT_PRINT(f"lib command not found", RED)
             error_occurred = True
         except subprocess.CalledProcessError as e:
-            print(f"{RED}======= Error: static lib creation failed with return code {e.returncode} ======={DEFAULT}")
+            FORMAT_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======", RED)
             if e.stdout:
                 error_lines = e.stdout.splitlines()
                 for line in error_lines:
                     if line.strip() and not line.endswith(".c"):
-                        print(f"{RED}Compilation error | {line.strip()}{DEFAULT}")
+                        FORMAT_PRINT(f"Compilation error | {line.strip()}", RED)
 
-            print(f"{MAGENTA}Lib Command: {e.args[1]}{DEFAULT}")
-            print(f"{RED}=========================================================================={DEFAULT}")
+            FORMAT_PRINT(f"Lib Command: {e.args[1]}", MAGENTA)
+            FORMAT_PRINT(f"==========================================================================", RED)
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
@@ -112,7 +112,7 @@ class Procedure:
         if self.std_is_valid():
             compiler_command.append(f"{standard_flag[compiler_index]}{self.std_version}")
         else:
-            print(MAGENTA + f"Std version: {self.std_version} not supported, falling back on default" + DEFAULT)
+            FORMAT_PRINT(f"Std version: {self.std_version} not supported, falling back on default", MAGENTA)
 
         for define in self.compile_time_defines:
             compiler_command.append(f"{compile_time_define_flag[compiler_index]}{define}")
@@ -150,20 +150,20 @@ class Procedure:
             if self.should_build_static_lib:
                 self.build_static_lib()
 
-            print(f"{GREEN}Compilation of {self.output_name} successful{DEFAULT}")
+            FORMAT_PRINT(f"Compilation of {self.output_name} successful", GREEN)
         except FileNotFoundError:
-            print(f"{RED}{self.compiler_type} compiler not found{DEFAULT}")
+            FORMAT_PRINT(f"{self.compiler_type} compiler not found", RED)
             error_occurred = True
         except subprocess.CalledProcessError as e:
-            print(f"{RED}=========== Error: Compilation failed with return code {e.returncode} ==========={DEFAULT}")
+            FORMAT_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========", RED)
             if e.stdout:
                 error_lines = e.stdout.splitlines()
                 for line in error_lines:
                     if line.strip() and not line.endswith(".c"):
-                        print(f"{RED}Compilation error | {line.strip()}{DEFAULT}")
+                        FORMAT_PRINT(f"Compilation error | {line.strip()}", RED)
 
-            print(f"{MAGENTA}Compiler Command: {e.args[1]}{DEFAULT}")
-            print(f"{RED}=========================================================================={DEFAULT}")
+            FORMAT_PRINT(f"Compiler Command: {e.args[1]}", MAGENTA)
+            FORMAT_PRINT(f"==========================================================================", RED)
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
@@ -172,7 +172,7 @@ class Procedure:
 
     def build(self, debug: bool) -> None:
         if self.is_built():
-            print(CYAN + f"Already built procedure: {self.output_name}, skipping..." + DEFAULT)
+            FORMAT_PRINT(f"Already built procedure: {self.output_name}, skipping...", CYAN)
             return
 
         self.build_no_check(debug)
