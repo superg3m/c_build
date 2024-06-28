@@ -157,14 +157,8 @@ class Project:
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|")
         UP_LEVEL()
         start_time = time.time()
-        FORMAT_PRINT(f"|--------------- Building [{self.name}] Dependencies ---------------|")
         self.build_dependencies(debug)
-        FORMAT_PRINT(f"|-----------------------------------------------------|\n")
-
-        FORMAT_PRINT(f"|--------------- Building [{self.name}] Procedures ---------------|")
         self.build_procedures(debug)
-        FORMAT_PRINT(f"|-----------------------------------------------------|")
-
         end_time = time.time()
         elapsed_time = end_time - start_time
         DOWN_LEVEL()
