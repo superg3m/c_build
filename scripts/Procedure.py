@@ -79,7 +79,8 @@ class Procedure:
 
         if self.additional_libs:
             for lib in self.additional_libs:
-                lib_command.append(lib)
+                if lib:
+                    lib_command.append(lib)
 
         cached_current_directory = os.curdir
         error_occurred = False
