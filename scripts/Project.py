@@ -151,8 +151,8 @@ class Project:
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
             current_dir = os.getcwd()  # Get current script's directory
-            bootstrap_script = os.path.join(current_dir, 'c-build', 'bootstrap.ps1')
-            build_script = os.path.join(current_dir, 'build.ps1')
+            bootstrap_script = os.path.join('c-build', 'bootstrap.ps1')
+            build_script = os.path.join('build.ps1')
             os.system(f"powershell -ExecutionPolicy Bypass \"{bootstrap_script}\" -compiler_type {self.compiler_type}")
             os.system(f"powershell -ExecutionPolicy Bypass \"{build_script}\"")
             os.chdir(cached_current_directory_global)
