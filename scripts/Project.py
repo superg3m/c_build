@@ -139,7 +139,6 @@ class Project:
                 os.system("git clone https://github.com/superg3m/c-build.git")
             else:
                 cached_current_directory_local = os.getcwd()
-                print(f"DIR: {os.getcwd()}")
                 os.chdir(dependency_path)
                 os.system("git fetch origin -q")
                 os.system("git reset --hard origin/main -q")
@@ -147,11 +146,11 @@ class Project:
                 os.chdir(cached_current_directory_local)
 
             cached_current_directory_global = os.getcwd()
-            print(cached_current_directory_global)
             os.chdir(dependency_path)
             os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
             os.system(f"./build.ps1")
             os.chdir(cached_current_directory_global)
+            sys.exit(-1)
 
     def build_procedures(self, debug: bool):
         for procedure in self.procedures:
