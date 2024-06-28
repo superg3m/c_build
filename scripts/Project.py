@@ -20,6 +20,9 @@ DEFAULT: str = '\033[0m'
 
 JSON_CONFIG_PATH: str = "./c_build_config.json"
 
+def FORMAT_PRINT(color: str, message: str, depth: int):
+    indent: str = " " * depth
+    print(f"{color}{indent}{message}{DEFAULT}")
 
 def parse_json_file(file_path: str):
     try:
@@ -166,7 +169,7 @@ class Project:
                 procedure.build(debug)
 
     def build_project(self, debug):
-        indent = "    " * self.depth  # Indentation based on depth parameter
+        indent = " " * self.depth  # Indentation based on depth parameter
         print(f"{GREEN}{indent}|--------------- Started Building {self.name} ---------------|{DEFAULT}")
         start_time = time.time()
         self.build_dependencies(debug)
