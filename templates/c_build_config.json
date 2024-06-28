@@ -1,17 +1,17 @@
 {
-    "c_build_version" : "0.8",
+    "c_build_version" : "0.9",
 
     "project_name" : "RMD",
-    
+    "compiler_type" : "cl",
+
     "debug_with_visual_studio" : false,
     "should_rebuild_project_dependencies" : false,
-
     "std_version" : "c11",
     "project_dependencies" : [""],
 
     "./build_$compiler_type" : {
         "output_name" : "ckg.lib",
-        "compile_time_defines" : "",
+        "compile_time_defines" : [""],
         "include_paths" : "",
         "source_paths" : "./source/*.c",
 
@@ -20,7 +20,7 @@
 
     "./example/$compiler_type" : {
         "output_name" : "test_ckg.exe",
-        "compile_time_defines" : "",
+        "compile_time_defines" : [""],
         "include_paths" : "",
         "source_paths" : "../*.c",
 
