@@ -111,6 +111,7 @@ class Project:
 
         self.execute_procedure_string: str = json_data["execute"]
         self.execute_procedure: Union[Procedure, None] = None
+        self.depth = 0
 
         for key, value in json_data.items():
             if isinstance(value, dict):
@@ -153,6 +154,7 @@ class Project:
 
             dependency: Project = Project(parse_json_file(JSON_CONFIG_PATH))
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
+            dependency.depth = self.depth + 4
             dependency.build_project(debug)
             os.chdir(cached_current_directory_global)
 
@@ -164,14 +166,15 @@ class Project:
                 procedure.build(debug)
 
     def build_project(self, debug):
-        print(f"{GREEN}|--------------- Started Building {self.name} ---------------|{DEFAULT}")
+        indent = "    " * self.depth  # Indentation based on depth parameter
+        print(f"{GREEN}{indent}|--------------- Started Building {self.name} ---------------|{DEFAULT}")
         start_time = time.time()
         self.build_dependencies(debug)
         self.build_procedures(debug)
         end_time = time.time()
         elapsed_time = end_time - start_time
 
-        print(f"{GREEN}|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|{DEFAULT}")
+        print(f"{GREEN}{indent}|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|{DEFAULT}")
 
     def __str__(self):
         output = f"{CYAN}================== name: {self.name} ==================\n"
