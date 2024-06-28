@@ -6,7 +6,7 @@ import time
 
 from Procedure import Procedure
 from typing import List, Dict, Union
-from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, JSON_CONFIG_PATH, FORMAT_PRINT
+from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
 
 def parse_json_file(file_path: str):
     try:
@@ -139,11 +139,12 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-
+            UP_LEVEL()
             dependency: Project = Project()
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
             dependency.depth = self.depth + 4
             dependency.build_project(debug)
+            DOWN_LEVEL()
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):

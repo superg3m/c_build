@@ -15,10 +15,16 @@ level = 0
 indent_spaces = " " * (level * 4)
 
 
-def increase_global_level():
+def UP_LEVEL():
     global level, indent_spaces
     level += 1
-    indent_spaces = " " * (level * 4)
+    indent_spaces = " " * ((level * 4) + 2)
+
+
+def DOWN_LEVEL():
+    global level, indent_spaces
+    level -= 1
+    indent_spaces = " " * ((level * 4) + 2)
 
 
 def FORMAT_PRINT(msg: str, color: str):
