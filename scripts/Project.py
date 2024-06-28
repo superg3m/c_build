@@ -157,11 +157,11 @@ class Project:
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|", GREEN)
         UP_LEVEL()
         start_time = time.time()
-        FORMAT_PRINT(f"|--------------- Building Dependencies ---------------|", MAGENTA)
+        FORMAT_PRINT(f"|--------------- Building [{self.name}] Dependencies ---------------|", MAGENTA)
         self.build_dependencies(debug)
         FORMAT_PRINT(f"|-----------------------------------------------------|\n", MAGENTA)
 
-        FORMAT_PRINT(f"|--------------- Building Procedures ---------------|", MAGENTA)
+        FORMAT_PRINT(f"|--------------- Building [{self.name}] Procedures ---------------|", MAGENTA)
         self.build_procedures(debug)
         FORMAT_PRINT(f"|-----------------------------------------------------|", MAGENTA)
 
