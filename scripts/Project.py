@@ -162,9 +162,9 @@ class Project:
     def build_project(self, debug):
         print(f"{GREEN}|--------------- Started Building {self.name} ---------------|{DEFAULT}")
         start_time = time.time()
-        end_time = time.time()
         self.build_dependencies(debug)
         self.build_procedures(debug)
+        end_time = time.time()
         elapsed_time = end_time - start_time
 
         print(f"{GREEN}|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|{DEFAULT}")
