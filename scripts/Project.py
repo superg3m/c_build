@@ -120,13 +120,14 @@ class Project:
 
         print(f"{BLUE}[{self.name}] depends on: {DEFAULT}")
         for dependency_string in self.project_dependency_strings:
+            dependency_path = f"./{dependency_string}"
             print(f"{BLUE} - {dependency_string} {DEFAULT}")
-            if not os.path.exists(dependency_string):
+            if not os.path.exists(dependency_path):
                 print(f"{BLUE}missing {dependency_string} cloning...{DEFAULT}")
                 os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
             else:
                 cached_current_directory_local = os.curdir
-                os.chdir(dependency_string)
+                os.chdir(dependency_path)
                 os.system("git fetch origin -q")
                 os.system("git reset --hard origin/main -q")
                 os.system("git pull -q")
@@ -137,13 +138,13 @@ class Project:
                 os.system("https://github.com/superg3m/c-build.git")
             else:
                 cached_current_directory_local = os.curdir
-                os.chdir(dependency_string)
+                os.chdir(dependency_path)
                 os.system("git fetch origin -q")
                 os.system("git reset --hard origin/main -q")
                 os.system("git pull -q")
                 os.chdir(cached_current_directory_local)
 
-            os.chdir(dependency_string)
+            os.chdir(dependency_path)
             os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
             os.system(f"./build.ps1")
             os.chdir(cached_current_directory_global)
