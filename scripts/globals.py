@@ -30,7 +30,7 @@ def DOWN_LEVEL():
 
 def FORMAT_PRINT(msg: str):
     global indent_spaces
-    color_lookup = [GREEN, BLUE, CYAN, YELLOW, MAGENTA, RED]
+    color_lookup = [GREEN, BLUE, YELLOW, MAGENTA, CYAN, RED]
     color = color_lookup[level % len(color_lookup)]
     print(f"{color}{indent_spaces}{msg}{DEFAULT}")
 
