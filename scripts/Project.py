@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+import sys
 import time
 
 from Procedure import Procedure
@@ -145,6 +146,7 @@ class Project:
                 os.chdir(cached_current_directory_local)
 
             os.chdir(dependency_path)
+            sys.exit(-1)
             os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
             os.system(f"./build.ps1")
             os.chdir(cached_current_directory_global)
