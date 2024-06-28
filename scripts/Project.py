@@ -163,7 +163,7 @@ class Project:
 
         FORMAT_PRINT(f"|--------------- Building Procedures ---------------|", MAGENTA)
         self.build_procedures(debug)
-        FORMAT_PRINT(f"|-----------------------------------------------------|\n", MAGENTA)
+        FORMAT_PRINT(f"|-----------------------------------------------------|", MAGENTA)
 
         end_time = time.time()
         elapsed_time = end_time - start_time
