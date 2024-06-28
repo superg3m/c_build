@@ -148,7 +148,6 @@ class Procedure:
             else:
                 compiler_command.append("-O2")
 
-        # Check if the directory exists, and if not, create it
         if not os.path.exists(self.build_directory):
             os.makedirs(self.build_directory)
 

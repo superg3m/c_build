@@ -152,6 +152,7 @@ class Project:
             os.chdir(dependency_string)
 
             dependency: Project = Project(parse_json_file(JSON_CONFIG_PATH))
+            dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
             dependency.build_project(debug)
             os.chdir(cached_current_directory_global)
 
