@@ -145,11 +145,7 @@ class Project:
                 os.chdir(cached_current_directory_local)
 
             os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
-
-            dependency: Project = Project(parse_json_file(JSON_CONFIG_PATH))
-            dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
-            dependency.build_project(debug)
-
+            os.system(f"./build.ps1")
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
