@@ -82,7 +82,7 @@ class Procedure:
                 if lib:
                     lib_command.append(lib)
 
-        cached_current_directory = os.curdir
+        cached_current_directory = os.getcwd()
         error_occurred = False
         try:
             subprocess.run(lib_command, capture_output=True, text=True, check=True)

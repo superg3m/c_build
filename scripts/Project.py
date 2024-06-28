@@ -127,7 +127,7 @@ class Project:
                 print(f"{BLUE}missing {dependency_string} cloning...{DEFAULT}")
                 os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
             else:
-                cached_current_directory_local = os.curdir
+                cached_current_directory_local = os.getcwd()
                 os.chdir(dependency_path)
                 os.system("git fetch origin -q")
                 os.system("git reset --hard origin/main -q")
@@ -138,15 +138,15 @@ class Project:
             if not os.path.exists("c-build"):
                 os.system("git clone https://github.com/superg3m/c-build.git")
             else:
-                cached_current_directory_local = os.curdir
-                print(f"DIR: {os.curdir}")
+                cached_current_directory_local = os.getcwd()
+                print(f"DIR: {os.getcwd()}")
                 os.chdir(dependency_path)
                 os.system("git fetch origin -q")
                 os.system("git reset --hard origin/main -q")
                 os.system("git pull -q")
                 os.chdir(cached_current_directory_local)
 
-            cached_current_directory_global = os.curdir
+            cached_current_directory_global = os.getcwd()
             print(cached_current_directory_global)
             os.chdir(dependency_path)
             os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
