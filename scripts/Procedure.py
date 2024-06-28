@@ -151,7 +151,6 @@ class Procedure:
         # Check if the directory exists, and if not, create it
         if not os.path.exists(self.build_directory):
             os.makedirs(self.build_directory)
-            print(BLUE + f"Directory {self.build_directory} created." + DEFAULT)
 
         cached_current_directory = os.getcwd()
         error_occurred = False
