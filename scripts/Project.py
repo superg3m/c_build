@@ -150,7 +150,7 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            current_dir = os.path.dirname(os.path.realpath(__file__))  # Get current script's directory
+            current_dir = os.getcwd()  # Get current script's directory
             bootstrap_script = os.path.join(current_dir, 'c-build', 'bootstrap.ps1')
             build_script = os.path.join(current_dir, 'build.ps1')
             os.system(f"powershell {bootstrap_script} -compiler_type {self.compiler_type}")
