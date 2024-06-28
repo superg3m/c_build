@@ -150,10 +150,9 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            bootstrap_script = "./c-build/bootstrap"
-            build_script = os.path.join('./build.ps1')
-            subprocess.run(["powershell", "-File", bootstrap_script, f"-compiler_type {self.compiler_type}"], capture_output=True, text=True)
-            subprocess.run(["powershell", "-File", build_script], capture_output=True, text=True)
+
+            dependency: Project = Project(parse_json_file(JSON_CONFIG_PATH))
+            dependency.build_project(debug)
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
