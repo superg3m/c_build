@@ -133,7 +133,6 @@ class Project:
                 os.chdir(cached_current_directory_local)
 
             cached_current_directory_global = os.curdir
-            os.chdir(dependency_string)
             if not os.path.exists("c-build"):
                 os.system("https://github.com/superg3m/c-build.git")
             else:
@@ -144,6 +143,7 @@ class Project:
                 os.system("git pull -q")
                 os.chdir(cached_current_directory_local)
 
+            os.chdir(dependency_string)
             os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
             os.system(f"./build.ps1")
             os.chdir(cached_current_directory_global)
