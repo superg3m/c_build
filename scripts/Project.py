@@ -145,8 +145,8 @@ class Project:
                 os.system("git pull -q")
                 os.chdir(cached_current_directory_local)
 
-            os.chdir(dependency_path)
             sys.exit(-1)
+            os.chdir(dependency_path)
             os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
             os.system(f"./build.ps1")
             os.chdir(cached_current_directory_global)
