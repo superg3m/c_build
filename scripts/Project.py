@@ -153,8 +153,8 @@ class Project:
             current_dir = os.getcwd()  # Get current script's directory
             bootstrap_script = os.path.join(current_dir, 'c-build', 'bootstrap.ps1')
             build_script = os.path.join(current_dir, 'build.ps1')
-            os.system(f"powershell {bootstrap_script} -compiler_type {self.compiler_type}")
-            os.system(f"powershell {build_script}")
+            os.system(f"powershell -ExecutionPolicy Bypass \"{bootstrap_script}\" -compiler_type {self.compiler_type}")
+            os.system(f"powershell -ExecutionPolicy Bypass \"{build_script}\"")
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
