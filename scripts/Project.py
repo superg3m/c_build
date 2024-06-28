@@ -159,11 +159,11 @@ class Project:
         start_time = time.time()
         FORMAT_PRINT(f"|--------------- Building Dependencies ---------------|", MAGENTA)
         self.build_dependencies(debug)
-        FORMAT_PRINT(f"|-----------------------------------------------------|", MAGENTA)
+        FORMAT_PRINT(f"|-----------------------------------------------------|\n", MAGENTA)
 
         FORMAT_PRINT(f"|--------------- Building Procedures ---------------|", MAGENTA)
         self.build_procedures(debug)
-        FORMAT_PRINT(f"|-----------------------------------------------------|", MAGENTA)
+        FORMAT_PRINT(f"|-----------------------------------------------------|\n", MAGENTA)
 
         end_time = time.time()
         elapsed_time = end_time - start_time
