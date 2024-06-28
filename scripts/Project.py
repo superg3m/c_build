@@ -146,8 +146,8 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            os.system(f"c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
-            os.system(f"build.ps1")
+            os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
+            os.system(f"./build.ps1")
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
