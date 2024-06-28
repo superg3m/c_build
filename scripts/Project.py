@@ -139,7 +139,7 @@ class Project:
                 os.system("git clone https://github.com/superg3m/c-build.git")
             else:
                 cached_current_directory_local = os.curdir
-                print(cached_current_directory_local)
+                print(f"DIR: {os.curdir}")
                 os.chdir(dependency_path)
                 os.system("git fetch origin -q")
                 os.system("git reset --hard origin/main -q")
