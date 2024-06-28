@@ -1,6 +1,9 @@
+import json
 import os
 import subprocess
-import sys
+import time
+
+from Procedure import Procedure
 from typing import List, Dict, Union
 
 RED: str = '\033[91m'
@@ -14,192 +17,162 @@ GREY: str = '\033[90m'
 BLACK: str = '\033[90m'
 DEFAULT: str = '\033[0m'
 
+JSON_CONFIG_PATH: str = "./c_build_config.json"
 
-class Procedure:
-    def __init__(self, build_directory: str, compiler_type: str, std_version: str, json_data) -> None:
-        self.build_directory: str = build_directory
-        self.compiler_type: str = compiler_type
-        self.std_version: str = std_version
-        self.output_name: str = json_data["output_name"]
+def parse_json_file(file_path: str):
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except FileNotFoundError:
+        print(f"File '{file_path}' not found.")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON in '{file_path}': {e}")
+        return None
 
-        self.should_build_executable: bool = False
-        self.should_build_static_lib: bool = False
-        self.should_build_dynamic_lib: bool = False
+def find_vs_path():
+    vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+    result = subprocess.run(
+        [vswhere_path, "-latest", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property",
+         "installationPath"], capture_output=True, text=True)
 
-        extension: str = os.path.splitext(self.output_name)[-1].lower()
+    if result.returncode == 0:
+        return result.stdout.strip()
+    else:
+        print("Could not find Visual Studio installation path.")
+        return None
 
-        if extension == ".exe":
-            self.should_build_executable = True
-        elif extension in [".lib", ".a"]:
-            self.should_build_static_lib = True
-        elif extension in [".so", ".o", ".dylib"]:
-            self.should_build_dynamic_lib = True
-        else:
-            self.should_build_executable = True  # For Linux
-
-        self.compile_time_defines: List[str] = json_data["compile_time_defines"]
-        self.include_paths: List[str] = json_data["include_paths"]
-        self.source_paths: str = json_data["source_paths"]
-        self.additional_libs: List[str] = json_data["additional_libs"]
-
-    def is_built(self) -> bool:
-        output_path: str = os.path.join(self.build_directory, self.output_name)
-        return os.path.exists(output_path)
-
-    def get_compiler_index(self) -> int:
-        compiler_index: int = -1
-        if self.compiler_type == "cl":
-            compiler_index = 0
-        elif self.compiler_type == "gcc":
-            compiler_index = 1
-        elif self.compiler_type == "clang":
-            compiler_index = 2
-        return compiler_index
-
-    def std_is_valid(self) -> bool:
-        compiler_index: int = self.get_compiler_index()
-
-        cl_lookup_table: List[str] = ["c11", "c17", "clatest"]
-        gcc_lookup_table: List[str] = ["c89", "c90", "c99", "c11", "c17", "c18", "c23"]
-        clang_lookup_table: List[str] = ["c89", "c90", "c99", "c11", "c17", "c18", "c23"]
-        compiler_lookup_table: List[List[str]] = [cl_lookup_table, gcc_lookup_table, clang_lookup_table]
-
-        if self.std_version in compiler_lookup_table[compiler_index]:
+def is_cl_in_path():
+    for path in os.environ.get("PATH", "").split(os.pathsep):
+        if os.path.isfile(os.path.join(path, "cl.exe")) and os.path.isfile(os.path.join(path, "lib.exe")):
             return True
-        else:
-            return False
+    return False
 
-    def build_static_lib(self):
-        lib_command: List[str] = [
-            "lib",
-            "/NOLOGO",
-            f"/OUT:{self.output_name}",
-            "./*.obj"
-        ]
+def set_vs_environment():
+    if is_cl_in_path():
+        return
 
-        if self.additional_libs:
-            for lib in self.additional_libs:
-                if lib:
-                    lib_command.append(lib)
+    vs_path = find_vs_path()
+    if not vs_path:
+        print(f"{RED}Visual Studio not found.{DEFAULT}")
+        return
 
-        cached_current_directory = os.curdir
-        error_occurred = False
-        try:
-            subprocess.run(lib_command, capture_output=True, text=True, check=True)
-        except FileNotFoundError:
-            print(f"{RED}lib command not found{DEFAULT}")
-            error_occurred = True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}======= Error: static lib creation failed with return code {e.returncode} ======={DEFAULT}")
-            if e.stdout:
-                error_lines = e.stdout.splitlines()
-                for line in error_lines:
-                    if line.strip() and not line.endswith(".c"):
-                        print(f"{RED}Compilation error | {line.strip()}{DEFAULT}")
+    vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
+    temp_batch_file = "temp_env.bat"
+    env_output_file = "env.txt"
 
-            print(f"{MAGENTA}Lib Command: {e.args[1]}{DEFAULT}")
-            print(f"{RED}=========================================================================={DEFAULT}")
-            error_occurred = True
-        finally:
-            os.chdir(cached_current_directory)
-            if error_occurred:
-                sys.exit(-1)
+    # Create a temporary batch file to capture environment variables
+    with open(temp_batch_file, "w") as f:
+        f.write(f"@echo off\n")
+        f.write(f"call \"{vcvarsall_path}\" x64 > nul\n")  # Redirecting output to nul (null device)
+        f.write(f"set > \"{env_output_file}\"\n")
 
-    def build_no_check(self, debug: bool) -> None:
-        compiler_index: int = self.get_compiler_index()
+    # Run the temporary batch file
+    subprocess.run(temp_batch_file, shell=True)
 
-        no_logo: List[Union[str, None]] = ["/nologo", None, None]
-        standard_flag: List[str] = ["/std:", "-std=", "-std="]
-        object_flag: List[str] = ["/c", "-c", "-c"]
-        output_flag: List[str] = ["/Fe", "-o", "-o"]
-        compile_time_define_flag: List[str] = ["/D", "-D", "-D"]
+    # Read the environment variables from the output file
+    with open(env_output_file) as f:
+        lines = f.readlines()
 
-        compiler_command: List[str] = [self.compiler_type, self.source_paths]
+    # Set the environment variables in the current process
+    for line in lines:
+        if "=" in line:
+            name, value = line.strip().split("=", 1)
+            os.environ[name] = value
 
-        if no_logo[compiler_index]:
-            compiler_command.append(no_logo[compiler_index])
+    # Clean up temporary files
+    os.remove(temp_batch_file)
+    os.remove(env_output_file)
 
-        if self.std_is_valid():
-            compiler_command.append(f"{standard_flag[compiler_index]}{self.std_version}")
-        else:
-            print(MAGENTA + f"Std version: {self.std_version} not supported, falling back on default" + DEFAULT)
+class Project:
+    def __init__(self, json_data: Dict[str, Union[str, bool, List[str], Dict]]) -> None:
+        self.name: str = json_data["project_name"]
 
-        for define in self.compile_time_defines:
-            compiler_command.append(f"{compile_time_define_flag[compiler_index]}{define}")
+        self.compiler_type: str = json_data["compiler_type"]
+        if self.compiler_type == "cl":
+            set_vs_environment()
 
-        if self.should_build_static_lib:
-            compiler_command.append(object_flag[compiler_index])
-        else:
-            if self.should_build_dynamic_lib:
-                compiler_command.append("/LD")
+        self.std_version: str = json_data["std_version"]
 
-            compiler_command.append(f"{output_flag[compiler_index]}{self.output_name}")
-            compiler_command.extend(self.additional_libs)
+        self.debug_with_visual_studio: bool = json_data["debug_with_visual_studio"]
+        self.should_rebuild_project_dependencies: bool = json_data["should_rebuild_project_dependencies"]
 
-        if debug:
-            if self.compiler_type == "cl":
-                compiler_command.append("/Od")
-                compiler_command.append("/Zi")
-            else:
-                compiler_command.append("-g")
-        else:
-            if self.compiler_type == "cl":
-                compiler_command.append("/O2")
-            else:
-                compiler_command.append("-O2")
+        self.project_dependency_strings: List[str] = json_data["project_dependencies"]
+        self.project_dependencies: List[Project] = []
 
-        # Check if the directory exists, and if not, create it
-        if not os.path.exists(self.build_directory):
-            os.makedirs(self.build_directory)
-            print(BLUE + f"Directory {self.build_directory} created." + DEFAULT)
+        self.procedures: List[Procedure] = []
 
-        cached_current_directory = os.getcwd()
-        error_occurred = False
-        try:
-            os.chdir(self.build_directory)
-            result = subprocess.run(compiler_command, capture_output=True, text=True, check=True)
+        self.execute_procedure_string: str = json_data["execute"]
+        self.execute_procedure: Union[Procedure, None] = None
 
-            if self.should_build_static_lib:
-                self.build_static_lib()
+        for key, value in json_data.items():
+            if isinstance(value, dict):
+                build_procedure: Procedure = Procedure(key, self.compiler_type, self.std_version, value)
+                self.procedures.append(build_procedure)
+                if self.execute_procedure_string == build_procedure.output_name:
+                    self.execute_procedure = build_procedure
 
-            print(f"{GREEN}Compilation of {self.output_name} successful{DEFAULT}")
-        except FileNotFoundError:
-            print(f"{RED}{self.compiler_type} compiler not found{DEFAULT}")
-            error_occurred = True
-        except subprocess.CalledProcessError as e:
-            print(f"{RED}=========== Error: Compilation failed with return code {e.returncode} ==========={DEFAULT}")
-            if e.stdout:
-                error_lines = e.stdout.splitlines()
-                for line in error_lines:
-                    if line.strip() and not line.endswith(".c"):
-                        print(f"{RED}Compilation error | {line.strip()}{DEFAULT}")
-
-            print(f"{MAGENTA}Compiler Command: {e.args[1]}{DEFAULT}")
-            print(f"{RED}=========================================================================={DEFAULT}")
-            error_occurred = True
-        finally:
-            os.chdir(cached_current_directory)
-            if error_occurred:
-                sys.exit(-1)
-
-    def build(self, debug: bool) -> None:
-        if self.is_built():
-            print(CYAN + f"Already built procedure: {self.output_name}, skipping..." + DEFAULT)
+    def build_dependencies(self, debug):
+        if len(self.project_dependency_strings) == 0 or not self.project_dependency_strings[0]:
+            print(f"{CYAN}[{self.name}] depends on nothing{DEFAULT}")
             return
 
-        self.build_no_check(debug)
+        print(f"{BLUE}[{self.name}] depends on: {DEFAULT}")
+        for dependency_string in self.project_dependency_strings:
+            dependency_path = f"./{dependency_string}"
+            print(f"{BLUE} - {dependency_string} {DEFAULT}")
+            if not os.path.exists(dependency_path):
+                print(f"{BLUE}missing {dependency_string} cloning...{DEFAULT}")
+                os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
+            else:
+                cached_current_directory_local = os.curdir
+                os.chdir(dependency_path)
+                os.system("git fetch origin -q")
+                os.system("git reset --hard origin/main -q")
+                os.system("git pull -q")
+                os.chdir(cached_current_directory_local)
+
+            cached_current_directory_global = os.curdir
+            if not os.path.exists("./c-build"):
+                os.system("https://github.com/superg3m/c-build.git")
+            else:
+                cached_current_directory_local = os.curdir
+                os.chdir(dependency_path)
+                os.system("git fetch origin -q")
+                os.system("git reset --hard origin/main -q")
+                os.system("git pull -q")
+                os.chdir(cached_current_directory_local)
+
+            os.chdir(dependency_path)
+            os.system(f"./c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
+            os.system(f"./build.ps1")
+            os.chdir(cached_current_directory_global)
+
+    def build_procedures(self, debug: bool):
+        for procedure in self.procedures:
+            if self.should_rebuild_project_dependencies:
+                procedure.build(debug)
+            else:
+                procedure.build_no_check(debug)
+
+    def build_project(self, debug):
+        print(f"{GREEN}|--------------- Started Building {self.name} ---------------|{DEFAULT}")
+        start_time = time.time()
+        self.build_dependencies(debug)
+        self.build_procedures(debug)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+
+        print(f"{GREEN}|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|{DEFAULT}")
 
     def __str__(self):
-        output = f"{CYAN}================================================\n"
-        output += f"{GREEN}directory: {self.build_directory}\n"
+        output = f"{CYAN}================== name: {self.name} ==================\n"
+        output += f"{GREEN}name: {self.name}\n"
         output += f"compiler: {self.compiler_type}\n"
-        output += f"should_build_executable: {self.should_build_executable}\n"
-        output += f"should_build_static_lib: {self.should_build_static_lib}\n"
-        output += f"should_build_dynamic_lib: {self.should_build_dynamic_lib}\n"
-        output += f"output_name: {self.output_name}\n"
-        output += f"compile_time_defines: {self.compile_time_defines}\n"
-        output += f"include_paths: {self.include_paths}\n"
-        output += f"source_paths: {self.source_paths}\n"
-        output += f"additional_libs: {self.additional_libs}{DEFAULT}\n"
+        output += f"debug_with_visual_studio: {self.debug_with_visual_studio}\n"
+        output += f"should_rebuild_project_dependencies: {self.should_rebuild_project_dependencies}\n"
+        output += f"project_dependencies: {self.project_dependencies}\n"
+        output += f"std_version: {self.std_version}\n"
         output += f"{CYAN}================================================{DEFAULT}\n"
         return output
