@@ -73,7 +73,7 @@ class Procedure:
         lib_command: List[str] = [
             "lib",
             "/NOLOGO",
-            f"OUT:{self.output_name}",
+            f"/OUT:{self.output_name}",
             "./*.obj"
         ]
 
@@ -85,9 +85,8 @@ class Procedure:
         error_occurred = False
         try:
             subprocess.run(lib_command, capture_output=True, text=True, check=True)
-            print(f"{GREEN}Compilation successful{DEFAULT}")
         except FileNotFoundError:
-            print(f"{RED}lib not found{DEFAULT}")
+            print(f"{RED}lib command not found{DEFAULT}")
             error_occurred = True
         except subprocess.CalledProcessError as e:
             print(f"{RED}======= Error: static lib creation failed with return code {e.returncode} ======={DEFAULT}")
@@ -162,7 +161,7 @@ class Procedure:
             if self.should_build_static_lib:
                 self.build_static_lib()
 
-            print(f"{GREEN}Compilation successful{DEFAULT}")
+            print(f"{GREEN}Compilation of {self.output_name} successful{DEFAULT}")
         except FileNotFoundError:
             print(f"{RED}{self.compiler_type} compiler not found{DEFAULT}")
             error_occurred = True
