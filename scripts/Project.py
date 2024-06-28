@@ -20,6 +20,7 @@ DEFAULT: str = '\033[0m'
 
 JSON_CONFIG_PATH: str = "./c_build_config.json"
 
+
 def parse_json_file(file_path: str):
     try:
         with open(file_path, 'r') as file:
@@ -31,6 +32,7 @@ def parse_json_file(file_path: str):
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON in '{file_path}': {e}")
         return None
+
 
 def find_vs_path():
     vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -44,11 +46,13 @@ def find_vs_path():
         print("Could not find Visual Studio installation path.")
         return None
 
+
 def is_cl_in_path():
     for path in os.environ.get("PATH", "").split(os.pathsep):
         if os.path.isfile(os.path.join(path, "cl.exe")) and os.path.isfile(os.path.join(path, "lib.exe")):
             return True
     return False
+
 
 def set_vs_environment():
     if is_cl_in_path():
@@ -85,6 +89,7 @@ def set_vs_environment():
     # Clean up temporary files
     os.remove(temp_batch_file)
     os.remove(env_output_file)
+
 
 class Project:
     def __init__(self, json_data: Dict[str, Union[str, bool, List[str], Dict]]) -> None:
@@ -133,7 +138,6 @@ class Project:
                 os.system("git pull -q")
                 os.chdir(cached_current_directory_local)
 
-
             if not os.path.exists("c-build"):
                 os.system("git clone https://github.com/superg3m/c-build.git")
             else:
@@ -146,8 +150,11 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            subprocess.run(['powershell', './c-build/bootstrap.ps1', '-compiler_type', str(self.compiler_type)])
-            subprocess.run(['powershell', './build.ps1'])
+            current_dir = os.path.dirname(os.path.realpath(__file__))  # Get current script's directory
+            bootstrap_script = os.path.join(current_dir, 'c-build', 'bootstrap.ps1')
+            build_script = os.path.join(current_dir, 'build.ps1')
+            os.system(f"powershell {bootstrap_script} -compiler_type {self.compiler_type}")
+            os.system(f"powershell {build_script}")
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
