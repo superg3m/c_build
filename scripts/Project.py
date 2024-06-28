@@ -149,7 +149,6 @@ class Project:
             os.system(f"c-build/bootstrap.ps1 -compiler_type {self.compiler_type}")
             os.system(f"build.ps1")
             os.chdir(cached_current_directory_global)
-            sys.exit(-1)
 
     def build_procedures(self, debug: bool):
         for procedure in self.procedures:
