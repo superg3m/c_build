@@ -18,13 +18,13 @@ indent_spaces = " " * (level * 4)
 def UP_LEVEL():
     global level, indent_spaces
     level += 1
-    indent_spaces = " " * ((level * 4) + 2)
+    indent_spaces = " " * (level * 4)
 
 
 def DOWN_LEVEL():
     global level, indent_spaces
     level -= 1
-    indent_spaces = " " * ((level * 4) + 2)
+    indent_spaces = " " * (level * 4)
 
 
 def FORMAT_PRINT(msg: str, color: str):
