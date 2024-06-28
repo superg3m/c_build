@@ -1,4 +1,4 @@
-from Project import Project, JSON_CONFIG_PATH, parse_json_file
+from Project import Project
 
-project: Project = Project(parse_json_file(JSON_CONFIG_PATH))
+project: Project = Project()
 project.build_project(False)

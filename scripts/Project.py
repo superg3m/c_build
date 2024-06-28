@@ -6,19 +6,7 @@ import time
 
 from Procedure import Procedure
 from typing import List, Dict, Union
-
-RED: str = '\033[91m'
-GREEN: str = '\033[92m'
-BLUE: str = '\033[94m'
-CYAN: str = '\033[96m'
-WHITE: str = '\033[97m'
-YELLOW: str = '\033[93m'
-MAGENTA: str = '\033[95m'
-GREY: str = '\033[90m'
-BLACK: str = '\033[90m'
-DEFAULT: str = '\033[0m'
-
-JSON_CONFIG_PATH: str = "./c_build_config.json"
+from globals import GREEN, RED, MAGENTA, DEFAULT, CYAN, BLUE, depth, JSON_CONFIG_PATH
 
 def FORMAT_PRINT(color: str, message: str, depth: int):
     indent: str = " " * depth
@@ -95,7 +83,8 @@ def set_vs_environment():
 
 
 class Project:
-    def __init__(self, json_data: Dict[str, Union[str, bool, List[str], Dict]]) -> None:
+    def __init__(self) -> None:
+        json_data = parse_json_file(JSON_CONFIG_PATH)
         self.name: str = json_data["project_name"]
 
         self.compiler_type: str = json_data["compiler_type"]
@@ -155,7 +144,7 @@ class Project:
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
 
-            dependency: Project = Project(parse_json_file(JSON_CONFIG_PATH))
+            dependency: Project = Project()
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
             dependency.depth = self.depth + 4
             dependency.build_project(debug)
