@@ -184,7 +184,7 @@ class Procedure:
     def execute(self) -> None:
         cached_current_dir = os.getcwd()
         os.chdir(self.build_directory)
-        os.system(f"{self.output_name}")
+        subprocess.run(self.output_name, capture_output=True, text=True, check=True)
         os.chdir(cached_current_dir)
 
     def debug(self):
