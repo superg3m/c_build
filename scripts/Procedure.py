@@ -29,7 +29,7 @@ class Procedure:
 
         self.compile_time_defines: List[str] = json_data["compile_time_defines"]
         self.include_paths: List[str] = json_data["include_paths"]
-        self.source_paths: str = json_data["source_paths"]
+        self.source_paths: List[str] = json_data["source_paths"]
         self.additional_libs: List[str] = json_data["additional_libs"]
 
     def is_built(self) -> bool:
