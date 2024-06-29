@@ -85,9 +85,7 @@ class Procedure:
 
         error_occurred = False
         try:
-            result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
-            NORMAL_PRINT(result.stdout.strip().replace(" ", "").replace("\t", ""))
-            NORMAL_PRINT(result.stderr.strip().replace(" ", "").replace("\t", ""))
+            os.system(" ".join(lib_command))
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
@@ -166,9 +164,6 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             os.system(" ".join(compiler_command))
-            result = subprocess.run(compiler_command, capture_output=True, text=True, check=True)
-            NORMAL_PRINT(result.stdout.strip().replace(" ", "").replace("\t", ""))
-            NORMAL_PRINT(result.stderr.strip().replace(" ", "").replace("\t", ""))
 
             if self.should_build_static_lib:
                 self.build_static_lib()
