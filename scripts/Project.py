@@ -100,7 +100,6 @@ class Project:
 
         self.executable_name: str = json_data["execute"]
         self.executable_procedure: Union[Procedure, None] = None
-        self.depth = 0
 
         for key, value in json_data.items():
             if isinstance(value, dict):
@@ -142,7 +141,6 @@ class Project:
             os.chdir(dependency_string)
             dependency: Project = Project()
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
-            dependency.depth = self.depth + 4
             dependency.build_project(debug)
             os.chdir(cached_current_directory_global)
 
@@ -174,7 +172,6 @@ class Project:
         self.executable_procedure.execute()
 
     def build_project(self, debug):
-        indent = " " * self.depth  # Indentation based on depth parameter
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|")
         UP_LEVEL()
         start_time = time.time()
