@@ -77,7 +77,9 @@ class Procedure:
             FORMAT_PRINT("======================= SANITY =======================")
             result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
             FORMAT_PRINT("======================= WHAT? =======================")
+
             FORMAT_PRINT(result.stdout)
+            FORMAT_PRINT(result.stderr)
 
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
