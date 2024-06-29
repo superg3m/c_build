@@ -164,7 +164,8 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            print(result.returncode, result.stdout, result.stderr)
+            NORMAL_PRINT(result.stdout)
+            NORMAL_PRINT(result.stderr)
             # os.system(" ".join(compiler_command))
 
             if self.should_build_static_lib:
