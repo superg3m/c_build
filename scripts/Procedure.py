@@ -4,6 +4,7 @@ import sys
 from typing import List, Dict, Union
 from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT
 
+
 class Procedure:
     def __init__(self, build_directory: str, compiler_type: str, std_version: str, json_data) -> None:
         self.build_directory: str = build_directory
@@ -41,7 +42,6 @@ class Procedure:
             FATAL_PRINT(
                 f"{self.build_directory}/{self.output_name} | {key.upper()} MUST BE AN ARRAY OF STRINGS")
             sys.exit(-1)
-
 
     def is_built(self) -> bool:
         output_path: str = os.path.join(self.build_directory, self.output_name)
@@ -109,7 +109,7 @@ class Procedure:
             if error_occurred:
                 sys.exit(-1)
 
-    def build_no_check(self, debug: bool) -> None:
+    def build_no_check(self, debug: bool) -> int:
         compiler_index: int = self.get_compiler_index()
 
         no_logo: List[Union[str, None]] = ["/nologo", None, None]
@@ -166,10 +166,11 @@ class Procedure:
 
         cached_current_directory = os.getcwd()
         error_occurred = False
+        return_code = 0
         try:
             os.chdir(self.build_directory)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            print(f"RETURN CODE: {result.returncode}")
+            return_code = result.returncode
 
             for line in result.stdout.splitlines():
                 NORMAL_PRINT(line.strip())
@@ -178,10 +179,11 @@ class Procedure:
                 NORMAL_PRINT(line.strip())
 
             if self.should_build_static_lib:
-                self.build_static_lib()
-
-
-            FORMAT_PRINT(f"Compilation of {self.output_name} successful")
+                if self.build_static_lib():
+                    FORMAT_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
+                    sys.exit()
+            else:
+                FORMAT_PRINT(f"Compilation of {self.output_name} successful")
         except FileNotFoundError:
             FATAL_PRINT(f"{self.compiler_type} compiler not found")
             error_occurred = True
@@ -201,12 +203,14 @@ class Procedure:
             if error_occurred:
                 sys.exit(-1)
 
-    def build(self, debug: bool) -> None:
+        return return_code
+
+    def build(self, debug: bool) -> int:
         if self.is_built():
             NORMAL_PRINT(f"Already built procedure: {self.output_name}, skipping...")
-            return
+            return 0
 
-        self.build_no_check(debug)
+        return self.build_no_check(debug)
 
     def execute(self) -> None:
         error_occurred = False
