@@ -136,7 +136,7 @@ class Procedure:
             if self.should_build_dynamic_lib:
                 compiler_command.append("/LD")
 
-            compiler_command.append(f"{output_flag[compiler_index]}{self.output_name}")
+            compiler_command.append(f"{output_flag[compiler_index]}./{self.output_name}")
             compiler_command.extend(self.additional_libs)
 
         if debug:
