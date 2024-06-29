@@ -1,8 +1,3 @@
-param(
-	[Parameter(Mandatory=$true)]
-	[string] $compiler_type
-)
-
 function Parse_JsonFile($file_path) {
     if (!(Test-Path -Path $file_path)) {
         throw "Configuration file not found: $file_path"
@@ -20,26 +15,6 @@ git pull -q
 Pop-Location
 
 $c_build_version = 0.8
-
-if ($compiler_type -ne "cl" -and $compiler_type -ne "gcc") {
-    Write-Error "Compiler type is invalid should be either cl or gcc"
-    Break
-}
-
-if(!(Test-Path -Path "./source")) {
-    Write-Host "Creating source Directory"
-    mkdir ./source
-}
-
-if(!(Test-Path -Path "./include")) {
-    Write-Host "Creating include Directory"
-    mkdir ./include
-}
-
-if(!(Test-Path -Path "./build_$compiler_type")) {
-    Write-Host "Creating build_$compiler_type Directory"
-    mkdir "./build_$compiler_type" > $null
-}
 
 ###################################################
 
@@ -70,9 +45,8 @@ foreach ($templateFile in $templateFiles) {
     }
 
     $templateContent = Get-Content -Path $templateFile.FullName -Raw
-    $resolvedContent = $templateContent -replace [regex]::Escape('$compiler_type'), $compiler_type
     $resolvedFilePath = Join-Path -Path $resolvedTemplatesDir -ChildPath $templateFile.Name
-    Set-Content -Path $resolvedFilePath -Value $resolvedContent
+    Set-Content -Path $resolvedFilePath -Value $templateContent
 }
 Pop-Location
 
