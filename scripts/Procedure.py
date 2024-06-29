@@ -169,15 +169,17 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            print(f"RETURN CODE: {result.returncode}")
+
             for line in result.stdout.splitlines():
                 NORMAL_PRINT(line.strip())
 
             for line in result.stderr.splitlines():
                 NORMAL_PRINT(line.strip())
-            # os.system(" ".join(compiler_command))
 
             if self.should_build_static_lib:
                 self.build_static_lib()
+
 
             FORMAT_PRINT(f"Compilation of {self.output_name} successful")
         except FileNotFoundError:
