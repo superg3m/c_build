@@ -62,7 +62,6 @@ class Procedure:
     def build_static_lib(self):
         lib_command: List[str] = [
             "lib",
-            "/NOLOGO",
             f"/OUT:{self.output_name}",
             "./*.obj"
         ]
