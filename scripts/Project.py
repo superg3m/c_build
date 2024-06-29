@@ -151,7 +151,7 @@ class Project:
         self.executable_procedure.execute()
 
     def debug_procedure(self):
-        self.executable_procedure.build_no_check(True)
+        self.build_project(True)
 
         self.executable_procedure.debug(self.debug_with_visual_studio)
 
