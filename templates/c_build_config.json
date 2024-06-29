@@ -13,18 +13,26 @@
         "output_name" : "ckg.lib",
         "compile_time_defines" : [""],
         "include_paths" : "",
-        "source_paths" : "./source/*.c",
+        "source_paths" : [
+            "./source/*.c"
+        ],
 
-        "additional_libs" : "./ckg.lib"
+        "additional_libs" : [
+            "./ckg.lib"
+        ]
     },
 
     "./example/$compiler_type" : {
         "output_name" : "test_ckg.exe",
         "compile_time_defines" : [""],
         "include_paths" : "",
-        "source_paths" : "../*.c",
+        "source_paths" : [
+            "../*.c"
+        ],
 
-        "additional_libs" : ""
+        "additional_libs" : [
+            ""
+        ]
     },
 
     "execute" : "test_ckg.exe"

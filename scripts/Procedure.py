@@ -80,7 +80,7 @@ class Procedure:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
         except subprocess.CalledProcessError as e:
-            FATAL_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======")
+            FORMAT_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======")
             if e.stdout:
                 error_lines = e.stdout.splitlines()
                 for line in error_lines:
@@ -88,7 +88,7 @@ class Procedure:
                         FATAL_PRINT(f"Compilation error | {line.strip()}")
 
             NORMAL_PRINT(f"Lib Command: {e.args[1]}")
-            FATAL_PRINT(f"==========================================================================")
+            FORMAT_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
@@ -104,7 +104,11 @@ class Procedure:
         output_flag: List[str] = ["/Fe", "-o", "-o"]
         compile_time_define_flag: List[str] = ["/D", "-D", "-D"]
 
-        compiler_command: List[str] = [self.compiler_type, self.source_paths]
+        compiler_command: List[str] = [self.compiler_type]
+
+        for source in self.source_paths:
+            if source:
+                compiler_command.append(source)
 
         if no_logo[compiler_index]:
             compiler_command.append(no_logo[compiler_index])
