@@ -31,10 +31,12 @@ class Procedure:
         self.include_paths: List[str] = json_data["include_paths"]
 
         if type(json_data["source_paths"]) != List[str]:
+            FATAL_PRINT(f"SOURCE PATH TYPE: {type(json_data['source_paths'])}")
             FATAL_PRINT(f"{self.build_directory}/{self.output_name} | SOURCE PATH MUST BE AN ARRAY OF STRING")
             sys.exit(-1)
 
-        if type(json_data["source_paths"]) != List[str]:
+        if type(json_data["additional_libs"]) != List[str]:
+            FATAL_PRINT(f"ADDITIONAL LIBS TYPE: {type(json_data['additional_libs'])}")
             FATAL_PRINT(f"{self.build_directory}/{self.output_name} | ADDITIONAL LIBS MUST BE AN ARRAY OF STRING")
             sys.exit(-1)
 
