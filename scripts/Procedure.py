@@ -29,10 +29,16 @@ class Procedure:
 
         self.compile_time_defines: List[str] = json_data["compile_time_defines"]
         self.include_paths: List[str] = json_data["include_paths"]
-        if type(json_data["source_paths"]) == List[str]:
-            self.source_paths: List[str] = json_data["source_paths"]
-        else:
-            self.source_paths: str = "SOURCE PATH IS MISCONFIGURED"
+
+        if type(json_data["source_paths"]) != List[str]:
+            FATAL_PRINT(f"{self.build_directory}/{self.output_name} | SOURCE PATH MUST BE AN ARRAY OF STRING")
+            sys.exit(-1)
+
+        if type(json_data["source_paths"]) != List[str]:
+            FATAL_PRINT(f"{self.build_directory}/{self.output_name} | ADDITIONAL LIBS MUST BE AN ARRAY OF STRING")
+            sys.exit(-1)
+
+        self.source_paths: List[str] = json_data["source_paths"]
         self.additional_libs: List[str] = json_data["additional_libs"]
 
     def is_built(self) -> bool:
@@ -193,4 +199,3 @@ class Procedure:
 
     def debug(self):
         return "ffsdf"
-
