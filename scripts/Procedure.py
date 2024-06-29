@@ -4,7 +4,6 @@ import sys
 from typing import List, Dict, Union
 from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT
 
-
 class Procedure:
     def __init__(self, build_directory: str, compiler_type: str, std_version: str, json_data) -> None:
         self.build_directory: str = build_directory
@@ -30,18 +29,20 @@ class Procedure:
         self.compile_time_defines: List[str] = json_data["compile_time_defines"]
         self.include_paths: List[str] = json_data["include_paths"]
 
-        if type(json_data["source_paths"]) != List[str]:
-            FATAL_PRINT(f"SOURCE PATH TYPE: {type(json_data['source_paths'])}")
-            FATAL_PRINT(f"{self.build_directory}/{self.output_name} | SOURCE PATH MUST BE AN ARRAY OF STRING")
-            sys.exit(-1)
-
-        if type(json_data["additional_libs"]) != List[str]:
-            FATAL_PRINT(f"ADDITIONAL LIBS TYPE: {type(json_data['additional_libs'])}")
-            FATAL_PRINT(f"{self.build_directory}/{self.output_name} | ADDITIONAL LIBS MUST BE AN ARRAY OF STRING")
-            sys.exit(-1)
+        self.validate_list_of_strings(json_data, "source_paths")
+        self.validate_list_of_strings(json_data, "additional_libs")
 
         self.source_paths: List[str] = json_data["source_paths"]
         self.additional_libs: List[str] = json_data["additional_libs"]
+
+    def validate_list_of_strings(self, data, key):
+        if not isinstance(data.get(key), list) or not all(isinstance(item, str) for item in data[key]):
+            FATAL_PRINT(f"{key.upper()} TYPE: {type(data.get(key))}")
+            FATAL_PRINT(
+                f"{self.build_directory}/{self.output_name} | {key.upper().replace('_', ' ')} MUST BE AN ARRAY OF STRING")
+            sys.exit(-1)
+
+
 
     def is_built(self) -> bool:
         output_path: str = os.path.join(self.build_directory, self.output_name)
