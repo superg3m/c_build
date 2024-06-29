@@ -159,7 +159,7 @@ class Procedure:
             FATAL_PRINT(f"{self.compiler_type} compiler not found")
             error_occurred = True
         except subprocess.CalledProcessError as e:
-            FATAL_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========")
+            FORMAT_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========")
             if e.stdout:
                 error_lines = e.stdout.splitlines()
                 for line in error_lines:
@@ -167,7 +167,7 @@ class Procedure:
                         FATAL_PRINT(f"Compilation error | {line.strip()}")
 
             NORMAL_PRINT(f"Compiler Command: {e.args[1]}")
-            FATAL_PRINT(f"==========================================================================")
+            FORMAT_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
