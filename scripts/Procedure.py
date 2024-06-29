@@ -110,7 +110,7 @@ class Procedure:
         no_logo: List[Union[str, None]] = ["/nologo", None, None]
         standard_flag: List[str] = ["/std:", "-std=", "-std="]
         object_flag: List[str] = ["/c", "-c", "-c"]
-        output_flag: List[str] = ["/Fe", "-o", "-o"]
+        output_flag: List[str] = ["/Fe:", "-o", "-o"]
         compile_time_define_flag: List[str] = ["/D", "-D", "-D"]
 
         compiler_command: List[str] = [self.compiler_type]
@@ -136,7 +136,7 @@ class Procedure:
             if self.should_build_dynamic_lib:
                 compiler_command.append("/LD")
 
-            compiler_command.append(f"{output_flag[compiler_index]}./{self.output_name}")
+            compiler_command.append(f"{output_flag[compiler_index]}{self.output_name}")
             compiler_command.extend(self.additional_libs)
 
         if debug:
