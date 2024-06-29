@@ -98,7 +98,7 @@ class Project:
 
         self.procedures: List[Procedure] = []
 
-        self.executable_procedure_string: str = json_data["execute"]
+        self.executable_name: str = json_data["execute"]
         self.executable_procedure: Union[Procedure, None] = None
         self.depth = 0
 
@@ -106,7 +106,7 @@ class Project:
             if isinstance(value, dict):
                 build_procedure: Procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
-                if self.executable_procedure_string == build_procedure.output_name:
+                if self.executable_name == build_procedure.output_name:
                     self.executable_procedure = build_procedure
 
     def build_dependencies(self, debug):
@@ -154,6 +154,14 @@ class Project:
                 procedure.build(debug)
 
     def execute_procedure(self):
+        if not self.executable_procedure:
+            temp = []
+            for procedure in self.procedures:
+                if procedure.should_build_executable:
+                    temp.append(procedure.output_name)
+
+            FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_name}")
+            return
         if not self.executable_procedure.is_built():
             self.executable_procedure.build_no_check(False)
 
