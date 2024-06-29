@@ -206,7 +206,7 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             result = subprocess.run(self.output_name, shell=True, capture_output=True, text=True)
-            print(result.stdout.strip())
+            NORMAL_PRINT(result.stdout.strip())
             NORMAL_PRINT(result.stderr.strip())
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
