@@ -204,8 +204,8 @@ class Procedure:
             os.chdir(self.build_directory)
             result = subprocess.run(self.output_name, shell=True, capture_output=True, text=True)
             print("Return Code:", result.returncode)
-            print("Output:", result.stdout)
-            print("Error:", result.stderr)
+            print(result.stdout)
+            print(result.stderr)
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
