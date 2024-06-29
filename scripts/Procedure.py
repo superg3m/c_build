@@ -72,9 +72,9 @@ class Procedure:
                 if lib:
                     lib_command.append(lib)
 
-        cached_current_directory = os.getcwd()
         error_occurred = False
         try:
+            FORMAT_PRINT("======================= SANITY =======================")
             result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
             FORMAT_PRINT(result.stdout)
 
@@ -93,7 +93,6 @@ class Procedure:
             FORMAT_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
-            os.chdir(cached_current_directory)
             if error_occurred:
                 sys.exit(-1)
 
@@ -154,7 +153,6 @@ class Procedure:
             subprocess.run(compiler_command, capture_output=True, text=True, check=True)
 
             if self.should_build_static_lib:
-                FORMAT_PRINT("++++++++++++++++++++++++++++++++++++++++++++++++++")
                 self.build_static_lib()
 
             FORMAT_PRINT(f"Compilation of {self.output_name} successful")
