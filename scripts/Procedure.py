@@ -178,6 +178,9 @@ class Procedure:
             for line in result.stderr.splitlines():
                 NORMAL_PRINT(line.strip())
 
+            if return_code:
+                FORMAT_PRINT(f"{compiler_command}")
+
             if self.should_build_static_lib:
                 if self.build_static_lib():
                     FORMAT_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
