@@ -136,8 +136,13 @@ class Procedure:
             if self.should_build_dynamic_lib:
                 compiler_command.append("/LD")
 
-            compiler_command.append(f"{output_flag[compiler_index]}{self.output_name}")
-            compiler_command.extend(self.additional_libs)
+            compiler_command.append(f"{output_flag[compiler_index]}")
+            compiler_command.append(f"{self.output_name}")
+
+            if self.additional_libs:
+                for lib in self.additional_libs:
+                    if lib:
+                        compiler_command.append(lib)
 
         if debug:
             if self.compiler_type == "cl":
