@@ -90,7 +90,7 @@ class Procedure:
                     if line.strip() and not line.endswith(".c"):
                         FATAL_PRINT(f"Compilation error | {line.strip()}")
 
-            NORMAL_PRINT(f"Lib Command: {e.args[1]}")
+            NORMAL_PRINT(f"Lib Command: {e.cmd}")
             FORMAT_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
@@ -168,7 +168,7 @@ class Procedure:
                     if line.strip() and not line.endswith(".c"):
                         FATAL_PRINT(f"Compilation error | {line.strip()}")
 
-            NORMAL_PRINT(f"Compiler Command: {e.args[1]}")
+            NORMAL_PRINT(f"Compiler Command: {e.cmd}")
             FORMAT_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
