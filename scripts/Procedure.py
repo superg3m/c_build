@@ -86,8 +86,8 @@ class Procedure:
         error_occurred = False
         try:
             result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
-            FORMAT_PRINT(result.stdout)
-            NORMAL_PRINT(result.stderr)
+            FORMAT_PRINT(result.stdout.strip())
+            NORMAL_PRINT(result.stderr.strip())
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
@@ -167,8 +167,8 @@ class Procedure:
             os.chdir(self.build_directory)
             os.system(" ".join(compiler_command))
             result = subprocess.run(compiler_command, capture_output=True, text=True, check=True)
-            FORMAT_PRINT(result.stdout)
-            NORMAL_PRINT(result.stderr)
+            FORMAT_PRINT(result.stdout.strip())
+            NORMAL_PRINT(result.stderr.strip())
 
             if self.should_build_static_lib:
                 self.build_static_lib()
@@ -206,8 +206,8 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             result = subprocess.run(self.output_name, shell=True, capture_output=True, text=True)
-            print(result.stdout)
-            NORMAL_PRINT(result.stderr)
+            print(result.stdout.strip())
+            NORMAL_PRINT(result.stderr.strip())
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
