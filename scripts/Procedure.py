@@ -85,7 +85,9 @@ class Procedure:
 
         error_occurred = False
         try:
-            subprocess.run(lib_command, capture_output=True, text=True, check=True)
+            result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
+            FORMAT_PRINT(result.stdout)
+            NORMAL_PRINT(result.stderr)
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
@@ -203,9 +205,8 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             result = subprocess.run(self.output_name, shell=True, capture_output=True, text=True)
-            print("Return Code:", result.returncode)
             print(result.stdout)
-            print(result.stderr)
+            NORMAL_PRINT(result.stderr)
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
