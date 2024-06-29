@@ -39,9 +39,8 @@ class Procedure:
         if not isinstance(data.get(key), list) or not all(isinstance(item, str) for item in data[key]):
             FATAL_PRINT(f"{key.upper()} TYPE: {type(data.get(key))}")
             FATAL_PRINT(
-                f"{self.build_directory}/{self.output_name} | {key.upper().replace('_', ' ')} MUST BE AN ARRAY OF STRING")
+                f"{self.build_directory}/{self.output_name} | {key.upper()} MUST BE AN ARRAY OF STRINGS")
             sys.exit(-1)
-
 
 
     def is_built(self) -> bool:
