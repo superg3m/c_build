@@ -85,7 +85,12 @@ class Procedure:
 
         error_occurred = False
         try:
-            os.system(" ".join(lib_command))
+            result = subprocess.run(lib_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            for line in result.stdout.splitlines():
+                NORMAL_PRINT(line.strip())
+
+            for line in result.stderr.splitlines():
+                NORMAL_PRINT(line.strip())
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
