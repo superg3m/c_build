@@ -212,6 +212,18 @@ class Procedure:
 
         return self.build_no_check(debug)
 
+    def clean(self):
+        for filename in os.listdir(self.build_directory):
+            file_path = os.path.join(self.build_directory, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    if file_path.endswith(".c") or file_path.endswith(".cpp"):
+                        continue
+
+                    os.unlink(file_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
+
     def execute(self) -> None:
         error_occurred = False
         cached_current_directory = os.getcwd()

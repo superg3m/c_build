@@ -1,3 +1,5 @@
+import os
+
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
 BLUE: str = '\033[94m'
@@ -46,3 +48,12 @@ def FATAL_PRINT(msg):
     global indent_spaces
     if msg:
         print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
+
+
+def GIT_PULL_OR_CLONE(path: str):
+    current_directory = os.getcwd()
+    os.chdir(path)
+    os.system("git fetch origin -q")
+    os.system("git reset --hard origin/main -q")
+    os.system("git pull -q")
+    os.chdir(current_directory)

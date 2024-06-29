@@ -6,7 +6,7 @@ import time
 
 from Procedure import Procedure
 from typing import List, Dict, Union
-from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
+from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL_OR_CLONE
 
 
 def parse_json_file(file_path: str):
@@ -83,21 +83,16 @@ class Project:
     def __init__(self) -> None:
         json_data = parse_json_file(JSON_CONFIG_PATH)
         self.name: str = json_data["project_name"]
-
         self.compiler_type: str = json_data["compiler_type"]
         if self.compiler_type == "cl":
             set_vs_environment()
 
         self.std_version: str = json_data["std_version"]
-
         self.debug_with_visual_studio: bool = json_data["debug_with_visual_studio"]
         self.should_rebuild_project_dependencies: bool = json_data["should_rebuild_project_dependencies"]
-
         self.project_dependency_strings: List[str] = json_data["project_dependencies"]
         self.project_dependencies: List[Project] = []
-
         self.procedures: List[Procedure] = []
-
         self.executable_name: str = json_data["execute"]
         self.executable_procedure: Union[Procedure, None] = None
 
@@ -120,22 +115,12 @@ class Project:
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
             else:
-                cached_current_directory_local = os.getcwd()
-                os.chdir(dependency_string)
-                os.system("git fetch origin -q")
-                os.system("git reset --hard origin/main -q")
-                os.system("git pull -q")
-                os.chdir(cached_current_directory_local)
+                GIT_PULL_OR_CLONE(dependency_string)
 
             if not os.path.exists("c-build"):
                 os.system("git clone https://github.com/superg3m/c-build.git")
             else:
-                cached_current_directory_local = os.getcwd()
-                os.chdir(dependency_string)
-                os.system("git fetch origin -q")
-                os.system("git reset --hard origin/main -q")
-                os.system("git pull -q")
-                os.chdir(cached_current_directory_local)
+                GIT_PULL_OR_CLONE("c-build")
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
@@ -166,10 +151,9 @@ class Project:
         self.executable_procedure.execute()
 
     def debug_procedure(self):
-        if not self.executable_procedure.is_built():
-            self.executable_procedure.build_no_check(False)
+        self.executable_procedure.build_no_check(True)
 
-        self.executable_procedure.execute()
+        self.executable_procedure.debug(self.debug_with_visual_studio)
 
     def build_project(self, debug):
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|")
@@ -181,3 +165,15 @@ class Project:
         elapsed_time = end_time - start_time
         DOWN_LEVEL()
         FORMAT_PRINT(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|")
+
+    def clean_dependencies(self):
+        for dependency in self.project_dependencies:
+            dependency.clean_project()
+
+    def clean_procedures(self):
+        for procedure in self.procedures:
+            procedure.clean()
+
+    def clean_project(self):
+        self.clean_dependencies()
+        self.clean_procedures()
