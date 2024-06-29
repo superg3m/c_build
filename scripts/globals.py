@@ -32,14 +32,17 @@ def FORMAT_PRINT(msg):
     global indent_spaces
     color_lookup = [GREEN, BLUE, YELLOW, MAGENTA, CYAN, RED]
     color = color_lookup[level % len(color_lookup)]
-    print(f"{color}{indent_spaces}{msg}{DEFAULT}")
+    if msg:
+        print(f"{color}{indent_spaces}{msg}{DEFAULT}")
 
 
 def NORMAL_PRINT(msg):
     global indent_spaces
-    print(f"{indent_spaces}{msg}")
+    if msg:
+        print(f"{indent_spaces}{msg}")
 
 
 def FATAL_PRINT(msg):
     global indent_spaces
-    print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
+    if msg:
+        print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
