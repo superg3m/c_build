@@ -226,5 +226,24 @@ class Procedure:
             if error_occurred:
                 sys.exit(-1)
 
-    def debug(self):
-        return "ffsdf"
+    def debug(self, is_debugging_with_visual_studio: bool):
+        debugger = ["raddbg", "devenv"]
+        debug_command: List[str] = [debugger[is_debugging_with_visual_studio], self.output_name]
+        error_occurred = False
+        cached_current_directory = os.getcwd()
+        try:
+            os.chdir(self.build_directory)
+            result = subprocess.run(debug_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+            for line in result.stdout.splitlines():
+                NORMAL_PRINT(line.strip())
+
+            for line in result.stderr.splitlines():
+                NORMAL_PRINT(line.strip())
+        except FileNotFoundError:
+            FATAL_PRINT(f"executable not found")
+            error_occurred = True
+        finally:
+            os.chdir(cached_current_directory)
+            if error_occurred:
+                sys.exit(-1)
