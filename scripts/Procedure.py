@@ -182,7 +182,7 @@ class Procedure:
         self.build_no_check(debug)
 
     def execute(self) -> None:
-        execute_command = f"{self.build_directory}/{self.output_name}"
+        execute_command = f"./{self.output_name}"
 
         cached_current_dir = os.getcwd()
         os.chdir(self.build_directory)
