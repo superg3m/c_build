@@ -163,6 +163,7 @@ class Procedure:
             if self.should_build_static_lib:
                 self.build_static_lib()
 
+            NORMAL_PRINT(compiler_command)
             FORMAT_PRINT(f"Compilation of {self.output_name} successful")
         except FileNotFoundError:
             FATAL_PRINT(f"{self.compiler_type} compiler not found")
