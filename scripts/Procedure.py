@@ -200,10 +200,9 @@ class Procedure:
     def execute(self) -> None:
         error_occurred = False
         cached_current_directory = os.getcwd()
-        print(f"CURRENT DIR: {cached_current_directory}")
         try:
             os.chdir(self.build_directory)
-            subprocess.run(self.output_name, capture_output=True, text=True, check=True)
+            os.system(self.output_name)
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
