@@ -200,9 +200,7 @@ class Procedure:
         cached_current_directory = os.getcwd()
         try:
             os.chdir(self.build_directory)
-            result = subprocess.run(self.output_name, shell=True, capture_output=True, text=True)
-            NORMAL_PRINT(result.stdout.strip().replace(" ", "").replace("\t", ""))
-            NORMAL_PRINT(result.stderr.strip().replace(" ", "").replace("\t", ""))
+            os.system(self.output_name)
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
