@@ -71,16 +71,21 @@ class Procedure:
             return False
 
     def build_static_lib(self):
-        lib_command: str = f"lib /NOLOGO /OUT:{self.output_name} ./*.obj"
+        lib_command: List[str] = [
+            "lib",
+            "/NOLOGO",
+            f"/OUT:{self.output_name}",
+            "./*.obj"
+        ]
 
         if self.additional_libs:
             for lib in self.additional_libs:
                 if lib:
-                    lib_command += lib
+                    lib_command.append(lib)
 
         error_occurred = False
         try:
-            os.system(lib_command)
+            subprocess.run(lib_command, capture_output=True, text=True, check=True)
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
