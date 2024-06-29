@@ -69,11 +69,7 @@ class Procedure:
 
         error_occurred = False
         try:
-            result = os.system(lib_command)
-
-            FORMAT_PRINT(f"RETURN CODE: {result.returncode}")
-            FORMAT_PRINT(result.stderr)
-
+            os.system(lib_command)
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
