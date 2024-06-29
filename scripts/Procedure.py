@@ -217,7 +217,7 @@ class Procedure:
             file_path = os.path.join(self.build_directory, filename)
             try:
                 if os.path.isfile(file_path) or os.path.islink(file_path):
-                    if file_path.endswith(".c") or file_path.endswith(".cpp"):
+                    if file_path.endswith(".c") or file_path.endswith(".cpp") or file_path.endswith(".sln"):
                         continue
 
                     os.unlink(file_path)
