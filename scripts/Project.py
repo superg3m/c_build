@@ -163,7 +163,7 @@ class Project:
             FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_name}")
             return
         if not self.executable_procedure.is_built():
-            self.build_project()
+            self.build_project(False)
 
         self.executable_procedure.execute()
 
