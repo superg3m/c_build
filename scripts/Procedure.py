@@ -154,6 +154,7 @@ class Procedure:
             subprocess.run(compiler_command, capture_output=True, text=True, check=True)
 
             if self.should_build_static_lib:
+                FORMAT_PRINT("++++++++++++++++++++++++++++++++++++++++++++++++++")
                 self.build_static_lib()
 
             FORMAT_PRINT(f"Compilation of {self.output_name} successful")
