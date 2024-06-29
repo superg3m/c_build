@@ -6,8 +6,6 @@ $repositoryUrl = "https://github.com/superg3m/c-build.git"
 if (-not (Test-Path -Path $directoryPath)) {
     Write-Output "Directory does not exist. Cloning the repository..."
     git clone $repositoryUrl
-} else {
-    Write-Output "Directory already exists. Skipping clone."
 }
 
 $bootstrapScriptPath = "$directoryPath/bootstrap.ps1"
