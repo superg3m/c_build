@@ -163,7 +163,9 @@ class Procedure:
         error_occurred = False
         try:
             os.chdir(self.build_directory)
-            os.system(" ".join(compiler_command))
+            result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            print(result.returncode, result.stdout, result.stderr)
+            # os.system(" ".join(compiler_command))
 
             if self.should_build_static_lib:
                 self.build_static_lib()
