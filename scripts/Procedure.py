@@ -133,7 +133,8 @@ class Procedure:
             FORMAT_PRINT(f"Std version: {self.std_version} not supported, falling back on default")
 
         for define in self.compile_time_defines:
-            compiler_command.append(f"{compile_time_define_flag[compiler_index]}{define}")
+            if define:
+                compiler_command.append(f"{compile_time_define_flag[compiler_index]}{define}")
 
         if self.should_build_static_lib:
             compiler_command.append(object_flag[compiler_index])
