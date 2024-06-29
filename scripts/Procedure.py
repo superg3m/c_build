@@ -75,7 +75,9 @@ class Procedure:
         cached_current_directory = os.getcwd()
         error_occurred = False
         try:
-            subprocess.run(lib_command, capture_output=True, text=True, check=True)
+            result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
+            FORMAT_PRINT(result.stdout)
+
         except FileNotFoundError:
             FATAL_PRINT(f"lib command not found")
             error_occurred = True
