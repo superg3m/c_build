@@ -60,21 +60,16 @@ class Procedure:
             return False
 
     def build_static_lib(self):
-        lib_command: List[str] = [
-            "lib",
-            "/NOLOGO",
-            f"/OUT:{self.output_name}",
-            "./*.obj"
-        ]
+        lib_command: str = f"lib /NOLOGO /OUT:{self.output_name} ./*.obj"
 
         if self.additional_libs:
             for lib in self.additional_libs:
                 if lib:
-                    lib_command.append(lib)
+                    lib_command += lib
 
         error_occurred = False
         try:
-            result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
+            result = os.system(lib_command)
 
             FORMAT_PRINT(f"RETURN CODE: {result.returncode}")
             FORMAT_PRINT(result.stderr)
