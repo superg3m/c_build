@@ -182,10 +182,18 @@ class Procedure:
         self.build_no_check(debug)
 
     def execute(self) -> None:
-        cached_current_dir = os.getcwd()
-        os.chdir(self.build_directory)
-        subprocess.run(self.output_name, capture_output=True, text=True, check=True)
-        os.chdir(cached_current_dir)
+        error_occurred = False
+        cached_current_directory = os.getcwd()
+        try:
+            os.chdir(self.build_directory)
+            subprocess.run(self.output_name, capture_output=True, text=True, check=True)
+        except FileNotFoundError:
+            FATAL_PRINT(f"executable not found")
+            error_occurred = True
+        finally:
+            os.chdir(cached_current_directory)
+            if error_occurred:
+                sys.exit(-1)
 
     def debug(self):
         return "ffsdf"
