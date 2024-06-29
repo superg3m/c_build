@@ -149,7 +149,7 @@ class Procedure:
         error_occurred = False
         try:
             os.chdir(self.build_directory)
-            result = subprocess.run(compiler_command, capture_output=True, text=True, check=True)
+            subprocess.run(compiler_command, capture_output=True, text=True, check=True)
 
             if self.should_build_static_lib:
                 self.build_static_lib()
@@ -180,3 +180,13 @@ class Procedure:
             return
 
         self.build_no_check(debug)
+
+    def execute(self) -> None:
+        execute_command = [f"{self.build_directory}/{self.output_name}"]
+
+        os.chdir(self.build_directory)
+        subprocess.run(execute_command, capture_output=True, text=True, check=True)
+
+    def debug(self):
+        return "ffsdf"
+

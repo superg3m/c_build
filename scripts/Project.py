@@ -8,6 +8,7 @@ from Procedure import Procedure
 from typing import List, Dict, Union
 from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
 
+
 def parse_json_file(file_path: str):
     try:
         with open(file_path, 'r') as file:
@@ -97,16 +98,16 @@ class Project:
 
         self.procedures: List[Procedure] = []
 
-        self.execute_procedure_string: str = json_data["execute"]
-        self.execute_procedure: Union[Procedure, None] = None
+        self.executable_procedure_string: str = json_data["execute"]
+        self.executable_procedure: Union[Procedure, None] = None
         self.depth = 0
 
         for key, value in json_data.items():
             if isinstance(value, dict):
                 build_procedure: Procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
-                if self.execute_procedure_string == build_procedure.output_name:
-                    self.execute_procedure = build_procedure
+                if self.executable_procedure_string == build_procedure.output_name:
+                    self.executable_procedure = build_procedure
 
     def build_dependencies(self, debug):
         if len(self.project_dependency_strings) == 0 or not self.project_dependency_strings[0]:
@@ -151,6 +152,18 @@ class Project:
                 procedure.build_no_check(debug)
             else:
                 procedure.build(debug)
+
+    def execute_procedure(self):
+        if not self.executable_procedure.is_built():
+            self.executable_procedure.build_no_check(False)
+
+        self.executable_procedure.execute()
+
+    def debug_procedure(self):
+        if not self.executable_procedure.is_built():
+            self.executable_procedure.build_no_check(False)
+
+        self.executable_procedure.execute()
 
     def build_project(self, debug):
         indent = " " * self.depth  # Indentation based on depth parameter
