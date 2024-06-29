@@ -62,6 +62,7 @@ class Procedure:
     def build_static_lib(self):
         lib_command: List[str] = [
             "lib",
+            "/NOLOGO",
             f"/OUT:{self.output_name}",
             "./*.obj"
         ]
@@ -73,11 +74,9 @@ class Procedure:
 
         error_occurred = False
         try:
-            FORMAT_PRINT("======================= SANITY =======================")
             result = subprocess.run(lib_command, capture_output=True, text=True, check=True)
-            FORMAT_PRINT("======================= WHAT? =======================")
 
-            FORMAT_PRINT(result.stdout)
+            FORMAT_PRINT(f"RETURN CODE: {result.returncode}")
             FORMAT_PRINT(result.stderr)
 
         except FileNotFoundError:
