@@ -249,7 +249,7 @@ class Procedure:
         cached_current_directory = os.getcwd()
         try:
             os.chdir(self.build_directory)
-            result = subprocess.run(debug_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            result = subprocess.Popen(debug_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
                 NORMAL_PRINT(line.strip())
