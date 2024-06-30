@@ -3,6 +3,7 @@ import subprocess
 import sys
 from typing import List, Dict, Union
 from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT
+import psutil
 
 
 class Procedure:
@@ -244,14 +245,28 @@ class Procedure:
 
     def debug(self, is_debugging_with_visual_studio: bool):
         debugger = ["raddbg", "devenv"]
-        debug_command: List[str] = [debugger[is_debugging_with_visual_studio], self.output_name]
+        debug_command = [debugger[is_debugging_with_visual_studio], self.output_name]
         error_occurred = False
         cached_current_directory = os.getcwd()
+
         try:
             os.chdir(self.build_directory)
-            result = subprocess.Popen(debug_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            debugger_name = debugger[is_debugging_with_visual_studio]
+
+            # Check if the debugger process is already running
+            debugger_running = False
+            for proc in psutil.process_iter(['pid', 'name']):
+                if debugger_name.lower() in proc.info['name'].lower():
+                    debugger_running = True
+                    NORMAL_PRINT(f"Debugger {debugger_name} is already running. Attaching to it.")
+                    break
+
+            if not debugger_running:
+                process = subprocess.Popen(debug_command)
+                NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
+
         except FileNotFoundError:
-            FATAL_PRINT(f"executable not found")
+            FATAL_PRINT(f"Executable not found")
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
