@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
@@ -57,3 +58,11 @@ def GIT_PULL_OR_CLONE(path: str):
     os.system("git reset --hard origin/main -q")
     os.system("git pull -q")
     os.chdir(current_directory)
+
+
+def IS_WINDOWS_PROCESS_RUNNING(process_name):
+    # Use 'tasklist' to list all processes and filter by process_name
+    result = subprocess.run(['tasklist', '/fi', f'imagename eq {process_name}'], capture_output=True, text=True)
+    if process_name.lower() in result.stdout.lower():
+        return True
+    return False

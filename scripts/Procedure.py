@@ -2,8 +2,7 @@ import os
 import subprocess
 import sys
 from typing import List, Dict, Union
-from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT
-import psutil
+from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT, IS_WINDOWS_PROCESS_RUNNING
 
 
 class Procedure:
@@ -254,14 +253,10 @@ class Procedure:
             debugger_name = debugger[is_debugging_with_visual_studio]
 
             # Check if the debugger process is already running
-            debugger_running = False
-            for proc in psutil.process_iter(['pid', 'name']):
-                if debugger_name.lower() in proc.info['name'].lower():
-                    debugger_running = True
-                    NORMAL_PRINT(f"Debugger {debugger_name} is already running. Attaching to it.")
-                    break
-
-            if not debugger_running:
+            debugger_running = IS_WINDOWS_PROCESS_RUNNING(debugger_name)
+            if debugger_running:
+                NORMAL_PRINT(f"Debugger already running attaching to process...")
+            else:
                 process = subprocess.Popen(debug_command)
                 NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
 
