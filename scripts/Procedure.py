@@ -250,12 +250,6 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             result = subprocess.Popen(debug_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-            for line in result.stdout.splitlines():
-                NORMAL_PRINT(line.strip())
-
-            for line in result.stderr.splitlines():
-                NORMAL_PRINT(line.strip())
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
