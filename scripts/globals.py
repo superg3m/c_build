@@ -61,7 +61,8 @@ def GIT_PULL_OR_CLONE(path: str):
 
 
 def IS_WINDOWS_PROCESS_RUNNING(process_name):
-    call = 'TASKLIST', '/FI', 'imagename eq %s' % process_name
-    output = subprocess.check_output(call).decode()
-    last_line = output.strip().split('\r\n')[-1]
-    return last_line.lower().startswith(process_name.lower())
+    programs = str(subprocess.check_output('tasklist'))
+    if process_name in programs:
+        return True
+    else:
+        return False
