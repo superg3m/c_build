@@ -53,3 +53,5 @@ ok switching to cmake...
 I want to write GO now lmao 
 
 so your run, build, debug will be executables and written in go.
+
+Add a way to compile with debug information without just running ./debug.ps1
