@@ -118,7 +118,7 @@ class Procedure:
         output_flag: List[str] = ["/Fe:", "-o", "-o"]
         compile_time_define_flag: List[str] = ["/D", "-D", "-D"]
 
-        compiler_command: List[str] = [self.compiler_type]
+        compiler_command: List[str] = [self.compiler_type, "/FC"]
 
         for source in self.source_paths:
             if source:
