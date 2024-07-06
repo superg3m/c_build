@@ -125,9 +125,9 @@ class Project:
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
             dependency: Project = Project()
-            self.project_dependencies.append(dependency)
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
             dependency.build_project(debug)
+            self.project_dependencies.append(dependency)
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
