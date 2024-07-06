@@ -183,15 +183,15 @@ class Project:
     def clean_dependencies(self):
         for dependency in self.project_dependencies:
             FATAL_PRINT(f"DEP NAME: {dependency.name}")
+            cached_path_name = os.getcwd()
+            os.chdir(self.name)
             dependency.clean_project()
+            os.chdir(cached_path_name)
 
     def clean_procedures(self):
         for procedure in self.procedures:
             procedure.clean(self.name)
 
     def clean_project(self):
-        cached_path_name = os.getcwd()
-        os.chdir(self.name)
         self.clean_dependencies()
         self.clean_procedures()
-        os.chdir(cached_path_name)
