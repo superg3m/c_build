@@ -92,7 +92,16 @@ class Project:
         self.should_rebuild_project_dependencies: bool = json_data["should_rebuild_project_dependencies"]
         self.project_dependency_strings: List[str] = json_data["project_dependencies"]
         self.project_dependencies: List[Project] = []
+
         for dependency_string in self.project_dependency_strings:
+            if not dependency_string:
+                FATAL_PRINT(f"Invalid dependency string: '{dependency_string}'")
+                continue
+
+            if not os.path.isdir(dependency_string):
+                FATAL_PRINT(f"Dependency path does not exist or is invalid: '{dependency_string}'")
+                continue
+
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
             dependency: Project = Project()
