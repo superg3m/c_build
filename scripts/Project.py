@@ -190,5 +190,8 @@ class Project:
             procedure.clean(self.name)
 
     def clean_project(self):
+        cached_path_name = os.getcwd()
+        os.chdir(self.name)
         self.clean_dependencies()
         self.clean_procedures()
+        os.chdir(cached_path_name)
