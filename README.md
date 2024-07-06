@@ -1,6 +1,8 @@
 # c-build
 
-`c-build` is a tool designed to easily and quickly build C projects and their dependencies. It allows you to build C dependencies, such as libraries, that you have created. The project is moving towards using CMake for better organization and cross-platform support.
+`c-build` is a tool designed to easily and quickly build C projects and their dependencies. 
+It allows you to build C dependencies, such as libraries, that you have created.
+The project is moving towards using CMake for better organization and cross-platform support.
 
 ## Features
 - Searches for all elements in the current directory of the project.
@@ -9,19 +11,13 @@
 - Provides scripts for bootstrapping, building, running, debugging, and cleaning the project.
 
 ## Dependencies
-- `ckit` (Project dependency to be built)
-
-## Current Status
-The project is about 80% complete. Here are some key points:
-- The replacement of `$compiler_type` is no longer used. An override switch will force the build based on the `ChildProject`.
-- Future plans include adding support for `gcc` and `clang`.
-- Ability to clean a dependency chain is in progress.
-- The goal is to start with `NoCheck` and then build the necessary checks.
+- python
+- powershell
+- c compiler (MSVC, cl only right now)
 
 ## Planned Improvements
+- Future plans include adding support for `gcc` and `clang`.
 - Switching to CMake for better organization and cross-platform compatibility.
-- Writing the `run`, `build`, and `debug` executables in Go.
-- Adding a way to compile with debug information without just running `./debug.ps1`.
 
 ## Usage
 ### Scripts
