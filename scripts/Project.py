@@ -92,6 +92,14 @@ class Project:
         self.should_rebuild_project_dependencies: bool = json_data["should_rebuild_project_dependencies"]
         self.project_dependency_strings: List[str] = json_data["project_dependencies"]
         self.project_dependencies: List[Project] = []
+        for dependency_string in self.project_dependency_strings:
+            cached_current_directory_global = os.getcwd()
+            os.chdir(dependency_string)
+            dependency: Project = Project()
+            dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
+            self.project_dependencies.append(dependency)
+            os.chdir(cached_current_directory_global)
+
         self.procedures: List[Procedure] = []
         self.executable_name: str = json_data["execute"]
         self.executable_procedure: Union[Procedure, None] = None
@@ -109,13 +117,13 @@ class Project:
             return
 
         FORMAT_PRINT(f"[{self.name}] depends on:")
-        for dependency_string in self.project_dependency_strings:
-            FORMAT_PRINT(f"- {dependency_string}")
-            if not os.path.exists(dependency_string):
-                FORMAT_PRINT(f"missing {dependency_string} cloning...")
-                os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
+        for dependency in self.project_dependencies:
+            FORMAT_PRINT(f"- {dependency.name}")
+            if not os.path.exists(dependency.name):
+                FORMAT_PRINT(f"missing {dependency.name} cloning...")
+                os.system(f"git clone https://github.com/superg3m/{dependency.name}.git")
             else:
-                GIT_PULL_OR_CLONE(dependency_string)
+                GIT_PULL_OR_CLONE(dependency.name)
 
             if not os.path.exists("c-build"):
                 os.system("git clone https://github.com/superg3m/c-build.git")
@@ -123,11 +131,8 @@ class Project:
                 GIT_PULL_OR_CLONE("c-build")
 
             cached_current_directory_global = os.getcwd()
-            os.chdir(dependency_string)
-            dependency: Project = Project()
-            dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
+            os.chdir(dependency.name)
             dependency.build_project(debug)
-            self.project_dependencies.append(dependency)
             os.chdir(cached_current_directory_global)
 
     def build_procedures(self, debug: bool):
