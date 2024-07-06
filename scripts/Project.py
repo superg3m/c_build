@@ -186,7 +186,7 @@ class Project:
 
     def clean_procedures(self):
         for procedure in self.procedures:
-            procedure.clean()
+            procedure.clean(self.name)
 
     def clean_project(self):
         self.clean_dependencies()
