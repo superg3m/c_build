@@ -184,7 +184,7 @@ class Project:
         for dependency in self.project_dependencies:
             FATAL_PRINT(f"DEP NAME: {dependency.name}")
             cached_path_name = os.getcwd()
-            os.chdir(self.name)
+            os.chdir(dependency.name)
             dependency.clean_project()
             os.chdir(cached_path_name)
 
