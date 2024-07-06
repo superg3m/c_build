@@ -95,7 +95,6 @@ class Project:
 
         for dependency_string in self.project_dependency_strings:
             if not dependency_string:
-                FATAL_PRINT(f"Invalid dependency string: '{dependency_string}'")
                 continue
 
             if not os.path.isdir(dependency_string):

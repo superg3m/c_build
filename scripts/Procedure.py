@@ -215,8 +215,8 @@ class Procedure:
 
         return self.build_no_check(debug)
 
-    def clean(self):
-        FORMAT_PRINT(f"Cleaning: {self.build_directory}")
+    def clean(self, project_name):
+        FORMAT_PRINT(f"Cleaning: {os.getcwd()}/{self.build_directory}")
         for filename in os.listdir(self.build_directory):
             file_path = os.path.join(self.build_directory, filename)
             try:
