@@ -217,6 +217,7 @@ class Procedure:
 
     def clean(self):
         for filename in os.listdir(self.build_directory):
+            FORMAT_PRINT(f"Cleaning: {self.build_directory}")
             file_path = os.path.join(self.build_directory, filename)
             try:
                 if os.path.isfile(file_path) or os.path.islink(file_path):
