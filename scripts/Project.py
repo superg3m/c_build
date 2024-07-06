@@ -182,6 +182,7 @@ class Project:
 
     def clean_dependencies(self):
         for dependency in self.project_dependencies:
+            FATAL_PRINT(f"DEP NAME: {dependency.name}")
             dependency.clean_project()
 
     def clean_procedures(self):
