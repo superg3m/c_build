@@ -1,57 +1,36 @@
-current project is implicit but you can specify other projects that use c-build to rebuild itself
+# c-build
 
-# Searches for all elements in the current directory of the project
-the it cds into that directory calls build bingo
-test if project has c_build_config.json
-projects_dependencies_to_build = ["ckit"]
+`c-build` is a tool designed to easily and quickly build C projects and their dependencies. It allows you to build C dependencies, such as libraries, that you have created. The project is moving towards using CMake for better organization and cross-platform support.
 
-its like 80% of the way there heres what I need to figure out
-- The replacing of $compiler_type is not going to work anymore. I think I want to just have an override switch and then force it to build
-based on the ChildProject
+## Features
+- Searches for all elements in the current directory of the project.
+- Checks for the presence of `c_build_config.json` to identify project dependencies.
+- Supports building dependencies specified in the configuration file.
+- Provides scripts for bootstrapping, building, running, debugging, and cleaning the project.
 
-I also think I will make that distinction of:
-    Project 
-    - ChildProjects (This should actually contain the information needed to build this project I want the object)
+## Dependencies
+- `ckit` (Project dependency to be built)
 
-ok it sort of works I need to clean it up a ton and think through this more don't worry I have plenty of time
-I really should write those essays tho sometime soon I think I vow to write those essays watching Leo its a perfect time no excuses
+## Current Status
+The project is about 80% complete. Here are some key points:
+- The replacement of `$compiler_type` is no longer used. An override switch will force the build based on the `ChildProject`.
+- Future plans include adding support for `gcc` and `clang`.
+- Ability to clean a dependency chain is in progress.
+- The goal is to start with `NoCheck` and then build the necessary checks.
 
+## Planned Improvements
+- Switching to CMake for better organization and cross-platform compatibility.
+- Writing the `run`, `build`, and `debug` executables in Go.
+- Adding a way to compile with debug information without just running `./debug.ps1`.
 
-FULL REWRITE INBOUND
+## Usage
+### Scripts
+- **Bootstrap:** `./bootstrap.ps1`
+- **Build:** `./build.ps1` or `./build.ps1 -debug`
+- **Run:** `./run.ps1`
+- **Debug:** `./debug.ps1` (Opens the debugger)
+- **Clean:** `./clean.ps1` (Cleans everything, including dependencies)
 
-If you import a module that was already imported, it won't replace the functions that were previously imported. You need to remove the module first with Remove-Module, then import it again. I find it convenient to have this function in my profile:
-
-function reload {
-  param(
-    [parameter(Mandatory=$true)]$Module
-  )
-  Write-Host;
-  try {
-    Remove-Module $Module -ea Stop;
-  } catch {
-    Write-Warning $error[0].Exception.Message;
-    Write-Host;
-  } finally {
-    Import-Module $Module -Verbose;
-  }
-  Write-Host;
-}
-
-WORKS PRETTY WELL RIGHT NOW
-
-eventually add gcc, clang
-
-I need to be able to clean a depedency chain
-
-This is almost there it just needs a bit more nuance I think start with NoCheck than use that to build the Checks you need
-
-
-ok switching to cmake...
-  - I get all platforms for free and its more organized theoretically
-
-
-I want to write GO now lmao 
-
-so your run, build, debug will be executables and written in go.
-
-Add a way to compile with debug information without just running ./debug.ps1
+## Getting Started
+1. Run the bootstrap script to initialize the project.
+   ./bootstrap.ps1

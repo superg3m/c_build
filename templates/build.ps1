@@ -6,8 +6,6 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-write-host "PARAM: $($args[0])"
-
 if ($args[0] -eq "-debug") {
     python ./c-build/scripts/build_with_debug.py
 } else {
