@@ -215,7 +215,7 @@ class Procedure:
 
         return self.build_no_check(debug)
 
-    def clean(self, project_name):
+    def clean(self):
         current_dir = os.getcwd()
         current_dir = current_dir.replace("\\", "/")
         current_dir = current_dir + self.build_directory.replace("./", "/")
