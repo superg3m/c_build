@@ -80,7 +80,7 @@ def set_vs_environment():
 
 
 class Project:
-    def __init__(self) -> None:
+    def __init__(self):
         json_data = parse_json_file(JSON_CONFIG_PATH)
         self.name: str = json_data["project_name"]
         self.compiler_type: str = json_data["compiler_type"]
