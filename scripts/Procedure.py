@@ -173,10 +173,16 @@ class Procedure:
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             return_code = result.returncode
 
+            error_occurred = False
             for line in result.stdout.splitlines():
+                if "error" in line.strip():
+                    error_occurred = True
+
                 NORMAL_PRINT(line.strip())
 
             for line in result.stderr.splitlines():
+                if "error" in line.strip():
+                    error_occurred = True
                 NORMAL_PRINT(line.strip())
 
             FORMAT_PRINT(f"{compiler_command}")
@@ -185,6 +191,8 @@ class Procedure:
                 if self.build_static_lib():
                     FORMAT_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
                     sys.exit()
+            elif error_occurred:
+                FATAL_PRINT("FAILED TO COMPILE!")
             else:
                 FORMAT_PRINT(f"Compilation of {self.output_name} successful")
         except FileNotFoundError:
