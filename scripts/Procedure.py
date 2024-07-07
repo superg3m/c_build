@@ -173,41 +173,25 @@ class Procedure:
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             return_code = result.returncode
 
-            error_occurred = False
             for line in result.stdout.splitlines():
-                if "error" in line.strip():
-                    error_occurred = True
-
                 NORMAL_PRINT(line.strip())
 
             for line in result.stderr.splitlines():
-                if "error" in line.strip():
-                    error_occurred = True
                 NORMAL_PRINT(line.strip())
 
             FORMAT_PRINT(f"{compiler_command}")
                 
             if self.should_build_static_lib:
                 if self.build_static_lib():
-                    FORMAT_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
-                    sys.exit()
+                    FATAL_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
+                    error_occurred = True
             elif return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
+                error_occurred = True
             else:
                 FORMAT_PRINT(f"Compilation of {self.output_name} successful")
         except FileNotFoundError:
             FATAL_PRINT(f"{self.compiler_type} compiler not found")
-            error_occurred = True
-        except subprocess.CalledProcessError as e:
-            FORMAT_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========")
-            if e.stdout:
-                error_lines = e.stdout.splitlines()
-                for line in error_lines:
-                    if line.strip() and not line.endswith(".c"):
-                        FATAL_PRINT(f"Compilation error | {line.strip()}")
-
-            NORMAL_PRINT(f"Compiler Command: {e.cmd}")
-            FORMAT_PRINT(f"==========================================================================")
             error_occurred = True
         finally:
             os.chdir(cached_current_directory)
