@@ -193,6 +193,17 @@ class Procedure:
         except FileNotFoundError:
             FATAL_PRINT(f"{self.compiler_type} compiler not found")
             error_occurred = True
+        except subprocess.CalledProcessError as e:
+            FORMAT_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========")
+            if e.stdout:
+                error_lines = e.stdout.splitlines()
+                for line in error_lines:
+                    if line.strip() and not line.endswith(".c"):
+                        FATAL_PRINT(f"Compilation error | {line.strip()}")
+
+            NORMAL_PRINT(f"Compiler Command: {e.cmd}")
+            FORMAT_PRINT(f"==========================================================================")
+            error_occurred = True
         finally:
             os.chdir(cached_current_directory)
             if error_occurred:
