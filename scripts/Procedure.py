@@ -191,7 +191,7 @@ class Procedure:
                 if self.build_static_lib():
                     FORMAT_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
                     sys.exit()
-            elif error_occurred:
+            elif error_occurred and return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
             else:
                 FORMAT_PRINT(f"Compilation of {self.output_name} successful")
