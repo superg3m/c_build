@@ -98,7 +98,8 @@ class Project:
                 continue
 
             if not os.path.isdir(dependency_string):
-                FATAL_PRINT(f"Dependency path does not exist or is invalid: '{dependency_string}'")
+                FORMAT_PRINT(f"missing {dependency_string} cloning...")
+                os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
                 continue
 
             cached_current_directory_global = os.getcwd()
