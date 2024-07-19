@@ -93,7 +93,7 @@ class Project:
         self.project_dependency_strings: List[str] = json_data["project_dependencies"]
         self.project_dependencies: List[Project] = []
 
-        FATAL_PRINT(self.project_dependency_strings)
+
         for dependency_string in self.project_dependency_strings:
             if not dependency_string:
                 continue
@@ -101,7 +101,6 @@ class Project:
             if not os.path.isdir(dependency_string):
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
-                continue
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
@@ -127,7 +126,6 @@ class Project:
             return
 
         FORMAT_PRINT(f"[{self.name}] depends on:")
-        FATAL_PRINT(f"LENGTH: {len(self.project_dependencies)}")
         for dependency in self.project_dependencies:
             FORMAT_PRINT(f"- {dependency.name}")
             if not os.path.exists(dependency.name):
