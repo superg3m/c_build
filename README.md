@@ -4,6 +4,8 @@
 It allows you to build C dependencies, such as libraries, that you have created.
 The project is moving towards using CMake for better organization and cross-platform support.
 
+Going to rewrite this entire thing using ckit, and that will be VERSION 1.0 
+
 ## Features
 - Searches for all elements in the current directory of the project.
 - Checks for the presence of `c_build_config.json` to identify project dependencies.
