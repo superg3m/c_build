@@ -51,7 +51,7 @@ def FATAL_PRINT(msg):
         print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
 
 
-def GIT_PULL_OR_CLONE(path: str):
+def GIT_PULL(path: str):
     current_directory = os.getcwd()
     os.chdir(path)
     os.system("git fetch origin -q")

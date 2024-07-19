@@ -6,7 +6,7 @@ import time
 
 from Procedure import Procedure
 from typing import List, Dict, Union
-from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL_OR_CLONE
+from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL
 
 
 def parse_json_file(file_path: str):
@@ -132,12 +132,12 @@ class Project:
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
                 os.system(f"git clone https://github.com/superg3m/{dependency.name}.git")
             else:
-                GIT_PULL_OR_CLONE(dependency.name)
+                GIT_PULL(dependency.name)
 
             if not os.path.exists("c-build"):
                 os.system("git clone https://github.com/superg3m/c-build.git")
             else:
-                GIT_PULL_OR_CLONE("c-build")
+                GIT_PULL("c-build")
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency.name)
