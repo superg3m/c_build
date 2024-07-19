@@ -126,6 +126,7 @@ class Project:
             return
 
         FORMAT_PRINT(f"[{self.name}] depends on:")
+        FATAL_PRINT(f"LENGTH: {len(self.project_dependencies)}")
         for dependency in self.project_dependencies:
             FORMAT_PRINT(f"- {dependency.name}")
             if not os.path.exists(dependency.name):
