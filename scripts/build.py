@@ -1,4 +1,4 @@
 from Project import Project
 
 project: Project = Project()
-project.build_project(False)
+# project.build_project(False)
