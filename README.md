@@ -20,6 +20,7 @@ Going to rewrite this entire thing using ckit, and that will be VERSION 1.0
 ## Planned Improvements
 - Future plans include adding support for `gcc` and `clang`.
 - Switching to CMake for better organization and cross-platform compatibility.
+- Add a good way to do "./core/*/*.c" where ./core/*/ mean recursively search in that directory (do it on default?)
 
 ## Usage
 ### Scripts
