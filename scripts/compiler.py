@@ -43,10 +43,7 @@ from enum import Enum
 class CompilerType(Enum):
     INVALID = -1
     CL = 0
-    GCC = 1
-    CC = 2
-    CLANG = 3
-    COUNT = 4
+    GCC_CC_CLANG = 1
 
 
 class CompilerAction(Enum):
@@ -60,7 +57,6 @@ class CompilerAction(Enum):
     ADDRESS_SANITIZER = 6
     DISABLE_WARNINGS = 7
     DISABLE_SPECIFIC_WARNING = 8
-    COUNT = 9
 
 
 compiler_lookup_table: List[List[str]] = [
@@ -76,7 +72,7 @@ compiler_lookup_table: List[List[str]] = [
         "/W0",  # DISABLE_WARNINGS
         "/wd"  # DISABLE_SPECIFIC_WARNING
     ],
-    # Compiler GCC
+    # Compiler GCC_CC_CLANG
     [
         "-std=",  # STD_VERSION
         None,  # NO_LOGO
@@ -88,30 +84,6 @@ compiler_lookup_table: List[List[str]] = [
         "-w",  # DISABLE_WARNINGS
         "-Wno-"  # DISABLE_SPECIFIC_WARNING
     ],
-    # Compiler CC
-    [
-        "-std=",  # STD_VERSION
-        None,  # NO_LOGO
-        "-c",  # OBJECT_FLAG
-        "-o",  # OUTPUT_FLAG
-        "-D",  # COMPILE_TIME_DEFINE_FLAG
-        "-j",  # MULTI_THREADING
-        "-fsanitize=address",  # ADDRESS_SANITIZER
-        "-w",  # DISABLE_WARNINGS
-        "-Wno-"  # DISABLE_SPECIFIC_WARNING
-    ],
-    # Compiler CLANG
-    [
-        "-std=",  # STD_VERSION
-        None,  # NO_LOGO
-        "-c",  # OBJECT_FLAG
-        "-o",  # OUTPUT_FLAG
-        "-D",  # COMPILE_TIME_DEFINE_FLAG
-        "-j",  # MULTI_THREADING
-        "-fsanitize=address",  # ADDRESS_SANITIZER
-        "-w",  # DISABLE_WARNINGS
-        "-Wno-"  # DISABLE_SPECIFIC_WARNING
-    ]
 ]
 
 
@@ -130,7 +102,8 @@ class Compiler:
         self.additional_libs: List[str] = compiler_json["additional_libs"]
         self.compiler_warning_level: str = compiler_json["compiler_warning_level"]
         self.compiler_treat_warnings_as_errors: bool = compiler_json["compiler_treat_warnings_as_errors"]
-        self.compiler_inject_into_args = compiler_json["compiler inject as argument"]
+        self.compiler_inject_into_args = compiler_json["inject_as_argument"]
+        self.compiler_disable_specific_warnings: List[str] = compiler_json["disable_specific_warnings"]
         self.debug: bool = debug
 
         # procedure specific
@@ -173,9 +146,7 @@ class Compiler:
     def std_is_valid(self) -> bool:
         acceptable_versions: Dict[int, List[str]] = {
             0: ["c11", "c17", "clatest"],  # CL
-            1: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # GCC
-            2: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # CC
-            3: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"]  # CLANG
+            1: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # GCC_CC_CLANG
         }
 
         return self.std_version in acceptable_versions[self.compiler_type_enum.value]
@@ -184,12 +155,8 @@ class Compiler:
         temp = CompilerType.INVALID
         if self.compiler_type == "cl":
             temp = CompilerType.CL
-        elif self.compiler_type == "gcc":
-            temp = CompilerType.GCC
-        elif self.compiler_type == "cc":
-            temp = CompilerType.CC
-        elif self.compiler_type == "clang":
-            temp = CompilerType.CLANG
+        elif self.compiler_type in ["gcc", "cc", "clang"]:
+            temp = CompilerType.GCC_CC_CLANG
         return temp
 
     def set_action(self, action: CompilerAction):
@@ -270,25 +237,25 @@ class Compiler:
         # Add disable specific warning flag
         self.set_action(CompilerAction.DISABLE_SPECIFIC_WARNING)
         disable_specific_warning_flag = self.get_compiler_lookup()
-        specific_warning = "4100"  # Replace with the warning number you want to disable
-        compiler_command.append(f"{disable_specific_warning_flag}{specific_warning}")
+        for warning in self.compiler_disable_specific_warnings:
+            compiler_command.append(f"{disable_specific_warning_flag}{warning}")
 
         # Add warnings as errors flag
         if self.compiler_treat_warnings_as_errors:
-            if self.compiler_type == "cl":
+            if self.compiler_type_enum == CompilerType.CL:
                 compiler_command.append("/WX")
             else:
                 compiler_command.append("-Werror")
 
         # Add optimization flag
         if self.debug:
-            if self.compiler_type == "cl":
+            if self.compiler_type_enum == CompilerType.CL:
                 compiler_command.append("/Od")
                 compiler_command.append("/Zi")
             else:
                 compiler_command.append("-g")
         else:
-            if self.compiler_type == "cl":
+            if self.compiler_type_enum == CompilerType.CL:
                 compiler_command.append("/O2")
             else:
                 compiler_command.append("-O2")
@@ -296,7 +263,7 @@ class Compiler:
         # Add include paths
         for include_path in self.include_paths:
             if include_path:
-                if self.compiler_type == "cl":
+                if self.compiler_type_enum == CompilerType.CL:
                     compiler_command.append(f"/I{include_path}")
                 else:
                     compiler_command.append(f"-I{include_path}")
