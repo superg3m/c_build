@@ -3,6 +3,10 @@
 
     "project_name" : "RMD",
     "compiler_type" : "cl",
+    "compiler_version" : 11,
+    "compiler_disable_warnings" : [
+        ""
+    ],
 
     "debug_with_visual_studio" : false,
     "should_rebuild_project_dependencies" : false,
@@ -11,7 +15,9 @@
 
     "./build_$compiler_type" : {
         "output_name" : "ckg.lib",
-        "compile_time_defines" : [""],
+        "compile_time_defines": [
+            ""
+        ],
         "include_paths" : "",
         "source_paths" : [
             "./source/*.c"
