@@ -1,13 +1,12 @@
 import os
 
-from scripts import project
-from scripts.globals import FORMAT_PRINT, GIT_PULL
-
+from project import Project
+from globals import FORMAT_PRINT, GIT_PULL
 
 class DependencyBuilder:
     def __init__(self, github_root: str):
         self.github_root = github_root
-        self.debug = debug
+        self.debug = False
 
     def build_dependency(self, parent_name: str, dependency: Project):
         FORMAT_PRINT(f"[{self, parent_name}] depends on:")
