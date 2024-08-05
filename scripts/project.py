@@ -73,10 +73,11 @@ class Project:
         for i in range(len(self.executable_names)):
             if self.executable_names[i] in valid_names:
                 for j in range(len(self.procedures)):
-                    if self.procedures[j].output_name == valid_names:
+                    if self.procedures[j].output_name == self.executable_names[i]:
                         self.executable_procedures.append(self.procedures[j])
             else:
                 FATAL_PRINT(f"Invalid executable name(s), expected: {valid_names} | got: {self.executable_names}")
+                sys.exit(-1)
 
     def build_dependency(self, dependency, debug):
         FORMAT_PRINT(f"[{self, self.name}] depends on:")
