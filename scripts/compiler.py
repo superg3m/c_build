@@ -171,13 +171,11 @@ class Compiler:
         # Add object flag
         if self.should_build_static_lib:
             self.set_action(CompilerAction.OBJECTS_ONLY)
-            object_flag = self.get_compiler_lookup()[
-                CompilerAction.OBJECTS_ONLY.value]  # Get the object flag for the specific compiler
+            object_flag = self.get_compiler_lookup()
             compiler_command.append(object_flag)
         else:
             if self.should_build_dynamic_lib:
-                dynamic_lib_flag = self.get_compiler_lookup()[
-                    CompilerAction.OBJECTS_ONLY.value]  # Use the appropriate flag for dynamic libs
+                dynamic_lib_flag = self.get_compiler_lookup()
                 if self.compiler_type == "cl":
                     compiler_command.append("/LD")  # Use CL-specific flag for dynamic libraries
                 else:
@@ -185,7 +183,7 @@ class Compiler:
 
             # Add output flag
             self.set_action(CompilerAction.OUTPUT)
-            output_flag = self.get_compiler_lookup()[CompilerAction.OUTPUT.value]
+            output_flag = self.get_compiler_lookup()
             compiler_command.append(output_flag)
             compiler_command.append(self.output_name)
 
