@@ -111,7 +111,9 @@ class Project:
                 FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_names}")
                 return
 
+        print("LENGTH: " + str(len(self.executable_procedures)))
         for exe_proc in self.executable_procedures:
+
             if not exe_proc.is_built():
                 self.build_project(False)
 
