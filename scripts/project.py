@@ -113,6 +113,7 @@ class Project:
             if not exe_proc.is_built():
                 self.build_project(False)
 
+            print("WHAT!")
             exe_proc.execute()
 
     def debug_procedure(self):
