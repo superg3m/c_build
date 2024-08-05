@@ -99,14 +99,16 @@ class Project:
             self.compiler.build_procedure(check, procedure)
 
     def execute_procedures(self):
-        if not self.executable_procedures:
-            temp = []
-            for procedure in self.procedures:
-                if procedure.should_build_executable:
-                    temp.append(procedure.output_name)
+        for exe_proc in self.executable_procedures:
+            if not exe_proc:
+                temp = []
+                for procedure in self.procedures:
+                    if procedure.should_build_executable:
+                        temp.append(procedure.output_name)
 
-            FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_names}")
-            return
+                FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_names}")
+                return
+
         for exe_proc in self.executable_procedures:
             if not exe_proc.is_built():
                 self.build_project(False)
