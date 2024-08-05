@@ -1,5 +1,9 @@
 import os
+import platform
+import shutil
 import subprocess
+import sys
+from typing import List
 
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
@@ -123,3 +127,56 @@ def set_vs_environment():
     # Clean up temporary files
     os.remove(temp_batch_file)
     os.remove(env_output_file)
+
+def build_static_lib(output_name, additional_libs):
+    lib_command: List[str] = []
+
+    if platform.system() == "Windows":
+        lib_command = [
+            "lib",
+            "/NOLOGO",
+            f"/OUT:{output_name}",
+            "./*.obj"
+        ]
+    else:
+        lib_command = [
+            "ar",
+            "rcs",
+            output_name,
+            "./*.o"
+        ]
+
+    if additional_libs:
+        for lib in additional_libs:
+            if lib:
+                lib_command.append(lib)
+
+    error_occurred = False
+    try:
+        # Check if the lib/ar command exists
+        if shutil.which(lib_command[0]) is None:
+            raise FileNotFoundError(f"{lib_command[0]} command not found")
+
+        result = subprocess.run(lib_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        for line_2 in result.stdout.splitlines():
+            NORMAL_PRINT(line_2.strip())
+
+        for line_2 in result.stderr.splitlines():
+            NORMAL_PRINT(line_2.strip())
+    except FileNotFoundError:
+        FATAL_PRINT(f"{lib_command[0]} command not found")
+        error_occurred = True
+    except subprocess.CalledProcessError as e:
+        FORMAT_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======")
+        if e.stdout:
+            error_lines = e.stdout.splitlines()
+            for line_2 in error_lines:
+                if line_2.strip() and not line_2.endswith(".c"):
+                    FATAL_PRINT(f"Compilation error | {line_2.strip()}")
+
+        NORMAL_PRINT(f"Lib Command: {e.cmd}")
+        FORMAT_PRINT(f"==========================================================================")
+        error_occurred = True
+    finally:
+        if error_occurred:
+            sys.exit(-1)

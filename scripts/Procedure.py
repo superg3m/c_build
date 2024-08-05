@@ -28,13 +28,14 @@ class Procedure:
             self.should_build_executable = True  # For Linux
 
         self.compile_time_defines: List[str] = json_data["compile_time_defines"]
-        self.include_paths: List[str] = json_data["include_paths"]
 
         self.validate_list_of_strings(json_data, "source_paths")
         self.validate_list_of_strings(json_data, "additional_libs")
+        self.validate_list_of_strings(json_data, "include_paths")
 
         self.source_paths: List[str] = json_data["source_paths"]
         self.additional_libs: List[str] = json_data["additional_libs"]
+        self.include_paths: List[str] = json_data["include_paths"]
 
     def validate_list_of_strings(self, data, key):
         if not isinstance(data.get(key), list) or not all(isinstance(item, str) for item in data[key]):
@@ -42,72 +43,6 @@ class Procedure:
             FATAL_PRINT(
                 f"{self.build_directory}/{self.output_name} | {key.upper()} MUST BE AN ARRAY OF STRINGS")
             sys.exit(-1)
-
-    def is_built(self) -> bool:
-        output_path: str = os.path.join(self.build_directory, self.output_name)
-        return os.path.exists(output_path)
-
-    def get_compiler_index(self) -> int:
-        compiler_index: int = -1
-        if self.compiler_type == "cl":
-            compiler_index = 0
-        elif self.compiler_type == "gcc":
-            compiler_index = 1
-        elif self.compiler_type == "clang":
-            compiler_index = 2
-        return compiler_index
-
-    def std_is_valid(self) -> bool:
-        compiler_index: int = self.get_compiler_index()
-
-        cl_lookup_table: List[str] = ["c11", "c17", "clatest"]
-        gcc_lookup_table: List[str] = ["c89", "c90", "c99", "c11", "c17", "c18", "c23"]
-        clang_lookup_table: List[str] = ["c89", "c90", "c99", "c11", "c17", "c18", "c23"]
-        compiler_lookup_table: List[List[str]] = [cl_lookup_table, gcc_lookup_table, clang_lookup_table]
-
-        if self.std_version in compiler_lookup_table[compiler_index]:
-            return True
-        else:
-            return False
-
-    def build_static_lib(self):
-        lib_command: List[str] = [
-            "lib",
-            "/NOLOGO",
-            f"/OUT:{self.output_name}",
-            "./*.obj"
-        ]
-
-        if self.additional_libs:
-            for lib in self.additional_libs:
-                if lib:
-                    lib_command.append(lib)
-
-        error_occurred = False
-        try:
-            result = subprocess.run(lib_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            for line in result.stdout.splitlines():
-                NORMAL_PRINT(line.strip())
-
-            for line in result.stderr.splitlines():
-                NORMAL_PRINT(line.strip())
-        except FileNotFoundError:
-            FATAL_PRINT(f"lib command not found")
-            error_occurred = True
-        except subprocess.CalledProcessError as e:
-            FORMAT_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======")
-            if e.stdout:
-                error_lines = e.stdout.splitlines()
-                for line in error_lines:
-                    if line.strip() and not line.endswith(".c"):
-                        FATAL_PRINT(f"Compilation error | {line.strip()}")
-
-            NORMAL_PRINT(f"Lib Command: {e.cmd}")
-            FORMAT_PRINT(f"==========================================================================")
-            error_occurred = True
-        finally:
-            if error_occurred:
-                sys.exit(-1)
 
     def build_no_check(self, debug: bool) -> int:
         compiler_index: int = self.get_compiler_index()
@@ -180,7 +115,7 @@ class Procedure:
                 NORMAL_PRINT(line.strip())
 
             FORMAT_PRINT(f"{compiler_command}")
-                
+
             if self.should_build_static_lib:
                 if self.build_static_lib():
                     FATAL_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")

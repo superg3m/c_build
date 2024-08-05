@@ -1,44 +1,10 @@
-# Configuration
-# address sanitizers
-# disable warnings
-# inject into compiler args
-# specify version of c
-# have default specification
 import os
 import subprocess
+from enum import Enum
 from typing import List, Union, Dict
 
-from scripts.globals import FORMAT_PRINT, set_vs_environment
-
-# init compiler
-# setup compiler arguments
-# source files
-# include paths
-# additional libs
-# additional libs paths
-# compile time defines
-# invoke compiler
-
-#compilers to support
-# gcc
-# cl
-# cc
-# clang
-
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!!
-# build with multi-threading!!! /MP /WX
-
-from enum import Enum
+from scripts import Procedure
+from scripts.globals import FORMAT_PRINT, set_vs_environment, NORMAL_PRINT, FATAL_PRINT, build_static_lib
 
 
 class CompilerType(Enum):
@@ -87,7 +53,6 @@ compiler_lookup_table: List[List[str]] = [
     ],
 ]
 
-
 class Compiler:
     def __init__(self, compiler_json, debug) -> None:
         # global
@@ -123,10 +88,10 @@ class Compiler:
 
         # compiler type (cl, gcc, cc, clang)
 
-    def setup_procedure(self, build_directory: str, procedure_json):
-        self.output_name = procedure_json["output_name"]
+    def setup_procedure(self, build_directory: str, procedure: Procedure):
+        self.output_name = procedure.output_name
         self.build_directory = build_directory
-        self.compile_time_defines = procedure_json["compile_time_defines"]
+        self.compile_time_defines = procedure.compile_time_defines
 
         self.should_build_executable: bool = False
         self.should_build_static_lib: bool = False
@@ -142,9 +107,13 @@ class Compiler:
         else:
             self.should_build_executable = True  # For Linux
 
-        self.source_files = procedure_json["source_files"]
-        self.include_paths = procedure_json["include_paths"]
-        self.additional_libs = procedure_json["additional_libs"]
+        self.source_files = procedure.source_files
+        self.include_paths = procedure.include_paths
+        self.additional_libs = procedure.additional_libs
+
+    def is_built(self) -> bool:
+        output_path: str = os.path.join(self.build_directory, self.output_name)
+        return os.path.exists(output_path)
 
     def std_is_valid(self) -> bool:
         acceptable_versions: Dict[int, List[str]] = {
@@ -168,7 +137,12 @@ class Compiler:
     def get_compiler_lookup(self) -> str:
         return compiler_lookup_table[self.compiler_type_enum.value][self.compiler_action.value]
 
-    def invoke(self):
+    def build_procedure(self, check_is_built: bool, build_directory, procedure: Procedure):
+        self.setup_procedure(build_directory, procedure)
+        if check_is_built and self.is_built():
+            NORMAL_PRINT(f"Already built procedure: {self.output_name}, skipping...")
+            return
+
         compiler_command: List[str] = [self.compiler_type]
 
         for source in self.source_files:
@@ -283,8 +257,25 @@ class Compiler:
         try:
             os.chdir(self.build_directory)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+            for line in result.stdout.splitlines():
+                NORMAL_PRINT(line.strip())
+
+            for line in result.stderr.splitlines():
+                NORMAL_PRINT(line.strip())
+
+            FORMAT_PRINT(f"{compiler_command}")
+
+            if self.should_build_static_lib:
+                if build_static_lib(self.output_name, self.additional_libs):
+                    FATAL_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
+                    error_occurred = True
+            elif return_code:
+                FATAL_PRINT("FAILED TO COMPILE!")
+                error_occurred = True
+            else:
+                FORMAT_PRINT(f"Compilation of {self.output_name} successful")
+
             return_code = result.returncode
         finally:
             os.chdir(cached_current_directory)
-
-
