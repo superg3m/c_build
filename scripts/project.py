@@ -63,13 +63,20 @@ class Project:
         self.executable_names: str = json_data["execute"]
         self.executable_procedures: List[Union[Procedure, None]] = []
 
-        it = iter(self.executable_names)
+        valid_names = []
         for key, value in json_data.items():
             if isinstance(value, dict):
                 build_procedure: Procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
-                if next(it) == build_procedure.output_name:
-                    self.executable_procedures.append(build_procedure)
+                valid_names.append(build_procedure.output_name)
+
+        for i in range(len(self.executable_names)):
+            if self.executable_names[i] in valid_names:
+                for j in range(len(self.procedures)):
+                    if self.procedures[j].output_name == valid_names:
+                        self.executable_procedures.append(self.procedures[j])
+            else:
+                FATAL_PRINT(f"Invalid executable name(s), expected: {valid_names} | got: {self.executable_names}")
 
     def build_dependency(self, dependency, debug):
         FORMAT_PRINT(f"[{self, self.name}] depends on:")
