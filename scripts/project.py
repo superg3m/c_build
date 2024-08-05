@@ -69,8 +69,8 @@ class Project:
                 if self.executable_name == build_procedure.output_name:
                     self.executable_procedure = build_procedure
 
-    def build_dependency(self, parent_name: str, dependency, debug):
-        FORMAT_PRINT(f"[{self, parent_name}] depends on:")
+    def build_dependency(self, dependency, debug):
+        FORMAT_PRINT(f"[{self, self.name}] depends on:")
 
         FORMAT_PRINT(f"- {dependency.name}")
         if not os.path.exists(dependency.name):
@@ -89,9 +89,9 @@ class Project:
         dependency.build_project(debug)
         os.chdir(cached_current_directory_global)
 
-    def build_dependencies(self, parent_name, project_dependencies):
+    def build_dependencies(self, project_dependencies):
         for dependency in project_dependencies:
-            self.build_dependency(parent_name, dependency)
+            self.build_dependency(dependency)
 
     def build_procedures(self):
         for procedure in self.procedures:
@@ -122,8 +122,7 @@ class Project:
         UP_LEVEL()
         start_time = time.time()
         self.compiler.debug = debug
-        self.dependency_builder = debug
-        self.dependency_builder.build_dependencies(self.project_dependencies)
+        self.build_dependencies(self.project_dependencies)
         self.build_procedures()
         end_time = time.time()
         elapsed_time = end_time - start_time
