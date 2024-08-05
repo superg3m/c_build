@@ -3,8 +3,8 @@ import subprocess
 from enum import Enum
 from typing import List, Union, Dict
 
-from scripts import Procedure
-from scripts.globals import FORMAT_PRINT, set_vs_environment, NORMAL_PRINT, FATAL_PRINT, build_static_lib
+from procedure import Procedure
+from globals import FORMAT_PRINT, set_vs_environment, NORMAL_PRINT, FATAL_PRINT, build_static_lib
 
 
 class CompilerType(Enum):

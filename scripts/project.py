@@ -4,7 +4,7 @@ import subprocess
 import sys
 import time
 
-from Procedure import Procedure
+from procedure import Procedure
 from typing import List, Dict, Union
 from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL, set_vs_environment
 from scripts.compiler import Compiler

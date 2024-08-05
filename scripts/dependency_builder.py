@@ -1,6 +1,6 @@
 import os
 
-from scripts import Project
+from scripts import project
 from scripts.globals import FORMAT_PRINT, GIT_PULL
 
 
