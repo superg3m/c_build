@@ -5,6 +5,7 @@
     "compiler_type": "cl",
     "compiler_version": 11,
     "compiler_disable_warnings": ["4996"],
+    "github_root": "https://github.com/superg3m",
 
     "debug_with_visual_studio": false,
     "should_rebuild_project_dependencies": false,

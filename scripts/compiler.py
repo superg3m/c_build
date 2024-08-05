@@ -53,8 +53,9 @@ compiler_lookup_table: List[List[str]] = [
     ],
 ]
 
+
 class Compiler:
-    def __init__(self, compiler_json, debug) -> None:
+    def __init__(self, compiler_json) -> None:
         # global
         self.compiler_type: str = compiler_json["compiler_type"]
         self.compiler_type_enum = self.choose_compiler_type()
@@ -70,7 +71,7 @@ class Compiler:
         self.compiler_treat_warnings_as_errors: bool = compiler_json["compiler_treat_warnings_as_errors"]
         self.compiler_inject_into_args = compiler_json["inject_as_argument"]
         self.compiler_disable_specific_warnings: List[str] = compiler_json["disable_specific_warnings"]
-        self.debug: bool = debug
+        self.debug: bool = False
 
         # procedure specific
         self.output_name: str = ""
@@ -137,8 +138,8 @@ class Compiler:
     def get_compiler_lookup(self) -> str:
         return compiler_lookup_table[self.compiler_type_enum.value][self.compiler_action.value]
 
-    def build_procedure(self, check_is_built: bool, build_directory, procedure: Procedure):
-        self.setup_procedure(build_directory, procedure)
+    def build_procedure(self, check_is_built: bool, procedure: Procedure):
+        self.setup_procedure(procedure.build_directory, procedure)
         if check_is_built and self.is_built():
             NORMAL_PRINT(f"Already built procedure: {self.output_name}, skipping...")
             return

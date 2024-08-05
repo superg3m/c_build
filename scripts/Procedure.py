@@ -6,7 +6,7 @@ from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT, IS_WINDOWS
 
 
 class Procedure:
-    def __init__(self, build_directory: str, compiler_type: str, std_version: str, json_data) -> None:
+    def __init__(self, build_directory: str, compiler_type: str, std_version: str, json_data, is_dependency: bool = False) -> None:
         self.build_directory: str = build_directory
         self.compiler_type: str = compiler_type
         self.std_version: str = std_version
@@ -43,115 +43,6 @@ class Procedure:
             FATAL_PRINT(
                 f"{self.build_directory}/{self.output_name} | {key.upper()} MUST BE AN ARRAY OF STRINGS")
             sys.exit(-1)
-
-    def build_no_check(self, debug: bool) -> int:
-        compiler_index: int = self.get_compiler_index()
-
-        no_logo: List[Union[str, None]] = ["/nologo", None, None]
-        standard_flag: List[str] = ["/std:", "-std=", "-std="]
-        object_flag: List[str] = ["/c", "-c", "-c"]
-        output_flag: List[str] = ["/Fe:", "-o", "-o"]
-        compile_time_define_flag: List[str] = ["/D", "-D", "-D"]
-
-        compiler_command: List[str] = [self.compiler_type, "/FC"]
-
-        for source in self.source_paths:
-            if source:
-                compiler_command.append(source)
-
-        if no_logo[compiler_index]:
-            compiler_command.append(no_logo[compiler_index])
-
-        if self.std_is_valid():
-            compiler_command.append(f"{standard_flag[compiler_index]}{self.std_version}")
-        else:
-            FORMAT_PRINT(f"Std version: {self.std_version} not supported, falling back on default")
-
-        for define in self.compile_time_defines:
-            if define:
-                compiler_command.append(f"{compile_time_define_flag[compiler_index]}{define}")
-
-        if self.should_build_static_lib:
-            compiler_command.append(object_flag[compiler_index])
-        else:
-            if self.should_build_dynamic_lib:
-                compiler_command.append("/LD")
-
-            compiler_command.append(f"{output_flag[compiler_index]}")
-            compiler_command.append(f"{self.output_name}")
-
-            if self.additional_libs:
-                for lib in self.additional_libs:
-                    if lib:
-                        compiler_command.append(lib)
-
-        if debug:
-            if self.compiler_type == "cl":
-                compiler_command.append("/Od")
-                compiler_command.append("/Zi")
-            else:
-                compiler_command.append("-g")
-        else:
-            if self.compiler_type == "cl":
-                compiler_command.append("/O2")
-            else:
-                compiler_command.append("-O2")
-
-        if not os.path.exists(self.build_directory):
-            os.makedirs(self.build_directory)
-
-        cached_current_directory = os.getcwd()
-        error_occurred = False
-        return_code = 0
-        try:
-            os.chdir(self.build_directory)
-            result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            return_code = result.returncode
-
-            for line in result.stdout.splitlines():
-                NORMAL_PRINT(line.strip())
-
-            for line in result.stderr.splitlines():
-                NORMAL_PRINT(line.strip())
-
-            FORMAT_PRINT(f"{compiler_command}")
-
-            if self.should_build_static_lib:
-                if self.build_static_lib():
-                    FATAL_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
-                    error_occurred = True
-            elif return_code:
-                FATAL_PRINT("FAILED TO COMPILE!")
-                error_occurred = True
-            else:
-                FORMAT_PRINT(f"Compilation of {self.output_name} successful")
-        except FileNotFoundError:
-            FATAL_PRINT(f"{self.compiler_type} compiler not found")
-            error_occurred = True
-        except subprocess.CalledProcessError as e:
-            FORMAT_PRINT(f"=========== Error: Compilation failed with return code {e.returncode} ===========")
-            if e.stdout:
-                error_lines = e.stdout.splitlines()
-                for line in error_lines:
-                    if line.strip() and not line.endswith(".c"):
-                        FATAL_PRINT(f"Compilation error | {line.strip()}")
-
-            NORMAL_PRINT(f"Compiler Command: {e.cmd}")
-            FORMAT_PRINT(f"==========================================================================")
-            error_occurred = True
-        finally:
-            os.chdir(cached_current_directory)
-            if error_occurred:
-                sys.exit(-1)
-
-        return return_code
-
-    def build(self, debug: bool) -> int:
-        if self.is_built():
-            NORMAL_PRINT(f"Already built procedure: {self.output_name}, skipping...")
-            return 0
-
-        return self.build_no_check(debug)
 
     def clean(self):
         current_dir = os.getcwd()

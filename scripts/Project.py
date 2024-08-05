@@ -6,7 +6,9 @@ import time
 
 from Procedure import Procedure
 from typing import List, Dict, Union
-from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL
+from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL, set_vs_environment
+from scripts.compiler import Compiler
+from scripts.dependency_builder import DependencyBuilder
 
 
 def parse_json_file(file_path: str):
@@ -22,70 +24,17 @@ def parse_json_file(file_path: str):
         return None
 
 
-def find_vs_path():
-    vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-    result = subprocess.run(
-        [vswhere_path, "-latest", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property",
-         "installationPath"], capture_output=True, text=True)
-
-    if result.returncode == 0:
-        return result.stdout.strip()
-    else:
-        FORMAT_PRINT("Could not find Visual Studio installation path.")
-        return None
-
-
-def is_cl_in_path():
-    for path in os.environ.get("PATH", "").split(os.pathsep):
-        if os.path.isfile(os.path.join(path, "cl.exe")) and os.path.isfile(os.path.join(path, "lib.exe")):
-            return True
-    return False
-
-
-def set_vs_environment():
-    if is_cl_in_path():
-        return
-
-    vs_path = find_vs_path()
-    if not vs_path:
-        FATAL_PRINT(f"Visual Studio not found.")
-        return
-
-    vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
-    temp_batch_file = "temp_env.bat"
-    env_output_file = "env.txt"
-
-    # Create a temporary batch file to capture environment variables
-    with open(temp_batch_file, "w") as f:
-        f.write(f"@echo off\n")
-        f.write(f"call \"{vcvarsall_path}\" x64 > nul\n")  # Redirecting output to nul (null device)
-        f.write(f"set > \"{env_output_file}\"\n")
-
-    # Run the temporary batch file
-    subprocess.run(temp_batch_file, shell=True)
-
-    # Read the environment variables from the output file
-    with open(env_output_file) as f:
-        lines = f.readlines()
-
-    # Set the environment variables in the current process
-    for line in lines:
-        if "=" in line:
-            name, value = line.strip().split("=", 1)
-            os.environ[name] = value
-
-    # Clean up temporary files
-    os.remove(temp_batch_file)
-    os.remove(env_output_file)
-
-
 class Project:
-    def __init__(self):
+    def __init__(self, is_dependency: bool = False):
         json_data = parse_json_file(JSON_CONFIG_PATH)
+        self.is_dependency = is_dependency
         self.name: str = json_data["project_name"]
         self.compiler_type: str = json_data["compiler_type"]
         if self.compiler_type == "cl":
             set_vs_environment()
+
+        self.compiler = Compiler(json_data)
+        self.dependency_builder = DependencyBuilder(json_data["github_root"])
 
         self.std_version: str = json_data["std_version"]
         self.debug_with_visual_studio: bool = json_data["debug_with_visual_studio"]
@@ -105,6 +54,7 @@ class Project:
             os.chdir(dependency_string)
             dependency: Project = Project()
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
+            dependency.is_dependency = True
             self.project_dependencies.append(dependency)
             os.chdir(cached_current_directory_global)
 
@@ -119,36 +69,10 @@ class Project:
                 if self.executable_name == build_procedure.output_name:
                     self.executable_procedure = build_procedure
 
-    def build_dependencies(self, debug):
-        if len(self.project_dependency_strings) == 0 or not self.project_dependency_strings[0]:
-            FORMAT_PRINT(f"[{self.name}] depends on nothing")
-            return
-
-        FORMAT_PRINT(f"[{self.name}] depends on:")
-        for dependency in self.project_dependencies:
-            FORMAT_PRINT(f"- {dependency.name}")
-            if not os.path.exists(dependency.name):
-                FORMAT_PRINT(f"missing {dependency.name} cloning...")
-                os.system(f"git clone https://github.com/superg3m/{dependency.name}.git")
-            else:
-                GIT_PULL(dependency.name)
-
-            if not os.path.exists("c-build"):
-                os.system("git clone https://github.com/superg3m/c-build.git")
-            else:
-                GIT_PULL("c-build")
-
-            cached_current_directory_global = os.getcwd()
-            os.chdir(dependency.name)
-            dependency.build_project(debug)
-            os.chdir(cached_current_directory_global)
-
-    def build_procedures(self, debug: bool):
+    def build_procedures(self):
         for procedure in self.procedures:
-            if self.should_rebuild_project_dependencies:
-                procedure.build_no_check(debug)
-            else:
-                procedure.build(debug)
+            check = self.should_rebuild_project_dependencies and self.is_dependency
+            self.compiler.build_procedure(check, procedure)
 
     def execute_procedure(self):
         if not self.executable_procedure:
@@ -173,8 +97,10 @@ class Project:
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|")
         UP_LEVEL()
         start_time = time.time()
-        self.build_dependencies(debug)
-        self.build_procedures(debug)
+        self.compiler.debug = debug
+        self.dependency_builder = debug
+        self.dependency_builder.build_dependencies(self.project_dependencies)
+        self.build_procedures()
         end_time = time.time()
         elapsed_time = end_time - start_time
         DOWN_LEVEL()
