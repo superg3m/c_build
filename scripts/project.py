@@ -68,7 +68,7 @@ class Project:
                 if self.executable_name == build_procedure.output_name:
                     self.executable_procedure = build_procedure
 
-    def build_dependency(self, parent_name: str, dependency: Project, debug):
+    def build_dependency(self, parent_name: str, dependency, debug):
         FORMAT_PRINT(f"[{self, parent_name}] depends on:")
 
         FORMAT_PRINT(f"- {dependency.name}")
