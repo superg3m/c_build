@@ -197,10 +197,7 @@ class Compiler:
         multi_threading_flag = self.get_compiler_lookup()
         compiler_command.append(multi_threading_flag)
 
-        # Add address sanitizer flag
-        self.set_action(CompilerAction.ADDRESS_SANITIZER)
-        address_sanitizer_flag = self.get_compiler_lookup()
-        compiler_command.append(address_sanitizer_flag)
+
 
         # Add disable warnings flag
         self.set_action(CompilerAction.DISABLE_WARNINGS)
@@ -223,6 +220,11 @@ class Compiler:
 
         # Add optimization flag
         if self.debug:
+            # Add address sanitizer flag
+            self.set_action(CompilerAction.ADDRESS_SANITIZER)
+            address_sanitizer_flag = self.get_compiler_lookup()
+            compiler_command.append(address_sanitizer_flag)
+
             if self.compiler_type_enum == CompilerType.CL:
                 compiler_command.append("/Od")
                 compiler_command.append("/Zi")
