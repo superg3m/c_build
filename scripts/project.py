@@ -24,7 +24,6 @@ def parse_json_file(file_path: str):
 
 class Project:
     def __init__(self, is_dependency: bool = False):
-        print("WHAT: " + os.getcwd())
         json_data = parse_json_file(JSON_CONFIG_PATH)
         self.is_dependency = is_dependency
 
