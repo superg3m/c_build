@@ -66,10 +66,6 @@ class Compiler:
 
         self.std_version: str = compiler_json["std_version"]
         self.compiler_disable_warnings: List[str] = compiler_json["compiler_disable_warnings"]
-
-        print(compiler_json)
-
-        self.additional_libs: List[str] = compiler_json["additional_libs"]
         self.compiler_warning_level: str = compiler_json["compiler_warning_level"]
         self.compiler_treat_warnings_as_errors: bool = compiler_json["compiler_treat_warnings_as_errors"]
         self.compiler_inject_into_args = compiler_json["inject_as_argument"]
