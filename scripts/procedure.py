@@ -6,7 +6,7 @@ from globals import FORMAT_PRINT, FATAL_PRINT, MAGENTA, NORMAL_PRINT, IS_WINDOWS
 
 
 class Procedure:
-    def __init__(self, build_directory: str, compiler_type: str, std_version: str, json_data, is_dependency: bool = False) -> None:
+    def __init__(self, build_directory: str, compiler_type: str, std_version: str, json_data) -> None:
         self.build_directory: str = build_directory
         self.compiler_type: str = compiler_type
         self.std_version: str = std_version
@@ -29,11 +29,11 @@ class Procedure:
 
         self.compile_time_defines: List[str] = json_data["compile_time_defines"]
 
-        self.validate_list_of_strings(json_data, "source_paths")
+        self.validate_list_of_strings(json_data, "source_files")
         self.validate_list_of_strings(json_data, "additional_libs")
         self.validate_list_of_strings(json_data, "include_paths")
 
-        self.source_paths: List[str] = json_data["source_paths"]
+        self.source_files: List[str] = json_data["source_paths"]
         self.additional_libs: List[str] = json_data["additional_libs"]
         self.include_paths: List[str] = json_data["include_paths"]
 
@@ -43,6 +43,13 @@ class Procedure:
             FATAL_PRINT(
                 f"{self.build_directory}/{self.output_name} | {key.upper()} MUST BE AN ARRAY OF STRINGS")
             sys.exit(-1)
+
+    def is_built(self) -> bool:
+        output_path: str = os.path.join(self.build_directory, self.output_name)
+        return os.path.exists(output_path)
+
+    def build(self, check_is_built, compiler):
+        compiler.build_procedure(check_is_built, self)
 
     def clean(self):
         current_dir = os.getcwd()

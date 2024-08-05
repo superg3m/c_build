@@ -112,9 +112,7 @@ class Compiler:
         self.include_paths = procedure.include_paths
         self.additional_libs = procedure.additional_libs
 
-    def is_built(self) -> bool:
-        output_path: str = os.path.join(self.build_directory, self.output_name)
-        return os.path.exists(output_path)
+
 
     def std_is_valid(self) -> bool:
         acceptable_versions: Dict[int, List[str]] = {
@@ -140,7 +138,7 @@ class Compiler:
 
     def build_procedure(self, check_is_built: bool, procedure: Procedure):
         self.setup_procedure(procedure.build_directory, procedure)
-        if check_is_built and self.is_built():
+        if check_is_built and procedure.is_built():
             NORMAL_PRINT(f"Already built procedure: {self.output_name}, skipping...")
             return
 

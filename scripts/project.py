@@ -8,8 +8,6 @@ from procedure import Procedure
 from typing import List, Dict, Union
 from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL, set_vs_environment
 from compiler import Compiler
-from dependency_builder import DependencyBuilder
-
 
 def parse_json_file(file_path: str):
     try:
@@ -30,11 +28,12 @@ class Project:
         self.is_dependency = is_dependency
         self.name: str = json_data["project_name"]
         self.compiler_type: str = json_data["compiler_type"]
+        self.github_root = json_data["github_root"]
+
         if self.compiler_type == "cl":
             set_vs_environment()
 
         self.compiler = Compiler(json_data)
-        self.dependency_builder = DependencyBuilder(json_data["github_root"])
 
         self.std_version: str = json_data["std_version"]
         self.debug_with_visual_studio: bool = json_data["debug_with_visual_studio"]
@@ -68,6 +67,30 @@ class Project:
                 self.procedures.append(build_procedure)
                 if self.executable_name == build_procedure.output_name:
                     self.executable_procedure = build_procedure
+
+    def build_dependency(self, parent_name: str, dependency: Project, debug):
+        FORMAT_PRINT(f"[{self, parent_name}] depends on:")
+
+        FORMAT_PRINT(f"- {dependency.name}")
+        if not os.path.exists(dependency.name):
+            FORMAT_PRINT(f"missing {dependency.name} cloning...")
+            os.system(f"git clone {self.github_root}/{dependency.name}.git")
+        else:
+            GIT_PULL(dependency.name)
+
+        if not os.path.exists("c-build"):
+            os.system("git clone https://github.com/superg3m/c-build.git")
+        else:
+            GIT_PULL("c-build")
+
+        cached_current_directory_global = os.getcwd()
+        os.chdir(dependency.name)
+        dependency.build_project(debug)
+        os.chdir(cached_current_directory_global)
+
+    def build_dependencies(self, parent_name, project_dependencies):
+        for dependency in project_dependencies:
+            self.build_dependency(parent_name, dependency)
 
     def build_procedures(self):
         for procedure in self.procedures:
