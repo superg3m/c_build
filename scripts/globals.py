@@ -17,7 +17,7 @@ BLACK: str = '\033[90m'
 DEFAULT: str = '\033[0m'
 FATAL = "\033[41m"
 
-JSON_CONFIG_PATH: str = "../../c_build_config.json"
+JSON_CONFIG_PATH: str = "../c_build_config.json"
 
 level = 0
 indent_spaces = " " * (level * 4)
