@@ -65,7 +65,7 @@ class Compiler:
             set_vs_environment()
 
         self.std_version: str = compiler_json["std_version"]
-        self.compiler_disable_warnings: List[str] = compiler_json["compiler_disable_warnings"]
+        self.compiler_disable_warnings: bool = compiler_json["compiler_disable_warnings"]
         self.compiler_warning_level: str = compiler_json["compiler_warning_level"]
         self.compiler_treat_warnings_as_errors: bool = compiler_json["compiler_treat_warnings_as_errors"]
         self.compiler_inject_into_args = compiler_json["inject_as_argument"]
