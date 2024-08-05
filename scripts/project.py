@@ -99,6 +99,7 @@ class Project:
             self.compiler.build_procedure(check, procedure)
 
     def execute_procedures(self):
+        print("WHAT!")
         for exe_proc in self.executable_procedures:
             if not exe_proc:
                 temp = []
@@ -113,7 +114,7 @@ class Project:
             if not exe_proc.is_built():
                 self.build_project(False)
 
-            print("WHAT!")
+
             exe_proc.execute()
 
     def debug_procedure(self):
