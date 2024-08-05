@@ -24,11 +24,10 @@ def parse_json_file(file_path: str):
 
 class Project:
     def __init__(self, is_dependency: bool = False):
-        print(os.getcwd())
+        print("WHAT: " + os.getcwd())
         json_data = parse_json_file(JSON_CONFIG_PATH)
         self.is_dependency = is_dependency
 
-        print(json_data)
         self.name: str = json_data["project_name"]
         self.compiler_type: str = json_data["compiler_type"]
         self.github_root = json_data["github_root"]
