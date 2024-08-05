@@ -93,7 +93,6 @@ class Project:
         self.project_dependency_strings: List[str] = json_data["project_dependencies"]
         self.project_dependencies: List[Project] = []
 
-
         for dependency_string in self.project_dependency_strings:
             if not dependency_string:
                 continue

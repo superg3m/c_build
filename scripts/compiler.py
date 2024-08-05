@@ -5,9 +5,10 @@
 # specify version of c
 # have default specification
 import os
+import subprocess
 from typing import List, Union, Dict
 
-from scripts.globals import FORMAT_PRINT
+from scripts.globals import FORMAT_PRINT, set_vs_environment
 
 # init compiler
 # setup compiler arguments
@@ -91,11 +92,11 @@ class Compiler:
     def __init__(self, compiler_json, debug) -> None:
         # global
         self.compiler_type: str = compiler_json["compiler_type"]
-        self.compiler_type_enum: CompilerType = CompilerType.INVALID
-        self.compiler_action: CompilerAction = CompilerAction.NO_ACTION
-
         self.compiler_type_enum = self.choose_compiler_type()
         self.compiler_action: CompilerAction = CompilerAction.NO_ACTION
+
+        if self.compiler_type_enum == CompilerType.CL:
+            set_vs_environment()
 
         self.std_version: str = compiler_json["std_version"]
         self.compiler_disable_warnings: List[str] = compiler_json["compiler_disable_warnings"]
@@ -108,6 +109,7 @@ class Compiler:
 
         # procedure specific
         self.output_name: str = ""
+        self.build_directory: str = ""
         self.compile_time_defines: List[str] = []
         self.should_build_executable: bool = False
         self.should_build_static_lib: bool = False
@@ -123,6 +125,7 @@ class Compiler:
 
     def setup_procedure(self, build_directory: str, procedure_json):
         self.output_name = procedure_json["output_name"]
+        self.build_directory = build_directory
         self.compile_time_defines = procedure_json["compile_time_defines"]
 
         self.should_build_executable: bool = False
@@ -272,3 +275,16 @@ class Compiler:
         for flag in self.compiler_inject_into_args:
             if flag:
                 compiler_command.append(flag)
+
+        cached_current_directory = os.getcwd()
+        error_occurred = False
+        return_code = 0
+
+        try:
+            os.chdir(self.build_directory)
+            result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            return_code = result.returncode
+        finally:
+            os.chdir(cached_current_directory)
+
+

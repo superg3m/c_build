@@ -66,3 +66,60 @@ def IS_WINDOWS_PROCESS_RUNNING(process_name):
         return True
     else:
         return False
+
+
+def find_vs_path():
+    vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+    result = subprocess.run(
+        [vswhere_path, "-latest", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property",
+         "installationPath"], capture_output=True, text=True)
+
+    if result.returncode == 0:
+        return result.stdout.strip()
+    else:
+        FORMAT_PRINT("Could not find Visual Studio installation path.")
+        return None
+
+
+def is_cl_in_path():
+    for path in os.environ.get("PATH", "").split(os.pathsep):
+        if os.path.isfile(os.path.join(path, "cl.exe")) and os.path.isfile(os.path.join(path, "lib.exe")):
+            return True
+    return False
+
+
+def set_vs_environment():
+    if is_cl_in_path():
+        return
+
+    vs_path = find_vs_path()
+    if not vs_path:
+        FATAL_PRINT(f"Visual Studio not found.")
+        return
+
+    vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
+    temp_batch_file = "temp_env.bat"
+    env_output_file = "env.txt"
+
+    # Create a temporary batch file to capture environment variables
+    with open(temp_batch_file, "w") as f:
+        f.write(f"@echo off\n")
+        f.write(f"call \"{vcvarsall_path}\" x64 > nul\n")  # Redirecting output to nul (null device)
+        f.write(f"set > \"{env_output_file}\"\n")
+
+    # Run the temporary batch file
+    subprocess.run(temp_batch_file, shell=True)
+
+    # Read the environment variables from the output file
+    with open(env_output_file) as f:
+        lines = f.readlines()
+
+    # Set the environment variables in the current process
+    for line in lines:
+        if "=" in line:
+            name, value = line.strip().split("=", 1)
+            os.environ[name] = value
+
+    # Clean up temporary files
+    os.remove(temp_batch_file)
+    os.remove(env_output_file)
