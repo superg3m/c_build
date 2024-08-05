@@ -211,7 +211,8 @@ class Compiler:
         self.set_action(CompilerAction.DISABLE_SPECIFIC_WARNING)
         disable_specific_warning_flag = self.get_compiler_lookup()
         for warning in self.compiler_disable_specific_warnings:
-            compiler_command.append(f"{disable_specific_warning_flag}{warning}")
+            if warning:
+                compiler_command.append(f"{disable_specific_warning_flag}{warning}")
 
         # Add warnings as errors flag
         if self.compiler_treat_warnings_as_errors:
