@@ -9,6 +9,7 @@ from typing import List, Dict, Union
 from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL, set_vs_environment
 from compiler import Compiler
 
+
 def parse_json_file(file_path: str):
     try:
         with open(file_path, 'r') as file:
@@ -62,11 +63,12 @@ class Project:
         self.executable_names: str = json_data["execute"]
         self.executable_procedures: List[Union[Procedure, None]] = []
 
+        it = iter(self.executable_names)
         for key, value in json_data.items():
             if isinstance(value, dict):
                 build_procedure: Procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
-                if self.executable_names == build_procedure.output_name:
+                if next(it) == build_procedure.output_name:
                     self.executable_procedures.append(build_procedure)
 
     def build_dependency(self, dependency, debug):
@@ -110,12 +112,10 @@ class Project:
                 FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_names}")
                 return
 
-        print("WHAT!")
-
         for exe_proc in self.executable_procedures:
+            print("WHAT!")
             if not exe_proc.is_built():
                 self.build_project(False)
-
 
             exe_proc.execute()
 
