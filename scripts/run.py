@@ -1,4 +1,4 @@
 from project import Project
 
 project: Project = Project()
-project.execute_procedure()
+project.execute_procedures()
