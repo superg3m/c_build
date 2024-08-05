@@ -33,3 +33,7 @@ Going to rewrite this entire thing using ckit, and that will be VERSION 1.0
 ## Getting Started
 1. Run the bootstrap script to initialize the project.
    ./bootstrap.ps1
+
+
+Just did a major refactor there are tons of problem to actually fix but it looks like this is actually working for
+CL, GCC, CC, CLANG
