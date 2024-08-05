@@ -59,15 +59,15 @@ class Project:
             os.chdir(cached_current_directory_global)
 
         self.procedures: List[Procedure] = []
-        self.executable_name: str = json_data["execute"]
-        self.executable_procedure: Union[Procedure, None] = None
+        self.executable_names: str = json_data["execute"]
+        self.executable_procedures: List[Union[Procedure, None]] = []
 
         for key, value in json_data.items():
             if isinstance(value, dict):
                 build_procedure: Procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
-                if self.executable_name == build_procedure.output_name:
-                    self.executable_procedure = build_procedure
+                if self.executable_names == build_procedure.output_name:
+                    self.executable_procedures.append(build_procedure)
 
     def build_dependency(self, dependency, debug):
         FORMAT_PRINT(f"[{self, self.name}] depends on:")
@@ -98,24 +98,24 @@ class Project:
             check = self.should_rebuild_project_dependencies and self.is_dependency
             self.compiler.build_procedure(check, procedure)
 
-    def execute_procedure(self):
-        if not self.executable_procedure:
+    def execute_procedures(self):
+        if not self.executable_procedures:
             temp = []
             for procedure in self.procedures:
                 if procedure.should_build_executable:
                     temp.append(procedure.output_name)
 
-            FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_name}")
+            FATAL_PRINT(f"Invalid executable name, expected: {temp} | got: {self.executable_names}")
             return
-        if not self.executable_procedure.is_built():
-            self.build_project(False)
+        for exe_proc in self.executable_procedures:
+            if not exe_proc.is_built():
+                self.build_project(False)
 
-        self.executable_procedure.execute()
+            exe_proc.execute()
 
     def debug_procedure(self):
         self.build_project(True)
-
-        self.executable_procedure.debug(self.debug_with_visual_studio)
+        self.executable_procedures[0].debug(self.debug_with_visual_studio)
 
     def build_project(self, debug):
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|")

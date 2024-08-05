@@ -1,62 +1,29 @@
 {
     "c_build_version": "0.9",
-
-    "project_name": "RMD",
-    "compiler_type": "cl",
-    "compiler_version": 11,
-    "compiler_disable_warnings": ["4996"],
+    "project_name": "TESTING",
     "github_root": "https://github.com/superg3m",
+    "compiler_type": "cl",
+    "std_version": "c11",
+    "compiler_warning_level": "all",
 
+    "compiler_disable_warnings": false,
     "debug_with_visual_studio": false,
     "should_rebuild_project_dependencies": false,
-    "std_version": "c11",
-    "project_dependencies": ["dependency1", "dependency2"],
+    "compiler_treat_warnings_as_errors": true,
 
-    "./build_$compiler_type": {
-        "output_name": "ckg.lib",
-        "compile_time_defines": [
-            "DEFINE1",
-            "DEFINE2"
+    "project_dependencies": [""],
+    "disable_specific_warnings": [""],
+    "inject_as_argument": [""],
+
+    "./build_cl": {
+        "output_name": "test.exe",
+        "compile_time_defines": [],
+        "include_paths": [""],
+        "source_files": [
+            "../source/*.c"
         ],
-        "include_paths": [
-            "./include"
-        ],
-        "source_paths": [
-            "./source/*.c"
-        ],
-        "additional_libs": [
-            "./libs/ckg.lib"
-        ],
-        "disable_specific_warnings": [
-            "4100",
-            "4127"
-        ],
-        "inject_as_argument": [
-            "/someflag"
-        ]
+        "additional_libs": [""]
     },
 
-    "./example/$compiler_type": {
-        "output_name": "test_ckg.exe",
-        "compile_time_defines": [
-            "TEST_DEFINE"
-        ],
-        "include_paths": [
-            "../include"
-        ],
-        "source_paths": [
-            "../examples/*.c"
-        ],
-        "additional_libs": [
-            "../libs/test.lib"
-        ],
-        "disable_specific_warnings": [
-            "4244"
-        ],
-        "inject_as_argument": [
-            "/anotherflag"
-        ]
-    },
-
-    "execute": "test_ckg.exe"
+    "execute": ["test.exe"]
 }
