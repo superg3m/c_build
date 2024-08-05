@@ -33,7 +33,7 @@ class Procedure:
         self.validate_list_of_strings(json_data, "additional_libs")
         self.validate_list_of_strings(json_data, "include_paths")
 
-        self.source_files: List[str] = json_data["source_paths"]
+        self.source_files: List[str] = json_data["source_files"]
         self.additional_libs: List[str] = json_data["additional_libs"]
         self.include_paths: List[str] = json_data["include_paths"]
 
