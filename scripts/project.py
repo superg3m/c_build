@@ -33,7 +33,6 @@ class Project:
         if self.compiler_type == "cl":
             set_vs_environment()
 
-        print(json_data)
         self.compiler = Compiler(json_data)
 
         self.std_version: str = json_data["std_version"]
