@@ -57,6 +57,7 @@ class Procedure:
         current_dir = current_dir + self.build_directory.replace("./", "/")
         FORMAT_PRINT(f"Cleaning: {current_dir}")
 
+        print(current_dir)
         print(self.build_directory)
         for filename in os.listdir(self.build_directory):
             file_path = os.path.join(self.build_directory, filename)
