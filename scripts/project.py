@@ -39,7 +39,7 @@ class Project:
 
         self.github_root = json_data["github_root"]
 
-        self.compiler = Compiler(json_data, compiler_type)
+        self.compiler = Compiler(json_data, self.compiler_type)
 
         self.std_version: str = json_data["std_version"]
         self.debug_with_visual_studio: bool = json_data["debug_with_visual_studio"]
