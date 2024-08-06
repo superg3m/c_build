@@ -132,7 +132,7 @@ def set_vs_environment():
 def build_static_lib(compiler_name, output_name, additional_libs):
     lib_command: List[str] = []
 
-    if platform.system() == "cl":
+    if compiler_name == "cl":
         lib_command = [
             "lib",
             "/NOLOGO",
