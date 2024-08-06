@@ -46,7 +46,7 @@ compiler_lookup_table: List[List[str]] = [
         "-c",  # OBJECT_FLAG
         "-o",  # OUTPUT_FLAG
         "-D",  # COMPILE_TIME_DEFINE_FLAG
-        "-j4",  # MULTI_THREADING
+        None,  # MULTI_THREADING
         "-fsanitize=address",  # ADDRESS_SANITIZER
         "-w",  # DISABLE_WARNINGS
         "-Wno-"  # DISABLE_SPECIFIC_WARNING
