@@ -195,9 +195,8 @@ class Compiler:
         # Add multi-threading flag
         self.set_action(CompilerAction.MULTI_THREADING)
         multi_threading_flag = self.get_compiler_lookup()
-        compiler_command.append(multi_threading_flag)
-
-
+        if multi_threading_flag:
+            compiler_command.append(multi_threading_flag)
 
         # Add disable warnings flag
         self.set_action(CompilerAction.DISABLE_WARNINGS)
