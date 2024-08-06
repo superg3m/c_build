@@ -3,9 +3,9 @@ import os
 import subprocess
 import sys
 import time
+from typing import List, Dict, Union
 
 from procedure import Procedure
-from typing import List, Dict, Union
 from globals import FATAL_PRINT, JSON_CONFIG_PATH, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GIT_PULL, set_vs_environment
 from compiler import Compiler
 
@@ -49,7 +49,7 @@ class Project:
 
             if not os.path.isdir(dependency_string):
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
-                os.system(f"git clone https://github.com/superg3m/{dependency_string}.git")
+                os.system(f"git clone {self.github_root}/{dependency_string}.git")
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
@@ -66,23 +66,23 @@ class Project:
         valid_names = []
         for key, value in json_data.items():
             if isinstance(value, dict):
-                build_procedure: Procedure = Procedure(key, self.compiler_type, self.std_version, value)
+                build_procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
                 valid_names.append(build_procedure.output_name)
 
-        for i in range(len(self.executable_names)):
-            if self.executable_names[i] in valid_names:
-                for j in range(len(self.procedures)):
-                    if self.procedures[j].output_name == self.executable_names[i]:
-                        self.executable_procedures.append(self.procedures[j])
+        for exe_name in self.executable_names:
+            if exe_name in valid_names:
+                for proc in self.procedures:
+                    if proc.output_name == exe_name:
+                        self.executable_procedures.append(proc)
             else:
                 FATAL_PRINT(f"Invalid executable name(s), expected: {valid_names} | got: {self.executable_names}")
                 sys.exit(-1)
 
     def build_dependency(self, dependency, debug):
-        FORMAT_PRINT(f"[{self, self.name}] depends on:")
-
+        FORMAT_PRINT(f"[{self.name}] depends on:")
         FORMAT_PRINT(f"- {dependency.name}")
+
         if not os.path.exists(dependency.name):
             FORMAT_PRINT(f"missing {dependency.name} cloning...")
             os.system(f"git clone {self.github_root}/{dependency.name}.git")
@@ -122,11 +122,11 @@ class Project:
     def build_project(self, debug):
         FORMAT_PRINT(f"|--------------- Started Building {self.name} ---------------|")
         UP_LEVEL()
-        start_time = time.time()
+        start_time = time.perf_counter()
         self.compiler.debug = debug
         self.build_dependencies(self.project_dependencies)
         self.build_procedures()
-        end_time = time.time()
+        end_time = time.perf_counter()
         elapsed_time = end_time - start_time
         DOWN_LEVEL()
         FORMAT_PRINT(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|")
