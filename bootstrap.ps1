@@ -14,7 +14,7 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-$c_build_version = 0.8
+$c_build_version = 0.9
 
 ###################################################
 
