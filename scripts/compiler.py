@@ -58,11 +58,9 @@ class Compiler:
     def __init__(self, compiler_json) -> None:
         # global
         self.compiler_type: str = compiler_json["compiler_type"]
-        self.compiler_type_enum = self.choose_compiler_type()
-        self.compiler_action: CompilerAction = CompilerAction.NO_ACTION
+        self.compiler_type_enum = CompilerType.INVALID
 
-        if self.compiler_type_enum == CompilerType.CL:
-            set_vs_environment()
+        self.compiler_action: CompilerAction = CompilerAction.NO_ACTION
 
         self.std_version: str = compiler_json["std_version"]
         self.compiler_disable_warnings: bool = compiler_json["compiler_disable_warnings"]
@@ -89,6 +87,10 @@ class Compiler:
         # compiler type (cl, gcc, cc, clang)
 
     def setup_procedure(self, build_directory: str, procedure: Procedure):
+        self.compiler_type_enum = self.choose_compiler_type()
+        if self.compiler_type_enum == CompilerType.CL:
+            set_vs_environment()
+
         self.output_name = procedure.output_name
         self.build_directory = build_directory
         self.compile_time_defines = procedure.compile_time_defines
