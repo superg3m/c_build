@@ -254,9 +254,6 @@ class Compiler:
         return_code = 0
 
         try:
-            print(cached_current_directory)
-            print(self.build_directory)
-
             if not os.path.exists(self.build_directory):
                 os.mkdir(self.build_directory)
             os.chdir(self.build_directory)
