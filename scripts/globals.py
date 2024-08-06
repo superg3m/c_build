@@ -128,10 +128,11 @@ def set_vs_environment():
     os.remove(temp_batch_file)
     os.remove(env_output_file)
 
-def build_static_lib(output_name, additional_libs):
+
+def build_static_lib(compiler_name, output_name, additional_libs):
     lib_command: List[str] = []
 
-    if platform.system() == "Windows":
+    if platform.system() == "cl":
         lib_command = [
             "lib",
             "/NOLOGO",
