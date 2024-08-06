@@ -108,7 +108,7 @@ class Project:
 
     def build_procedures(self):
         for procedure in self.procedures:
-            check = self.should_rebuild_project_dependencies and self.is_dependency
+            check = not self.should_rebuild_project_dependencies and self.is_dependency
             self.compiler.build_procedure(check, procedure)
 
     def execute_procedures(self):
