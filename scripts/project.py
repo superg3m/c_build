@@ -24,18 +24,22 @@ def parse_json_file(file_path: str):
 
 
 class Project:
-    def __init__(self, is_dependency: bool = False):
+    def __init__(self, is_dependency: bool = False, compiler_type: str = None):
         json_data = parse_json_file(JSON_CONFIG_PATH)
         self.is_dependency = is_dependency
 
         self.name: str = json_data["project_name"]
-        self.compiler_type: str = json_data["compiler_type"]
-        self.github_root = json_data["github_root"]
+        if compiler_type:
+            self.compiler_type = compiler_type
+        else:
+            self.compiler_type: str = json_data["compiler_type"]
 
         if self.compiler_type == "cl":
             set_vs_environment()
 
-        self.compiler = Compiler(json_data)
+        self.github_root = json_data["github_root"]
+
+        self.compiler = Compiler(json_data, compiler_type)
 
         self.std_version: str = json_data["std_version"]
         self.debug_with_visual_studio: bool = json_data["debug_with_visual_studio"]
@@ -53,10 +57,8 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            dependency: Project = Project()
+            dependency: Project = Project(True, compiler_type)
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
-            dependency.is_dependency = True
-            dependency.compiler_type = self.compiler_type
             self.project_dependencies.append(dependency)
             os.chdir(cached_current_directory_global)
 

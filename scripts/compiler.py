@@ -55,10 +55,16 @@ compiler_lookup_table: List[List[str]] = [
 
 
 class Compiler:
-    def __init__(self, compiler_json) -> None:
+    def __init__(self, compiler_json, compiler_type: str = None) -> None:
         # global
-        self.compiler_type: str = compiler_json["compiler_type"]
-        self.compiler_type_enum = CompilerType.INVALID
+        if compiler_type:
+            self.compiler_type = compiler_type
+        else:
+            self.compiler_type: str = compiler_json["compiler_type"]
+
+        self.compiler_type_enum = self.choose_compiler_type()
+        if self.compiler_type_enum == CompilerType.CL:
+            set_vs_environment()
 
         self.compiler_action: CompilerAction = CompilerAction.NO_ACTION
 
@@ -87,9 +93,6 @@ class Compiler:
         # compiler type (cl, gcc, cc, clang)
 
     def setup_procedure(self, build_directory: str, procedure: Procedure):
-        self.compiler_type_enum = self.choose_compiler_type()
-        if self.compiler_type_enum == CompilerType.CL:
-            set_vs_environment()
 
         self.output_name = procedure.output_name
         self.build_directory = build_directory
@@ -112,8 +115,6 @@ class Compiler:
         self.source_files = procedure.source_files
         self.include_paths = procedure.include_paths
         self.additional_libs = procedure.additional_libs
-
-
 
     def std_is_valid(self) -> bool:
         acceptable_versions: Dict[int, List[str]] = {
