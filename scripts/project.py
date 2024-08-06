@@ -56,6 +56,7 @@ class Project:
             dependency: Project = Project()
             dependency.should_rebuild_project_dependencies = self.should_rebuild_project_dependencies
             dependency.is_dependency = True
+            dependency.compiler_type = self.compiler_type
             self.project_dependencies.append(dependency)
             os.chdir(cached_current_directory_global)
 
