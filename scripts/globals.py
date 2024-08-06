@@ -98,35 +98,29 @@ def set_vs_environment():
 
     vs_path = find_vs_path()
     if not vs_path:
-        FATAL_PRINT(f"Visual Studio not found.")
+        FATAL_PRINT("Visual Studio not found.")
         return
 
     vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
-    temp_batch_file = "temp_env.bat"
-    env_output_file = "env.txt"
 
-    # Create a temporary batch file to capture environment variables
-    with open(temp_batch_file, "w") as f:
-        f.write(f"@echo off\n")
-        f.write(f"call \"{vcvarsall_path}\" x64 > nul\n")  # Redirecting output to nul (null device)
-        f.write(f"set > \"{env_output_file}\"\n")
+    # Command to capture environment variables
+    command = f'cmd.exe /c "call \"{vcvarsall_path}\" x64 > nul && set"'
 
-    # Run the temporary batch file
-    subprocess.run(temp_batch_file, shell=True)
+    # Run the command and capture the output
+    result = subprocess.run(command, capture_output=True, text=True, shell=True)
 
-    # Read the environment variables from the output file
-    with open(env_output_file) as f:
-        lines = f.readlines()
+    if result.returncode != 0:
+        FATAL_PRINT("Failed to set Visual Studio environment.")
+        return
+
+    # Read the environment variables from the output
+    lines = result.stdout.splitlines()
 
     # Set the environment variables in the current process
     for line in lines:
         if "=" in line:
             name, value = line.strip().split("=", 1)
             os.environ[name] = value
-
-    # Clean up temporary files
-    os.remove(temp_batch_file)
-    os.remove(env_output_file)
 
 
 def build_static_lib(compiler_name, output_name, additional_libs):
