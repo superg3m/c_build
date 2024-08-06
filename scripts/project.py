@@ -79,7 +79,7 @@ class Project:
                 FATAL_PRINT(f"Invalid executable name(s), expected: {valid_names} | got: {self.executable_names}")
                 sys.exit(-1)
 
-    def build_dependency(self, dependency, debug):
+    def build_dependency(self, dependency):
         FORMAT_PRINT(f"[{self.name}] depends on:")
         FORMAT_PRINT(f"- {dependency.name}")
 
@@ -96,7 +96,7 @@ class Project:
 
         cached_current_directory_global = os.getcwd()
         os.chdir(dependency.name)
-        dependency.build_project(debug)
+        dependency.build_project(self.compiler.debug)
         os.chdir(cached_current_directory_global)
 
     def build_dependencies(self, project_dependencies):
