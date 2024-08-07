@@ -42,3 +42,5 @@ Resolve build directories make them if you have to!
 Resolve dependencies
 Resolve procedures in dependencies
 Resolve self procedures
+
+I have to make it so that *.c will resolve the source files in python and can't rely on gcc apparently?
