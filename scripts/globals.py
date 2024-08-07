@@ -129,7 +129,8 @@ def build_static_lib(compiler_name, output_name, additional_libs):
 
     o_files = glob.glob('*.o')
     obj_files = glob.glob('*.obj')
-    object_files = [o_files, obj_files]
+
+    object_files = o_files + obj_files
 
     if compiler_name == "cl":
         lib_command = [
@@ -138,6 +139,7 @@ def build_static_lib(compiler_name, output_name, additional_libs):
             f"/OUT:{output_name}",
             object_files
         ]
+
     else:
         lib_command = [
             "ar",
