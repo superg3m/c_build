@@ -71,12 +71,15 @@ class Project:
             if isinstance(value, dict):
                 build_procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
-                valid_names.append(build_procedure.output_name)
+                if build_procedure.should_build_executable:
+                    valid_names.append(build_procedure.output_name)
 
         for exe_name in self.executable_names:
+            if not exe_name:
+                return
             if exe_name in valid_names:
                 for proc in self.procedures:
-                    if proc.output_name == exe_name and proc.should_build_executable:
+                    if proc.output_name == exe_name :
                         self.executable_procedures.append(proc)
             else:
                 FATAL_PRINT(f"Invalid executable name(s), expected: {valid_names} | got: {self.executable_names}")
