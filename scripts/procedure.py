@@ -90,7 +90,7 @@ class Procedure:
         cached_current_directory = os.getcwd()
         try:
             os.chdir(self.build_directory)
-            os.system(self.output_name)
+            os.system(f"./{self.output_name}")
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
