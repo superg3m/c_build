@@ -161,6 +161,8 @@ def build_static_lib(compiler_name, output_name, additional_lib_paths, additiona
 
         for line_2 in result.stderr.splitlines():
             NORMAL_PRINT(line_2.strip())
+
+        FORMAT_PRINT(lib_command)
     except FileNotFoundError:
         FATAL_PRINT(f"{lib_command[0]} command not found")
         error_occurred = True
