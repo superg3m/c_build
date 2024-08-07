@@ -89,7 +89,7 @@ class Procedure:
         error_occurred = False
         cached_current_directory = os.getcwd()
         try:
-            resolved_exe = ""
+            resolved_exe = self.output_name
             if os.name != 'nt':  # Not Windows
                 resolved_exe = f"./{self.output_name}"
 
