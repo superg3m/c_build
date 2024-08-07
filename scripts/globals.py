@@ -123,8 +123,15 @@ def set_vs_environment():
             os.environ[name] = value
 
 
-def build_static_lib(compiler_name, output_name, additional_libs):
+def build_static_lib(compiler_name, source_files, output_name, additional_libs):
     lib_command: List[str] = []
+
+    object_files = []
+    for source in source_files:
+        path_to = source[:source.rindex("/") + 1]
+        real_source = source.replace(path_to, "")
+        object_file = real_source.replace(".c", ".o")
+        object_files.append(object_file)
 
     if compiler_name == "cl":
         lib_command = [
@@ -138,7 +145,7 @@ def build_static_lib(compiler_name, output_name, additional_libs):
             "ar",
             "rcs",
             output_name,
-            "./*.o"
+            "*.o"
         ]
 
     for lib in additional_libs:
