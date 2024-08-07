@@ -261,7 +261,7 @@ class Compiler:
             if lib:
                 if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
                     gcc_cc_clang_lib = lib.replace(".lib", "").replace(".dll", "").replace(".dylib", "").replace(".a", "")
-                    compiler_command.append(f"-l{gcc_cc_clang_lib}")
+                    compiler_command.append(f"{gcc_cc_clang_lib}")
                 else:
                     compiler_command.append(lib)
 
