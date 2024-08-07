@@ -86,6 +86,7 @@ class Compiler:
         self.source_files: List[str] = []
         self.include_paths: List[str] = []
         self.additional_libs: List[str] = []
+        self.additional_lib_paths: List[str] = []
         self.inject_into_args: List[str] = []
 
         self.compiler_arguments = ""
@@ -115,6 +116,7 @@ class Compiler:
         self.source_files = procedure.source_files
         self.include_paths = procedure.include_paths
         self.additional_libs = procedure.additional_libs
+        self.additional_lib_paths = procedure.additional_lib_paths
 
     def std_is_valid(self) -> bool:
         acceptable_versions: Dict[int, List[str]] = {
@@ -249,14 +251,24 @@ class Compiler:
 
         if len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.CL:
             compiler_command.append("/link")
+            for path in self.additional_lib_paths:
+                compiler_command.append(f"/LIBPATH:{path}")
+        elif len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
+            for path in self.additional_lib_paths:
+                compiler_command.append(f"-L{path}")
+
         for lib in self.additional_libs:
             if lib:
                 if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
-                    GCC_CC_CLANG_path = lib[:lib.rindex("/") + 1]
-                    GCC_CC_CLANG_lib = lib.replace(".lib", "").replace(".dll", "").replace(".dylib", "").replace(".a", "")
-                    GCC_CC_CLANG_lib = GCC_CC_CLANG_lib.replace(GCC_CC_CLANG_path, "")
-                    compiler_command.append(f"-L{GCC_CC_CLANG_path}")
-                    compiler_command.append(f" -l{GCC_CC_CLANG_lib}")
+                    compiler_command.append(f"-l{lib}")
+                else:
+                    compiler_command.append(lib)
+
+        for lib in self.additional_libs:
+            if lib:
+                if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
+                    gcc_cc_clang_lib = lib.replace(".lib", "").replace(".dll", "").replace(".dylib", "")
+                    compiler_command.append(f"-l{gcc_cc_clang_lib}")
                 else:
                     compiler_command.append(lib)
 
