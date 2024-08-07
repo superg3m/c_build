@@ -190,11 +190,11 @@ class Compiler:
             compiler_command.append(output_flag)
             compiler_command.append(self.output_name)
 
-            for lib in self.additional_libs:
-                if lib:
-                    if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
-                        compiler_command.append("-l")
-                    compiler_command.append(lib)
+        for lib in self.additional_libs:
+            if lib:
+                if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
+                    compiler_command.append("-l")
+                compiler_command.append(lib)
 
 
         # Add multi-threading flag
