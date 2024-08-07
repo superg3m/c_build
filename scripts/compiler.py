@@ -86,7 +86,6 @@ class Compiler:
         self.source_files: List[str] = []
         self.include_paths: List[str] = []
         self.additional_libs: List[str] = []
-        self.additional_lib_paths: List[str] = []
         self.inject_into_args: List[str] = []
 
         self.compiler_arguments = ""
@@ -116,7 +115,6 @@ class Compiler:
         self.source_files = procedure.source_files
         self.include_paths = procedure.include_paths
         self.additional_libs = procedure.additional_libs
-        self.additional_lib_paths = procedure.additional_lib_paths
 
     def std_is_valid(self) -> bool:
         acceptable_versions: Dict[int, List[str]] = {
@@ -251,12 +249,6 @@ class Compiler:
 
         if len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.CL:
             compiler_command.append("/link")
-            for path in self.additional_lib_paths:
-                compiler_command.append(f"/LIBPATH:{path}")
-        elif len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
-            for path in self.additional_lib_paths:
-                compiler_command.append(f"-L{path}")
-
         for lib in self.additional_libs:
             if lib:
                 compiler_command.append(lib)
@@ -280,7 +272,7 @@ class Compiler:
             FORMAT_PRINT(f"{compiler_command}")
 
             if self.should_build_static_lib:
-                if build_static_lib(self.compiler_type, self.output_name, self.additional_lib_paths, self.additional_libs):
+                if build_static_lib(self.compiler_type, self.output_name, self.additional_libs):
                     FATAL_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
                     error_occurred = True
             elif return_code:

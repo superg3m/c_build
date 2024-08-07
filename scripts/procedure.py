@@ -30,12 +30,10 @@ class Procedure:
         self.compile_time_defines: List[str] = json_data["compile_time_defines"]
 
         self.validate_list_of_strings(json_data, "source_files")
-        self.validate_list_of_strings(json_data, "additional_lib_paths")
         self.validate_list_of_strings(json_data, "additional_libs")
         self.validate_list_of_strings(json_data, "include_paths")
 
         self.source_files: List[str] = json_data["source_files"]
-        self.additional_lib_paths: List[str] = json_data["additional_lib_paths"]
         self.additional_libs: List[str] = json_data["additional_libs"]
         self.include_paths: List[str] = json_data["include_paths"]
 
