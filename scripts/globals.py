@@ -1,3 +1,4 @@
+import glob
 import os
 import platform
 import shutil
@@ -123,29 +124,26 @@ def set_vs_environment():
             os.environ[name] = value
 
 
-def build_static_lib(compiler_name, source_files, output_name, additional_libs):
+def build_static_lib(compiler_name, output_name, additional_libs):
     lib_command: List[str] = []
 
-    object_files = []
-    for source in source_files:
-        path_to = source[:source.rindex("/") + 1]
-        real_source = source.replace(path_to, "")
-        object_file = real_source.replace(".c", ".o")
-        object_files.append(object_file)
+    o_files = glob.glob('*.o')
+    obj_files = glob.glob('*.obj')
+    object_files = [o_files, obj_files]
 
     if compiler_name == "cl":
         lib_command = [
             "lib",
             "/NOLOGO",
             f"/OUT:{output_name}",
-            "./*.obj"
+            object_files
         ]
     else:
         lib_command = [
             "ar",
             "rcs",
             output_name,
-            "*.o"
+            object_files
         ]
 
     for lib in additional_libs:

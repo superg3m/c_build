@@ -272,7 +272,7 @@ class Compiler:
             FORMAT_PRINT(f"{compiler_command}")
 
             if self.should_build_static_lib:
-                if build_static_lib(self.compiler_type, self.source_files, self.output_name, self.additional_libs):
+                if build_static_lib(self.compiler_type, self.output_name, self.additional_libs):
                     FATAL_PRINT(f"FAILED TO COMPILE LIB: {self.output_name}")
                     error_occurred = True
             elif return_code:
