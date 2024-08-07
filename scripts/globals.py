@@ -141,13 +141,17 @@ def build_static_lib(compiler_name, output_name, additional_lib_paths, additiona
             "./*.o"
         ]
 
-    if additional_libs:
-        for lib in additional_libs:
-            for lib_path in additional_lib_paths:
-                if lib and lib_path:
-                    real_path = f"{lib_path}/{lib}"
-                    if os.path.exists(real_path):
-                        lib_command.append(real_path)
+    for lib in additional_libs:
+        found_lib = False
+        for lib_path in additional_lib_paths:
+            if lib and lib_path:
+                real_path = f"{lib_path}/{lib}"
+                if os.path.exists(real_path):
+                    found_lib = True
+                    lib_command.append(real_path)
+                    break
+        if not found_lib:
+            lib_command.append(lib)
 
     error_occurred = False
     try:
