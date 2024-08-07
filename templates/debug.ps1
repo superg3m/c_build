@@ -6,4 +6,4 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-python ./c-build/scripts/debug.py
+python3 ./c-build/scripts/debug.py

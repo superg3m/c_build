@@ -6,4 +6,4 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-python ./c-build/scripts/clean.py
+python3 ./c-build/scripts/clean.py
