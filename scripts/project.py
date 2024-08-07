@@ -69,6 +69,7 @@ class Project:
         valid_names = []
         for key, value in json_data.items():
             if isinstance(value, dict):
+                key = key.replace("$compiler_type", self.compiler_type)
                 build_procedure = Procedure(key, self.compiler_type, self.std_version, value)
                 self.procedures.append(build_procedure)
                 if build_procedure.should_build_executable:

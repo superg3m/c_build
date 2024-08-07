@@ -15,7 +15,7 @@
     "disable_specific_warnings": [""],
     "inject_as_argument": [""],
 
-    "./build_cl": {
+    "./build_$compiler_type": {
         "output_name": "test.exe",
         "compile_time_defines": [],
         "include_paths": [""],
