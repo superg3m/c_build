@@ -142,9 +142,11 @@ def build_static_lib(compiler_name, output_name, additional_lib_paths, additiona
         ]
 
     for lib in additional_libs:
+        if not lib:
+            continue
         found_lib = False
         for lib_path in additional_lib_paths:
-            if lib and lib_path:
+            if lib_path:
                 real_path = f"{lib_path}/{lib}"
                 if os.path.exists(real_path):
                     found_lib = True
