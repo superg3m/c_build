@@ -252,8 +252,9 @@ class Compiler:
         for lib in self.additional_libs:
             if lib:
                 if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
-                    compiler_command.append("-l")
-                compiler_command.append(lib)
+                    compiler_command.append(f"-l{lib}")
+                else:
+                    compiler_command.append(lib)
 
         cached_current_directory = os.getcwd()
         error_occurred = False
