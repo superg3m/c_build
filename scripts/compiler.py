@@ -252,8 +252,10 @@ class Compiler:
         for lib in self.additional_libs:
             if lib:
                 if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
+                    GCC_CC_CLANG_path = lib[:lib.rindex("/")]
                     GCC_CC_CLANG_lib = lib.replace(".lib", "").replace(".dll", "").replace(".dylib", "")
-                    compiler_command.append(f"-l{GCC_CC_CLANG_lib}")
+                    compiler_command.append(f"-L{GCC_CC_CLANG_path}")
+                    compiler_command.append(f" -l{GCC_CC_CLANG_lib}")
                 else:
                     compiler_command.append(lib)
 
