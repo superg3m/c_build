@@ -139,7 +139,6 @@ def build_static_lib(compiler_name, output_name, additional_libs):
             f"/OUT:{output_name}",
             object_files
         ]
-
     else:
         lib_command = [
             "ar",
