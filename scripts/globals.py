@@ -123,7 +123,7 @@ def set_vs_environment():
             os.environ[name] = value
 
 
-def build_static_lib(compiler_name, output_name, additional_libs):
+def build_static_lib(compiler_name, output_name, additional_lib_paths, additional_libs):
     lib_command: List[str] = []
 
     if compiler_name == "cl":
@@ -143,8 +143,10 @@ def build_static_lib(compiler_name, output_name, additional_libs):
 
     if additional_libs:
         for lib in additional_libs:
-            if lib:
-                lib_command.append(lib)
+            for lib_path in additional_lib_paths:
+                real_path = f"{lib_path}/{lib}"
+                if os.path.exists(real_path):
+                    lib_command.append(real_path)
 
     error_occurred = False
     try:
