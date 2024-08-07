@@ -137,15 +137,14 @@ def build_static_lib(compiler_name, output_name, additional_libs):
             "lib",
             "/NOLOGO",
             f"/OUT:{output_name}",
-            object_files
-        ]
+
+        ] + object_files
     else:
         lib_command = [
             "ar",
             "rcs",
             output_name,
-            object_files
-        ]
+        ] + object_files
 
     for lib in additional_libs:
         if lib:
