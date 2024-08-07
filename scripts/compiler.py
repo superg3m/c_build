@@ -190,7 +190,7 @@ class Compiler:
             compiler_command.append(output_flag)
             compiler_command.append(self.output_name)
 
-        if len(self.additional_libs) > 0 and self.compiler_type_enum == CompilerType.CL:
+        if len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.CL:
             compiler_command.append("/link")
         for lib in self.additional_libs:
             if lib:
