@@ -142,7 +142,8 @@ def build_static_lib(compiler_name, output_name, additional_libs):
         ]
 
     for lib in additional_libs:
-        lib_command.append(lib)
+        if lib:
+            lib_command.append(lib)
 
     error_occurred = False
     try:
