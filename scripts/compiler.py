@@ -190,14 +190,6 @@ class Compiler:
             compiler_command.append(output_flag)
             compiler_command.append(self.output_name)
 
-        if len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.CL:
-            compiler_command.append("/link")
-        for lib in self.additional_libs:
-            if lib:
-                if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
-                    compiler_command.append("-l")
-                compiler_command.append(lib)
-
         # Add multi-threading flag
         self.set_action(CompilerAction.MULTI_THREADING)
         multi_threading_flag = self.get_compiler_lookup()
@@ -254,6 +246,14 @@ class Compiler:
         for flag in self.compiler_inject_into_args:
             if flag:
                 compiler_command.append(flag)
+
+        if len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.CL:
+            compiler_command.append("/link")
+        for lib in self.additional_libs:
+            if lib:
+                if self.compiler_type_enum == CompilerType.GCC_CC_CLANG:
+                    compiler_command.append("-l")
+                compiler_command.append(lib)
 
         cached_current_directory = os.getcwd()
         error_occurred = False
