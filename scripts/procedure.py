@@ -37,6 +37,23 @@ class Procedure:
         self.additional_libs: List[str] = json_data["additional_libs"]
         self.include_paths: List[str] = json_data["include_paths"]
 
+        self.replace_compiler_type()
+
+    def replace_compiler_type(self):
+        # Replace in string attributes
+        for attr, value in self.__dict__.items():
+            if isinstance(value, str):
+                placeholder = "$compiler_type"
+                if placeholder in value:
+                    self.__dict__[attr] = value.replace(placeholder, self.compiler_type)
+
+            # Replace in list of strings attributes
+            elif isinstance(value, list) and all(isinstance(val, str) for val in value):
+                placeholder = "$compiler_type"
+                self.__dict__[attr] = [
+                    val.replace(placeholder, self.compiler_type) for val in value
+                ]
+
     def validate_list_of_strings(self, data, key):
         if not isinstance(data.get(key), list) or not all(isinstance(item, str) for item in data[key]):
             FATAL_PRINT(f"{key.upper()} TYPE: {type(data.get(key))}")
