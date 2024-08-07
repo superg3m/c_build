@@ -89,8 +89,12 @@ class Procedure:
         error_occurred = False
         cached_current_directory = os.getcwd()
         try:
+            resolved_exe = ""
+            if os.name != 'nt':  # Not Windows
+                resolved_exe = f"./{self.output_name}"
+
             os.chdir(self.build_directory)
-            subprocess.call([self.output_name])
+            os.system(resolved_exe)
         except FileNotFoundError:
             FATAL_PRINT(f"executable not found")
             error_occurred = True
