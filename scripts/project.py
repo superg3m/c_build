@@ -76,7 +76,7 @@ class Project:
         for exe_name in self.executable_names:
             if exe_name in valid_names:
                 for proc in self.procedures:
-                    if proc.output_name == exe_name:
+                    if proc.output_name == exe_name and proc.should_build_executable:
                         self.executable_procedures.append(proc)
             else:
                 FATAL_PRINT(f"Invalid executable name(s), expected: {valid_names} | got: {self.executable_names}")
