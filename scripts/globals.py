@@ -144,9 +144,10 @@ def build_static_lib(compiler_name, output_name, additional_lib_paths, additiona
     if additional_libs:
         for lib in additional_libs:
             for lib_path in additional_lib_paths:
-                real_path = f"{lib_path}/{lib}"
-                if os.path.exists(real_path):
-                    lib_command.append(real_path)
+                if lib and lib_path:
+                    real_path = f"{lib_path}/{lib}"
+                    if os.path.exists(real_path):
+                        lib_command.append(real_path)
 
     error_occurred = False
     try:
