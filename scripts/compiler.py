@@ -219,9 +219,10 @@ class Compiler:
         # Add optimization flag
         if self.debug:
             # Add address sanitizer flag
-            self.set_action(CompilerAction.ADDRESS_SANITIZER)
-            address_sanitizer_flag = self.get_compiler_lookup()
-            compiler_command.append(address_sanitizer_flag)
+            if os.name != 'nt':
+                self.set_action(CompilerAction.ADDRESS_SANITIZER)
+                address_sanitizer_flag = self.get_compiler_lookup()
+                compiler_command.append(address_sanitizer_flag)
 
             if self.compiler_type_enum == CompilerType.CL:
                 compiler_command.append("/Od")
@@ -247,11 +248,12 @@ class Compiler:
             if flag:
                 compiler_command.append(flag)
 
-        if len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.CL:
-            compiler_command.append("/link")
-        for lib in self.additional_libs:
-            if lib:
-                compiler_command.append(lib)
+        if not self.should_build_static_lib:
+            if len(self.additional_libs) > 0 and self.additional_libs[0] and self.compiler_type_enum == CompilerType.CL:
+                compiler_command.append("/link")
+            for lib in self.additional_libs:
+                if lib:
+                    compiler_command.append(lib)
 
         cached_current_directory = os.getcwd()
         error_occurred = False
