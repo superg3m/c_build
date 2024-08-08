@@ -24,6 +24,7 @@ class CompilerAction(Enum):
     ADDRESS_SANITIZER = 6
     DISABLE_WARNINGS = 7
     DISABLE_SPECIFIC_WARNING = 8
+    REPORT_FULL_PATH = 9
 
 
 compiler_lookup_table: List[List[str]] = [
@@ -37,7 +38,8 @@ compiler_lookup_table: List[List[str]] = [
         "/MP",  # MULTI_THREADING
         "/fsanitize=address",  # ADDRESS_SANITIZER
         "/W0",  # DISABLE_WARNINGS
-        "/wd"  # DISABLE_SPECIFIC_WARNING
+        "/wd",  # DISABLE_SPECIFIC_WARNING
+        "/FC"
     ],
     # Compiler GCC_CC_CLANG
     [
@@ -49,7 +51,8 @@ compiler_lookup_table: List[List[str]] = [
         None,  # MULTI_THREADING
         "-fsanitize=address",  # ADDRESS_SANITIZER
         "-w",  # DISABLE_WARNINGS
-        "-Wno-"  # DISABLE_SPECIFIC_WARNING
+        "-Wno-",  # DISABLE_SPECIFIC_WARNING
+        None
     ],
 ]
 
@@ -163,6 +166,10 @@ class Compiler:
             compiler_command.append(f"{std_version_flags}{self.std_version}")
         else:
             FORMAT_PRINT(f"Std version: {self.std_version} not supported, falling back on default")
+
+        self.set_action(CompilerAction.REPORT_FULL_PATH)
+        report_full_path_flag = self.get_compiler_lookup()
+        compiler_command.append(report_full_path_flag)
 
         # Add compile time defines
         self.set_action(CompilerAction.COMPILE_TIME_DEFINES)
