@@ -34,7 +34,7 @@ class Project:
         else:
             self.compiler_type: str = json_data["compiler_type"]
 
-        if self.compiler_type == "cl":
+        if self.compiler_type == "cl" and os.name == "nt":
             set_vs_environment()
 
         self.github_root = json_data["github_root"]
