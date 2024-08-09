@@ -1,3 +1,4 @@
+import glob
 import os
 import subprocess
 import sys
@@ -34,6 +35,7 @@ class Procedure:
         self.validate_list_of_strings(json_data, "include_paths")
 
         self.source_files: List[str] = json_data["source_files"]
+        self.resolve_source_file_glob()  # for ./*.c
         self.additional_libs: List[str] = json_data["additional_libs"]
         self.include_paths: List[str] = json_data["include_paths"]
 
@@ -53,6 +55,25 @@ class Procedure:
                 self.__dict__[attr] = [
                     val.replace(placeholder, self.compiler_type) for val in value
                 ]
+
+    def resolve_source_file_glob(self):
+        resolved_files = []
+        for pattern in self.source_files:
+            if '*' in pattern:
+                directory = os.path.dirname(pattern)
+                base_name = os.path.basename(pattern)
+
+                current_directory = os.getcwd()
+
+                try:
+                    os.chdir(directory)
+                    resolved_files.extend(glob.glob(base_name))
+                finally:
+                    os.chdir(current_directory)
+            else:
+                resolved_files.append(pattern)
+
+        self.source_files = resolved_files
 
     def validate_list_of_strings(self, data, key):
         if not isinstance(data.get(key), list) or not all(isinstance(item, str) for item in data[key]):
