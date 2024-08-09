@@ -39,7 +39,7 @@ compiler_lookup_table: List[List[str]] = [
         "/fsanitize=address",  # ADDRESS_SANITIZER
         "/W0",  # DISABLE_WARNINGS
         "/wd",  # DISABLE_SPECIFIC_WARNING
-        "/FC"
+        "/FC"   # REPORT_FULL_PATH
     ],
     # Compiler GCC_CC_CLANG
     [
@@ -52,7 +52,7 @@ compiler_lookup_table: List[List[str]] = [
         "-fsanitize=address",  # ADDRESS_SANITIZER
         "-w",  # DISABLE_WARNINGS
         "-Wno-",  # DISABLE_SPECIFIC_WARNING
-        None
+        None      # REPORT_FULL_PATH
     ],
 ]
 
@@ -166,7 +166,8 @@ class Compiler:
 
         self.set_action(CompilerAction.REPORT_FULL_PATH)
         report_full_path_flag = self.get_compiler_lookup()
-        compiler_command.append(report_full_path_flag)
+        if report_full_path_flag:
+            compiler_command.append(report_full_path_flag)
 
         # Add compile time defines
         self.set_action(CompilerAction.COMPILE_TIME_DEFINES)
