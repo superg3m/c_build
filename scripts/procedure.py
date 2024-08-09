@@ -59,7 +59,7 @@ class Procedure:
     def resolve_source_file_glob(self):
         resolved_files = []
         for pattern in self.source_files:
-            if '*' in pattern:
+            if '*.c' in pattern:
                 directory = os.path.dirname(pattern)
                 base_name = os.path.basename(pattern)
                 current_directory = os.getcwd()
@@ -75,7 +75,8 @@ class Procedure:
                 finally:
                     os.chdir(current_directory)
             else:
-                resolved_files.append(pattern)
+                if pattern.endswith('.c'):
+                    resolved_files.append(pattern)
 
         self.source_files = resolved_files
 
