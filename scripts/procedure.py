@@ -71,7 +71,7 @@ class Procedure:
                     os.chdir(self.build_directory)
                     os.chdir(directory)
                     for file in os.listdir():
-                        if pattern.endswith('.c'):
+                        if file.endswith('.c'):
                             resolved_files.append(f"{directory}/{file}")
                 finally:
                     os.chdir(current_directory)
