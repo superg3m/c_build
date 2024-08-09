@@ -141,6 +141,9 @@ class Project:
     def clean_dependencies(self):
         for dependency in self.project_dependencies:
             cached_path_name = os.getcwd()
+            if not os.path.exists(dependency.name):
+                continue
+                
             os.chdir(dependency.name)
             dependency.clean_project()
             os.chdir(cached_path_name)
