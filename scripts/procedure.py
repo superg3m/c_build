@@ -66,6 +66,7 @@ class Procedure:
                 current_directory = os.getcwd()
 
                 try:
+                    print(directory)
                     os.chdir(directory)
                     resolved_files.extend([os.path.join(directory, file) for file in glob.glob(base_name)])
                 finally:
