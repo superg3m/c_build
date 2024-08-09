@@ -68,7 +68,7 @@ class Procedure:
                     os.chdir(self.build_directory)
                     os.chdir(directory)
                     for file in os.listdir():
-                        resolved_files.append(file)
+                        resolved_files.append(f"{directory}/{file}")
                 finally:
                     os.chdir(current_directory)
             else:
