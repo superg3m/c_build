@@ -72,8 +72,9 @@ class Procedure:
         current_dir = os.getcwd()
         current_dir = current_dir.replace("\\", "/")
         current_dir = current_dir + self.build_directory.replace("./", "/")
+        if not os.path.exists(self.build_directory):
+            return
         FORMAT_PRINT(f"Cleaning: {current_dir}")
-
         for filename in os.listdir(self.build_directory):
             file_path = os.path.join(self.build_directory, filename)
             try:
