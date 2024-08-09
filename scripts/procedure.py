@@ -65,6 +65,9 @@ class Procedure:
                 current_directory = os.getcwd()
 
                 try:
+                    if not os.path.exists(self.build_directory):
+                        os.mkdir(self.build_directory)
+                        
                     os.chdir(self.build_directory)
                     os.chdir(directory)
                     for file in os.listdir():
