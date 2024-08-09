@@ -62,11 +62,10 @@ class Procedure:
             if '*' in pattern:
                 directory = os.path.dirname(pattern)
                 base_name = os.path.basename(pattern)
-
                 current_directory = os.getcwd()
 
                 try:
-                    print(directory)
+                    os.chdir(self.build_directory)
                     os.chdir(directory)
                     for file in os.listdir():
                         resolved_files.append(file)
