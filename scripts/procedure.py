@@ -68,7 +68,8 @@ class Procedure:
                 try:
                     print(directory)
                     os.chdir(directory)
-                    resolved_files.extend([os.path.join(directory, file) for file in glob.glob(base_name)])
+                    for file in os.listdir():
+                        resolved_files.append(file)
                 finally:
                     os.chdir(current_directory)
             else:
