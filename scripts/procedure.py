@@ -67,7 +67,7 @@ class Procedure:
 
                 try:
                     os.chdir(directory)
-                    resolved_files.extend(glob.glob(base_name))
+                    resolved_files.extend(f"{directory}/{glob.glob(base_name)}")
                 finally:
                     os.chdir(current_directory)
             else:
