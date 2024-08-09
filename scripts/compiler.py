@@ -66,9 +66,6 @@ class Compiler:
             self.compiler_type: str = compiler_json["compiler_type"]
 
         self.compiler_type_enum = self.choose_compiler_type()
-        if self.compiler_type_enum == CompilerType.CL:
-            set_vs_environment()
-
         self.compiler_action: CompilerAction = CompilerAction.NO_ACTION
 
         self.std_version: str = compiler_json["std_version"]
