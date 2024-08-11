@@ -207,7 +207,8 @@ class Compiler:
         # Add warning level flag
         self.set_action(CompilerAction.WARNING_LEVEL)
         warning_level_flag = self.get_compiler_lookup()
-        compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
+        if self.compiler_warning_level:
+            compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
 
         # Add disable warnings flag
         self.set_action(CompilerAction.DISABLE_WARNINGS)
