@@ -22,9 +22,10 @@ class CompilerAction(Enum):
     COMPILE_TIME_DEFINES = 4
     MULTI_THREADING = 5
     ADDRESS_SANITIZER = 6
-    DISABLE_WARNINGS = 7
-    DISABLE_SPECIFIC_WARNING = 8
-    REPORT_FULL_PATH = 9
+    WARNING_LEVEL = 7
+    DISABLE_WARNINGS = 8
+    DISABLE_SPECIFIC_WARNING = 9
+    REPORT_FULL_PATH = 10
 
 
 compiler_lookup_table: List[List[str]] = [
@@ -37,6 +38,7 @@ compiler_lookup_table: List[List[str]] = [
         "/D",  # COMPILE_TIME_DEFINE_FLAG
         "/MP",  # MULTI_THREADING
         "/fsanitize=address",  # ADDRESS_SANITIZER
+        "/W",   # WARNING_LEVEL
         "/W0",  # DISABLE_WARNINGS
         "/wd",  # DISABLE_SPECIFIC_WARNING
         "/FC"   # REPORT_FULL_PATH
@@ -50,6 +52,7 @@ compiler_lookup_table: List[List[str]] = [
         "-D",  # COMPILE_TIME_DEFINE_FLAG
         None,  # MULTI_THREADING
         "-fsanitize=address",  # ADDRESS_SANITIZER
+        "-W",  # WARNING_LEVEL
         "-w",  # DISABLE_WARNINGS
         "-Wno-",  # DISABLE_SPECIFIC_WARNING
         None      # REPORT_FULL_PATH
@@ -200,6 +203,11 @@ class Compiler:
         multi_threading_flag = self.get_compiler_lookup()
         if multi_threading_flag:
             compiler_command.append(multi_threading_flag)
+
+        # Add warning level flag
+        self.set_action(CompilerAction.WARNING_LEVEL)
+        warning_level_flag = self.get_compiler_lookup()
+        compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
 
         # Add disable warnings flag
         self.set_action(CompilerAction.DISABLE_WARNINGS)
