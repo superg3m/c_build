@@ -4,8 +4,7 @@ param(
  )
 
 $template_content = Get-Content -Path "./c-build/templates/$current_filename"
-
-$current_content = Get-Content -Path $current_file.Name
+$current_content = Get-Content -Path $current_filename
 $differences = Compare-Object -ReferenceObject $current_content -DifferenceObject $template_content
 
 if ($differences) {
