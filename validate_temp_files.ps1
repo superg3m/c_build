@@ -9,9 +9,9 @@ $differences = Compare-Object -ReferenceObject $current_content -DifferenceObjec
 
 if ($differences) {
     if ($current_filename -eq "bootstrap.ps1") {
-        Write-Host "Template content for '$current_filename' is out of sync; you must run ./c-build/bootstrap.ps1" -ForegroundColor Red
+        throw "Template content for '$current_filename' is out of sync; you must run ./c-build/bootstrap.ps1"
     } else {
-        Write-Host "Template content for '$current_filename' is out of sync; you must run ./bootstrap.ps1" -ForegroundColor Red
+        throw "Template content for '$current_filename' is out of sync; you must run ./bootstrap.ps1"
     }
 
     exit
