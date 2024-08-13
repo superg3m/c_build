@@ -5,6 +5,9 @@ if ($PSVersionTable.Platform -eq "Unix") {
 
 $current_file = Get-Item "."
 $current_filename = $current_file.Name
+Write-Output "NAME: $current_filename"
+exit
+
 $template_content = Get-Content -Path "./c-build/templates/$current_filename"
 
 $current_content = Get-Content -Path $current_file.Name

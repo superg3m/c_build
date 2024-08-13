@@ -5,9 +5,12 @@ if ($PSVersionTable.Platform -eq "Unix") {
 
 $current_file = Get-Item "."
 $current_filename = $current_file.Name
+
+
+
 $template_content = Get-Content -Path "./c-build/templates/$current_filename"
 
-$current_content = Get-Content -Path $current_file.FullName
+$current_content = Get-Content -Path $current_file.Name
 $differences = Compare-Object -ReferenceObject $current_content -DifferenceObject $template_content
 
 if ($differences) {
