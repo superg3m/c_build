@@ -12,6 +12,7 @@ $differences = Compare-Object -ReferenceObject $current_content -DifferenceObjec
 
 if ($differences) {
     Write-Host "Template content for '$current_filename' is out of sync; you must run ./bootstrap.ps1" -ForegroundColor Red
+    exit
 }
 
 $directoryPath = "./c-build"
