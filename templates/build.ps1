@@ -16,6 +16,3 @@ if ($args[0] -eq "-debug") {
 } else {
     python ./c-build/scripts/build.py
 }
-
-
-
