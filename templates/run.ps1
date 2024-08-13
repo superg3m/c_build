@@ -3,7 +3,7 @@ if ($PSVersionTable.Platform -eq "Unix") {
     Set-Alias python python3
 }
 
-. ../validate_temp_files.ps1 $MyInvocation.MyCommand.Name
+. ./c-build/validate_temp_files.ps1 $MyInvocation.MyCommand.Name
 
 Push-Location  "./c-build"
 git fetch origin -q
