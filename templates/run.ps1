@@ -12,5 +12,3 @@ git pull -q
 Pop-Location
 
 python ./c-build/scripts/run.py
-
-# Test sync
