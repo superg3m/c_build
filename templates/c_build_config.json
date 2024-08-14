@@ -4,14 +4,14 @@
     "github_root": "https://github.com/superg3m",
     "compiler_type": "cl",
     "std_version": "c11",
-    "compiler_warning_level": "all",
+    "compiler_warning_level": "",
 
     "compiler_disable_warnings": false,
     "debug_with_visual_studio": false,
     "should_rebuild_project_dependencies": false,
-    "compiler_treat_warnings_as_errors": true,
+    "compiler_treat_warnings_as_errors": false,
 
-    "project_dependencies": [""],
+    "project_dependencies": ["ckit"],
     "disable_specific_warnings": [""],
     "inject_as_argument": [""],
 
@@ -22,7 +22,7 @@
         "source_files": [
             "../source/*.c"
         ],
-        "additional_libs": [""]
+        "additional_libs": ["..//ckit/ckit_build_$compiler_type/ckit.lib"]
     },
 
     "execute": ["test.exe"]
