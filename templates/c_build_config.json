@@ -22,7 +22,7 @@
         "source_files": [
             "../source/*.c"
         ],
-        "additional_libs": ["..//ckit/ckit_build_$compiler_type/ckit.lib"]
+        "additional_libs": ["../ckit/ckit_build_$compiler_type/ckit.lib"]
     },
 
     "execute": ["test.exe"]
