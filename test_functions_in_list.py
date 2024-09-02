@@ -61,6 +61,38 @@ def compiler_args_add(arg):
     global compiler_arguments
     compiler_arguments += arg
 
+
+compiler_flag_lookup_table: List[List[str]] = [
+    # Compiler CL
+    [
+        "/std:",  # STD_VERSION
+        "/nologo",  # NO_LOGO
+        "/c",  # OBJECT_FLAG
+        "/Fe:",  # OUTPUT_FLAG
+        "/D",  # COMPILE_TIME_DEFINE_FLAG
+        "/MP",  # MULTI_THREADING
+        "/fsanitize=address",  # ADDRESS_SANITIZER
+        "/W",   # WARNING_LEVEL
+        "/W0",  # DISABLE_WARNINGS
+        "/wd",  # DISABLE_SPECIFIC_WARNING
+        "/FC"   # REPORT_FULL_PATH
+    ],
+    # Compiler GCC_CC_CLANG
+    [
+        "-std=",  # STD_VERSION
+        None,  # NO_LOGO
+        "-c",  # OBJECT_FLAG
+        "-o",  # OUTPUT_FLAG
+        "-D",  # COMPILE_TIME_DEFINE_FLAG
+        None,  # MULTI_THREADING
+        "-fsanitize=address",  # ADDRESS_SANITIZER
+        "-W",  # WARNING_LEVEL
+        "-w",  # DISABLE_WARNINGS
+        "-Wno-",  # DISABLE_SPECIFIC_WARNING
+        None      # REPORT_FULL_PATH
+    ],
+]
+
 action_table = [
     tuple(function, args),
     tuple(function, args),
