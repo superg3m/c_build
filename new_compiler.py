@@ -90,35 +90,3 @@ compiler_action_lookup_table: List[List[function]] = [
         None      # REPORT_FULL_PATH
     ],
 ]
-
-### USAGE CODE
-
-funcs = print, int, float
-argss = ("hello", "world"), (1, ), (1.0, )
-
-def set_up_action_table():
-    #arguments get resolved
-    # functions are known as a constant
-
-    # = [funcs, arguments]
-
-for f, a, in zip(funcs, argss):
-    f(*a)
-
-for i in range(CompilerAction.COUNT):
-    compiler_action_lookup_table[compile_type][i]
-
-
-
-
-# #### While compiling do work on another dependency/procedure
-# subprocess.Popen does exactly what you want.
-
-# from subprocess import Popen
-# p = Popen(['watch', 'ls']) # something long running
-# # ... do other stuff while subprocess is running
-# p.terminate()
-
-# (Edit to complete the answer from comments)
-
-# The Popen instance can do various other things like you can poll() it to see if it is still running, and you can communicate() with it to send it data on stdin, and wait for it to terminate.
