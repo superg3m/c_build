@@ -107,3 +107,18 @@ for f, a, in zip(funcs, argss):
 
 for i in range(CompilerAction.COUNT):
     compiler_action_lookup_table[compile_type][i]
+
+
+
+
+# #### While compiling do work on another dependency/procedure
+# subprocess.Popen does exactly what you want.
+
+# from subprocess import Popen
+# p = Popen(['watch', 'ls']) # something long running
+# # ... do other stuff while subprocess is running
+# p.terminate()
+
+# (Edit to complete the answer from comments)
+
+# The Popen instance can do various other things like you can poll() it to see if it is still running, and you can communicate() with it to send it data on stdin, and wait for it to terminate.
