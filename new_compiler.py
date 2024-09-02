@@ -90,3 +90,49 @@ compiler_action_lookup_table: List[List[function]] = [
         None      # REPORT_FULL_PATH
     ],
 ]
+
+def setup_action_table(procedure: Procedure):
+    action_table = []
+
+    # Actions need to be ordered by action order in the enum
+
+    # Output Action
+    action_table.append((perform_output_action, (procedure.output_name,)))
+
+    # Compiler Version Action
+    action_table.append((perform_std_version_action, (procedure.std_version,)))
+
+    # Disable Warnings Action
+    if procedure.compiler_disable_warnings:
+        action_table.append((perform_disable_warnings_action, ()))
+
+    # Warning Level Action
+    action_table.append((perform_warning_level_action, (procedure.compiler_warning_level,)))
+
+    # Treat Warnings as Errors Action
+    if procedure.compiler_treat_warnings_as_errors:
+        action_table.append((perform_treat_warnings_as_errors_action, ()))
+
+    # Disable Specific Warnings Action
+    if procedure.compiler_disable_specific_warnings:
+        for warning in procedure.compiler_disable_specific_warnings:
+            action_table.append((perform_disable_specific_warning_action, (warning,)))
+
+    # Compile Time Defines Action
+    for define in procedure.compile_time_defines:
+        action_table.append((perform_compile_time_define_action, (define,)))
+
+    # Include Paths Action
+    for include_path in procedure.include_paths:
+        action_table.append((perform_include_paths_action, (include_path,)))
+
+    # Source Files Action
+    for source_file in procedure.source_files:
+        action_table.append((perform_source_files_action, (source_file,)))
+
+    # Additional Libraries Action
+    for additional_lib in procedure.additional_libs:
+        action_table.append((perform_additional_libs_action, (additional_lib,)))
+
+    # Return the populated action table
+    return action_table
