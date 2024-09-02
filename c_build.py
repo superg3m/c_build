@@ -2,6 +2,7 @@
 # Experimental
 
 project = project_create("CKIT")
+project.set_di
 project.set_github_root(project, "https://github.com/superg3m")
 project.set_compiler(project, "cl")
 project.set_std_version(project, "c11")
@@ -14,9 +15,13 @@ elseif (platfrom.LINUX) then
 end()
 
 project.disable_specific_warnings(project, ["5105", "4668", "4820"])
-project.set_treat_warnings_as_errors(project, True)
-project.set_debug_with_visual_studio(project, True)
-project.set_rebuild_project_dependencies(project, True)
+project.set_treat_warnings_as_errors(True)
+project.set_debug_with_visual_studio(True)
+project.set_rebuild_project_dependencies(True)
+# If project.set_rebuild_project_dependencies is set to (False)
+# then by default it will look at the source files and check if they have been modified since the cache
+
+
 project.set_project_dependencies(project, ["ckg"])
 
 # Do different things depending on the platform
@@ -57,3 +62,6 @@ graphics_exe_procedure.set_additional_libs(graphics_exe_procedure, ["../../../ck
 # -------------------------------------------------------------------------------------
 
 project.set_executables_to_run(["test_graphics_ckit.exe"])
+
+# vc vars cache
+# file cache
