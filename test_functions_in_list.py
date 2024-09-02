@@ -54,5 +54,37 @@ self.inject_into_args: List[str] = []
 self.should_build_executable: bool = False
 self.should_build_static_lib: bool = False
 self.should_build_dynamic_lib: bool = False
+self.recursive_search: bool = False
 
-self.compiler_arguments = ""
+compiler_arguments = ""
+def compiler_args_add(arg):
+    global compiler_arguments
+    compiler_arguments += arg
+
+action_table = [
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+    tuple(function, args),
+]
+
+
+# there is two bucks of actions
+#
+# bucket 1: Simply add to compiler_argument and a small flag lookup
+    # inject args
+    # output_name
+# bucket 2: Perform some operations and(or) a flag lookup then add to compiler_argument (most likely)
+    # libs
+    # source files
+        # Resolve *.c
+    # includes
+    # compile_time_defines
