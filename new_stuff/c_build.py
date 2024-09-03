@@ -42,7 +42,7 @@ test_exe_procedure.set_output_name("test_ckit.exe")
 
 test_exe_procedure.set_compile_time_defines([""])
 test_exe_procedure.set_include_paths([""])
-test_exe_procedure.set_source_files(["../*.c"])
+test_exe_procedure.set_source_files(["../*.c"], True)
 test_exe_procedure.set_additional_libs([f"../../../ckit_build_{COMPILER}/ckit.lib"])
 
 # -------------------------------------------------------------------------------------

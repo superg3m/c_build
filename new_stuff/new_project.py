@@ -1,3 +1,4 @@
+import os
 from distutils.command.build import build
 from typing import List
 
@@ -34,6 +35,11 @@ class Project:
     def add_procedure(self, build_directory):
         proc = Procedure(build_directory)
         self.procedures.append(proc)
+
+        if not os.path.exists(build_directory):
+            FATAL_PRINT(f"Can't find path at {build_directory}")
+            exit(-15)
+
         return proc
 
     def inject_as_argument(self, arg):
