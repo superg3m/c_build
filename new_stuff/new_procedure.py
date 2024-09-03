@@ -70,8 +70,6 @@ class Procedure:
         for source_glob in source_files:
             self.source_files += self.__resolve_source_glob(source_glob, recursive_search)
 
-        print(self.source_files)
-
     def set_include_paths(self, include_paths):
         self.include_paths = include_paths
 

@@ -96,7 +96,6 @@ class Compiler:
         # compiler type (cl, gcc, cc, clang)
 
     def setup_procedure(self, build_directory: str, procedure: Procedure):
-
         self.output_name = procedure.output_name
         self.build_directory = build_directory
         self.compile_time_defines = procedure.compile_time_defines

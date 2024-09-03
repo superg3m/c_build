@@ -3,7 +3,7 @@ import subprocess
 import time
 from typing import List, Set
 
-file_name: str = "c_build_cl_vars_cache.txt"
+file_name: str = "./c_build_cl_vars_cache.txt"
 
 def find_vs_path() -> str:
     vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
