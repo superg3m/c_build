@@ -33,12 +33,10 @@ class Procedure:
         resolved_files = []
 
         if '*.c' in maybe_source_glob:
-            # Determine the directory from maybe_source_glob
             source_dir = os.path.dirname(maybe_source_glob) or "."
             current_directory = os.getcwd()
 
             try:
-                # Change to the build directory first
                 os.chdir(self.build_directory)
                 os.chdir(source_dir)
 
@@ -49,13 +47,11 @@ class Procedure:
                                 relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\", "/")
                                 resolved_files.append(relative_path)
                 else:
-                    # Non-recursive: list files in the specified directory
                     for file in os.listdir(os.getcwd()):
                         if file.endswith('.c'):
                             relative_path = os.path.relpath(os.path.join(source_dir, file)).replace("\\", "/")
                             resolved_files.append(relative_path)
             finally:
-                # Change back to the original directory
                 os.chdir(current_directory)
 
         elif '.c' in maybe_source_glob:
