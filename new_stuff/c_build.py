@@ -31,6 +31,7 @@ project.internal_compiler.compile_procedure(test_procedure)
 # -------------------------------------------------------------------------------------
 
 project.set_executables_to_run(["test.exe"])
+# project.compile_procedures() this needs to happen utilize the fact that you know how many procedures are in the project
 
 # vc vars cache
 # file cache
