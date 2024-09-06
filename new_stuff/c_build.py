@@ -1,7 +1,7 @@
 from new_project import *
 from constants import *
 
-COMPILER = "gcc"
+COMPILER = "cl"
 project = Project("CKIT", COMPILER)
 
 # Do different things depending on the platform
@@ -25,7 +25,7 @@ test_procedure.set_output_name("test.exe")
 
 test_procedure.set_compile_time_defines([""])
 test_procedure.set_include_paths([""])
-test_procedure.set_source_files(["../*.c"])
+test_procedure.set_source_files(["../*.c"], True)
 test_procedure.set_additional_libs([""])
 project.internal_compiler.compile_procedure(test_procedure)
 # -------------------------------------------------------------------------------------
