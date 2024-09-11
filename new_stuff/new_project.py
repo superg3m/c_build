@@ -5,7 +5,7 @@ from typing import List, Dict
 from new_compiler import Compiler
 from new_procedure import Procedure
 from globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
-from new_stuff.constants import CompilerType
+from constants import CompilerType
 
 
 class Project:
