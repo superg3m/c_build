@@ -33,12 +33,12 @@ class Project:
         }
 
         compiler_type = CompilerType.INVALID
-        if self.name == "cl":
+        if self.compiler_name == "cl":
             compiler_type = CompilerType.CL
-        elif self.name in ["gcc", "cc", "clang"]:
+        elif self.compiler_name in ["gcc", "cc", "clang"]:
             compiler_type = CompilerType.GCC_CC_CLANG
         else:
-            FATAL_PRINT(f"Compiler {self.name} is not supported")
+            FATAL_PRINT(f"Compiler {self.compiler_name} is not supported")
             exit(-15)
 
         ret = self.std_version in acceptable_versions[compiler_type.value]
