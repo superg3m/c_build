@@ -1,5 +1,5 @@
 import sys
-sys.path.append("")
+sys.path.append("../new_stuff")
 from new_project import *
 
 from enum import Enum
@@ -22,10 +22,10 @@ project.set_rebuild_project_dependencies(True)
 # If project.set_rebuild_project_dependencies is set to (False)
 # then by default it will look at the source files and check if they have been modified since the cache
 
-project.set_project_dependencies(["ckg"])
+project.set_project_dependencies([""])
 # -------------------------------------------------------------------------------------
 
-test_procedure = project.add_procedure("./CODE/build_" + COMPILER)
+test_procedure = project.add_procedure("")
 test_procedure.set_output_name("test.exe")
 
 test_procedure.set_compile_time_defines([""])

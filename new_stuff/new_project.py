@@ -1,20 +1,21 @@
 import os
+import subprocess
 from typing import List, Dict
 from new_compiler import Compiler
 from new_procedure import Procedure
 from scripts.globals import FATAL_PRINT, FORMAT_PRINT
 
 class Project:
-    def __init__(self, name, compiler_name, std_version = "c11", set_github_root = "https://github.com/superg3m"):
-        self.name = name
-        self.std_version = std_version
+    def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
+        self.name: str = name
+        self.std_version: str = std_version
 
-        self.compiler_name = compiler_name
-        self.set_github_root = set_github_root
-        self.internal_compiler = Compiler(compiler_name, std_version)
+        self.compiler_name: str = compiler_name
+        self.github_root: str = github_root
+        self.internal_compiler: Compiler = Compiler(compiler_name, std_version)
         self.should_debug_with_visual_studio = False
         self.should_rebuild_project_dependencies = False
-        self.dependencies = []
+        self.dependencies: List[Project] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
 
@@ -56,17 +57,25 @@ class Project:
         return proc
 
     def build(self):
-        # dependency_builder
-
         for proc in self.procedures:
             self.internal_compiler.compile_procedure(proc)
 
     def inject_as_argument(self, arg):
         self.internal_compiler.compiler_command.append(arg)
 
-    def set_project_dependencies(self, project_dependencies):
-        for dependency in project_dependencies:
-            self.dependencies.append(dependency)
+    def set_project_dependencies(self, project_dependency_strings):
+        for dependency_string in project_dependency_strings:
+            if not dependency_string:
+                continue
+
+            if not os.path.isdir(dependency_string):
+                FORMAT_PRINT(f"missing {dependency_string} cloning...")
+                os.system(f"git clone {self.github_root}/{dependency_string}.git")
+
+            cached_current_directory_global = os.getcwd()
+            os.chdir(dependency_string)
+            subprocess.call(f"c_build.py {self.compiler_name}", shell=True)
+            os.chdir(cached_current_directory_global)
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
         self.should_rebuild_project_dependencies = should_rebuild_project_dependencies
