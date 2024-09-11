@@ -1,8 +1,6 @@
 import threading
 import time
 
-from scripts.globals import GREEN
-
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
 BLUE: str = '\033[94m'
