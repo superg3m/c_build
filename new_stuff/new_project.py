@@ -5,6 +5,8 @@ from typing import List, Dict
 from new_compiler import Compiler
 from new_procedure import Procedure
 from globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
+from new_stuff.constants import CompilerType
+
 
 class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
@@ -30,10 +32,19 @@ class Project:
             1: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # GCC_CC_CLANG
         }
 
-        ret = self.std_version in acceptable_versions[self.internal_compiler.type.value]
+        compiler_type = CompilerType.INVALID
+        if self.name == "cl":
+            compiler_type = CompilerType.CL
+        elif self.name in ["gcc", "cc", "clang"]:
+            compiler_type = CompilerType.GCC_CC_CLANG
+        else:
+            FATAL_PRINT(f"Compiler {self.name} is not supported")
+            exit(-15)
+
+        ret = self.std_version in acceptable_versions[compiler_type.value]
 
         if not ret:
-            FORMAT_PRINT(f"Std version: {self.std_version} not supported, choose one of these {acceptable_versions[self.internal_compiler.type.value]}")
+            FORMAT_PRINT(f"Std version: {self.std_version} not supported, choose one of these {acceptable_versions[compiler_type.value]}")
 
     def set_executables_to_run(self, executable_names):
         executable_map = {}
