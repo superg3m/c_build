@@ -13,17 +13,6 @@ class Procedure:
         self.should_build_static_lib: bool = False
         self.should_build_dynamic_lib: bool = False
 
-        extension: str = os.path.splitext(self.output_name)[-1].lower()
-
-        if extension == ".exe":
-            self.should_build_executable = True
-        elif extension in [".lib", ".a"]:
-            self.should_build_static_lib = True
-        elif extension in [".so", ".o", ".dylib"]:
-            self.should_build_dynamic_lib = True
-        else:
-            self.should_build_executable = True  # For Linux
-
         self.source_files: List[str] = []
         self.include_paths: List[str] = []
         self.additional_libs: List[str] = []
@@ -61,6 +50,17 @@ class Procedure:
 
     def set_output_name(self, output_name):
         self.output_name = output_name
+
+        extension: str = os.path.splitext(self.output_name)[-1].lower()
+
+        if extension == ".exe":
+            self.should_build_executable = True
+        elif extension in [".lib", ".a"]:
+            self.should_build_static_lib = True
+        elif extension in [".so", ".o", ".dylib"]:
+            self.should_build_dynamic_lib = True
+        else:
+            self.should_build_executable = True  # For Linux
 
     def set_source_files(self, source_files, recursive_search = False):
         for source_glob in source_files:
