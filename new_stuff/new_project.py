@@ -14,6 +14,7 @@ class Project:
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
         FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
+        UP_LEVEL()
         self.start_time = time.perf_counter()
         self.internal_compiler: Compiler = Compiler(compiler_name, std_version)
         self.should_debug_with_visual_studio = False
@@ -65,6 +66,7 @@ class Project:
 
         end_time = time.perf_counter()
         elapsed_time = end_time - self.start_time
+        DOWN_LEVEL()
         FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def inject_as_argument(self, arg):
