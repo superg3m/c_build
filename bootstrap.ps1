@@ -24,7 +24,7 @@ $resolvedTemplatesDir = "../"
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 
-$configFilePath = "c_build_config.json"
+$configFilePath = "c_build.py"
 Write-Host
 
 # Check if config.json already exists in the destination directory
