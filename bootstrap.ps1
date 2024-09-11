@@ -31,12 +31,6 @@ Write-Host
 $has_exisiting_config = $false
 if (Test-Path -Path "../$configFilePath") {
     $has_exisiting_config = $true
-
-    $jsonData = Parse_JsonFile("../$($configFilePath)");
-    if ($c_build_version -ne $jsonData.'c_build_version') {
-        Pop-Location
-        throw "c_build_version is not valid wanted: $c_build_version | got: $($jsonData.'c_build_version')"
-    }
 }
 
 foreach ($templateFile in $templateFiles) {
