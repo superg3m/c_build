@@ -13,13 +13,11 @@ class Project:
 
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
-        FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
-        UP_LEVEL()
-        self.start_time = time.perf_counter()
-        self.internal_compiler: Compiler = Compiler(compiler_name, std_version)
+
+        self.internal_compiler: Compiler = None
         self.should_debug_with_visual_studio = False
         self.should_rebuild_project_dependencies = False
-        self.dependencies: List[Project] = []
+        self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
 
@@ -61,22 +59,12 @@ class Project:
         return proc
 
     def build(self):
-        for proc in self.procedures:
-            self.internal_compiler.compile_procedure(proc)
+        FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
+        UP_LEVEL()
+        start_time = time.perf_counter()
+        self.internal_compiler = Compiler(self.compiler_name, self.std_version)
 
-        end_time = time.perf_counter()
-        elapsed_time = end_time - self.start_time
-        DOWN_LEVEL()
-        FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
-
-    def inject_as_argument(self, arg):
-        self.internal_compiler.compiler_command.append(arg)
-
-    def set_project_dependencies(self, project_dependency_strings):
-        for dependency_string in project_dependency_strings:
-            if not dependency_string:
-                continue
-
+        for dependency_string in self.dependencies:
             UP_LEVEL()
 
             if not os.path.isdir(dependency_string):
@@ -89,6 +77,23 @@ class Project:
             os.chdir(cached_current_directory_global)
 
             DOWN_LEVEL()
+
+        for proc in self.procedures:
+            self.internal_compiler.compile_procedure(proc)
+
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        DOWN_LEVEL()
+        FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
+
+    def inject_as_argument(self, arg):
+        self.internal_compiler.compiler_command.append(arg)
+
+    def set_project_dependencies(self, project_dependency_strings):
+        for dependency_string in project_dependency_strings:
+            if not dependency_string:
+                continue
+            self.dependencies.append(dependency_string)
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
         self.should_rebuild_project_dependencies = should_rebuild_project_dependencies
