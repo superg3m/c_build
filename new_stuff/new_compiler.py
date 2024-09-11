@@ -4,7 +4,7 @@ from typing import Dict
 import constants
 from constants import *
 from vc_vars import *
-from scripts.globals import FATAL_PRINT, NORMAL_PRINT, FORMAT_PRINT, build_static_lib
+from globals import FATAL_PRINT, NORMAL_PRINT, FORMAT_PRINT, build_static_lib
 
 std_version_default = "c11"
 
