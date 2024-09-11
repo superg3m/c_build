@@ -1,4 +1,6 @@
 -- Constants and enums equivalent
+local INFO_MODE = nil
+
 CompilerType = {
     INVALID = 0,
     CL = 1,
@@ -126,6 +128,10 @@ function Compiler:set_compile_time_defines(compile_time_defines)
 end
 
 function Compiler:compile_procedure(procedure, is_debug)
+    if INFO_MODE then
+        return nil
+    end
+
     for _, source in ipairs(procedure.source_files) do
         if source then
             table.insert(self.compiler_command, source)
