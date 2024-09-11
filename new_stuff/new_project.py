@@ -13,7 +13,7 @@ class Project:
 
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
-        print(f"|--------------------------- Start ---------------------------|")
+        print(f"|----------------------------------------- Start -----------------------------------------|")
         self.start_time = time.perf_counter()
         self.internal_compiler: Compiler = Compiler(compiler_name, std_version)
         self.should_debug_with_visual_studio = False
@@ -60,14 +60,12 @@ class Project:
         return proc
 
     def build(self):
-
-
         for proc in self.procedures:
             self.internal_compiler.compile_procedure(proc)
 
         end_time = time.perf_counter()
         elapsed_time = end_time - self.start_time
-        print(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|")
+        print(f"|----------------------------- Time elapsed: {elapsed_time:.2f} seconds -----------------------------|")
 
     def inject_as_argument(self, arg):
         self.internal_compiler.compiler_command.append(arg)
