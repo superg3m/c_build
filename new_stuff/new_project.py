@@ -13,10 +13,6 @@ class Project:
         self.std_version: str = std_version
 
         self.compiler_name: str = compiler_name
-        if self.compiler_name == "cl":
-            generate_vars_file_cache()
-            set_vs_vars_from_file()
-
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio = False
@@ -66,6 +62,10 @@ class Project:
         FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
+        if self.compiler_name == "cl":
+            generate_vars_file_cache()
+            set_vs_vars_from_file()
+
         for dependency_string in self.dependencies:
             UP_LEVEL()
 
