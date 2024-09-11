@@ -1,6 +1,5 @@
 import sys
-sys.path.append("./c-build/new_stuff")
-from new_project import *
+from ..new_project.new_stuff import *
 
 from enum import Enum
 class Arg(Enum):
