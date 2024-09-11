@@ -75,7 +75,7 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            subprocess.call(f"c_build.py {self.compiler_name}", shell=True)
+            subprocess.call(f"python c_build.py {self.compiler_name}", shell=True)
             os.chdir(cached_current_directory_global)
 
             DOWN_LEVEL()

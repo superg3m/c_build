@@ -39,6 +39,9 @@ class Compiler:
         self.action = action
 
     def set_warning_level(self, warning_level_string):
+        if not warning_level_string:
+            return
+
         self.__set_action(CompilerAction.WARNING_LEVEL)
         flag = self.__get_compiler_lookup()
         self.compiler_command.append(f"{flag}{warning_level_string}")
