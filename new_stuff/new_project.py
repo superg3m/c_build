@@ -5,8 +5,7 @@ from typing import List, Dict
 from new_compiler import Compiler
 from new_procedure import Procedure
 from globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
-from constants import CompilerType
-
+from vc_vars import *
 
 class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
@@ -14,9 +13,12 @@ class Project:
         self.std_version: str = std_version
 
         self.compiler_name: str = compiler_name
-        self.github_root: str = github_root
+        if self.compiler_name == "cl":
+            generate_vars_file_cache()
+            set_vs_vars_from_file()
 
-        self.internal_compiler: Compiler|None = None
+        self.github_root: str = github_root
+        self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio = False
         self.should_rebuild_project_dependencies = False
         self.dependencies: List[str] = []
@@ -32,19 +34,10 @@ class Project:
             1: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # GCC_CC_CLANG
         }
 
-        compiler_type = CompilerType.INVALID
-        if self.compiler_name == "cl":
-            compiler_type = CompilerType.CL
-        elif self.compiler_name in ["gcc", "cc", "clang"]:
-            compiler_type = CompilerType.GCC_CC_CLANG
-        else:
-            FATAL_PRINT(f"Compiler {self.compiler_name} is not supported")
-            exit(-15)
-
-        ret = self.std_version in acceptable_versions[compiler_type.value]
+        ret = self.std_version in acceptable_versions[self.internal_compiler.type.value]
 
         if not ret:
-            FORMAT_PRINT(f"Std version: {self.std_version} not supported, choose one of these {acceptable_versions[compiler_type.value]}")
+            FORMAT_PRINT(f"Std version: {self.std_version} not supported, choose one of these {acceptable_versions[self.internal_compiler.type.value]}")
 
     def set_executables_to_run(self, executable_names):
         executable_map = {}
@@ -73,8 +66,6 @@ class Project:
         FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
-        self.internal_compiler = Compiler(self.compiler_name, self.std_version)
-
         for dependency_string in self.dependencies:
             UP_LEVEL()
 
@@ -104,6 +95,7 @@ class Project:
         for dependency_string in project_dependency_strings:
             if not dependency_string:
                 continue
+
             self.dependencies.append(dependency_string)
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):

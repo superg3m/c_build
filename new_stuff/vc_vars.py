@@ -60,8 +60,6 @@ def generate_vars_file_cache():
         for line in lines_to_write:
             generated_file.write(line + "\n")
 
-
-
 def set_vs_vars_from_file():
     if is_cl_in_path():
         return ""

@@ -3,7 +3,6 @@ from typing import Dict
 
 import constants
 from constants import *
-from vc_vars import *
 from globals import FATAL_PRINT, NORMAL_PRINT, FORMAT_PRINT, build_static_lib
 
 std_version_default = "c11"
@@ -24,8 +23,6 @@ class Compiler:
         temp = CompilerType.INVALID
         if self.name == "cl":
             temp = CompilerType.CL
-            generate_vars_file_cache()
-            set_vs_vars_from_file()
         elif self.name in ["gcc", "cc", "clang"]:
             temp = CompilerType.GCC_CC_CLANG
         else:
@@ -67,8 +64,6 @@ class Compiler:
         for define in compile_time_defines:
             if define:
                 self.compiler_command.append(f"{compile_time_define_flag}{define}")
-
-
 
     def compile_procedure(self, procedure, is_debug = False):
         for source in procedure.source_files:
