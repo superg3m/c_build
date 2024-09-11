@@ -3,7 +3,7 @@ import subprocess
 import time
 from typing import List, Set
 
-file_name: str = "./c_build_cl_vars_cache.txt"
+file_name: str = "./c-build/new_stuff/c_build_cl_vars_cache.txt"
 
 def find_vs_path() -> str:
     vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -34,7 +34,7 @@ def get_vs_environment():
 
     command = f'cmd.exe /c set'
     result = subprocess.run(command, capture_output=True, text=True, shell=True)
-    original_set = set(result.stdout.splitlines());
+    original_set = set(result.stdout.splitlines())
 
     vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
     command = f'cmd.exe /c "call \"{vcvarsall_path}\" x64 > nul && set"'
