@@ -93,6 +93,7 @@ class Compiler:
             self.compiler_command.append(report_full_path_flag)
 
         # Add object flag
+        print(f"====================================== {procedure.should_build_static_lib} ============================================")
         if procedure.should_build_static_lib:
             self.__set_action(CompilerAction.OBJECTS_ONLY)
             object_flag = self.__get_compiler_lookup()
