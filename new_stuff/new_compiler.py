@@ -176,7 +176,7 @@ class Compiler:
             FORMAT_PRINT(f"{self.compiler_command}")
 
             if procedure.should_build_static_lib:
-                if build_static_lib(procedure.compiler_type, procedure.output_name, procedure.additional_libs):
+                if build_static_lib(self.name, procedure.output_name, procedure.additional_libs):
                     FATAL_PRINT(f"FAILED TO COMPILE LIB: {procedure.output_name}")
                     error_occurred = True
             elif return_code:
