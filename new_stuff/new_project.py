@@ -4,9 +4,7 @@ import time
 from typing import List, Dict
 from new_compiler import Compiler
 from new_procedure import Procedure
-from globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL
-from scripts.globals import DOWN_LEVEL
-
+from globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
 
 class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
