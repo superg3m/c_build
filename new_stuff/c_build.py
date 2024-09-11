@@ -1,5 +1,7 @@
+import sys
+sys.path.append("")
+
 from new_project import *
-from constants import *
 
 COMPILER = "cl"
 project = Project("CKIT", COMPILER)
@@ -27,10 +29,10 @@ test_procedure.set_compile_time_defines([""])
 test_procedure.set_include_paths([""])
 test_procedure.set_source_files(["../*.c"], True)
 test_procedure.set_additional_libs([""])
-project.internal_compiler.compile_procedure(test_procedure)
 # -------------------------------------------------------------------------------------
 
 project.set_executables_to_run(["test.exe"])
+project.build()
 # project.compile_procedures() this needs to happen utilize the fact that you know how many procedures are in the project
 
 # vc vars cache

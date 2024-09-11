@@ -1,10 +1,7 @@
 import os
-from distutils.command.build import build
 from typing import List, Dict
-
 from new_compiler import Compiler
 from new_procedure import Procedure
-from new_stuff.constants import CompilerAction
 from scripts.globals import FATAL_PRINT, FORMAT_PRINT
 
 class Project:
@@ -57,6 +54,12 @@ class Project:
             exit(-15)
 
         return proc
+
+    def build(self):
+        # dependency_builder
+
+        for proc in self.procedures:
+            self.internal_compiler.compile_procedure(proc)
 
     def inject_as_argument(self, arg):
         self.internal_compiler.compiler_command.append(arg)
