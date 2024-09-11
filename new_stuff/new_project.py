@@ -4,7 +4,9 @@ import time
 from typing import List, Dict
 from new_compiler import Compiler
 from new_procedure import Procedure
-from globals import FATAL_PRINT, FORMAT_PRINT
+from globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL
+from scripts.globals import DOWN_LEVEL
+
 
 class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
@@ -13,7 +15,7 @@ class Project:
 
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
-        print(f"|----------------------------------------- Start -----------------------------------------|")
+        FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
         self.start_time = time.perf_counter()
         self.internal_compiler: Compiler = Compiler(compiler_name, std_version)
         self.should_debug_with_visual_studio = False
@@ -65,7 +67,7 @@ class Project:
 
         end_time = time.perf_counter()
         elapsed_time = end_time - self.start_time
-        print(f"|----------------------------- Time elapsed: {elapsed_time:.2f} seconds -----------------------------|")
+        FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def inject_as_argument(self, arg):
         self.internal_compiler.compiler_command.append(arg)
@@ -75,6 +77,8 @@ class Project:
             if not dependency_string:
                 continue
 
+            UP_LEVEL()
+
             if not os.path.isdir(dependency_string):
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone {self.github_root}/{dependency_string}.git")
@@ -83,6 +87,8 @@ class Project:
             os.chdir(dependency_string)
             subprocess.call(f"c_build.py {self.compiler_name}", shell=True)
             os.chdir(cached_current_directory_global)
+
+            DOWN_LEVEL()
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
         self.should_rebuild_project_dependencies = should_rebuild_project_dependencies
