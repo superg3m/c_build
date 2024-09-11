@@ -14,7 +14,7 @@ class Project:
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
 
-        self.internal_compiler: Compiler = None
+        self.internal_compiler: Compiler|None = None
         self.should_debug_with_visual_studio = False
         self.should_rebuild_project_dependencies = False
         self.dependencies: List[str] = []
