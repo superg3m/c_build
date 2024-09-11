@@ -1,5 +1,5 @@
 import sys
-from ..new_project.new_stuff import *
+from new_project.new_stuff import *
 
 from enum import Enum
 class Arg(Enum):
