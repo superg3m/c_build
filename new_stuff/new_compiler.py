@@ -96,6 +96,7 @@ class Compiler:
         if procedure.should_build_static_lib:
             self.__set_action(CompilerAction.OBJECTS_ONLY)
             object_flag = self.__get_compiler_lookup()
+            print(f"====================================== {object_flag} ============================================")
             self.compiler_command.append(object_flag)
         else:
             if procedure.should_build_dynamic_lib:
@@ -116,6 +117,7 @@ class Compiler:
         multi_threading_flag = self.__get_compiler_lookup()
         if multi_threading_flag:
             self.compiler_command.append(multi_threading_flag)
+
 
         # Add optimization flag
         if is_debug:
