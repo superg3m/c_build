@@ -186,5 +186,7 @@ class Compiler:
                 FORMAT_PRINT(f"Compilation of {procedure.output_name} successful")
 
             return_code = result.returncode
+            self.compiler_command = [self.name]
         finally:
             os.chdir(cached_current_directory)
+            self.compiler_command = [self.name]
