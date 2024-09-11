@@ -53,8 +53,7 @@ class Project:
         self.procedures.append(proc)
 
         if not os.path.exists(build_directory):
-            FATAL_PRINT(f"Can't find path at {build_directory}")
-            exit(-15)
+            os.mkdir(build_directory)
 
         return proc
 
