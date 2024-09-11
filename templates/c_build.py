@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../new_stuff")
+sys.path.append("./c-build/new_stuff")
 from new_project import *
 
 from enum import Enum
