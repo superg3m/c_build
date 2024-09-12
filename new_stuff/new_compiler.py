@@ -155,14 +155,11 @@ class Compiler:
 
         cached_current_directory = os.getcwd()
         error_occurred = False
-
         try:
             if not os.path.exists(procedure.build_directory):
                 os.mkdir(procedure.build_directory)
             os.chdir(procedure.build_directory)
             result = subprocess.run(self.compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-            result.returncode
 
             for line in result.stdout.splitlines():
                 NORMAL_PRINT(line.strip())
