@@ -3,8 +3,8 @@ if ($PSVersionTable.Platform -eq "Unix") {
     Set-Alias python python3
 }
 
-$directoryPath = "./c-build"
-$repositoryUrl = "https://github.com/superg3m/c-build.git"
+$directoryPath = "./c_build"
+$repositoryUrl = "https://github.com/superg3m/c_build.git"
 
 if (-not (Test-Path -Path $directoryPath)) {
     Write-Output "Directory does not exist. Cloning the repository..."
