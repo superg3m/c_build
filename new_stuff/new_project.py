@@ -86,7 +86,7 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            os.environ['level'] = str(GET_LEVEL)
+            os.environ['level'] = str(GET_LEVEL())
             if 'level' in os.environ:
                 print(os.environ["level"])
             subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type}", shell=True)
