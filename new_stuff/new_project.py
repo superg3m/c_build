@@ -74,17 +74,15 @@ class Project:
         for dependency_string in self.dependencies:
             if not dependency_string:
                 continue
-                
-            UP_LEVEL()
-            FORMAT_PRINT(f"|----------------------------------------- {dependency_string} -----------------------------------------|")
 
+            UP_LEVEL()
             if not os.path.isdir(dependency_string):
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone {self.github_root}/{dependency_string}.git")
+                os.system(f"pwsh -command ./bootstrap.ps1")
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            os.system(f"pwsh -command ./bootstrap.ps1")
             subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type}", shell=True)
             os.chdir(cached_current_directory_global)
 
