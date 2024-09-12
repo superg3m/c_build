@@ -71,6 +71,7 @@ class Project:
             vcvars()
 
         if len(self.dependencies) != 0 and self.dependencies[0] != "":
+            print(f"WHAT THE HECK {self.dependencies[0] == ''}")
             FORMAT_PRINT(f"{self.name} depends on:")
 
         for dependency_string in self.dependencies:
