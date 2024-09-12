@@ -1,6 +1,6 @@
 import sys
-from c_build.new_stuff.new_project import *
-from c_build.new_stuff.new_procedure import *
+from c_build_script.new_stuff.new_project import *
+from c_build_script.new_stuff.new_procedure import *
 
 from enum import Enum
 class Arg(Enum):
