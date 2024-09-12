@@ -18,6 +18,7 @@ class Procedure:
     def __resolve_source_glob(self, maybe_source_glob: str, is_recursive: bool) -> List[str]:
         resolved_files = []
 
+        print(f"============================={maybe_source_glob}")
         if '*.c' in maybe_source_glob:
             source_dir = os.path.dirname(maybe_source_glob) or "."
             current_directory = os.getcwd()
