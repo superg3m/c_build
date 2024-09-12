@@ -12,7 +12,7 @@ build_type = args.build_type
 
 if 'level' in os.environ:
 	SET_LEVEL(int(os.environ["level"]))
-	print(GET_LEVEL())
+	print(f"level: {GET_LEVEL()}")
 # --------------------------------------------------------------------------------------
 
 COMPILER = args.compiler or "cl"
