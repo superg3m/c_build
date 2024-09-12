@@ -81,7 +81,10 @@ class Project:
             if not os.path.isdir(dependency_string):
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone {self.github_root}/{dependency_string}.git")
+                cached_current_directory_global = os.getcwd()
+                os.chdir(dependency_string)
                 os.system(f"pwsh -command ./bootstrap.ps1")
+                os.chdir(cached_current_directory_global)
             else:
                 GIT_PULL(dependency_string)
 
