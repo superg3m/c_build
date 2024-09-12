@@ -5,7 +5,7 @@ import time
 from typing import List, Dict
 from .new_compiler import Compiler
 from .new_procedure import Procedure
-from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL
+from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL, GIT_PULL
 from .vc_vars import vcvars
 
 class Project:
@@ -83,6 +83,8 @@ class Project:
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone {self.github_root}/{dependency_string}.git")
                 os.system(f"pwsh -command ./bootstrap.ps1")
+            else:
+                GIT_PULL(dependency_string)
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
