@@ -5,14 +5,13 @@ import time
 from typing import List, Dict
 from .new_compiler import Compiler
 from .new_procedure import Procedure
-from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL, GIT_PULL
+from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL, GIT_PULL, NORMAL_PRINT
 from .vc_vars import vcvars
 
 class Project:
-    def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
+    def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m", is_dependency = False):
         self.name: str = name
         self.std_version: str = std_version
-
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
@@ -21,9 +20,12 @@ class Project:
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
+        self.is_dependency: bool = is_dependency
 
         self.__assert_std_is_valid()
 
+    def __check_procedure_built(self, proc):
+        return os.path.exists(os.path.join(proc.build_directory, proc.output_name))
 
     def __assert_std_is_valid(self):
         acceptable_versions: Dict[int, List[str]] = {
@@ -92,7 +94,7 @@ class Project:
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
             GIT_PULL("c_build")
-            subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type} --level {GET_LEVEL()}", shell=True)
+            subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type} --level {GET_LEVEL()} --is_dependency {True}", shell=True)
             os.chdir(cached_current_directory_global)
 
             DOWN_LEVEL()
@@ -100,6 +102,9 @@ class Project:
         os.chdir(true_cached)
 
         for proc in self.procedures:
+            if self.__check_procedure_built and not self.is_dependency:
+                NORMAL_PRINT(f"Already built procedure: {proc.output_name}, skipping...")
+                continue
             self.internal_compiler.compile_procedure(proc, is_debug)
 
 
