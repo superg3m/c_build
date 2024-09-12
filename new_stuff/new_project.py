@@ -5,7 +5,7 @@ import time
 from typing import List, Dict
 from .new_compiler import Compiler
 from .new_procedure import Procedure
-from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
+from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, level
 from .vc_vars import vcvars
 
 class Project:
@@ -70,7 +70,7 @@ class Project:
         if self.compiler_name == "cl":
             vcvars()
 
-        if len(self.dependencies) != 0 or self.dependencies[0] == "":
+        if len(self.dependencies) != 0 or (len(self.dependencies) == 1 and self.dependencies[0] == ""):
             FORMAT_PRINT(f"{self.name} depends on:")
 
         for dependency_string in self.dependencies:
@@ -85,6 +85,7 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
+            os.environ['level'] = level
             subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type}", shell=True)
             os.chdir(cached_current_directory_global)
 
