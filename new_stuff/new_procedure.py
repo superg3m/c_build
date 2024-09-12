@@ -18,7 +18,6 @@ class Procedure:
     def __resolve_source_glob(self, maybe_source_glob: str, is_recursive: bool) -> List[str]:
         resolved_files = []
 
-        print(f"============================={maybe_source_glob}")
         if '*.c' in maybe_source_glob:
             source_dir = os.path.dirname(maybe_source_glob) or "."
             current_directory = os.getcwd()
@@ -34,6 +33,7 @@ class Procedure:
                                 relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\", "/")
                                 resolved_files.append(relative_path)
                 else:
+                    print(f"============================={maybe_source_glob}")
                     for file in os.listdir(os.getcwd()):
                         if file.endswith('.c'):
                             relative_path = os.path.relpath(os.path.join(source_dir, file)).replace("\\", "/")
