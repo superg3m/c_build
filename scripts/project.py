@@ -96,10 +96,10 @@ class Project:
         else:
             GIT_PULL(dependency.name)
 
-        if not os.path.exists("c-build"):
-            os.system("git clone https://github.com/superg3m/c-build.git")
+        if not os.path.exists("c_build"):
+            os.system("git clone https://github.com/superg3m/c_build.git")
         else:
-            GIT_PULL("c-build")
+            GIT_PULL("c_build")
 
         cached_current_directory_global = os.getcwd()
         os.chdir(dependency.name)

@@ -1,4 +1,4 @@
-Push-Location  "./c-build"
+Push-Location  "./c_build"
 git fetch origin -q
 git reset --hard origin/main -q
 git pull -q
@@ -6,7 +6,7 @@ Pop-Location
 
 ###################################################
 
-Push-Location "./c-build"
+Push-Location "./c_build"
 $templatesDir = "./templates"
 $resolvedTemplatesDir = "../"
 
@@ -32,4 +32,4 @@ foreach ($templateFile in $templateFiles) {
 }
 Pop-Location
 
-Write-Host "C-Build bootstrap is complete!" -ForegroundColor Green
+Write-Host "c_build bootstrap is complete!" -ForegroundColor Green
