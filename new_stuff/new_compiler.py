@@ -155,13 +155,14 @@ class Compiler:
 
         cached_current_directory = os.getcwd()
         error_occurred = False
-        return_code = 0
 
         try:
             if not os.path.exists(procedure.build_directory):
                 os.mkdir(procedure.build_directory)
             os.chdir(procedure.build_directory)
             result = subprocess.run(self.compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+            result.returncode
 
             for line in result.stdout.splitlines():
                 NORMAL_PRINT(line.strip())
@@ -175,13 +176,10 @@ class Compiler:
                 if build_static_lib(self.name, procedure.output_name, procedure.additional_libs):
                     FATAL_PRINT(f"FAILED TO COMPILE LIB: {procedure.output_name}")
                     error_occurred = True
-            elif return_code:
+            elif result.returncode:
                 FATAL_PRINT("FAILED TO COMPILE!")
                 error_occurred = True
-            else:
-                FORMAT_PRINT(f"Compilation of {procedure.output_name} successful")
 
-            return_code = result.returncode
             self.compiler_command = [self.name]
         finally:
             os.chdir(cached_current_directory)
