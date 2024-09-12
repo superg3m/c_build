@@ -35,7 +35,7 @@ class Compiler:
         self.action = action
 
     def set_warning_level(self, warning_level_string):
-        if not warning_level_string and self.type == CompilerType.GCC_CC_CLANG:
+        if not warning_level_string and self.type == CompilerType.CL:
             return
 
         self.__set_action(CompilerAction.WARNING_LEVEL)
