@@ -1,6 +1,6 @@
-# c-build
+# c_build
 
-`c-build` is a tool designed to easily and quickly build C projects and their dependencies. 
+`c_build` is a tool designed to easily and quickly build C projects and their dependencies. 
 It allows you to build C dependencies, such as libraries, that you have created.
 The project is moving towards using CMake for better organization and cross-platform support.
 
@@ -12,7 +12,7 @@ The project is moving towards using CMake for better organization and cross-plat
 
 ## Features
 - Searches for all elements in the current directory of the project.
-- Checks for the presence of `c_build_config.json` to identify project dependencies.
+- Checks for the presence of `c_build.py` to identify project dependencies.
 - Supports building dependencies specified in the configuration file.
 - Provides scripts for bootstrapping, building, running, debugging, and cleaning the project.
 
