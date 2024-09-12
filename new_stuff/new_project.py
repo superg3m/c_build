@@ -79,7 +79,7 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            subprocess.call(f"./bootstrap.ps1", shell=True)
+            os.system(f"pwsh -command ./bootstrap.ps1")
             subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type}", shell=True)
             os.chdir(cached_current_directory_global)
 
