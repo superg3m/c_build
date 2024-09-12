@@ -28,24 +28,35 @@ elif COMPILER in ["gcc", "cc", "clang"]:
 project.set_treat_warnings_as_errors(True)
 project.set_debug_with_visual_studio(True)
 project.set_rebuild_project_dependencies(True)
-# If project.set_rebuild_project_dependencies is set to (False)
-# then by default it will look at the source files and check if they have been modified since the cache
 
 project.set_project_dependencies([""])
 # -------------------------------------------------------------------------------------
-ckg_lib_procedure = project.add_procedure(f"./build_{COMPILER}")
-ckg_lib_procedure.set_output_name("something.lib")
-ckg_lib_procedure.set_compile_time_defines([""])
-ckg_lib_procedure.set_include_paths([""])
-ckg_lib_procedure.set_source_files(["../ckg.c"])
-ckg_lib_procedure.set_additional_libs([""])
-# -------------------------------------------------------------------------------------
-ckg_test_procedure = project.add_procedure(f"./example/{COMPILER}")
-ckg_test_procedure.set_output_name("something.exe")
-ckg_test_procedure.set_compile_time_defines([""])
-ckg_test_procedure.set_include_paths([""])
-ckg_test_procedure.set_source_files(["../*.c"])
-ckg_test_procedure.set_additional_libs([f"../../build_{COMPILER}/something.lib"])
+procedures = {
+    "something_lib": {
+        "build_directory": f"./build_{COMPILER}",
+        "output_name": "ckit.lib" if COMPILER == "cl" else "libckit.a",
+        "source_files": ["../ckg/ckg.c", "../ckit.c"],
+        "additional_libs": [] if COMPILER == "cl" else ["-lUser32", "-lGDI32"],
+        "compile_time_defines": [],
+        "include_paths": [],
+    },
+    "something_test": {
+        "build_directory": f"./Tests/CoreTest/build_{COMPILER}",
+        "output_name": "ckit_test.exe" if COMPILER == "cl" else "ckit_test",
+        "source_files": ["../*.c"],
+        "additional_libs": [f"../../../build_{COMPILER}/ckit.lib" if COMPILER == "cl" else f"../../../build_{COMPILER}/libckit.a"],
+        "compile_time_defines": [],
+        "include_paths": [],
+    },
+}
+
+for procedure_name, procedure_data in procedures.items():
+	procedure = project.add_procedure(procedure_data["build_directory"])
+	procedure.set_output_name(procedure_data["output_name"])
+	procedure.set_source_files(procedure_data["source_files"])
+	procedure.set_include_paths(procedure_data["include_paths"])
+	procedure.set_compile_time_defines(procedure_data["compile_time_defines"])
+	procedure.set_additional_libs(procedure_data["additional_libs"])
 # -------------------------------------------------------------------------------------
 project.set_executables_to_run(["test_ckg.exe"])
 project.build(build_type)

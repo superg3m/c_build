@@ -146,12 +146,11 @@ class Compiler:
             #if flag:
                 #self.compiler_command.append(flag)
 
-        if not procedure.should_build_static_lib:
-            if len(procedure.additional_libs) > 0 and procedure.additional_libs[0] and self.type == CompilerType.CL:
-                self.compiler_command.append("/link")
-            for lib in procedure.additional_libs:
-                if lib:
-                    self.compiler_command.append(lib)
+        if len(procedure.additional_libs) > 0 and procedure.additional_libs[0] and self.type == CompilerType.CL:
+            self.compiler_command.append("/link")
+        for lib in procedure.additional_libs:
+            if lib:
+                self.compiler_command.append(lib)
 
         cached_current_directory_1 = os.getcwd()
         error_occurred = False

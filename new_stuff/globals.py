@@ -99,10 +99,6 @@ def build_static_lib(compiler_name, output_name, additional_libs):
             output_name,
         ] + object_files
 
-    for lib in additional_libs:
-        if lib:
-            lib_command.append(lib)
-
     error_occurred = False
     try:
         # Check if the lib/ar command exists
