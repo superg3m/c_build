@@ -94,8 +94,8 @@ def build_static_lib(compiler_name, output_name, additional_libs):
         ] + object_files
     elif compiler_name in ["gcc", "cc", "clang"] and sys.platform == 'darwin':
         lib_command = [
-            "ar",
-            "-r -o",
+            "libtool",
+            "-static -o",
             output_name,
         ] + object_files
     else:
