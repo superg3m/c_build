@@ -153,7 +153,7 @@ class Compiler:
                 if lib:
                     self.compiler_command.append(lib)
 
-        cached_current_directory = os.getcwd()
+        cached_current_directory_1 = os.getcwd()
         error_occurred = False
         try:
             if not os.path.exists(procedure.build_directory):
@@ -178,6 +178,7 @@ class Compiler:
                 error_occurred = True
 
             self.compiler_command = [self.name]
+            os.chdir(cached_current_directory_1)
         finally:
-            os.chdir(cached_current_directory)
+            os.chdir(cached_current_directory_1)
             self.compiler_command = [self.name]
