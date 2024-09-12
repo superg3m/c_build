@@ -114,9 +114,10 @@ class Compiler:
         # Add optimization flag
         if is_debug:
             # Add address sanitizer flag
-            self.__set_action(CompilerAction.ADDRESS_SANITIZER)
-            address_sanitizer_flag = self.__get_compiler_lookup()
-            self.compiler_command.append(address_sanitizer_flag)
+            if os.name != 'nt':
+                self.__set_action(CompilerAction.ADDRESS_SANITIZER)
+                address_sanitizer_flag = self.__get_compiler_lookup()
+                self.compiler_command.append(address_sanitizer_flag)
 
             if self.type == CompilerType.CL:
                 self.compiler_command.append("/Od")
