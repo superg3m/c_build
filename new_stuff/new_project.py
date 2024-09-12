@@ -64,14 +64,16 @@ class Project:
     def build(self, build_type):
         is_debug = build_type == "debug"
 
-        FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
+        FORMAT_PRINT(f"|----------------------------------------- {self.name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
         if self.compiler_name == "cl":
             vcvars()
 
+        FORMAT_PRINT(f"{self.name} depends on:")
         for dependency_string in self.dependencies:
             UP_LEVEL()
+            FORMAT_PRINT(f"|----------------------------------------- {dependency_string} -----------------------------------------|")
 
             if not os.path.isdir(dependency_string):
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
