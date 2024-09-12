@@ -73,6 +73,7 @@ class Project:
         if len(self.dependencies) != 0 and self.dependencies[0] != "":
             FORMAT_PRINT(f"{self.name} depends on:")
 
+        true_cached = os.getcwd()
         for dependency_string in self.dependencies:
             if not dependency_string:
                 continue
@@ -81,10 +82,10 @@ class Project:
             if not os.path.isdir(dependency_string):
                 FORMAT_PRINT(f"missing {dependency_string} cloning...")
                 os.system(f"git clone {self.github_root}/{dependency_string}.git")
-                cached_current_directory_global = os.getcwd()
+                cached_directory_global = os.getcwd()
                 os.chdir(dependency_string)
                 os.system(f"pwsh -command ./bootstrap.ps1")
-                os.chdir(cached_current_directory_global)
+                os.chdir(cached_directory_global)
             else:
                 GIT_PULL(dependency_string)
 
@@ -96,6 +97,8 @@ class Project:
 
             DOWN_LEVEL()
 
+        os.chdir(true_cached)
+        
         for proc in self.procedures:
             self.internal_compiler.compile_procedure(proc, is_debug)
 
