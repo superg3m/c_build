@@ -12,7 +12,7 @@ git pull -q
 Pop-Location
 
 if ($args[0] -eq "-debug") {
-    python -m c_build.build
+    python -m c_build
 } else {
-    python -m c_build.build
+    python -m c_build
 }
