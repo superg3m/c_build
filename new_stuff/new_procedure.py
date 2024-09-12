@@ -37,7 +37,7 @@ class Procedure:
                     for file in os.listdir(os.getcwd()):
                         if file.endswith('.c'):
                             print(f"============================={maybe_source_glob}")
-                            relative_path = os.path.relpath(os.path.join(source_dir, file)).replace("\\", "/")
+                            relative_path = os.path.relpath(os.path.join(self.build_directory, file)).replace("\\", "/")
                             print(f"============================={relative_path}")
                             resolved_files.append(relative_path)
             finally:
