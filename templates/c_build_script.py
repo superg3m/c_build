@@ -1,12 +1,7 @@
-import sys
 from c_build.new_stuff.new_project import *
 from c_build.new_stuff.new_procedure import *
 
-from enum import Enum
-class Arg(Enum):
-	COMPILER_ARG = 2
-
-COMPILER = sys.argv[Arg.COMPILER_ARG.value] if len(sys.argv) > 1 else "cl"
+COMPILER = "cl"
 project = Project("CKIT", COMPILER)
 
 # Do different things depending on the platform
