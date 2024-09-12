@@ -70,7 +70,7 @@ class Project:
         if self.compiler_name == "cl":
             vcvars()
 
-        if len(self.dependencies) != 0 or self.dependencies[0] != "":
+        if len(self.dependencies) != 0 or self.dependencies[0] == "":
             FORMAT_PRINT(f"{self.name} depends on:")
 
         for dependency_string in self.dependencies:
