@@ -72,58 +72,6 @@ def IS_WINDOWS_PROCESS_RUNNING(process_name):
     else:
         return False
 
-
-def find_vs_path():
-    vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-    result = subprocess.run(
-        [vswhere_path, "-latest", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property",
-         "installationPath"], capture_output=True, text=True)
-
-    if result.returncode == 0:
-        return result.stdout.strip()
-    else:
-        FORMAT_PRINT("Could not find Visual Studio installation path.")
-        return None
-
-
-def is_cl_in_path():
-    for path in os.environ.get("PATH", "").split(os.pathsep):
-        if os.path.isfile(os.path.join(path, "cl.exe")) and os.path.isfile(os.path.join(path, "lib.exe")):
-            return True
-    return False
-
-
-def set_vs_environment():
-    if is_cl_in_path():
-        return
-
-    vs_path = find_vs_path()
-    if not vs_path:
-        FATAL_PRINT("Visual Studio not found.")
-        return
-
-    vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
-
-    # Command to capture environment variables
-    command = f'cmd.exe /c "call \"{vcvarsall_path}\" x64 > nul && set"'
-
-    # Run the command and capture the output
-    result = subprocess.run(command, capture_output=True, text=True, shell=True)
-
-    if result.returncode != 0:
-        FATAL_PRINT("Failed to set Visual Studio environment.")
-        return
-
-    # Read the environment variables from the output
-    lines = result.stdout.splitlines()
-
-    # Set the environment variables in the current process
-    for line in lines:
-        if "=" in line:
-            name, value = line.strip().split("=", 1)
-            os.environ[name] = value
-
-
 def build_static_lib(compiler_name, output_name, additional_libs):
     lib_command: List[str] = []
 

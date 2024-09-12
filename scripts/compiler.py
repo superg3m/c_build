@@ -6,7 +6,6 @@ from typing import List, Union, Dict
 from procedure import Procedure
 from globals import FORMAT_PRINT, set_vs_environment, NORMAL_PRINT, FATAL_PRINT, build_static_lib
 
-
 class CompilerType(Enum):
     INVALID = -1
     CL = 0

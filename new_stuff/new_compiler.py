@@ -1,8 +1,7 @@
 import os
 import subprocess
-import constants
-from constants import *
-from globals import FATAL_PRINT, NORMAL_PRINT, FORMAT_PRINT, build_static_lib
+from .constants import *
+from .globals import FATAL_PRINT, NORMAL_PRINT, FORMAT_PRINT, build_static_lib
 
 std_version_default = "c11"
 
@@ -33,7 +32,7 @@ class Compiler:
         if self.action == CompilerAction.NO_ACTION:
             FATAL_PRINT(f"Compiler No Action")
             exit(-15)
-        return constants.compiler_lookup_table[self.type.value][self.action.value]
+        return compiler_lookup_table[self.type.value][self.action.value]
 
     def __set_action(self, action: CompilerAction):
         self.action = action

@@ -3,7 +3,7 @@ import subprocess
 import time
 from typing import List, Set
 
-file_name: str = "./c-build/new_stuff/c_build_cl_vars_cache.txt"
+file_name: str = "./c_build_cl_vars_cache.txt"
 
 def find_vs_path() -> str:
     vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -30,7 +30,6 @@ def get_vs_environment():
     if not vs_path:
         # FATAL_PRINT("Visual Studio not found.")
         exit(-1)
-        return ""
 
     command = f'cmd.exe /c set'
     result = subprocess.run(command, capture_output=True, text=True, shell=True)
@@ -44,7 +43,6 @@ def get_vs_environment():
     if result.returncode != 0:
         #FATAL_PRINT("Failed to set Visual Studio environment.")
         exit(-12)
-        return ""
 
     return_set = new_set.difference(original_set)
 
@@ -60,10 +58,11 @@ def generate_vars_file_cache():
         for line in lines_to_write:
             generated_file.write(line + "\n")
 
-def set_vs_vars_from_file():
+def vcvars():
     if is_cl_in_path():
         return ""
 
+    generate_vars_file_cache()
     with open(file_name, "r") as file:
         for line in file.readlines():
             if "=" in line:
@@ -71,10 +70,10 @@ def set_vs_vars_from_file():
                 os.environ[name] = value
 
 if __name__ == "__main__":
+    print(f"|------------------------------- Start -------------------------------|")
     start_time = time.perf_counter()
-    generate_vars_file_cache()
-    set_vs_vars_from_file()
+    vcvars()
     os.system("cl")
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
-    print(f"|--------------- Time elapsed: {elapsed_time:.2f} seconds ---------------|")
+    print(f"|--------------------- Time elapsed: {elapsed_time:.2f} seconds ---------------------|")

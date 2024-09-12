@@ -1,5 +1,6 @@
 import sys
-from new_project.new_stuff import *
+from c_build.new_stuff.new_project import *
+from c_build.new_stuff.new_procedure import *
 
 from enum import Enum
 class Arg(Enum):
@@ -24,12 +25,12 @@ project.set_rebuild_project_dependencies(True)
 project.set_project_dependencies([""])
 # -------------------------------------------------------------------------------------
 
-test_procedure = project.add_procedure("")
+test_procedure = project.add_procedure(f"build_{COMPILER}")
 test_procedure.set_output_name("test.exe")
 
 test_procedure.set_compile_time_defines([""])
 test_procedure.set_include_paths([""])
-test_procedure.set_source_files(["../*.c"], False)
+test_procedure.set_source_files(["../new_stuff/CODE/*.c"], False)
 test_procedure.set_additional_libs([""])
 # -------------------------------------------------------------------------------------
 

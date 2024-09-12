@@ -1,11 +1,13 @@
 import os
 import subprocess
 import time
+
 from typing import List, Dict
-from new_compiler import Compiler
-from new_procedure import Procedure
-from globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
-from vc_vars import *
+from .new_compiler import Compiler
+from .new_procedure import Procedure
+from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL
+from .vc_vars import vcvars
+
 
 class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
@@ -53,6 +55,9 @@ class Project:
         self.procedures.append(proc)
 
         if not os.path.exists(build_directory):
+            if not build_directory:
+                FATAL_PRINT(f"build_directory is empty on a procedure")
+                exit(-5)
             os.mkdir(build_directory)
 
         return proc
@@ -62,8 +67,7 @@ class Project:
         UP_LEVEL()
         start_time = time.perf_counter()
         if self.compiler_name == "cl":
-            generate_vars_file_cache()
-            set_vs_vars_from_file()
+            vcvars()
 
         for dependency_string in self.dependencies:
             UP_LEVEL()
