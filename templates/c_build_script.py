@@ -9,7 +9,6 @@ parser.add_argument('--build_type', type=str, help='Build type (e.g. debug, rele
 parser.add_argument('--depth', type=str, help='depth (e.g. 1, 2, 4)')
 args = parser.parse_args()
 build_type = args.build_type
-depth = args.depth
 
 if args.depth:
 	SET_LEVEL(int(args.depth))
