@@ -31,7 +31,7 @@ class Procedure:
                     for root, _, files in os.walk(os.getcwd()):
                         for file in files:
                             if file.endswith('.c'):
-                                relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\", "/")
+                                relative_path = source_dir + "/" + os.path.join(root, file).replace("\\", "/")
                                 resolved_files.append(relative_path)
                 else:
 
