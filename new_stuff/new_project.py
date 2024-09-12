@@ -98,9 +98,13 @@ class Project:
             DOWN_LEVEL()
 
         os.chdir(true_cached)
-        
+
         for proc in self.procedures:
+            cached_dir = os.getcwd()
+            os.chdir(proc.build_directory)
             self.internal_compiler.compile_procedure(proc, is_debug)
+            os.chdir(cached_dir)
+
 
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
