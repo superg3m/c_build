@@ -11,9 +11,6 @@ class Compiler:
         self.std_version = std_version
         self.should_debug_with_visual_studio = False
         self.should_rebuild_project_dependencies = False
-        self.should_rebuild_project_dependencies = False
-        self.should_rebuild_project_dependencies = False
-        self.should_rebuild_project_dependencies = False
         self.type = self.__choose_compiler_type()
         self.compiler_command = [self.name]
 
@@ -38,7 +35,7 @@ class Compiler:
         self.action = action
 
     def set_warning_level(self, warning_level_string):
-        if not warning_level_string:
+        if not warning_level_string and self.type == CompilerType.CL:
             return
 
         self.__set_action(CompilerAction.WARNING_LEVEL)
