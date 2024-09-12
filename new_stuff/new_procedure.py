@@ -20,7 +20,6 @@ class Procedure:
 
         if '*.c' in maybe_source_glob:
             source_dir = os.path.dirname(maybe_source_glob) or "."
-            print(f"============================={source_dir}")
             current_directory = os.getcwd()
 
             try:
@@ -37,9 +36,7 @@ class Procedure:
 
                     for file in os.listdir(os.getcwd()):
                         if file.endswith('.c'):
-                            print(f"============================={maybe_source_glob}")
                             relative_path = os.path.join(source_dir, file).replace("\\", "/")
-                            print(f"============================={relative_path}")
                             resolved_files.append(relative_path)
             finally:
                 os.chdir(current_directory)
