@@ -1,7 +1,12 @@
+import argparse
 from c_build.new_stuff.new_project import *
-from c_build.new_stuff.new_procedure import *
 
-COMPILER = "cl"
+parser = argparse.ArgumentParser(description='c_build_script')
+parser.add_argument('--compiler', type=str, help='Compiler to use (e.g. gcc, clang)')
+parser.add_argument('--build_type', type=str, help='Build type (e.g. debug, release)')
+args = parser.parse_args()
+
+COMPILER = args.compiler or "cl"
 project = Project("CKIT", COMPILER)
 
 # Do different things depending on the platform
@@ -30,4 +35,4 @@ test_procedure.set_additional_libs([""])
 # -------------------------------------------------------------------------------------
 
 project.set_executables_to_run(["test.exe"])
-project.build()
+project.build(args.build_type)

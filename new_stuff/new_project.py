@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+from distutils.command.build import build
 
 from typing import List, Dict
 from .new_compiler import Compiler
@@ -62,7 +63,9 @@ class Project:
 
         return proc
 
-    def build(self):
+    def build(self, build_type):
+        is_debug = build_type == "debug"
+
         FORMAT_PRINT(f"|----------------------------------------- Start -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
@@ -78,13 +81,13 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            subprocess.call(f"python c_build.py {self.compiler_name}", shell=True)
+            subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type}", shell=True)
             os.chdir(cached_current_directory_global)
 
             DOWN_LEVEL()
 
         for proc in self.procedures:
-            self.internal_compiler.compile_procedure(proc)
+            self.internal_compiler.compile_procedure(proc, is_debug)
 
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
