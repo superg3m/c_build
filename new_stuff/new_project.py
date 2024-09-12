@@ -72,6 +72,9 @@ class Project:
 
         FORMAT_PRINT(f"{self.name} depends on:")
         for dependency_string in self.dependencies:
+            if not dependency_string:
+                continue
+                
             UP_LEVEL()
             FORMAT_PRINT(f"|----------------------------------------- {dependency_string} -----------------------------------------|")
 
