@@ -1,6 +1,8 @@
 -- Constants and enums equivalent
 local INFO_MODE = nil
 
+local utility = loadfile("./utility.lua")()
+
 CompilerType = {
     INVALID = 0,
     CL = 1,
@@ -23,67 +25,69 @@ CompilerAction = {
 }
 
 COMPILER_LOOKUP_TABLE = {
-        [CompilerType.CL] = {
-            [CompilerAction.WARNING_LEVEL] = "/W",             -- Warning level flag for cl
-            [CompilerAction.DISABLE_SPECIFIC_WARNING] = "/wd", -- Disable specific warning flag for cl
-            [CompilerAction.WARNING_AS_ERRORS] = "/WX",        -- Treat warnings as errors flag for cl
-            [CompilerAction.COMPILE_TIME_DEFINES] = "/D",      -- Compile time defines flag for cl
-            [CompilerAction.NO_LOGO] = "/nologo",              -- No logo flag for cl
-            [CompilerAction.STD_VERSION] = "/std:",            -- C/C++ standard version flag for cl
-            [CompilerAction.REPORT_FULL_PATH] = "/FC",         -- Full report flag for cl
-            [CompilerAction.OBJECTS_ONLY] = "/c",              -- Compile only (don't link) for cl
-            [CompilerAction.OUTPUT] = "/Fe",                   -- Output file flag for cl
-            [CompilerAction.MULTI_THREADING] = "/MP",          -- Multi-threading flag for cl
-            [CompilerAction.ADDRESS_SANITIZER] = "/fsanitize=address", -- Address sanitizer flag (example for cl)
-        },
-        [CompilerType.GCC_CC_CLANG] = {
-            [CompilerAction.WARNING_LEVEL] = "-Wall",           -- Warning level flag for gcc, clang
-            [CompilerAction.DISABLE_SPECIFIC_WARNING] = "-Wno-", -- Disable specific warning flag for gcc, clang
-            [CompilerAction.WARNING_AS_ERRORS] = "-Werror",     -- Treat warnings as errors flag for gcc, clang
-            [CompilerAction.COMPILE_TIME_DEFINES] = "-D",       -- Compile time defines flag for gcc, clang
-            [CompilerAction.NO_LOGO] = "",                      -- No equivalent for no-logo in gcc/clang
-            [CompilerAction.STD_VERSION] = "-std=",             -- C/C++ standard version flag for gcc, clang
-            [CompilerAction.REPORT_FULL_PATH] = "-fmacro-backtrace-limit=0", -- Full report flag for gcc, clang
-            [CompilerAction.OBJECTS_ONLY] = "-c",               -- Compile only (don't link) flag for gcc, clang
-            [CompilerAction.OUTPUT] = "-o",                     -- Output file flag for gcc, clang
-            [CompilerAction.MULTI_THREADING] = "-pthread",      -- Multi-threading flag for gcc, clang
-            [CompilerAction.ADDRESS_SANITIZER] = "-fsanitize=address", -- Address sanitizer flag for gcc, clang
-        }
+    [CompilerType.CL] = {
+        [CompilerAction.WARNING_LEVEL] = "/W",             -- Warning level flag for cl
+        [CompilerAction.DISABLE_SPECIFIC_WARNING] = "/wd", -- Disable specific warning flag for cl
+        [CompilerAction.WARNING_AS_ERRORS] = "/WX",        -- Treat warnings as errors flag for cl
+        [CompilerAction.COMPILE_TIME_DEFINES] = "/D",      -- Compile time defines flag for cl
+        [CompilerAction.NO_LOGO] = "/nologo",              -- No logo flag for cl
+        [CompilerAction.STD_VERSION] = "/std:",            -- C/C++ standard version flag for cl
+        [CompilerAction.REPORT_FULL_PATH] = "/FC",         -- Full report flag for cl
+        [CompilerAction.OBJECTS_ONLY] = "/c",              -- Compile only (don't link) for cl
+        [CompilerAction.OUTPUT] = "/Fe",                   -- Output file flag for cl
+        [CompilerAction.MULTI_THREADING] = "/MP",          -- Multi-threading flag for cl
+        [CompilerAction.ADDRESS_SANITIZER] = "/fsanitize=address", -- Address sanitizer flag (example for cl)
+    },
+    [CompilerType.GCC_CC_CLANG] = {
+        [CompilerAction.WARNING_LEVEL] = "-Wall",           -- Warning level flag for gcc, clang
+        [CompilerAction.DISABLE_SPECIFIC_WARNING] = "-Wno-", -- Disable specific warning flag for gcc, clang
+        [CompilerAction.WARNING_AS_ERRORS] = "-Werror",     -- Treat warnings as errors flag for gcc, clang
+        [CompilerAction.COMPILE_TIME_DEFINES] = "-D",       -- Compile time defines flag for gcc, clang
+        [CompilerAction.NO_LOGO] = "",                      -- No equivalent for no-logo in gcc/clang
+        [CompilerAction.STD_VERSION] = "-std=",             -- C/C++ standard version flag for gcc, clang
+        [CompilerAction.REPORT_FULL_PATH] = "-fmacro-backtrace-limit=0", -- Full report flag for gcc, clang
+        [CompilerAction.OBJECTS_ONLY] = "-c",               -- Compile only (don't link) flag for gcc, clang
+        [CompilerAction.OUTPUT] = "-o",                     -- Output file flag for gcc, clang
+        [CompilerAction.MULTI_THREADING] = "-pthread",      -- Multi-threading flag for gcc, clang
+        [CompilerAction.ADDRESS_SANITIZER] = "-fsanitize=address", -- Address sanitizer flag for gcc, clang
     }
+}
 
 -- Compiler class equivalent in Lua
 Compiler = {}
 Compiler.__index = Compiler
 
 function Compiler:new(compiler_name, std_version)
-    local obj = {
-        name = compiler_name,
-        std_version = std_version or "c11",
-        should_debug_with_visual_studio = false,
-        should_rebuild_project_dependencies = false,
-        type = nil,
-        compiler_command = {compiler_name},
-        action = CompilerAction.NO_ACTION
-    }
-    obj.type = obj:choose_compiler_type()
-    setmetatable(obj, self)
-    return obj
+    local instance = setmetatable({}, Compiler)
+    instance.std_version = std_version or "c11"
+    instance.name = compiler_name
+    instance.github_root = "https://github.com/superg3m"
+    instance.should_debug_with_visual_studio = false
+    instance.should_rebuild_project_dependencies = false
+    instance.type = nil
+
+    if instance.name == "cl" then
+        instance.type = CompilerType.CL
+    elseif self.name == "gcc" or instance.name == "cc" or instance.name == "clang" then
+        instance.type = CompilerType.GCC_CC_CLANG
+    else
+        utility.FATAL_PRINT("Compiler " .. instance.name .. " is not supported")
+        os.exit(-15)
+    end
+
+    instance.compiler_command = {compiler_name}
+    action = CompilerAction.NO_ACTION
+
+    return instance
 end
 
 function Compiler:choose_compiler_type()
-    if self.name == "cl" then
-        return CompilerType.CL
-    elseif self.name == "gcc" or self.name == "cc" or self.name == "clang" then
-        return CompilerType.GCC_CC_CLANG
-    else
-        FATAL_PRINT("Compiler " .. self.name .. " is not supported")
-        os.exit(-15)
-    end
+
 end
 
 function Compiler:get_compiler_lookup()
     if self.action == CompilerAction.NO_ACTION then
-        FATAL_PRINT("Compiler No Action")
+        utility.FATAL_PRINT("Compiler No Action")
         os.exit(-15)
     end
     return COMPILER_LOOKUP_TABLE[self.type][self.action]
@@ -145,7 +149,7 @@ function Compiler:compile_procedure(procedure, is_debug)
         table.insert(self.compiler_command, no_logo_flag)
     end
 
-        -- Add std version flag
+    -- Add std version flag
     self:set_action(CompilerAction.STD_VERSION)
     local std_version_flag = self:get_compiler_lookup()
     table.insert(self.compiler_command, std_version_flag .. self.std_version)
@@ -204,88 +208,23 @@ function Compiler:compile_procedure(procedure, is_debug)
         if self.type == CompilerType.CL then
             table.insert(self.compiler_command, "/O2")
         else
-            table.insert(self.compiler_command, "-O2")
+            table.insert(self.compiler_command, "-O3")
         end
     end
 
-    -- Add include paths
-    for _, include_path in ipairs(procedure.include_paths) do
-        if include_path then
-            if self.type == CompilerType.CL then
-                table.insert(self.compiler_command, "/I" .. include_path)
-            else
-                table.insert(self.compiler_command, "-I" .. include_path)
-            end
-        end
+    -- Execute the compile command
+    local compile_command = table.concat(self.compiler_command, " ")
+    local result = os.execute(compile_command)
+
+    -- Check for errors in the command execution
+    if not result then
+        utility.FATAL_PRINT("Compiler failed: " .. compile_command)
+        os.exit(-15)
     end
 
-    -- Add additional compiler flags
-    -- for _, flag in ipairs(procedure.compiler_inject_into_args) do
-    --     if flag then
-    --         table.insert(self.compiler_command, flag)
-    --     end
-    -- end
-
-    if not procedure.should_build_static_lib then
-        if #procedure.additional_libs > 0 and procedure.additional_libs[1] and self.type == CompilerType.CL then
-            table.insert(self.compiler_command, "/link")
-        end
-        for _, lib in ipairs(procedure.additional_libs) do
-            if lib then
-                table.insert(self.compiler_command, lib)
-            end
-        end
+    if INFO_MODE then
+        print("Compiler command: " .. compile_command)
     end
-
-    -- Create build directory if it doesn't exist
-    local build_dir = procedure.build_directory
-    if not io.open(build_dir, "r") then
-        os.execute("mkdir " .. build_dir)
-    end
-
-    -- Change to build directory
-    local current_dir = io.popen("cd"):read()
-    os.execute("cd " .. build_dir)
-
-    -- Execute compiler command
-    local result = io.popen(table.concat(self.compiler_command, " "), "r")
-    local output = result:read("*a")
-    result:close()
-
-    -- Print output
-    for line in output:gmatch("([^\n]*)\n") do
-        NORMAL_PRINT(line)
-    end
-
-    -- Check for errors
-    if procedure.should_build_static_lib then
-        -- Build static lib
-        -- NOTE: This will need to be implemented
-    elseif result ~= 0 then
-        FATAL_PRINT("FAILED TO COMPILE!")
-    else
-        FORMAT_PRINT("Compilation of " .. procedure.output_name .. " successful")
-    end
-
-    -- Reset compiler command
-    self.compiler_command = {self.name}
-
-    -- Change back to original directory
-    os.execute("cd " .. current_dir)
 end
 
--- Example usage:
-local compiler = Compiler:new("gcc", "c11")
-compiler:set_warning_level("3")
-compiler:disable_specific_warnings({""})
-compiler:set_treat_warnings_as_errors(true)
-
-local procedure = {
-    source_files = {"main.c", "utils.c"},
-    include_paths = {"/usr/include", "/usr/local/include"},
-    additional_libs = {"-lm", "-lpthread"},
-    output_name = "my_program",
-    build_directory = "build",
-}
-
-compiler:compile_procedure(procedure, true)
+return Compiler

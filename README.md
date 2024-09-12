@@ -37,3 +37,9 @@ The project is moving towards using CMake for better organization and cross-plat
 ## Getting Started
 1. Run the bootstrap script to initialize the project.
    ./bootstrap.ps1
+
+
+
+Ok so steps to move forward with the lua powershell rewrite.
+
+- lua calls into powershell scripts
