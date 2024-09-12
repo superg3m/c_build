@@ -178,7 +178,6 @@ class Compiler:
                 error_occurred = True
 
             self.compiler_command = [self.name]
-            print("")
         finally:
             os.chdir(cached_current_directory)
             self.compiler_command = [self.name]
