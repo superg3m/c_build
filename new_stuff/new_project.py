@@ -5,7 +5,7 @@ import time
 from typing import List, Dict
 from .new_compiler import Compiler
 from .new_procedure import Procedure
-from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, level
+from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL
 from .vc_vars import vcvars
 
 class Project:
@@ -85,10 +85,9 @@ class Project:
 
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
-            os.environ['level'] = str(level)
+            os.environ['level'] = str(GET_LEVEL)
             if 'level' in os.environ:
-                level = int(os.environ["level"])
-                print(level)
+                print(os.environ["level"])
             subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type}", shell=True)
             os.chdir(cached_current_directory_global)
 

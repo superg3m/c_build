@@ -23,18 +23,24 @@ JSON_CONFIG_PATH: str = "./c_build_config.json"
 level = 0
 indent_spaces = " " * (level * 4)
 
+def SET_LEVEL(value):
+    global level, indent_spaces
+    level = value
+    indent_spaces = " " * (level * 4)
+
+def GET_LEVEL():
+    global level
+    return level
 
 def UP_LEVEL():
     global level, indent_spaces
     level += 1
     indent_spaces = " " * (level * 4)
 
-
 def DOWN_LEVEL():
     global level, indent_spaces
     level -= 1
     indent_spaces = " " * (level * 4)
-
 
 def FORMAT_PRINT(msg):
     global indent_spaces
@@ -42,7 +48,6 @@ def FORMAT_PRINT(msg):
     color = color_lookup[level % len(color_lookup)]
     if msg:
         print(f"{color}{indent_spaces}{msg}{DEFAULT}")
-
 
 def NORMAL_PRINT(msg):
     global indent_spaces
