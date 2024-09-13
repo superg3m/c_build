@@ -114,8 +114,8 @@ class Compiler:
         # Add optimization flag
         if is_debug:
             # Add address sanitizer flag
-            if os.name != 'nt':
-            #if os.name != 'nt' or CompilerType.CL: I can't run exe produced by MSVC
+            #if os.name != 'nt':
+            if os.name != 'nt' or CompilerType.CL: #I can't run exe produced by MSVC
                 self.__set_action(CompilerAction.ADDRESS_SANITIZER)
                 address_sanitizer_flag = self.__get_compiler_lookup()
                 self.compiler_command.append(address_sanitizer_flag)
