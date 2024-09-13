@@ -178,8 +178,8 @@ class Compiler:
                 FATAL_PRINT("FAILED TO COMPILE!")
                 error_occurred = True
 
-            self.compiler_command = inital_compiler_command
+            self.compiler_command = initial_compiler_command
             os.chdir(cached_current_directory_1)
         finally:
             os.chdir(cached_current_directory_1)
-            self.compiler_command = inital_compiler_command
+            self.compiler_command = initial_compiler_command
