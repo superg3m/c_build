@@ -94,6 +94,7 @@ class Project:
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
             GIT_PULL("c_build")
+            os.system("python")
             subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type} --level {GET_LEVEL()} --is_dependency {True}", shell=True)
             os.chdir(cached_current_directory_global)
 
