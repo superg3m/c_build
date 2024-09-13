@@ -64,6 +64,10 @@ class Compiler:
                 self.compiler_command.append(f"{compile_time_define_flag}{define}")
 
     def compile_procedure(self, procedure, is_debug = False):
+        initial_compiler_command = []
+        for element in self.compiler_command:
+            initial_compiler_command.append(element)
+
         for source in procedure.source_files:
             if source:
                 self.compiler_command.append(source)
@@ -174,8 +178,8 @@ class Compiler:
                 FATAL_PRINT("FAILED TO COMPILE!")
                 error_occurred = True
 
-            self.compiler_command = [self.name]
+            self.compiler_command = inital_compiler_command
             os.chdir(cached_current_directory_1)
         finally:
             os.chdir(cached_current_directory_1)
-            self.compiler_command = [self.name]
+            self.compiler_command = inital_compiler_command
