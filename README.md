@@ -38,6 +38,10 @@ The project is moving towards using CMake for better organization and cross-plat
 1. Run the bootstrap script to initialize the project.
    - ./bootstrap.ps1
 
+- [ ] Run
+- [x] Build
+- [ ] Debug
+- [ ] Clean
 
 Eventually procedures that don't depend on anything or 
 already have that thing built can be built in parallel with another procedure.
