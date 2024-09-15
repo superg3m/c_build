@@ -3,8 +3,6 @@ import subprocess
 import time
 
 from typing import List, Dict
-
-from templates.c_build_script import build_type
 from .new_compiler import Compiler
 from .new_procedure import Procedure
 from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL, GIT_PULL, NORMAL_PRINT
