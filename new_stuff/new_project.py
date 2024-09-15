@@ -13,7 +13,7 @@ class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
         self.name: str = name
         self.std_version: str = std_version
-        self.compiler_name: str = os.getenv("COMPILER", compiler_name)
+        self.compiler_name: str = compiler_name
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio = False
