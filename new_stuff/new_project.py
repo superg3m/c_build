@@ -65,7 +65,7 @@ class Project:
         return proc
 
     def build(self, build_type):
-        is_debug = os.environ["BUILD_TYPE"] == "debug" or build_type == "debug"
+        is_debug = os.getenv("BUILD_TYPE", "release") == "debug"
 
         FORMAT_PRINT(f"|----------------------------------------- {self.name} -----------------------------------------|")
         UP_LEVEL()
