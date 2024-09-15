@@ -65,7 +65,7 @@ class Project:
         return proc
 
     def build(self, build_type):
-        is_debug = os.getenv("BUILD_TYPE", "release") == "debug"
+        is_debug = build_type == "debug"
 
         FORMAT_PRINT(f"|----------------------------------------- {self.name} -----------------------------------------|")
         UP_LEVEL()
@@ -97,19 +97,18 @@ class Project:
             GIT_PULL("c_build")
 
             os.environ['COMPILER'] = self.compiler_name
-            os.environ['BUILD_TYPE'] = build_type
             os.environ['LEVEL'] = str(GET_LEVEL())
             os.environ['IS_DEPENDENCY'] = str(True)  # Make sure it's a string
             env = os.environ.copy()
             if os.name == "nt":
                 subprocess.call(
-                    "python -B -m c_build_script",
+                    f"python -B -m c_build_script --build_type {build_type}",
                     shell=True,
                     env=env
                 )
             else:
                 subprocess.call(
-                    "python3 -B -m c_build_script",
+                    f"python3 -B -m c_build_script --build_type {build_type}",
                     shell=True,
                     env=env
                 )
