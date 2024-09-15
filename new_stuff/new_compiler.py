@@ -9,8 +9,6 @@ class Compiler:
     def __init__(self, compiler_name, std_version):
         self.name = compiler_name
         self.std_version = std_version
-        self.should_debug_with_visual_studio = False
-        self.should_rebuild_project_dependencies = False
         self.type = self.__choose_compiler_type()
         self.compiler_command = [self.name]
 
