@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+from pickle import FALSE
 
 from typing import List, Dict
 from .new_compiler import Compiler
@@ -12,7 +13,7 @@ class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
         self.name: str = name
         self.std_version: str = std_version
-        self.compiler_name: str = os.environ["COMPILER"] or compiler_name
+        self.compiler_name: str = os.getenv("COMPILER", compiler_name)
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio = False
@@ -20,7 +21,7 @@ class Project:
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
-        self.is_dependency: bool = bool(os.environ['IS_DEPENDENCY']) or False
+        self.is_dependency: bool = bool(os.getenv("IS_DEPENDENCY", False))
 
         self.__assert_std_is_valid()
 
