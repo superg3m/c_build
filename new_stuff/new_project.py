@@ -3,16 +3,18 @@ import subprocess
 import time
 
 from typing import List, Dict
+
+from templates.c_build_script import build_type
 from .new_compiler import Compiler
 from .new_procedure import Procedure
 from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL, GIT_PULL, NORMAL_PRINT
 from .vc_vars import vcvars
 
 class Project:
-    def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m", is_dependency = False):
+    def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
         self.name: str = name
         self.std_version: str = std_version
-        self.compiler_name: str = compiler_name
+        self.compiler_name: str = os.environ["COMPILER"] or compiler_name
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio = False
@@ -20,7 +22,7 @@ class Project:
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
-        self.is_dependency: bool = is_dependency
+        self.is_dependency: bool = bool(os.environ['IS_DEPENDENCY']) or False
 
         self.__assert_std_is_valid()
 
@@ -64,7 +66,7 @@ class Project:
         return proc
 
     def build(self, build_type):
-        is_debug = build_type == "debug"
+        is_debug = os.environ["BUILD_TYPE"] == "debug" or build_type == "debug"
 
         FORMAT_PRINT(f"|----------------------------------------- {self.name} -----------------------------------------|")
         UP_LEVEL()
@@ -94,10 +96,24 @@ class Project:
             cached_current_directory_global = os.getcwd()
             os.chdir(dependency_string)
             GIT_PULL("c_build")
+
+            os.environ['COMPILER'] = self.compiler_name
+            os.environ['BUILD_TYPE'] = build_type
+            os.environ['LEVEL'] = str(GET_LEVEL())
+            os.environ['IS_DEPENDENCY'] = str(True)  # Make sure it's a string
+            env = os.environ.copy()
             if os.name == "nt":
-                subprocess.call(f"python -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type} --level {GET_LEVEL()} --is_dependency {True}", shell=True)
+                subprocess.call(
+                    "python -B -m c_build_script",
+                    shell=True,
+                    env=env
+                )
             else:
-                subprocess.call(f"python3 -B -m c_build_script --compiler {self.compiler_name} --build_type {build_type} --level {GET_LEVEL()} --is_dependency {True}", shell=True)
+                subprocess.call(
+                    "python3 -B -m c_build_script",
+                    shell=True,
+                    env=env
+                )
             os.chdir(cached_current_directory_global)
 
             DOWN_LEVEL()

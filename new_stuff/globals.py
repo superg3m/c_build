@@ -20,7 +20,7 @@ FATAL = "\033[41m"
 
 JSON_CONFIG_PATH: str = "./c_build_config.json"
 
-level: int = 0
+level: int = int(os.environ['LEVEL'])
 indent_spaces: str = " " * (level * 4)
 
 def SET_LEVEL(value: int):

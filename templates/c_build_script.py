@@ -4,18 +4,12 @@ from c_build.new_stuff.globals import *
 from c_build.new_stuff.new_project import *
 
 parser = argparse.ArgumentParser(description='c_build_script')
-parser.add_argument('--compiler', type=str, help='Compiler to use (e.g. gcc, clang)')
 parser.add_argument('--build_type', type=str, required=True, help='Build type (e.g. debug, release)')
-parser.add_argument('--level', type=int, help='level (e.g. 1, 2, 4)')
-parser.add_argument('--is_dependency', type=bool, default=False, help='is_dependency (e.g. True, False)')
 args = parser.parse_args()
 build_type = args.build_type
-
-if args.level:
-	SET_LEVEL(args.level)
 # --------------------------------------------------------------------------------------
 
-COMPILER = args.compiler or "cl"
+COMPILER = "cl"
 project = Project("ckg", COMPILER, is_dependency = args.is_dependency)
 
 # Do different things depending on the platform
@@ -59,4 +53,5 @@ for procedure_name, procedure_data in procedures.items():
 	procedure.set_additional_libs(procedure_data["additional_libs"])
 # -------------------------------------------------------------------------------------
 project.set_executables_to_run(["test_ckg.exe"])
+
 project.build(build_type)
