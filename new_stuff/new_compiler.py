@@ -133,6 +133,9 @@ class Compiler:
             else:
                 self.compiler_command.append("-O2")
 
+
+        self.set_compile_time_defines(procedure.compile_time_defines)
+
         # Add include paths
         for include_path in procedure.include_paths:
             if include_path:
