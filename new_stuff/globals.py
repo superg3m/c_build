@@ -20,7 +20,7 @@ FATAL = "\033[41m"
 
 JSON_CONFIG_PATH: str = "./c_build_config.json"
 
-level: int = os.environ['IS_DEPENDENCY'] if int(os.environ['LEVEL']) else 0
+level: int = int(os.getenv('LEVEL', 0))
 indent_spaces: str = " " * (level * 4)
 
 def SET_LEVEL(value: int):
