@@ -12,7 +12,7 @@ build_type = args.build_type
 # --------------------------------------------------------------------------------------
 
 COMPILER = os.getenv("COMPILER", "cl")
-project = Project("ckg", COMPILER, is_dependency = args.is_dependency)
+project = Project("ckg", COMPILER)
 
 # Do different things depending on the platform
 if COMPILER == "cl":
