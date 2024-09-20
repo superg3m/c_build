@@ -16,8 +16,8 @@ class Project:
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
-        self.should_debug_with_visual_studio = False
-        self.should_rebuild_project_dependencies = os.getenv("SHOULD_REBUILD", False)
+        self.should_debug_with_visual_studio: bool = False
+        self.should_rebuild_project_dependencies: bool = os.getenv("SHOULD_REBUILD", False)
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
@@ -120,7 +120,7 @@ class Project:
         os.chdir(true_cached)
 
         for proc in self.procedures:
-            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", self.should_rebuild_project_dependencies)
+            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", (self.should_rebuild_project_dependencies == False))
             if self.__check_procedure_built(proc) and self.is_dependency and (self.should_rebuild_project_dependencies == False):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory,proc.output_name)}, skipping...")
                 continue
