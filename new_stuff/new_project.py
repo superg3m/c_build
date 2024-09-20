@@ -127,12 +127,8 @@ class Project:
         os.chdir(true_cached)
 
         for proc in self.procedures:
-            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency,
-                  " | SHOULD BUILD: ", not self.should_rebuild_project_dependencies)
-            if self.__check_procedure_built(
-                    proc) and self.is_dependency and not self.should_rebuild_project_dependencies:
-                NORMAL_PRINT(
-                    f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
+            if self.__check_procedure_built(proc) and self.is_dependency and not self.should_rebuild_project_dependencies:
+                NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             self.internal_compiler.compile_procedure(proc, is_debug)
 
@@ -153,12 +149,8 @@ class Project:
             self.dependencies.append(dependency_string)
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
-        print("BEFORE ASSIGNMENT: ", os.getenv("SHOULD_REBUILD", "DONT HAVE IT"))
-        if not str_to_bool(os.getenv("SHOULD_REBUILD", "DONT HAVE IT")):
-            print("WHAT THE FUCK!")
         self.should_rebuild_project_dependencies = str_to_bool(
             os.getenv("SHOULD_REBUILD", str(should_rebuild_project_dependencies)))
-        print("AFTER ASSIGNMENT: ", self.should_rebuild_project_dependencies)
 
     def set_debug_with_visual_studio(self, should_debug_with_visual_studio):
         self.should_debug_with_visual_studio = should_debug_with_visual_studio
