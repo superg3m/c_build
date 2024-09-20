@@ -9,22 +9,24 @@ from .new_procedure import Procedure
 from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL, GIT_PULL, NORMAL_PRINT
 from .vc_vars import vcvars
 
+
 def str_to_bool(s: str) -> bool:
     return s.lower() in ['true']
 
+
 class Project:
-    def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
+    def __init__(self, name: str, compiler_name: str, std_version="c11", github_root="https://github.com/superg3m"):
         self.name: str = name
         self.std_version: str = std_version
         self.compiler_name: str = compiler_name
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio: bool = False
-        self.should_rebuild_project_dependencies: bool = str_to_bool(os.getenv("SHOULD_REBUILD", False))
+        self.should_rebuild_project_dependencies: bool = str_to_bool(os.getenv("SHOULD_REBUILD", "False"))
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
-        self.is_dependency: bool = os.getenv("IS_DEPENDENCY", False)
+        self.is_dependency: bool = str_to_bool(os.getenv("IS_DEPENDENCY", "False"))
 
         self.__assert_std_is_valid()
 
@@ -40,7 +42,8 @@ class Project:
         ret = self.std_version in acceptable_versions[self.internal_compiler.type.value]
 
         if not ret:
-            FORMAT_PRINT(f"Std version: {self.std_version} not supported, choose one of these {acceptable_versions[self.internal_compiler.type.value]}")
+            FORMAT_PRINT(
+                f"Std version: {self.std_version} not supported, choose one of these {acceptable_versions[self.internal_compiler.type.value]}")
 
     def set_executables_to_run(self, executable_names):
         executable_map = {}
@@ -70,7 +73,8 @@ class Project:
     def build(self, build_type):
         is_debug = build_type == "debug"
 
-        FORMAT_PRINT(f"|----------------------------------------- {self.name} -----------------------------------------|")
+        FORMAT_PRINT(
+            f"|----------------------------------------- {self.name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
         if self.compiler_name == "cl":
@@ -123,17 +127,20 @@ class Project:
         os.chdir(true_cached)
 
         for proc in self.procedures:
-            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", not self.should_rebuild_project_dependencies)
-            if self.__check_procedure_built(proc) and self.is_dependency and not self.should_rebuild_project_dependencies:
-                NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory,proc.output_name)}, skipping...")
+            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency,
+                  " | SHOULD BUILD: ", not self.should_rebuild_project_dependencies)
+            if self.__check_procedure_built(
+                    proc) and self.is_dependency and not self.should_rebuild_project_dependencies:
+                NORMAL_PRINT(
+                    f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             self.internal_compiler.compile_procedure(proc, is_debug)
-
 
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
         DOWN_LEVEL()
-        FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
+        FORMAT_PRINT(
+            f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def inject_as_argument(self, arg):
         self.internal_compiler.compiler_command.append(arg)
@@ -149,7 +156,8 @@ class Project:
         print("BEFORE ASSIGNMENT: ", os.getenv("SHOULD_REBUILD", "DONT HAVE IT"))
         if not str_to_bool(os.getenv("SHOULD_REBUILD", "DONT HAVE IT")):
             print("WHAT THE FUCK!")
-        self.should_rebuild_project_dependencies = str_to_bool(os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies))
+        self.should_rebuild_project_dependencies = str_to_bool(
+            os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies))
         print("AFTER ASSIGNMENT: ", self.should_rebuild_project_dependencies)
 
     def set_debug_with_visual_studio(self, should_debug_with_visual_studio):
