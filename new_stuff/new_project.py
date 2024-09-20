@@ -100,7 +100,6 @@ class Project:
             os.environ['LEVEL'] = str(GET_LEVEL())
             os.environ['IS_DEPENDENCY'] = str(True)  # Make sure it's a string
             os.environ['SHOULD_REBUILD'] = str(self.should_rebuild_project_dependencies)
-            print(os.environ['SHOULD_REBUILD'])
             env = os.environ.copy()
             if os.name == "nt":
                 subprocess.call(
@@ -121,7 +120,6 @@ class Project:
         os.chdir(true_cached)
 
         for proc in self.procedures:
-            print(self.__check_procedure_built(proc), " | ", self.is_dependency, " | ", self.name, " | ", self.should_rebuild_project_dependencies)
             if self.__check_procedure_built(proc) and self.is_dependency and not self.should_rebuild_project_dependencies:
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory,proc.output_name)}, skipping...")
                 continue
@@ -144,6 +142,7 @@ class Project:
             self.dependencies.append(dependency_string)
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
+        print("BEFORE ASSIGNMENT: ", os.environ['SHOULD_REBUILD'])
         self.should_rebuild_project_dependencies = bool(os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies))
 
     def set_debug_with_visual_studio(self, should_debug_with_visual_studio):
