@@ -17,11 +17,11 @@ class Project:
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio = False
-        self.should_rebuild_project_dependencies = bool(os.getenv("SHOULD_REBUILD", False))
+        self.should_rebuild_project_dependencies = os.getenv("SHOULD_REBUILD", False)
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
-        self.is_dependency: bool = bool(os.getenv("IS_DEPENDENCY", False))
+        self.is_dependency: bool = os.getenv("IS_DEPENDENCY", False)
 
         self.__assert_std_is_valid()
 
@@ -121,7 +121,7 @@ class Project:
 
         for proc in self.procedures:
             print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", self.should_rebuild_project_dependencies)
-            if self.__check_procedure_built(proc) and self.is_dependency and self.should_rebuild_project_dependencies == False:
+            if self.__check_procedure_built(proc) and self.is_dependency and (self.should_rebuild_project_dependencies == False):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory,proc.output_name)}, skipping...")
                 continue
             self.internal_compiler.compile_procedure(proc, is_debug)
