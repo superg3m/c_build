@@ -10,7 +10,7 @@ from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL,
 from .vc_vars import vcvars
 
 def str_to_bool(s: str) -> bool:
-    return s.strip().lower() in ['true']
+    return s.lower() in ['true']
 
 class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
