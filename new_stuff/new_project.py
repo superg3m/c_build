@@ -120,7 +120,7 @@ class Project:
         os.chdir(true_cached)
 
         for proc in self.procedures:
-            print("FINAL VALUE: ", self.__check_procedure_built(proc) and self.is_dependency and self.should_rebuild_project_dependencies == False)
+            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", self.should_rebuild_project_dependencies == False)
             if self.__check_procedure_built(proc) and self.is_dependency and self.should_rebuild_project_dependencies == False:
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory,proc.output_name)}, skipping...")
                 continue
