@@ -144,9 +144,7 @@ class Project:
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
         print("BEFORE ASSIGNMENT: ", os.getenv("SHOULD_REBUILD", "DONT HAVE IT"))
-        t = os.getenv("SHOULD_REBUILD", "DONT HAVE IT")
-        print("T: ", t)
-        self.should_rebuild_project_dependencies = bool(os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies))
+        self.should_rebuild_project_dependencies = os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies)
         print("AFTER ASSIGNMENT: ", self.should_rebuild_project_dependencies)
 
     def set_debug_with_visual_studio(self, should_debug_with_visual_studio):
