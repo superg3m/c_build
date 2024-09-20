@@ -144,6 +144,8 @@ class Project:
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
         print("BEFORE ASSIGNMENT: ", os.getenv("SHOULD_REBUILD", "DONT HAVE IT"))
+        if os.getenv("SHOULD_REBUILD", "DONT HAVE IT") == False:
+            print("WHAT THE FUCK!")
         self.should_rebuild_project_dependencies = os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies)
         print("AFTER ASSIGNMENT: ", self.should_rebuild_project_dependencies)
 
