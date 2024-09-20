@@ -100,6 +100,7 @@ class Project:
             os.environ['LEVEL'] = str(GET_LEVEL())
             os.environ['IS_DEPENDENCY'] = str(True)  # Make sure it's a string
             os.environ['SHOULD_REBUILD'] = str(self.should_rebuild_project_dependencies)
+            print(os.environ['SHOULD_REBUILD'])
             env = os.environ.copy()
             if os.name == "nt":
                 subprocess.call(
