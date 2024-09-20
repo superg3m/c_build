@@ -9,6 +9,9 @@ from .new_procedure import Procedure
 from .globals import FATAL_PRINT, FORMAT_PRINT, UP_LEVEL, DOWN_LEVEL, GET_LEVEL, GIT_PULL, NORMAL_PRINT
 from .vc_vars import vcvars
 
+def str_to_bool(s: str) -> bool:
+    return s.strip().lower() in ['true']
+
 class Project:
     def __init__(self, name: str, compiler_name: str, std_version = "c11", github_root = "https://github.com/superg3m"):
         self.name: str = name
@@ -17,7 +20,7 @@ class Project:
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio: bool = False
-        self.should_rebuild_project_dependencies: bool = os.getenv("SHOULD_REBUILD", False)
+        self.should_rebuild_project_dependencies: bool = str_to_bool(os.getenv("SHOULD_REBUILD", False))
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
@@ -120,8 +123,8 @@ class Project:
         os.chdir(true_cached)
 
         for proc in self.procedures:
-            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", (self.should_rebuild_project_dependencies == False))
-            if self.__check_procedure_built(proc) and self.is_dependency and (self.should_rebuild_project_dependencies == False):
+            print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", not self.should_rebuild_project_dependencies)
+            if self.__check_procedure_built(proc) and self.is_dependency and not self.should_rebuild_project_dependencies):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory,proc.output_name)}, skipping...")
                 continue
             self.internal_compiler.compile_procedure(proc, is_debug)
@@ -144,9 +147,9 @@ class Project:
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
         print("BEFORE ASSIGNMENT: ", os.getenv("SHOULD_REBUILD", "DONT HAVE IT"))
-        if os.getenv("SHOULD_REBUILD", "DONT HAVE IT") == False:
+        if not str_to_bool(os.getenv("SHOULD_REBUILD", "DONT HAVE IT")):
             print("WHAT THE FUCK!")
-        self.should_rebuild_project_dependencies = os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies)
+        self.should_rebuild_project_dependencies = str_to_bool(os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies))
         print("AFTER ASSIGNMENT: ", self.should_rebuild_project_dependencies)
 
     def set_debug_with_visual_studio(self, should_debug_with_visual_studio):
