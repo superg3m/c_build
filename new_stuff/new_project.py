@@ -17,7 +17,7 @@ class Project:
         self.github_root: str = github_root
         self.internal_compiler = Compiler(self.compiler_name, self.std_version)
         self.should_debug_with_visual_studio = False
-        self.should_rebuild_project_dependencies = False
+        self.should_rebuild_project_dependencies = bool(os.getenv("SHOULD_REBUILD", False))
         self.dependencies: List[str] = []
         self.procedures: List[Procedure] = []
         self.executable_procedures: List[Procedure] = []
