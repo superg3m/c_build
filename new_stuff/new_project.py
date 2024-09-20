@@ -99,6 +99,7 @@ class Project:
             os.environ['COMPILER'] = self.compiler_name
             os.environ['LEVEL'] = str(GET_LEVEL())
             os.environ['IS_DEPENDENCY'] = str(True)  # Make sure it's a string
+            os.environ['SHOULD_REBUILD'] = str(self.should_rebuild_project_dependencies)
             env = os.environ.copy()
             if os.name == "nt":
                 subprocess.call(
@@ -142,7 +143,7 @@ class Project:
             self.dependencies.append(dependency_string)
 
     def set_rebuild_project_dependencies(self, should_rebuild_project_dependencies):
-        self.should_rebuild_project_dependencies = should_rebuild_project_dependencies
+        self.should_rebuild_project_dependencies = bool(os.getenv("SHOULD_REBUILD", should_rebuild_project_dependencies))
 
     def set_debug_with_visual_studio(self, should_debug_with_visual_studio):
         self.should_debug_with_visual_studio = should_debug_with_visual_studio
