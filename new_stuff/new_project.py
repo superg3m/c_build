@@ -124,7 +124,7 @@ class Project:
 
         for proc in self.procedures:
             print("IS BUILT: ", self.__check_procedure_built(proc), " | IS DEP: ", self.is_dependency, " | SHOULD BUILD: ", not self.should_rebuild_project_dependencies)
-            if self.__check_procedure_built(proc) and self.is_dependency and not self.should_rebuild_project_dependencies):
+            if self.__check_procedure_built(proc) and self.is_dependency and not self.should_rebuild_project_dependencies:
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory,proc.output_name)}, skipping...")
                 continue
             self.internal_compiler.compile_procedure(proc, is_debug)
