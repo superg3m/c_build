@@ -1,4 +1,8 @@
-# c_build
+# C_Build is in a semi unfinished state right now I need to finish the rewrite it works to build
+# but scripts like: run.ps1, clean.ps1 or debug.ps1 don't work.
+
+
+# c_build 
 
 `c_build` is a tool designed to easily and quickly build C projects and their dependencies. 
 It allows you to build C dependencies, such as libraries, that you have created.
