@@ -38,7 +38,7 @@ procedures = {
     },
     "something_test": {
         "build_directory": f"./Tests/CoreTest/build_{COMPILER}",
-        "output_name": "ckit_test.exe" if COMPILER == "cl" else "ckit_test",
+        "output_name": "ckit_test.exe",
         "source_files": ["../*.c"],
         "additional_libs": [f"../../../build_{COMPILER}/ckit.lib" if COMPILER == "cl" else f"../../../build_{COMPILER}/libckit.a"],
         "compile_time_defines": [],
