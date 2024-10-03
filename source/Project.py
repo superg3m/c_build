@@ -123,7 +123,7 @@ class Project:
         self.build_dependencies(self.project_config)
 
         for proc in self.procedures:
-            if (not CONSUME_GIT_PULL() and
+            if (not CONSUME_GIT_PULL(self.project_name) and
                     self.__check_procedure_built(proc.build_directory, proc.output_name) and
                     self.is_dependency and not self.should_rebuild):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
