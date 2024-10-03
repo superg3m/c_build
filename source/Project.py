@@ -91,6 +91,7 @@ class Project:
 
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
+                FORMAT_PRINT(f"CWD: {os.getcwd()}")
                 project.build()
 
                 os.chdir(cache_dir)
