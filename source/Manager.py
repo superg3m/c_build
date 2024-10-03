@@ -20,8 +20,11 @@ class Manager:
     def build_project(self):
         if C_BUILD_IS_DEPENDENCY():
             serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
+            filtered_project_config = self.project_config.copy()
+            filtered_project_config.pop("project_rebuild_project_dependencies", None)
+            filtered_project_config.pop("project_debug_with_visual_studio", None)
             serialized_data = {
-                **self.project_config,
+                **filtered_project_config,
                 **self.procedures_config
             }
             with open(serialized_name, "w") as file:

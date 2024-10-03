@@ -14,7 +14,7 @@ class Project:
     def __init__(self, MANAGER_COMPILER, project_config: Dict, procedures_config: Dict, is_dependency = False,):
         self.project_name = project_config["project_name"]
         self.project_debug_with_visual_studio = project_config["project_debug_with_visual_studio"]
-        self.should_rebuild = project_config["project_rebuild_project_dependencies"]
+        self.should_rebuild = project_config.get("project_rebuild_project_dependencies", False)
         FATAL_PRINT(f"SHOULD REBUILD: {self.should_rebuild}")
         self.project_executable_procedures = project_config["project_executable_procedures"]
         self.procedures = [procedure_data for procedure_data in procedures_config.values()]
@@ -86,6 +86,7 @@ class Project:
                 self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
+                project.should_rebuild = self.should_rebuild
                 project.build()
 
                 os.chdir(cache_dir)
