@@ -5,6 +5,7 @@ import os
 import shutil
 import subprocess
 import sys
+from queue import Queue
 from typing import List
 
 RED: str = '\033[91m'
@@ -27,21 +28,31 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-def __IS_PULL_REQUIRED(path: str) -> bool:
+git_status_queue: List[bool] = []
+async def QUEUE_GIT_STATUS(path: str):
     original_dir = os.getcwd()
     try:
         os.chdir(path)
-        subprocess.run(["git", "fetch", "-q"])
-        output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
-        lines = output.stdout.splitlines()
-
+        await asyncio.create_subprocess_exec("git", "fetch", "-q")
+        process = await asyncio.create_subprocess_exec("git", "status", capture_output=True, text=True)
+        stdout, _ = await process.communicate()
+        lines = stdout.splitlines()
         for line in lines:
-            if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
-                return True
+            if any(keyword in line for keyword in [
+                "Your branch is behind",
+                "have diverged",
+                "Changes not staged for commit",
+                "Untracked files"
+            ]):
+                git_status_queue.append(True)
     finally:
         os.chdir(original_dir)
 
-    return False
+def __IS_PULL_REQUIRED(path: str) -> bool:
+    if len(git_status_queue) == 0:
+        return False
+
+    return git_status_queue.pop()
 
 git_had_to_pull = []
 def GIT_PULL(path: str):

@@ -8,7 +8,8 @@ from typing import Dict
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, IS_WINDOWS_PROCESS_RUNNING, CHECK_AND_CONSUME_GIT_PULL
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, IS_WINDOWS_PROCESS_RUNNING, CHECK_AND_CONSUME_GIT_PULL, \
+    QUEUE_GIT_STATUS
 
 
 class Project:
@@ -105,6 +106,11 @@ class Project:
         elif execution_type == "CLEAN" and not override:
             self.__clean()
             return
+
+        project_dependencies = self.project_config["project_dependencies"]
+        for dependency in project_dependencies:
+            if dependency:
+                asyncio.run(QUEUE_GIT_STATUS(dependency))
 
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
