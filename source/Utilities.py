@@ -30,7 +30,7 @@ parser.add_argument('--compiler_name', default="cl", type=str, required=False, h
 def __IS_PULL_REQRUIED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
-        # os.chdir(path)
+        os.chdir(path)
         # subprocess.run(["git", "fetch", "-q"])
         # output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
         # lines = output.stdout.splitlines()
