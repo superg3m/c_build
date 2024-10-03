@@ -96,7 +96,10 @@ class Project:
                 os.chdir(cache_dir)
 
     async def check_project_dependencies_for_status(self, project_dependencies: List[str]):
-        tasks = [QUEUE_GIT_STATUS(dep) for dep in project_dependencies if dep]
+        tasks = []
+        for dep in project_dependencies:
+            tasks.append(QUEUE_GIT_STATUS(dep))
+            tasks.append(QUEUE_GIT_STATUS(f"{dep}/c_build"))
         await asyncio.gather(*tasks)
 
     def build(self, override = False):
