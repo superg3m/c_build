@@ -49,14 +49,13 @@ class Project:
         original_cached_directory = os.getcwd()
         os.chdir(dependency_name)
         if IS_WINDOWS():
-            FATAL_PRINT("HELLLOOOO")
             subprocess.call(
-                f"python -B -m c_build_script --is_dependency true",
+                f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
                 shell=True
             )
         else:
             subprocess.call(
-                f"python3 -B -m c_build_script --is_dependency true",
+                f"python3 -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
                 shell=True
             )
         os.chdir(original_cached_directory)
