@@ -34,9 +34,13 @@ async def QUEUE_GIT_STATUS(path: str):
     try:
         os.chdir(path)
         await asyncio.create_subprocess_exec("git", "fetch", "-q")
-        process = await asyncio.create_subprocess_exec("git", "status", capture_output=True, text=True)
+        process = await asyncio.create_subprocess_exec("git", "status", stdout=asyncio.subprocess.PIPE,
+                                                       stderr=asyncio.subprocess.PIPE)
         stdout, _ = await process.communicate()
-        lines = stdout.splitlines()
+
+        output = stdout.decode("utf-8")
+        lines = output.splitlines()
+
         for line in lines:
             if any(keyword in line for keyword in [
                 "Your branch is behind",
@@ -45,6 +49,7 @@ async def QUEUE_GIT_STATUS(path: str):
                 "Untracked files"
             ]):
                 git_status_queue.append(True)
+                return
     finally:
         os.chdir(original_dir)
 
