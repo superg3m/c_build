@@ -8,7 +8,7 @@ from typing import Dict
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, IS_WINDOWS_PROCESS_RUNNING
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, IS_WINDOWS_PROCESS_RUNNING, CHECK_AND_CONSUME_GIT_PULL
 
 
 class Project:
@@ -113,7 +113,9 @@ class Project:
         self.build_dependencies(self.project_config)
 
         for proc in self.procedures:
-            if self.__check_procedure_built(proc.build_directory, proc.output_name) and self.is_dependency and not self.should_rebuild:
+            if (CHECK_AND_CONSUME_GIT_PULL() and
+                    self.__check_procedure_built(proc.build_directory, proc.output_name) and
+                    self.is_dependency and not self.should_rebuild):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             proc.compile()
@@ -136,54 +138,8 @@ class Project:
 
 
     def __debug(self):
-        debugger = ["raddbg", "devenv"]
-        executable_procedures = [
-            (exe, proc_config)
-            for exe in self.project_executable_procedures
-            for proc_config in self.procedures
-            if exe == proc_config["output_name"]
-        ]
-        exe, proc_config = executable_procedures[0]
-        proc_name = proc_config["output_name"]
-        proc_dir = proc_config["build_directory"]
-
-        debug_command = [debugger[self.project_debug_with_visual_studio], proc_name]
-        cached_current_directory = os.getcwd()
-        try:
-            os.chdir(proc_dir)
-            debugger_name = debugger[self.project_debug_with_visual_studio]
-
-            # Check if the debugger process is already running
-            debugger_running = IS_WINDOWS_PROCESS_RUNNING(debugger_name)
-            if debugger_running:
-                NORMAL_PRINT(f"Debugger already running attaching to process...")
-            else:
-                process = subprocess.Popen(debug_command)
-                NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
-
-        except FileNotFoundError:
-            FATAL_PRINT(f"Executable not found")
-            exit(-1)
-        finally:
-            os.chdir(cached_current_directory)
+        self.project_executable_procedures[0].debug()
 
     def __clean(self):
-        current_dir = os.getcwd()
-        current_dir = current_dir.replace("\\", "/")
-        for proc_config in self.procedures:
-            proc_dir = proc_config["build_directory"]
-
-            current_dir = current_dir + proc_dir.replace("./", "/")
-            if not os.path.exists(proc_dir):
-                return
-            FORMAT_PRINT(f"Cleaning: {current_dir}")
-            for filename in os.listdir(proc_dir):
-                file_path = os.path.join(proc_dir, filename)
-                try:
-                    if os.path.isfile(file_path) or os.path.islink(file_path):
-                        if file_path.endswith(".c") or file_path.endswith(".cpp") or file_path.endswith(".sln"):
-                            continue
-
-                        os.unlink(file_path)
-                except Exception as e:
-                    print('Failed to delete %s. Reason: %s' % (file_path, e))
+        for proc in self.procedures:
+            proc.clean()

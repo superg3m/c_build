@@ -43,15 +43,24 @@ def __IS_PULL_REQRUIED(path: str) -> bool:
 
     return False
 
+git_had_to_pull = []
 def GIT_PULL(path: str):
+    global git_had_to_pull
     if not __IS_PULL_REQRUIED(path):
         return
 
+    git_had_to_pull.append(True)
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard origin/main -q")
     os.system(f"git pull -q")
     os.chdir(cache_dir)
+
+def CHECK_AND_CONSUME_GIT_PULL():
+    if len(git_had_to_pull) == 0:
+        return False
+
+    return git_had_to_pull.pop()
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
