@@ -15,6 +15,7 @@ class Project:
         self.project_name = project_config["project_name"]
         self.project_debug_with_visual_studio = project_config["project_debug_with_visual_studio"]
         self.should_rebuild = project_config["project_rebuild_project_dependencies"]
+        FATAL_PRINT(f"SHOULD REBUILD: {self.should_rebuild}")
         self.project_executable_procedures = project_config["project_executable_procedures"]
         self.procedures = [procedure_data for procedure_data in procedures_config.values()]
         self.is_dependency = is_dependency
