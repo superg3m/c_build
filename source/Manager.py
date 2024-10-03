@@ -24,6 +24,7 @@ class Manager:
             }
             with open(serialized_name, "w") as file:
                 json.dump(serialized_data, file, indent=4)
+            return
 
         project = Project(self.INTERNAL_COMPILER, self.project_config, self.procedures_config)
         project.build()

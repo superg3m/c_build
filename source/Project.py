@@ -46,12 +46,12 @@ class Project:
         FORMAT_PRINT(f"CWD: {os.getcwd()}")
         if IS_WINDOWS():
             subprocess.call(
-                f"python -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
+                f"python -B -m c_build_script --is_dependency true",
                 shell=True
             )
         else:
             subprocess.call(
-                f"python3 -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
+                f"python3 -B -m c_build_script --is_dependency true",
                 shell=True
             )
         os.chdir(original_cached_directory)
