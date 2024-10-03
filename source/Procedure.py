@@ -2,7 +2,7 @@ import os
 import subprocess
 from typing import Dict
 
-from .Utilities import IS_WINDOWS, FATAL_PRINT, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, NORMAL_PRINT
+from .Utilities import IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOB, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, NORMAL_PRINT
 
 
 class Procedure:
@@ -11,6 +11,10 @@ class Procedure:
         self.build_directory = procedure_config["build_directory"]
         self.output_name = procedure_config["output_name"]
         self.source_files = procedure_config["source_files"]
+        aggregate = []
+        for source in self.source_files: 
+            aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source))
+        self.source_files = aggregate
         self.additional_libs = procedure_config["additional_libs"]
         self.compile_time_defines = procedure_config["compile_time_defines"]
         self.include_paths = procedure_config["include_paths"]

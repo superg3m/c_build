@@ -274,15 +274,17 @@ def IS_DARWIN():
     return os.name == "posix" and os.uname().sysname == "Darwin"
 
 
-def RESOLVE_FILE_GLOB(self, maybe_source_glob: str, is_recursive: bool) -> List[str]:
+def RESOLVE_FILE_GLOB(build_directory, maybe_source_glob: str, is_recursive: bool = False) -> List[str]:
     resolved_files = []
+    if not os.path.exists(build_directory):
+        os.mkdir(build_directory)
 
     if '*.c' in maybe_source_glob:
         source_dir = os.path.dirname(maybe_source_glob) or "."
         current_directory = os.getcwd()
 
         try:
-            os.chdir(self.build_directory)
+            os.chdir(build_directory)
             os.chdir(source_dir)
 
             if is_recursive:
@@ -292,7 +294,6 @@ def RESOLVE_FILE_GLOB(self, maybe_source_glob: str, is_recursive: bool) -> List[
                             relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\", "/")
                             resolved_files.append(relative_path)
             else:
-
                 for file in os.listdir(os.getcwd()):
                     if file.endswith('.c'):
                         relative_path = os.path.join(source_dir, file).replace("\\", "/")
