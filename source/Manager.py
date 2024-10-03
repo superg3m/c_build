@@ -8,6 +8,7 @@ from .Utilities import (C_BUILD_IS_DEBUG, INTERNAL_COMPILER, C_BUILD_IS_DEPENDEN
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.compiler_config = compiler_config
+        print("HERE! NOW HAHA")
         INTERNAL_COMPILER = Compiler()
         INTERNAL_COMPILER.set_config(C_BUILD_IS_DEBUG(), compiler_config)
         if INTERNAL_COMPILER.compiler_name == "cl":
