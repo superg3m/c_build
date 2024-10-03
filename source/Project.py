@@ -6,7 +6,7 @@ from linecache import cache
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT
 
 
 class Project:
@@ -31,6 +31,7 @@ class Project:
         if self.is_serialized():
             return
 
+        FATAL_PRINT("HELLLOOOO")
         if not os.path.exists(dependency_name):
             FORMAT_PRINT(f"missing {dependency_name} cloning...")
             os.system(f"git clone {github_root}/{dependency_name}.git")
