@@ -64,13 +64,13 @@ compiler_lookup_table: List[List[str]] = [
 
 class Compiler:
     def __init__(self):
-        self.debug = None
-        self.compiler_name = None
-        self.compiler_std_version  = None
-        self.compiler_type = None
-        self.compiler_warning_level = None
-        self.compiler_disable_specific_warnings = None
-        self.compiler_treat_warnings_as_errors = None
+        self.debug: bool = False
+        self.compiler_name: str = ""
+        self.compiler_std_version: str  = "c11"
+        self.compiler_type: CompilerType = CompilerType.INVALID
+        self.compiler_warning_level: str = ""
+        self.compiler_disable_specific_warnings: List[str] = []
+        self.compiler_treat_warnings_as_errors: bool = False
 
     def set_config(self, is_debug, config):
         self.debug = is_debug
@@ -94,9 +94,9 @@ class Compiler:
 
     def choose_compiler_type(self):
         temp = CompilerType.INVALID
-        if self.compiler_type == "cl":
+        if self.compiler_name == "cl":
             temp = CompilerType.CL
-        elif self.compiler_type in ["gcc", "cc", "clang"]:
+        elif self.compiler_name in ["gcc", "cc", "clang"]:
             temp = CompilerType.GCC_CC_CLANG
         return temp
 
