@@ -3,7 +3,7 @@ import subprocess
 from enum import Enum
 from typing import List, Dict
 
-from Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
+from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
 
 class CompilerType(Enum):
     INVALID = -1

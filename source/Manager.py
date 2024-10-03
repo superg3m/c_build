@@ -1,8 +1,8 @@
 import json
 
-from DependencyBuilder import DependencyBuilder
-from Project import Project
-from Utilities import (C_BUILD_IS_DEBUG, INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, \
+from .DependencyBuilder import DependencyBuilder
+from .Project import Project
+from .Utilities import (C_BUILD_IS_DEBUG, INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, \
                               C_BUILD_EXECUTION_TYPE, SET_MSVC_VARS_FROM_CACHE)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):

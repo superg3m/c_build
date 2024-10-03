@@ -2,8 +2,8 @@ import json
 import os
 import subprocess
 
-from Project import Project
-from Utilities import INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, \
+from .Project import Project
+from .Utilities import INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, \
     C_BUILD_EXECUTION_TYPE, FORMAT_PRINT, GIT_PULL
 
 
