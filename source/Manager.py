@@ -5,7 +5,7 @@ from .Compiler import Compiler
 from .Project import Project
 from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
                         C_BUILD_EXECUTION_TYPE, SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, FORMAT_PRINT,
-                        C_BUILD_COMPILER_NAME, git_pull_tasks)
+                        C_BUILD_COMPILER_NAME)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.compiler_config = compiler_config
