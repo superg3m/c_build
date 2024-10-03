@@ -7,7 +7,7 @@ from linecache import cache
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, IS_WINDOWS_PROCESS_RUNNING
 
 
 class Project:
@@ -123,26 +123,61 @@ class Project:
 
     def __run(self):
         cached_current_directory = os.getcwd()
-        for exe in self.project_executable_procedures:
-            for proc_config in self.procedures:
-                try:
-                    proc_name = proc_config["output_name"]
-                    proc_dir = proc_config["build_directory"]
+        executable_procedures = [
+            (exe, proc_config)
+            for exe in self.project_executable_procedures
+            for proc_config in self.procedures
+            if exe == proc_config["output_name"]
+        ]
 
-                    if exe == proc_name:
-                        os.chdir(proc_dir)
-                        FATAL_PRINT(proc_name)
-                        os.system(f".\\{proc_name}")
-                        break
-                except FileNotFoundError:
-                    FATAL_PRINT(f"executable not found")
-                    exit(-1)
-                finally:
-                    os.chdir(cached_current_directory)
+        for exe, proc_config in executable_procedures:
+            proc_name = proc_config["output_name"]
+            proc_dir = proc_config["build_directory"]
+            try:
+                os.chdir(proc_dir)
+                executable_path = f"./{proc_name}" if not IS_WINDOWS() else f".\\{proc_name}"
+                subprocess.run([executable_path])
+            except FileNotFoundError:
+                FATAL_PRINT(f"Executable '{proc_name}' not found in directory '{proc_dir}'")
+                exit(-1)
+            except Exception as e:
+                FATAL_PRINT(f"Error running executable '{proc_name}': {e}")
+                exit(-1)
+            finally:
+                os.chdir(cached_current_directory)
 
 
     def __debug(self):
-        print("DEBUG")
+        debugger = ["raddbg", "devenv"]
+        executable_procedures = [
+            (exe, proc_config)
+            for exe in self.project_executable_procedures
+            for proc_config in self.procedures
+            if exe == proc_config["output_name"]
+        ]
+        exe, proc_config = executable_procedures[0]
+        proc_name = proc_config["output_name"]
+        proc_dir = proc_config["build_directory"]
+
+        debug_command = [debugger[self.project_debug_with_visual_studio], proc_name]
+        cached_current_directory = os.getcwd()
+        try:
+            os.chdir(proc_dir)
+            debugger_name = debugger[self.project_debug_with_visual_studio]
+
+            # Check if the debugger process is already running
+            debugger_running = IS_WINDOWS_PROCESS_RUNNING(debugger_name)
+            if debugger_running:
+                NORMAL_PRINT(f"Debugger already running attaching to process...")
+            else:
+                process = subprocess.Popen(debug_command)
+                NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
+
+        except FileNotFoundError:
+            FATAL_PRINT(f"Executable not found")
+            exit(-1)
+        finally:
+            os.chdir(cached_current_directory)
 
     def __clean(self):
         print("CLEAN")
