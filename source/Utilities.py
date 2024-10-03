@@ -281,7 +281,7 @@ def RESOLVE_FILE_GLOB(maybe_source_glob: str, is_recursive: bool = False) -> Lis
                             relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\", "/")
                             resolved_files.append(relative_path)
             else:
-
+                FATAL_PRINT("HELLO")
                 for file in os.listdir(os.getcwd()):
                     if file.endswith('.c'):
                         relative_path = os.path.join(source_dir, file).replace("\\", "/")
