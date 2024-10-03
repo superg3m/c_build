@@ -99,8 +99,8 @@ class Project:
         tasks = []
         for dep in project_dependencies:
             if dep:
-                tasks.append(QUEUE_GIT_STATUS(dep))
-                tasks.append(QUEUE_GIT_STATUS(f"{dep}/c_build"))
+                tasks.append(asyncio.create_task(QUEUE_GIT_STATUS(dep)))
+                tasks.append(asyncio.create_task(QUEUE_GIT_STATUS(f"{dep}/c_build")))
         await asyncio.gather(*tasks)
 
     def build(self, override = False):
