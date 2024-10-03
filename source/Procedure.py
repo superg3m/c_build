@@ -2,7 +2,7 @@ import os
 import subprocess
 from typing import Dict
 
-from source.Utilities import IS_WINDOWS, FATAL_PRINT
+from .Utilities import IS_WINDOWS, FATAL_PRINT
 
 
 class Procedure:
