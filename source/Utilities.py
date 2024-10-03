@@ -47,8 +47,6 @@ async def QUEUE_GIT_STATUS(path: str):
                 "Your branch is behind",
                 "have diverged"
             ]):
-                FATAL_PRINT(path)
-                FATAL_PRINT(line)
                 git_status_queue.append(True)
                 return
 
