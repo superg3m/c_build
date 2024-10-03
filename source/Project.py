@@ -16,7 +16,7 @@ class Project:
         self.project_name = project_config["project_name"]
         self.project_debug_with_visual_studio = project_config.get("project_debug_with_visual_studio", True)
         self.should_rebuild = project_config.get("project_rebuild_project_dependencies", False)
-        self.project_executable_procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in project_config["project_executable_procedures"].values()]
+        self.project_executable_procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in project_config["project_executable_procedures"]]
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
         self.is_dependency = is_dependency
         self.project_config = project_config

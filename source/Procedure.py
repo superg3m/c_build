@@ -4,7 +4,6 @@ from typing import Dict
 
 from .Utilities import IS_WINDOWS, FATAL_PRINT
 
-
 class Procedure:
     def __init__(self, MANAGER_COMPILER, procedure_config: Dict):
         self.MANAGER_COMPILER = MANAGER_COMPILER
