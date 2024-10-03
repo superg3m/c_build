@@ -8,12 +8,11 @@ from .Utilities import (C_BUILD_IS_DEBUG, INTERNAL_COMPILER, C_BUILD_IS_DEPENDEN
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.compiler_config = compiler_config
-        print("HERE! NOW HAHA")
         INTERNAL_COMPILER = Compiler()
         INTERNAL_COMPILER.set_config(C_BUILD_IS_DEBUG(), compiler_config)
-        print("AFTER INTERNAL COMPILER SET")
         if INTERNAL_COMPILER.compiler_name == "cl":
             SET_MSVC_VARS_FROM_CACHE()
+
         self.project_config = project_config
         self.procedures_config = procedures_config
 
@@ -25,11 +24,8 @@ class Manager:
                 json.dump(serialized_data, file)
             return
 
-        print("HERE!")
         builder: DependencyBuilder = DependencyBuilder()
         builder.build_dependencies(self.project_config)
-        print("NOW HERE!")
 
         project = Project(self.project_config, self.procedures_config)
         project.build()
-        print("AFTER_BUILD!")

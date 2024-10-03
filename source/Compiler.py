@@ -75,7 +75,7 @@ class Compiler:
     def set_config(self, is_debug, config):
         self.debug = is_debug
         self.compiler_name = config["compiler_name"]
-        self.compiler_std_version = config["compiler_version"]
+        self.compiler_std_version = config["compiler_std_version"]
         self.compiler_type: CompilerType = self.choose_compiler_type()
         self.compiler_warning_level = config["compiler_warning_level"]
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
