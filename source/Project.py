@@ -10,7 +10,6 @@ from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
     C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, CHECK_AND_CONSUME_GIT_PULL
 
-# Stable
 class Project:
     def __init__(self, MANAGER_COMPILER, project_config: Dict, procedures_config: Dict, is_dependency = False,):
         self.project_name = project_config["project_name"]
