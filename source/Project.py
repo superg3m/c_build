@@ -74,13 +74,13 @@ class Project:
                     os.system(f"git clone https://github.com/superg3m/c_build.git")
                     os.chdir(cache_dir)
                 else:
+                    FORMAT_PRINT("PULLING")
                     GIT_PULL(dependency)
                     cache_dir = os.getcwd()
                     os.chdir(dependency)
                     GIT_PULL("c_build")
                     os.chdir(cache_dir)
-
-
+                    FORMAT_PRINT("DONE PULLING")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
