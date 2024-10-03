@@ -28,9 +28,7 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-git_status_queue: Dict = {}
 def __PULL_IS_REQUIRED(path: str):
-    global git_status_queue
     original_dir = os.getcwd()
     try:
         os.chdir(path)
@@ -48,10 +46,8 @@ def __PULL_IS_REQUIRED(path: str):
 
         for line in lines:
             if any(keyword in line for keyword in ["Your branch is behind", "have diverged"]):
-                git_status_queue[path] = True
-                return
-
-        git_status_queue[path] = False
+                return True
+        return False
     finally:
         os.chdir(original_dir)
 
