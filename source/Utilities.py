@@ -44,6 +44,9 @@ def __IS_PULL_REQRUIED(path: str) -> bool:
     return False
 
 def GIT_PULL(path: str):
+    if not __IS_PULL_REQRUIED(path):
+        return
+
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard origin/main -q")
