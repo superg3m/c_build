@@ -115,8 +115,6 @@ class Project:
 
         project_dependencies = self.project_config["project_dependencies"]
         asyncio.run(self.check_project_dependencies_for_status(project_dependencies))
-        FATAL_PRINT("STOPPED")
-        return
 
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
