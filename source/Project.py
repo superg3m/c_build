@@ -122,21 +122,7 @@ class Project:
         FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
-
-        error_occurred = False
         cached_current_directory = os.getcwd()
-        try:
-
-            os.system(resolved_exe)
-        except FileNotFoundError:
-            FATAL_PRINT(f"executable not found")
-            error_occurred = True
-        finally:
-            os.chdir(cached_current_directory)
-            if error_occurred:
-                sys.exit(-1)
-
-
         for exe in self.project_executable_procedures:
             for proc_config in self.procedures:
                 try:
