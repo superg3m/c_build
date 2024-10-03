@@ -1,9 +1,8 @@
 import os
 import time
 
-from source.Utilities import FATAL_PRINT, NORMAL_PRINT, INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, FORMAT_PRINT, \
+from Utilities import FATAL_PRINT, NORMAL_PRINT, INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, FORMAT_PRINT, \
     DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL
-
 
 class Project:
     def __init__(self, project_config, procedures_config, is_dependency = False,):

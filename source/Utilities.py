@@ -4,9 +4,8 @@ import os
 import shutil
 import subprocess
 import sys
-from enum import Enum
 from typing import List
-from source.Compiler import Compiler
+from Compiler import Compiler
 
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'

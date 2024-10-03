@@ -1,10 +1,9 @@
 import json
 import os
 import subprocess
-from distutils.command.build import build
 
-from source.Project import Project
-from source.Utilities import INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, \
+from Project import Project
+from Utilities import INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, \
     C_BUILD_EXECUTION_TYPE, FORMAT_PRINT, GIT_PULL
 
 
