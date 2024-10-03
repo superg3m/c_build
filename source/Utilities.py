@@ -29,24 +29,24 @@ parser.add_argument('--execution_type', default="BUILD", type=str, required=Fals
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
 git_status_queue: Dict = {}
-async def QUEUE_GIT_STATUS(path):
-    global git_status_queue
+async def QUEUE_GIT_STATUS(path: str, git_status_queue: Dict[str, bool]):
     original_dir = os.getcwd()
     try:
         os.chdir(path)
         await asyncio.create_subprocess_exec("git", "fetch", "-q")
-        process = await asyncio.create_subprocess_exec("git", "status", stdout=asyncio.subprocess.PIPE,
-                                                       stderr=asyncio.subprocess.PIPE)
-        stdout, _ = await process.communicate()
 
+        process = await asyncio.create_subprocess_exec(
+            "git", "status",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+
+        stdout, _ = await process.communicate()
         output = stdout.decode("utf-8")
         lines = output.splitlines()
 
         for line in lines:
-            if any(keyword in line for keyword in [
-                "Your branch is behind",
-                "have diverged"
-            ]):
+            if any(keyword in line for keyword in ["Your branch is behind", "have diverged"]):
                 git_status_queue[path] = True
                 return
 
