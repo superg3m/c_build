@@ -11,6 +11,7 @@ class Manager:
         print("HERE! NOW HAHA")
         INTERNAL_COMPILER = Compiler()
         INTERNAL_COMPILER.set_config(C_BUILD_IS_DEBUG(), compiler_config)
+        print("AFTER INTERNAL COMPILER SET")
         if INTERNAL_COMPILER.compiler_name == "cl":
             SET_MSVC_VARS_FROM_CACHE()
         self.project_config = project_config
