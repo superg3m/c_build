@@ -6,8 +6,8 @@ import time
 from linecache import cache
 from typing import Dict
 
-from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, git_pull_tasks
+from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL_OR_CLONE
 
 
 class Project:
@@ -67,26 +67,19 @@ class Project:
 
         for dependency in project_dependencies:
             if dependency:
-                if not os.path.exists(dependency):
-                    FORMAT_PRINT(f"missing {dependency} cloning...")
-                    os.system(f"git clone {github_root}/{dependency}.git")
-                    cache_dir = os.getcwd()
-                    os.chdir(dependency)
-                    os.system(f"git clone https://github.com/superg3m/c_build.git")
-                    os.chdir(cache_dir)
-                else:
-                    FORMAT_PRINT("PULLING")
-                    GIT_PULL(dependency)
-                    GIT_PULL(f"{dependency}/c_build")
-                    FORMAT_PRINT("DONE PULLING")
+                FORMAT_PRINT("PULLING")
+                GIT_PULL_OR_CLONE(dependency)
+                GIT_PULL_OR_CLONE(f"{dependency}/c_build")
+                FORMAT_PRINT("DONE PULLING")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
 
-                await asyncio.gather(*git_pull_tasks)
                 self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
+                await asyncio.gather(*git_pull_tasks)
+                await asyncio.gather(*git_pull_tasks)
                 await project.build()
 
                 os.chdir(cache_dir)

@@ -28,15 +28,23 @@ parser.add_argument('--execution_type', default="BUILD", type=str, required=Fals
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
 # Global task queue
-git_pull_tasks = []
+git_pull_or_clone_tasks = []
 
-def GIT_PULL(path: str):
-    global git_pull_tasks
-    cache_dir = os.getcwd()
-    os.chdir(path)
-    git_pull_tasks.append(asyncio.create_task(async_command(f"git reset --hard origin/main -q")))
-    git_pull_tasks.append(asyncio.create_task(async_command(f"git pull")))
-    os.chdir(cache_dir)
+def GIT_PULL_OR_CLONE(path: str, github_root = "https://github.com/superg3m"):
+    global git_pull_or_clone_tasks
+    if not os.path.exists(path):
+        FORMAT_PRINT(f"missing {path} cloning...")
+        cache_dir = os.getcwd()
+        os.chdir(path)
+        git_pull_or_clone_tasks.append(asyncio.create_task(async_command(f"git clone {github_root}/{path}.git")))
+        git_pull_or_clone_tasks.append(asyncio.create_task(async_command(f"git clone https://github.com/superg3m/c_build.git")))
+        os.chdir(cache_dir)
+    else:
+        cache_dir = os.getcwd()
+        os.chdir(path)
+        git_pull_or_clone_tasks.append(asyncio.create_task(async_command(f"git reset --hard origin/main -q")))
+        git_pull_or_clone_tasks.append(asyncio.create_task(async_command(f"git pull")))
+        os.chdir(cache_dir)
 
 
 def SET_LEVEL(value: int):
