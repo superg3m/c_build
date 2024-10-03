@@ -50,6 +50,7 @@ def GIT_PULL(path: str):
         return
 
     git_had_to_pull.append(True)
+    FATAL_PRINT(git_had_to_pull)
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard origin/main -q")
