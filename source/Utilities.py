@@ -64,9 +64,10 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
 git_had_to_pull = []
 def GIT_PULL(path: str):
     global git_had_to_pull
-    FATAL_PRINT(path)
     if not __IS_PULL_REQUIRED(path):
         return
+
+    FATAL_PRINT(path)
 
     if "c_build" not in path:
         git_had_to_pull.append(True)
