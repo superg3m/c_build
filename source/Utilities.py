@@ -60,7 +60,7 @@ def GIT_PULL(path: str):
     if "c_build" not in path:
         git_had_to_pull[path] = True
         git_had_to_pull.pop(path)
-        
+
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard -q")
@@ -68,7 +68,7 @@ def GIT_PULL(path: str):
     os.chdir(cache_dir)
 
 
-def PEEK_GIT_PULL(path):
+def PEEK_GIT_PULL_STATUS(path):
     global git_had_to_pull
     if len(git_had_to_pull) == 0:
         return False
