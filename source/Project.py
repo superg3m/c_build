@@ -67,10 +67,19 @@ class Project:
 
         for dependency in project_dependencies:
             if dependency:
-                FORMAT_PRINT("PULLING")
-                GIT_PULL_OR_CLONE(dependency)
-                GIT_PULL_OR_CLONE(f"{dependency}/c_build")
-                FORMAT_PRINT("DONE PULLING")
+                if not os.path.exists(dependency):
+                    FORMAT_PRINT(f"missing {dependency} cloning...")
+                    os.system(f"git clone {github_root}/{dependency}.git")
+                    cache_dir = os.getcwd()
+                    os.chdir(dependency)
+                    os.system(f"git clone https://github.com/superg3m/c_build.git")
+                    os.chdir(cache_dir)
+                else:
+                    FORMAT_PRINT("PULLING")
+
+                    GIT_PULL_OR_CLONE(dependency)
+                    GIT_PULL_OR_CLONE(f"{dependency}/c_build")
+                    FORMAT_PRINT("DONE PULLING")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
@@ -79,7 +88,6 @@ class Project:
                 self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
-
                 await project.build()
 
                 os.chdir(cache_dir)
