@@ -32,7 +32,6 @@ git_pull_tasks = []
 
 def GIT_PULL(path: str):
     global git_pull_tasks
-    # Append the git pull task to the global task queue
     git_pull_tasks.append(asyncio.create_task(async_command(f"git -C {path} pull")))
 
 def SET_LEVEL(value: int):
