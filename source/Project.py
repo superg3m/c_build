@@ -113,9 +113,6 @@ class Project:
             self.__clean()
             return
 
-        project_dependencies = self.project_config["project_dependencies"]
-        asyncio.run(self.check_project_dependencies_for_status(project_dependencies))
-
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
