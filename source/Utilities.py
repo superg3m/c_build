@@ -27,6 +27,22 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
+def __IS_PULL_REQRUIED(path: str) -> bool:
+    cache_dir = os.getcwd()
+    os.chdir(path)
+
+    p = subprocess.Popen(["git status"], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+    out, err = p.communicate()
+    lines = out.splitlines()
+    os.chdir(cache_dir)
+
+    if "Your branch is behind" in lines or "have diverged" in lines:
+        return True
+    elif "Changes not staged for commit" in lines or "Untracked files" in lines:
+        return True
+
+    return False
+
 def GIT_PULL(path: str):
     cache_dir = os.getcwd()
     os.chdir(path)
