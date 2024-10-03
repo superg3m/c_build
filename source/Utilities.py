@@ -28,19 +28,19 @@ parser.add_argument('--execution_type', default="BUILD", type=str, required=Fals
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
 def __IS_PULL_REQRUIED(path: str) -> bool:
-    cache_dir = os.getcwd()
-    os.chdir(path)
-    os.system(f"git fetch -q")
-    p = subprocess.Popen(["git", "status"], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-    out, err = p.communicate()
-    lines = out.splitlines()
-    os.chdir(cache_dir)
-    FATAL_PRINT(lines)
+    original_dir = os.getcwd()
+    try:
+        os.chdir(path)
+        subprocess.run(["git", "fetch", "-q"], check=True)
+        output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
+        lines = output.stdout.splitlines()
+        FATAL_PRINT(lines)
 
-    if "Your branch is behind" in lines or "have diverged" in lines:
-        return True
-    elif "Changes not staged for commit" in lines or "Untracked files" in lines:
-        return True
+        for line in lines:
+            if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
+                return True
+    finally:
+        os.chdir(original_dir)
 
     return False
 
