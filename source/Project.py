@@ -122,7 +122,13 @@ class Project:
         FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
-        print("RUN")
+        for exe in self.project_executable_procedures:
+            for proc_config in self.procedures:
+                proc_name = proc_config["output_name"]
+                proc_dir = proc_config["build_directory"]
+                if exe == proc_name:
+                    os.system(f"{proc_dir}/{proc_name}")
+                    break
 
     def __debug(self):
         print("DEBUG")
