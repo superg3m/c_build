@@ -30,7 +30,7 @@ parser.add_argument('--compiler_name', default="cl", type=str, required=False, h
 def __IS_PULL_REQRUIED(path: str) -> bool:
     cache_dir = os.getcwd()
     os.chdir(path)
-
+    os.system(f"git fetch -q")
     p = subprocess.Popen(["git", "status"], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
     out, err = p.communicate()
     lines = out.splitlines()
@@ -54,6 +54,8 @@ def GIT_PULL(path: str):
 
     cache_dir = os.getcwd()
     os.chdir(path)
+    os.system(f"git reset --hard origin/main -q")
+
     os.system(f"git reset --hard origin/main -q")
     os.system(f"git pull -q")
     os.chdir(cache_dir)
