@@ -86,6 +86,7 @@ class Project:
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
                 project.should_rebuild = self.should_rebuild
+                FATAL_PRINT(project.should_rebuild)
                 project.build()
 
                 os.chdir(cache_dir)
