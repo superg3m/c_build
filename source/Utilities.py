@@ -52,7 +52,7 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
 git_had_to_pull = []
 def GIT_PULL(path: str):
     global git_had_to_pull
-    if not __IS_PULL_REQRUIED(path):
+    if not __IS_PULL_REQUIRED(path):
         return
 
     if "c_build" not in path:
