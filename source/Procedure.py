@@ -2,7 +2,7 @@ import os
 import subprocess
 from typing import Dict
 
-from .Utilities import IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOBE, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, NORMAL_PRINT
+from .Utilities import IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOB, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, NORMAL_PRINT
 
 
 class Procedure:
