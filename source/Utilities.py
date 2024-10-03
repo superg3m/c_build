@@ -27,15 +27,11 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-# Global task queue
-git_pull_tasks = []
-
-def ASYNC_GIT_PULL(path: str, github_root = "https://github.com/superg3m"):
-    global git_pull_tasks
+def GIT_PULL(path: str):
     cache_dir = os.getcwd()
     os.chdir(path)
-    git_pull_tasks.append(asyncio.create_task(async_command(f"git reset --hard origin/main -q")))
-    git_pull_tasks.append(asyncio.create_task(async_command(f"git pull")))
+    os.system(f"git reset --hard origin/main -q")
+    os.system(f"git pull")
     os.chdir(cache_dir)
 
 def SET_LEVEL(value: int):
@@ -77,24 +73,12 @@ def FATAL_PRINT(msg):
     if msg:
         print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
 
-async def async_command(cmd):
-    process = await asyncio.create_subprocess_shell(
-        cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
-    )
-    stdout, stderr = await process.communicate()
-    if process.returncode != 0:
-        print(f"Error running command: {cmd}\n{stderr.decode().strip()}")
-    return stdout.decode().strip()
-
 def IS_WINDOWS_PROCESS_RUNNING(process_name):
     programs = str(subprocess.check_output('tasklist'))
     if process_name in programs:
         return True
     else:
         return False
-
 
 MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
 

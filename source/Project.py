@@ -81,15 +81,14 @@ class Project:
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
 
-                await asyncio.gather(*git_pull_tasks)
                 self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
-                await project.build()
+                project.build()
 
                 os.chdir(cache_dir)
 
-    async def build(self):
+    def build(self):
         execution_type = C_BUILD_EXECUTION_TYPE()
         if execution_type == "RUN":
             self.__run()
