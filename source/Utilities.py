@@ -59,7 +59,7 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
     if len(git_status_queue) == 0:
         return False
 
-    return git_status_queue.pop(0)
+    return git_status_queue[0]
 
 git_had_to_pull = []
 def GIT_PULL(path: str):
@@ -77,6 +77,7 @@ def GIT_PULL(path: str):
     os.system(f"git reset --hard -q")
     os.system(f"git pull -q")
     os.chdir(cache_dir)
+    git_status_queue.pop(0)
 
 def CHECK_AND_CONSUME_GIT_PULL():
     if len(git_had_to_pull) == 0:
