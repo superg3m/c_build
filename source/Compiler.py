@@ -169,7 +169,7 @@ class Compiler:
             compiler_command.append(multi_threading_flag)
 
         # Add warning level flag
-        if self.compiler_warning_level:
+        if self.compiler_warning_level and not self.compiler_disable_specific_warnings:
             warning_level_flag = self.get_compiler_lookup(CompilerAction.WARNING_LEVEL)
             compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
 
