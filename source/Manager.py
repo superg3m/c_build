@@ -24,5 +24,5 @@ class Manager:
                 json.dump(serialized_data, file)
             return
 
-        project = Project(self.project_config, self.procedures_config)
-        project.build(self.INTERNAL_COMPILER)
+        project = Project(self.INTERNAL_COMPILER, self.project_config, self.procedures_config)
+        project.build()
