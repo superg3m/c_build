@@ -1,7 +1,3 @@
-# C_Build is in a semi unfinished state right now I need to finish the rewrite it works to build
-# but scripts like: run.ps1, clean.ps1 or debug.ps1 don't work.
-
-
 # c_build 
 
 `c_build` is a tool designed to easily and quickly build C projects and their dependencies. 
@@ -41,26 +37,3 @@ The project is moving towards using CMake for better organization and cross-plat
 ## Getting Started
 1. Run the bootstrap script to initialize the project.
    - ./bootstrap.ps1
-
-- [ ] Run
-- [x] Build
-- [ ] Debug
-- [ ] Clean
-
-Eventually procedures that don't depend on anything or 
-already have that thing built can be built in parallel with another procedure.
-
-
-Run the subprocess once then generate a c_build_cache.txt
-Then you can just run the build_project(data) and the data comes from the cache this should decrease build time
-significantly because I don't have to worry about starting a process and the overhead that incurs. 
-
-c_build_cache_cl.json
-c_build_cache_gcc.json
-{
-    
-    build_dir
-    proc
-    executable
-
-}
