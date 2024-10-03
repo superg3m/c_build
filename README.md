@@ -49,3 +49,18 @@ The project is moving towards using CMake for better organization and cross-plat
 
 Eventually procedures that don't depend on anything or 
 already have that thing built can be built in parallel with another procedure.
+
+
+Run the subprocess once then generate a c_build_cache.txt
+Then you can just run the build_project(data) and the data comes from the cache this should decrease build time
+significantly because I don't have to worry about starting a process and the overhead that incurs. 
+
+c_build_cache_cl.json
+c_build_cache_gcc.json
+{
+    
+    build_dir
+    proc
+    executable
+
+}
