@@ -60,6 +60,7 @@ def CHECK_AND_CONSUME_GIT_PULL():
     if len(git_had_to_pull) == 0:
         return False
 
+    FATAL_PRINT(git_had_to_pull)
     return git_had_to_pull.pop()
 
 def SET_LEVEL(value: int):
