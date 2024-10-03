@@ -21,6 +21,10 @@ FATAL = "\033[41m"
 level = 0
 indent_spaces = " " * (level * 4)
 INTERNAL_COMPILER = None
+parser = argparse.ArgumentParser()
+parser.add_argument('--build_type', type=str, required=False, help='build_type -> { debug, release }')
+parser.add_argument('--is_dependency', type=str, required=False, help='is_dependency -> { true, false }')
+parser.add_argument('--execution_type', type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
@@ -207,18 +211,12 @@ def build_static_lib(compiler_name, output_name, additional_libs):
 
 # either release or debug
 def C_BUILD_IS_DEBUG():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--build_type', type=str, required=False)
     return parser.parse_args().build_type == "debug"
 
 def C_BUILD_IS_DEPENDENCY():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--is_dependency', type=str, required=False)
     return parser.parse_args().is_dependency == "true"
 
 def C_BUILD_EXECUTION_TYPE():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--execution_type', type=str, required=True)
     return parser.parse_args().execution_type
 
 def C_BUILD_LIB(lib_name, compiler_name):
