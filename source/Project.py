@@ -31,7 +31,7 @@ class Project:
         if self.is_serialized():
             return
 
-        FATAL_PRINT("HELLLOOOO")
+
         if not os.path.exists(dependency_name):
             FORMAT_PRINT(f"missing {dependency_name} cloning...")
             os.system(f"git clone {github_root}/{dependency_name}.git")
@@ -42,6 +42,7 @@ class Project:
         else:
             GIT_PULL(dependency_name)
 
+        FATAL_PRINT("HELLLOOOO")
         original_cached_directory = os.getcwd()
         os.chdir(dependency_name)
         if IS_WINDOWS():
