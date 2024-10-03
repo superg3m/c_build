@@ -125,7 +125,7 @@ class Compiler:
         else:
             should_build_executable = True  # For Linux
 
-        compiler_command: List[str] = [self.compiler_type]
+        compiler_command: List[str] = [self.compiler_name]
         compiler_command.extend([source for source in source_files if source])
 
         # Add no logo flag
