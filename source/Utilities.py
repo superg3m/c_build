@@ -29,7 +29,8 @@ parser.add_argument('--execution_type', default="BUILD", type=str, required=Fals
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
 git_status_queue: Dict = {}
-async def QUEUE_GIT_STATUS(path: str, git_status_queue: Dict[str, bool]):
+async def QUEUE_GIT_STATUS(path: str):
+    global git_status_queue
     original_dir = os.getcwd()
     try:
         os.chdir(path)
