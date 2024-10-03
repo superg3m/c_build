@@ -135,7 +135,7 @@ class Project:
             FATAL_PRINT(f"Got: {self.executable_procedures_names} | Expected: {expected_names}")
             exit(-1)
 
-        for proc in intersection:
+        for proc in self.project_executable_procedures:
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
                 proc.compile()
             proc.run()
