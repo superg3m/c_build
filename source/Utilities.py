@@ -47,6 +47,7 @@ async def QUEUE_GIT_STATUS(path: str):
                 "Your branch is behind",
                 "have diverged"
             ]):
+                FATAL_PRINT(line)
                 git_status_queue.append(True)
     finally:
         os.chdir(original_dir)
