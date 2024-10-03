@@ -82,7 +82,7 @@ def IS_WINDOWS_PROCESS_RUNNING(process_name):
         return False
 
 
-file_name: str = "./c_build/new_stuff/c_build_cl_vars_cache.txt"
+MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
 
 def find_vs_path() -> str:
     vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -128,12 +128,12 @@ def get_vs_environment():
     return list(return_set)
 
 def generate_vars_file_cache():
-    if os.path.exists(file_name):
+    if os.path.exists(MSVC_CACHED_NAME):
         return
 
     lines_to_write = get_vs_environment()
 
-    with open(file_name, "w") as generated_file:
+    with open(MSVC_CACHED_NAME, "w") as generated_file:
         for line in lines_to_write:
             generated_file.write(line + "\n")
 
@@ -142,7 +142,7 @@ def SET_MSVC_VARS_FROM_CACHE():
         return ""
 
     generate_vars_file_cache()
-    with open(file_name, "r") as file:
+    with open(MSVC_CACHED_NAME, "r") as file:
         for line in file.readlines():
             if "=" in line:
                 name, value = line.strip().split("=", 1)
