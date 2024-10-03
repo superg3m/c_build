@@ -59,7 +59,7 @@ class Procedure:
                 NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
 
         except FileNotFoundError:
-            FATAL_PRINT(f"{debugger} or executable not found")
+            FATAL_PRINT(f"{debug_command} or executable not found")
             exit(-1)
         finally:
             os.chdir(cached_current_directory)
