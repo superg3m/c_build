@@ -2,7 +2,7 @@
 from c_build.source.utilities import *
 from c_build.source.Manager import *
 # --------------------------------------------------------------------------------------
-compiler_name = "cl"
+compiler_name = C_BUILD_COMPILER_NAME() if C_BUILD_IS_DEPENDENCY() else "gcc"
 compiler_std_version = "c11"
 compiler_warning_level = ""
 compiler_disable_specific_warnings = []
