@@ -130,6 +130,10 @@ class Project:
             if exe == proc_config["output_name"]
         ]
 
+        if len(executable_procedures) == 0:
+            FATAL_PRINT("No available executable procedures!")
+            exit(-1)
+
         for exe, proc_config in executable_procedures:
             proc_name = proc_config["output_name"]
             proc_dir = proc_config["build_directory"]
