@@ -43,7 +43,6 @@ class Project:
 
         original_cached_directory = os.getcwd()
         os.chdir(dependency_name)
-        FORMAT_PRINT(f"CWD: {os.getcwd()}")
         if IS_WINDOWS():
             subprocess.call(
                 f"python -B -m c_build_script --is_dependency true",
