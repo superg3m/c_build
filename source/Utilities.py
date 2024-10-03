@@ -221,7 +221,7 @@ def C_BUILD_EXECUTION_TYPE():
 def C_BUILD_LIB(lib_name, compiler_name):
     return f"{lib_name}.lib" if compiler_name == "cl" else f"lib{lib_name}.a"
 
-def IS_WINDOW():
+def IS_WINDOWS():
     return os.name == "nt"
 
 def IS_LINUX():
