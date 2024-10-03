@@ -31,21 +31,6 @@ class Project:
         if self.is_serialized():
             return
 
-
-        if not os.path.exists(dependency_name):
-            FORMAT_PRINT(f"missing {dependency_name} cloning...")
-            os.system(f"git clone {github_root}/{dependency_name}.git")
-            cache_dir = os.getcwd()
-            os.chdir(dependency_name)
-            os.system(f"git clone https://github.com/superg3m/c_build.git")
-            os.chdir(cache_dir)
-        else:
-            GIT_PULL(dependency_name)
-            cache_dir = os.getcwd()
-            os.chdir(dependency_name)
-            GIT_PULL("c_build")
-            os.chdir(cache_dir)
-
         original_cached_directory = os.getcwd()
         os.chdir(dependency_name)
         if IS_WINDOWS():
@@ -84,6 +69,20 @@ class Project:
 
         for dependency in project_dependencies:
             if dependency:
+                if not os.path.exists(dependency):
+                    FORMAT_PRINT(f"missing {dependency} cloning...")
+                    os.system(f"git clone {github_root}/{dependency}.git")
+                    cache_dir = os.getcwd()
+                    os.chdir(dependency)
+                    os.system(f"git clone https://github.com/superg3m/c_build.git")
+                    os.chdir(cache_dir)
+                else:
+                    GIT_PULL(dependency)
+                    cache_dir = os.getcwd()
+                    os.chdir(dependency)
+                    GIT_PULL("c_build")
+                    os.chdir(cache_dir)
+
                 self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
 
                 cache_dir = os.getcwd()
