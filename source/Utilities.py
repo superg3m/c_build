@@ -20,7 +20,6 @@ FATAL = "\033[41m"
 
 level = 0
 indent_spaces = " " * (level * 4)
-INTERNAL_COMPILER = None
 parser = argparse.ArgumentParser()
 parser.add_argument('--build_type', type=str, required=False, help='build_type -> { debug, release }')
 parser.add_argument('--is_dependency', type=str, required=False, help='is_dependency -> { true, false }')
