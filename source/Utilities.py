@@ -36,7 +36,7 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
         local_hash_result = subprocess.run(["git", "rev-parse", "HEAD"],
                                            capture_output=True, text=True, check=True)
         local_hash = local_hash_result.stdout.strip()
-        remote_hash_result = subprocess.run(["git", "ls-remote", "--heads", "origin", "HEAD"],
+        remote_hash_result = subprocess.run(["git", "ls-remote", "origin", "HEAD"],
                                             capture_output=True, text=True, check=True)
         remote_hash = remote_hash_result.stdout.split()[0]
 
