@@ -3,6 +3,7 @@ import subprocess
 from enum import Enum
 from typing import List, Dict
 
+from .Procedure import Procedure
 from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
 
 class CompilerType(Enum):
@@ -103,13 +104,13 @@ class Compiler:
     def get_compiler_lookup(self, action: CompilerAction) -> str:
         return compiler_lookup_table[self.compiler_type.value][action.value]
 
-    def compile_procedure(self, procedure_config):
-        build_directory = procedure_config["build_directory"]
-        output_name = procedure_config["output_name"]
-        source_files = procedure_config["source_files"]
-        additional_libs = procedure_config["additional_libs"]
-        compile_time_defines = procedure_config["compile_time_defines"]
-        include_paths = procedure_config["include_paths"]
+    def compile_procedure(self, procedure: Procedure):
+        build_directory = procedure.build_directory
+        output_name = procedure.output_name
+        source_files = procedure.source_files
+        additional_libs = procedure.additional_libs
+        compile_time_defines = procedure.compile_time_defines
+        include_paths = procedure.include_paths
 
         should_build_executable = False
         should_build_static_lib = False
