@@ -49,7 +49,6 @@ async def QUEUE_GIT_STATUS(path: str):
                 "Untracked files"
             ]):
                 git_status_queue.append(True)
-                return
     finally:
         os.chdir(original_dir)
 
