@@ -34,7 +34,6 @@ def __IS_PULL_REQRUIED(path: str) -> bool:
         subprocess.run(["git", "fetch", "-q"], check=True)
         output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
         lines = output.stdout.splitlines()
-        FATAL_PRINT(lines)
 
         for line in lines:
             if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
@@ -51,7 +50,6 @@ def GIT_PULL(path: str):
         return
 
     git_had_to_pull.append(True)
-    FATAL_PRINT(f"ARR: {git_had_to_pull}")
 
     cache_dir = os.getcwd()
     os.chdir(path)
@@ -65,7 +63,6 @@ def CHECK_AND_CONSUME_GIT_PULL():
     if len(git_had_to_pull) == 0:
         return False
 
-    FATAL_PRINT(f"ARR: {git_had_to_pull}")
     return git_had_to_pull.pop()
 
 def SET_LEVEL(value: int):
