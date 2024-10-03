@@ -5,7 +5,7 @@ import time
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
-    C_BUILD_IS_DEBUG
+    C_BUILD_IS_DEBUG, IS_WINDOWS
 
 
 class Project:
@@ -33,12 +33,13 @@ class Project:
         if not os.path.exists(dependency_name):
             FORMAT_PRINT(f"missing {dependency_name} cloning...")
             os.system(f"git clone {github_root}/{dependency_name}.git")
+            os.system(f"git clone https://github.com/superg3m/c_build.git")
         else:
             GIT_PULL(dependency_name)
 
         original_cached_directory = os.curdir
         os.chdir(dependency_name)
-        if os.name == "nt":
+        if IS_WINDOWS():
             subprocess.call(
                 f"python -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
                 shell=True
