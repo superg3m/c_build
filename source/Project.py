@@ -77,8 +77,6 @@ class Project:
 
         if len(project_dependencies) != 0 and project_dependencies[0] != "":
             FORMAT_PRINT(f"{project_name} depends on:")
-        else:
-            FORMAT_PRINT(f"{project_name} depends on nothing")
 
         for dependency in project_dependencies:
             if dependency:
