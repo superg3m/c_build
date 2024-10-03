@@ -59,18 +59,21 @@ def GIT_PULL(path: str):
 
     if "c_build" not in path:
         git_had_to_pull[path] = True
+        git_had_to_pull.pop(path)
+        
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard -q")
     os.system(f"git pull -q")
     os.chdir(cache_dir)
 
-def CONSUME_GIT_PULL(path):
+
+def PEEK_GIT_PULL(path):
     global git_had_to_pull
     if len(git_had_to_pull) == 0:
         return False
 
-    return git_had_to_pull.pop(path)
+    return git_had_to_pull[path]
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
