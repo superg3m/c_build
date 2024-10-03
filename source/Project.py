@@ -80,6 +80,7 @@ class Project:
         for dependency in project_dependencies:
             if dependency:
                 cache_dir = os.getcwd()
+                print(f"CWD: {cache_dir}")
                 os.chdir(dependency)
                 self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
