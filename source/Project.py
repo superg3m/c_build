@@ -8,7 +8,7 @@ from typing import Dict, List
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, PEEK_GIT_PULL_STATUS
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, CHECK_AND_CONSUME_GIT_PULL
 
 
 class Project:
@@ -114,7 +114,7 @@ class Project:
 
         for proc in self.procedures:
             if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
-                self.is_dependency and not self.should_rebuild and not PEEK_GIT_PULL_STATUS(self.project_name)):
+                self.is_dependency and not self.should_rebuild and not CHECK_AND_CONSUME_GIT_PULL()):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             proc.compile()

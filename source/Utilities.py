@@ -28,37 +28,30 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-def __PULL_IS_REQUIRED(path: str):
+def __IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
         os.chdir(path)
-
-        subprocess.run(["git", "fetch", "-q"], check=True)
-        process = subprocess.run(
-            ["git", "status"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=True
-        )
-
-        output = process.stdout.decode("utf-8")
-        lines = output.splitlines()
+        subprocess.run(["git", "fetch", "-q"])
+        output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
+        lines = output.stdout.splitlines()
 
         for line in lines:
-            if any(keyword in line for keyword in ["Your branch is behind", "have diverged"]):
+            if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
                 return True
-        return False
     finally:
         os.chdir(original_dir)
 
-git_had_to_pull: Dict = {}
+    return False
+
+git_had_to_pull = []
 def GIT_PULL(path: str):
     global git_had_to_pull
-    if not __PULL_IS_REQUIRED(path):
+    if not __IS_PULL_REQUIRED(path):
         return
 
     if "c_build" not in path:
-        git_had_to_pull[path] = True
+        git_had_to_pull.append(True)
 
     cache_dir = os.getcwd()
     os.chdir(path)
@@ -66,13 +59,12 @@ def GIT_PULL(path: str):
     os.system(f"git pull -q")
     os.chdir(cache_dir)
 
-
-def PEEK_GIT_PULL_STATUS(path):
-    global git_had_to_pull
+def CHECK_AND_CONSUME_GIT_PULL():
     if len(git_had_to_pull) == 0:
         return False
 
-    return git_had_to_pull[path]
+    return git_had_to_pull.pop()
+
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
