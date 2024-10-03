@@ -29,7 +29,7 @@ parser.add_argument('--execution_type', default="BUILD", type=str, required=Fals
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
 git_status_queue: Dict = {}
-def QUEUE_GIT_STATUS(path: str):
+def __PULL_IS_REQUIRED(path: str):
     global git_status_queue
     original_dir = os.getcwd()
     try:
@@ -55,24 +55,10 @@ def QUEUE_GIT_STATUS(path: str):
     finally:
         os.chdir(original_dir)
 
-def PEEK_GIT_STATUS_CHECK(path):
-    global git_status_queue
-    if len(git_status_queue) == 0:
-        return False
-
-    return git_status_queue[path]
-
-def CONSUME_GIT_STATUS_CHECK(path):
-    global git_status_queue
-    if len(git_status_queue) == 0:
-        return False
-
-    return git_status_queue.pop(path)
-
 git_had_to_pull: Dict = {}
 def GIT_PULL(path: str):
     global git_had_to_pull
-    if not PEEK_GIT_STATUS_CHECK(path):
+    if not __PULL_IS_REQUIRED(path):
         return
 
     git_had_to_pull[path] = True
@@ -81,7 +67,6 @@ def GIT_PULL(path: str):
     os.system(f"git reset --hard -q")
     os.system(f"git pull -q")
     os.chdir(cache_dir)
-    CONSUME_GIT_STATUS_CHECK(path)
 
 def CONSUME_GIT_PULL(path):
     global git_had_to_pull
