@@ -34,16 +34,16 @@ class Project:
         if not os.path.exists(dependency_name):
             FORMAT_PRINT(f"missing {dependency_name} cloning...")
             os.system(f"git clone {github_root}/{dependency_name}.git")
-            cache_dir = os.curdir
+            cache_dir = os.getcwd()
             os.chdir(dependency_name)
             os.system(f"git clone https://github.com/superg3m/c_build.git")
             os.chdir(cache_dir)
         else:
             GIT_PULL(dependency_name)
 
-        original_cached_directory = os.curdir
+        original_cached_directory = os.getcwd()
         os.chdir(dependency_name)
-        FORMAT_PRINT(f"CWD: {os.curdir}")
+        FORMAT_PRINT(f"CWD: {os.getcwd()}")
         if IS_WINDOWS():
             subprocess.call(
                 f"python -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
