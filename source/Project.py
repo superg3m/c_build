@@ -83,11 +83,12 @@ class Project:
                     GIT_PULL("c_build")
                     os.chdir(cache_dir)
 
-                self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
+
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
-
+                
+                self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
                 FORMAT_PRINT(f"CWD: {os.getcwd()}")
