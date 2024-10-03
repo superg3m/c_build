@@ -5,7 +5,6 @@ import subprocess
 from .Project import Project
 from .Utilities import C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, FORMAT_PRINT, GIT_PULL
 
-
 class DependencyBuilder:
     def __init__(self, MANAGER_COMPILER):
         self.MANAGER_COMPILER = MANAGER_COMPILER

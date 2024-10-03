@@ -1,23 +1,94 @@
+import json
 import os
+import subprocess
 import time
 from typing import Dict
 
 from .DependencyBuilder import DependencyBuilder
-from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL
+from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
+    C_BUILD_IS_DEBUG
+
 
 class Project:
-    def __init__(self, project_config: Dict, procedures_config: Dict, is_dependency = False,):
+    def __init__(self, MANAGER_COMPILER, project_config: Dict, procedures_config: Dict, is_dependency = False,):
         self.project_name = project_config["project_name"]
         self.project_debug_with_visual_studio = project_config["project_debug_with_visual_studio"]
         self.project_executable_procedures = project_config["project_executable_procedures"]
         self.procedures = [procedure_data for procedure_data in procedures_config.values()]
         self.is_dependency = is_dependency
         self.project_config = project_config
+        self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
+        self.MANAGER_COMPILER = MANAGER_COMPILER
+        self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
 
     def __check_procedure_built(self, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
 
-    def build(self, MANAGER_COMPILER):
+    def is_serialized(self):
+        return os.path.exists(self.serialized_name)
+
+    def __serialize_dependency_data(self, github_root, dependency_name):
+        if self.is_serialized():
+            return
+
+        if not os.path.exists(dependency_name):
+            FORMAT_PRINT(f"missing {dependency_name} cloning...")
+            os.system(f"git clone {github_root}/{dependency_name}.git")
+        else:
+            GIT_PULL(dependency_name)
+
+        os.environ['COMPILER'] = self.MANAGER_COMPILER.compiler_name
+        os.environ['LEVEL'] = str(GET_LEVEL())
+        os.environ['IS_DEPENDENCY'] = str(True) # Make sure it's a string
+        env = os.environ.copy()
+
+        original_cached_directory = os.curdir
+        os.chdir(dependency_name)
+        if os.name == "nt":
+            subprocess.call(
+                f"python -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
+                shell=True,
+                env=env
+            )
+        else:
+            subprocess.call(
+                f"python3 -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
+                shell=True,
+                env=env
+            )
+        os.chdir(original_cached_directory)
+
+    def __deserialize_dependency_data(self):
+        serialized_file = open(self.serialized_name)
+        config = json.load(serialized_file)
+        project_config = {}
+        procedure_config = {}
+
+        for key, value in config.items():
+            if key.startswith("project_"):
+                project_config[key] = value
+            elif isinstance(value, dict):
+                procedure_config[key] = value
+
+        return project_config, procedure_config
+
+    def build_dependencies(self, project_config, github_root = "https://github.com/superg3m"):
+        project_name = project_config["project_name"]
+        project_dependencies = project_config["project_dependencies"]
+
+        if len(project_dependencies) != 0 and project_dependencies[0] != "":
+            FORMAT_PRINT(f"{project_name} depends on:")
+        else:
+            FORMAT_PRINT(f"{project_name} depends on nothing")
+
+        for dependency in project_dependencies:
+            if dependency:
+                self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
+                project_data, procedure_data = self.__deserialize_dependency_data()
+                project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
+                project.build()
+
+    def build(self):
         execution_type = C_BUILD_EXECUTION_TYPE()
         if execution_type == "RUN":
             self.__run()
@@ -33,7 +104,7 @@ class Project:
         UP_LEVEL()
         start_time = time.perf_counter()
 
-        builder: DependencyBuilder = DependencyBuilder(MANAGER_COMPILER)
+        builder: DependencyBuilder = DependencyBuilder(self.MANAGER_COMPILER)
         builder.build_dependencies(self.project_config)
 
         for proc_config in self.procedures:
@@ -42,7 +113,7 @@ class Project:
             if self.__check_procedure_built(build_dir, output_name) and self.is_dependency:
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(build_dir, output_name)}, skipping...")
                 continue
-            MANAGER_COMPILER.compile_procedure(proc_config)
+            self.MANAGER_COMPILER.compile_procedure(proc_config)
 
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
