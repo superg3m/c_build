@@ -131,6 +131,7 @@ class Project:
 
                     if exe == proc_name:
                         os.chdir(proc_dir)
+                        FATAL_PRINT(proc_name)
                         os.system(f"./{proc_name}")
                         break
                 except FileNotFoundError:
