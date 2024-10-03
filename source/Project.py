@@ -7,7 +7,7 @@ from linecache import cache
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL_OR_CLONE, git_pull_or_clone_tasks
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, git_pull_tasks, ASYNC_GIT_PULL
 
 
 class Project:
@@ -75,16 +75,13 @@ class Project:
                     os.system(f"git clone https://github.com/superg3m/c_build.git")
                     os.chdir(cache_dir)
                 else:
-                    FORMAT_PRINT("PULLING")
-
-                    GIT_PULL_OR_CLONE(dependency)
-                    GIT_PULL_OR_CLONE(f"{dependency}/c_build")
-                    FORMAT_PRINT("DONE PULLING")
+                    ASYNC_GIT_PULL(dependency)
+                    ASYNC_GIT_PULL(f"{dependency}/c_build")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
 
-                await asyncio.gather(*git_pull_or_clone_tasks)
+                await asyncio.gather(*git_pull_tasks)
                 self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
