@@ -7,7 +7,7 @@ from linecache import cache
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, git_pull_tasks, ASYNC_GIT_PULL
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL
 
 
 class Project:
@@ -58,7 +58,7 @@ class Project:
 
         return project_config, procedure_config
 
-    async def build_dependencies(self, project_config, github_root = "https://github.com/superg3m"):
+    def build_dependencies(self, project_config, github_root = "https://github.com/superg3m"):
         project_name = project_config["project_name"]
         project_dependencies = project_config["project_dependencies"]
 
@@ -75,8 +75,8 @@ class Project:
                     os.system(f"git clone https://github.com/superg3m/c_build.git")
                     os.chdir(cache_dir)
                 else:
-                    ASYNC_GIT_PULL(dependency)
-                    ASYNC_GIT_PULL(f"{dependency}/c_build")
+                    GIT_PULL(dependency)
+                    GIT_PULL(f"{dependency}/c_build")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
@@ -104,7 +104,7 @@ class Project:
         UP_LEVEL()
         start_time = time.perf_counter()
 
-        await self.build_dependencies(self.project_config)
+        self.build_dependencies(self.project_config)
 
         for proc_config in self.procedures:
             build_dir = proc_config["build_directory"]
