@@ -59,7 +59,6 @@ def GIT_PULL(path: str):
 
     if "c_build" not in path:
         git_had_to_pull[path] = True
-        git_had_to_pull.pop(path)
 
     cache_dir = os.getcwd()
     os.chdir(path)
