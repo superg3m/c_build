@@ -25,13 +25,13 @@ class Project:
         return os.path.exists(os.path.join(build_dir, output_name))
 
     def is_serialized(self):
-        FORMAT_PRINT(self.serialized_name)
         return os.path.exists(self.serialized_name)
 
     def __serialize_dependency_data(self, github_root, dependency_name):
         if self.is_serialized():
             return
 
+        FORMAT_PRINT(self.serialized_name)
         if not os.path.exists(dependency_name):
             FORMAT_PRINT(f"missing {dependency_name} cloning...")
             os.system(f"git clone {github_root}/{dependency_name}.git")
