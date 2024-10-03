@@ -66,9 +66,12 @@ class DependencyBuilder:
 
         if len(project_dependencies) != 0 and project_dependencies[0] != "":
             FORMAT_PRINT(f"{project_name} depends on:")
+        else:
+            FORMAT_PRINT(f"{project_name} depends on nothing")
 
         for dependency in project_dependencies:
-            self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
-            project_data, procedure_data = self.__deserialize_dependency_data()
-            project: Project = Project(project_data, procedure_data, True)
-            project.build(self.MANAGER_COMPILER)
+            if dependency:
+                self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
+                project_data, procedure_data = self.__deserialize_dependency_data()
+                project: Project = Project(project_data, procedure_data, True)
+                project.build(self.MANAGER_COMPILER)
