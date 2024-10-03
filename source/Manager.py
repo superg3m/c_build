@@ -17,6 +17,8 @@ class Manager:
         self.procedures_config = procedures_config
 
     def build_project(self):
+        print(f"IS_DEPENDENCY: {C_BUILD_IS_DEPENDENCY()}")
+        return
         if C_BUILD_IS_DEPENDENCY():
             FATAL_PRINT("THIS SHOULDNT HAPPEN RIGHT NOW!")
             serialized_name = f"c_build_dependency_cache_{self.INTERNAL_COMPILER.compiler_name}.json"
