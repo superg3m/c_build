@@ -11,4 +11,4 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-python ./c_build/scripts/debug.py
+python -B -m c_build_script --execution_type "DEBUG"
