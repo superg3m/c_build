@@ -9,7 +9,7 @@ from typing import Dict, List
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
     C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, IS_WINDOWS_PROCESS_RUNNING, CHECK_AND_CONSUME_GIT_PULL, \
-    QUEUE_GIT_STATUS
+    QUEUE_GIT_STATUS, FATAL
 
 
 class Project:
@@ -96,12 +96,10 @@ class Project:
                 os.chdir(cache_dir)
 
     async def check_project_dependencies_for_status(self, project_dependencies: List[str]):
-        tasks = []
         for dep in project_dependencies:
             if dep:
-                tasks.append(asyncio.create_task(QUEUE_GIT_STATUS(dep)))
-                tasks.append(asyncio.create_task(QUEUE_GIT_STATUS(f"{dep}/c_build")))
-        await asyncio.gather(*tasks)
+                await QUEUE_GIT_STATUS(dep)
+                await QUEUE_GIT_STATUS(f"{dep}/c_build")
 
     def build(self, override = False):
         execution_type = C_BUILD_EXECUTION_TYPE()
@@ -117,6 +115,8 @@ class Project:
 
         project_dependencies = self.project_config["project_dependencies"]
         asyncio.run(self.check_project_dependencies_for_status(project_dependencies))
+        FATAL_PRINT("STOPPED")
+        return
 
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
