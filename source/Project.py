@@ -28,8 +28,9 @@ class Project:
         return os.path.exists(self.serialized_name)
 
     def __serialize_dependency_data(self, github_root, dependency_name):
+        FORMAT_PRINT("PROBLEM!")
         if self.is_serialized():
-            FORMAT_PRINT("PROBLEM!")
+            FORMAT_PRINT("NOW PROBLEM!")
             return
 
         if not os.path.exists(dependency_name):
