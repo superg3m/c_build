@@ -11,6 +11,7 @@ class Procedure:
         self.build_directory = procedure_config["build_directory"]
         self.output_name = procedure_config["output_name"]
         self.source_files = RESOLVE_FILE_GLOB(procedure_config["source_files"])
+        FATAL_PRINT(f"HEllo: {self.source_files}")
         self.additional_libs = procedure_config["additional_libs"]
         self.compile_time_defines = procedure_config["compile_time_defines"]
         self.include_paths = procedure_config["include_paths"]
