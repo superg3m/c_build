@@ -28,8 +28,8 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-git_status_queue: List[bool] = []
-async def QUEUE_GIT_STATUS(path: str):
+git_status_queue = {}
+async def QUEUE_GIT_STATUS(path):
     global git_status_queue
     original_dir = os.getcwd()
     try:
@@ -47,43 +47,40 @@ async def QUEUE_GIT_STATUS(path: str):
                 "Your branch is behind",
                 "have diverged"
             ]):
-                git_status_queue.append(True)
+                git_status_queue.put(path, True)
                 return
 
-        git_status_queue.append(False)
+        git_status_queue.put(path, False)
     finally:
         os.chdir(original_dir)
 
-def __IS_PULL_REQUIRED(path: str) -> bool:
+def PEEK_GIT_STATUS_CHECK(path):
     global git_status_queue
-    if len(git_status_queue) == 0:
-        return False
+    return git_status_queue[path]
 
-    return git_status_queue[0]
+def CONSUME_GIT_STATUS_CHECK(path):
+    global git_status_queue
+    return git_status_queue.pop(path)
 
-git_had_to_pull = []
+git_had_to_pull = {}
 def GIT_PULL(path: str):
     global git_had_to_pull
-    if not __IS_PULL_REQUIRED(path):
+    if not PEEK_GIT_STATUS_CHECK(path):
         return
 
-    FATAL_PRINT(path)
-
     if "c_build" not in path:
-        git_had_to_pull.append(True)
+        git_had_to_pull.put(path, True)
 
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard -q")
     os.system(f"git pull -q")
     os.chdir(cache_dir)
-    git_status_queue.pop(0)
+    CONSUME_GIT_STATUS_CHECK(path)
 
-def CHECK_AND_CONSUME_GIT_PULL():
-    if len(git_had_to_pull) == 0:
-        return False
-
-    return git_had_to_pull.pop()
+def CONSUME_GIT_PULL(path):
+    global git_had_to_pull
+    return git_had_to_pull.pop(path)
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
