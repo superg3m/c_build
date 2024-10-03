@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import sys
 from typing import List
-from Compiler import Compiler
+from Compiler import *
 
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
