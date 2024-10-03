@@ -1,3 +1,4 @@
+import asyncio
 import json
 
 from .Compiler import Compiler
@@ -29,4 +30,4 @@ class Manager:
 
 
         project = Project(self.INTERNAL_COMPILER, self.project_config, self.procedures_config)
-        project.build()
+        asyncio.run(project.build())

@@ -57,7 +57,7 @@ class Project:
 
         return project_config, procedure_config
 
-    def build_dependencies(self, project_config, github_root = "https://github.com/superg3m"):
+    async def build_dependencies(self, project_config, github_root = "https://github.com/superg3m"):
         project_name = project_config["project_name"]
         project_dependencies = project_config["project_dependencies"]
 
@@ -75,10 +75,10 @@ class Project:
                     os.chdir(cache_dir)
                 else:
                     FORMAT_PRINT("PULLING")
-                    GIT_PULL(dependency)
+                    await GIT_PULL(dependency)
                     cache_dir = os.getcwd()
                     os.chdir(dependency)
-                    GIT_PULL("c_build")
+                    await GIT_PULL("c_build")
                     os.chdir(cache_dir)
                     FORMAT_PRINT("DONE PULLING")
 
@@ -92,7 +92,7 @@ class Project:
 
                 os.chdir(cache_dir)
 
-    def build(self):
+    async def build(self):
         execution_type = C_BUILD_EXECUTION_TYPE()
         if execution_type == "RUN":
             self.__run()
@@ -108,7 +108,7 @@ class Project:
         UP_LEVEL()
         start_time = time.perf_counter()
 
-        self.build_dependencies(self.project_config)
+        await self.build_dependencies(self.project_config)
 
         for proc_config in self.procedures:
             build_dir = proc_config["build_directory"]

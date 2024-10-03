@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import glob
 import os
 import shutil
@@ -65,13 +66,26 @@ def FATAL_PRINT(msg):
     if msg:
         print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
 
+async def async_command(cmd):
+    process = await asyncio.create_subprocess_shell(
+        cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE
+    )
+    stdout, stderr = await process.communicate()
+    if process.returncode != 0:
+        print(f"Error running command: {cmd}\n{stderr.decode().strip()}")
+    return stdout.decode().strip()
 
-def GIT_PULL(path: str):
+
+async def GIT_PULL(path: str):
     current_directory = os.getcwd()
     os.chdir(path)
-    os.system("git fetch origin -q")
-    os.system("git reset --hard origin/main -q")
-    os.system("git pull -q")
+
+    await async_command("git fetch origin -q")
+    await async_command("git reset --hard origin/main -q")
+    await async_command("git pull -q")
+
     os.chdir(current_directory)
 
 def IS_WINDOWS_PROCESS_RUNNING(process_name):
