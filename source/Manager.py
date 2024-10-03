@@ -23,8 +23,11 @@ class Manager:
                 json.dump(serialized_data, file)
             return
 
+        print("HERE!")
         builder: DependencyBuilder = DependencyBuilder()
         builder.build_dependencies(self.project_config)
+        print("NOW HERE!")
 
         project = Project(self.project_config, self.procedures_config)
         project.build()
+        print("AFTER_BUILD!")
