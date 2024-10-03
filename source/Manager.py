@@ -3,7 +3,8 @@ import json
 from .Compiler import Compiler
 from .Project import Project
 from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
-                        C_BUILD_EXECUTION_TYPE, SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, FORMAT_PRINT)
+                        C_BUILD_EXECUTION_TYPE, SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, FORMAT_PRINT,
+                        C_BUILD_COMPILER_NAME)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.compiler_config = compiler_config
@@ -17,7 +18,8 @@ class Manager:
 
     def build_project(self):
         if C_BUILD_IS_DEPENDENCY():
-            serialized_name = f"c_build_dependency_cache_{self.INTERNAL_COMPILER.compiler_name}.json"
+            FATAL_PRINT("HELLOO!")
+            serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
             serialized_data = {
                 **self.project_config,
                 **self.procedures_config
