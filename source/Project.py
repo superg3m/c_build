@@ -41,15 +41,19 @@ class Project:
             os.chdir(cache_dir)
         else:
             GIT_PULL(dependency_name)
+            cache_dir = os.getcwd()
+            os.chdir(dependency_name)
+            GIT_PULL("c_build")
+            os.chdir(cache_dir)
 
         original_cached_directory = os.getcwd()
         os.chdir(dependency_name)
         if IS_WINDOWS():
+            FATAL_PRINT("HELLLOOOO")
             subprocess.call(
                 f"python -B -m c_build_script --is_dependency true",
                 shell=True
             )
-            FATAL_PRINT("HELLLOOOO")
         else:
             subprocess.call(
                 f"python3 -B -m c_build_script --is_dependency true",
