@@ -47,10 +47,10 @@ async def QUEUE_GIT_STATUS(path):
                 "Your branch is behind",
                 "have diverged"
             ]):
-                git_status_queue.put(path, True)
+                git_status_queue[path] = True
                 return
 
-        git_status_queue.put(path, False)
+        git_status_queue[path] = False
     finally:
         os.chdir(original_dir)
 
@@ -68,14 +68,14 @@ def CONSUME_GIT_STATUS_CHECK(path):
 
     return git_status_queue.pop(path)
 
-git_had_to_pull = {}
+git_had_to_pull: Dict = {}
 def GIT_PULL(path: str):
     global git_had_to_pull
     if not PEEK_GIT_STATUS_CHECK(path):
         return
 
     if "c_build" not in path:
-        git_had_to_pull.put(path, True)
+        git_had_to_pull[path] = True
 
     cache_dir = os.getcwd()
     os.chdir(path)
