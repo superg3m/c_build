@@ -265,6 +265,8 @@ def IS_DARWIN():
 
 def RESOLVE_FILE_GLOB(build_directory, maybe_source_glob: str, is_recursive: bool = False) -> List[str]:
     resolved_files = []
+    if not os.path.exists(build_directory):
+        os.mkdir(build_directory)
 
     if '*.c' in maybe_source_glob:
         source_dir = os.path.dirname(maybe_source_glob) or "."
