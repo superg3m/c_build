@@ -36,24 +36,17 @@ class Project:
         else:
             GIT_PULL(dependency_name)
 
-        os.environ['COMPILER'] = self.MANAGER_COMPILER.compiler_name
-        os.environ['LEVEL'] = str(GET_LEVEL())
-        os.environ['IS_DEPENDENCY'] = str(True) # Make sure it's a string
-        env = os.environ.copy()
-
         original_cached_directory = os.curdir
         os.chdir(dependency_name)
         if os.name == "nt":
             subprocess.call(
                 f"python -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
-                shell=True,
-                env=env
+                shell=True
             )
         else:
             subprocess.call(
                 f"python3 -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
-                shell=True,
-                env=env
+                shell=True
             )
         os.chdir(original_cached_directory)
 
