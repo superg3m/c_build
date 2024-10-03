@@ -49,6 +49,9 @@ async def QUEUE_GIT_STATUS(path: str):
             ]):
                 FATAL_PRINT(line)
                 git_status_queue.append(True)
+                return
+
+        git_status_queue.append(False)
     finally:
         os.chdir(original_dir)
 
@@ -57,8 +60,7 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
     if len(git_status_queue) == 0:
         return False
 
-    print(git_status_queue)
-    return git_status_queue.pop()
+    return git_status_queue.pop(0)
 
 git_had_to_pull = []
 def GIT_PULL(path: str):
