@@ -138,7 +138,7 @@ class Project:
 
 
     def __debug(self):
-        self.project_executable_procedures[0].debug()
+        self.project_executable_procedures[0].debug(self.project_debug_with_visual_studio)
 
     def __clean(self):
         for proc in self.procedures:

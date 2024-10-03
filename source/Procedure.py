@@ -2,7 +2,7 @@ import os
 import subprocess
 from typing import Dict
 
-from .Utilities import IS_WINDOWS, FATAL_PRINT, FORMAT_PRINT
+from .Utilities import IS_WINDOWS, FATAL_PRINT, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, NORMAL_PRINT
 
 
 class Procedure:
@@ -38,24 +38,27 @@ class Procedure:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-    def debug(self):
+    def debug(self, debug_with_visual_studio):
         debugger = ["raddbg", "devenv"]
-        current_dir = os.getcwd()
-        current_dir = current_dir.replace("\\", "/")
-        current_dir = current_dir + self.build_directory.replace("./", "/")
-        if not os.path.exists(self.build_directory):
-            return
-        FORMAT_PRINT(f"Cleaning: {current_dir}")
-        for filename in os.listdir(self.build_directory):
-            file_path = os.path.join(self.build_directory, filename)
-            try:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    if file_path.endswith(".c") or file_path.endswith(".cpp") or file_path.endswith(".sln"):
-                        continue
+        debug_command = [debugger[debug_with_visual_studio], self.output_name]
+        cached_current_directory = os.getcwd()
+        try:
+            os.chdir(self.build_directory)
+            debugger_name = debugger[debug_with_visual_studio]
 
-                    os.unlink(file_path)
-            except Exception as e:
-                print('Failed to delete %s. Reason: %s' % (file_path, e))
+            # Check if the debugger process is already running
+            debugger_running = IS_WINDOWS_PROCESS_RUNNING(debugger_name)
+            if debugger_running:
+                NORMAL_PRINT(f"Debugger already running attaching to process...")
+            else:
+                process = subprocess.Popen(debug_command)
+                NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
+
+        except FileNotFoundError:
+            FATAL_PRINT(f"Executable not found")
+            exit(-1)
+        finally:
+            os.chdir(cached_current_directory)
 
     def run(self):
         cached_current_directory = os.getcwd()
