@@ -5,7 +5,6 @@ import shutil
 import subprocess
 import sys
 from typing import List
-from .Compiler import *
 
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
@@ -21,7 +20,7 @@ FATAL = "\033[41m"
 
 level = 0
 indent_spaces = " " * (level * 4)
-INTERNAL_COMPILER: Compiler = Compiler()
+INTERNAL_COMPILER = None
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
