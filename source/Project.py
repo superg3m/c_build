@@ -8,8 +8,7 @@ from typing import Dict, List
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, IS_WINDOWS_PROCESS_RUNNING, \
-    QUEUE_GIT_STATUS, FATAL, CONSUME_GIT_PULL
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, CONSUME_GIT_PULL
 
 
 class Project:
@@ -94,12 +93,6 @@ class Project:
                 project.build()
 
                 os.chdir(cache_dir)
-
-    async def check_project_dependencies_for_status(self, project_dependencies: List[str]):
-        for dep in project_dependencies:
-            if dep:
-                await QUEUE_GIT_STATUS(dep)
-                await QUEUE_GIT_STATUS(f"{dep}/c_build")
 
     def build(self, override = False):
         execution_type = C_BUILD_EXECUTION_TYPE()
