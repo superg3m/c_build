@@ -4,7 +4,7 @@ import os
 import subprocess
 import time
 from linecache import cache
-from typing import Dict
+from typing import Dict, List
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
@@ -95,6 +95,10 @@ class Project:
 
                 os.chdir(cache_dir)
 
+    async def check_project_dependencies_for_status(self, project_dependencies: List[str]):
+        tasks = [QUEUE_GIT_STATUS(dep) for dep in project_dependencies if dep]
+        await asyncio.gather(*tasks)
+
     def build(self, override = False):
         execution_type = C_BUILD_EXECUTION_TYPE()
         if execution_type == "RUN" and not override:
@@ -108,9 +112,7 @@ class Project:
             return
 
         project_dependencies = self.project_config["project_dependencies"]
-        for dependency in project_dependencies:
-            if dependency:
-                asyncio.run(QUEUE_GIT_STATUS(dependency))
+        asyncio.run(self.check_project_dependencies_for_status(project_dependencies))
 
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
