@@ -17,12 +17,13 @@ class Manager:
 
     def build_project(self):
         if C_BUILD_IS_DEPENDENCY():
-            FATAL_PRINT("THIS SHOULDNT HAPPEN RIGHT NOW!")
             serialized_name = f"c_build_dependency_cache_{self.INTERNAL_COMPILER.compiler_name}.json"
-            serialized_data = {self.project_config, self.procedures_config}
+            serialized_data = {
+                **self.project_config,
+                "procedures_config": self.procedures_config
+            }
             with open(serialized_name, "w") as file:
-                json.dump(serialized_data, file)
-            return
+                json.dump(serialized_data, file, indent=4)
 
         project = Project(self.INTERNAL_COMPILER, self.project_config, self.procedures_config)
         project.build()
