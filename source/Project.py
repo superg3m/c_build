@@ -122,13 +122,37 @@ class Project:
         FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
+
+        error_occurred = False
+        cached_current_directory = os.getcwd()
+        try:
+
+            os.system(resolved_exe)
+        except FileNotFoundError:
+            FATAL_PRINT(f"executable not found")
+            error_occurred = True
+        finally:
+            os.chdir(cached_current_directory)
+            if error_occurred:
+                sys.exit(-1)
+
+
         for exe in self.project_executable_procedures:
             for proc_config in self.procedures:
-                proc_name = proc_config["output_name"]
-                proc_dir = proc_config["build_directory"]
-                if exe == proc_name:
-                    os.system(f"{proc_dir}/{proc_name}")
-                    break
+                try:
+                    proc_name = proc_config["output_name"]
+                    proc_dir = proc_config["build_directory"]
+
+                    if exe == proc_name:
+                        os.chdir(proc_dir)
+                        os.system(f"./{proc_name}")
+                        break
+                except FileNotFoundError:
+                    FATAL_PRINT(f"executable not found")
+                    exit(-1)
+                finally:
+                    os.chdir(cached_current_directory)
+
 
     def __debug(self):
         print("DEBUG")
