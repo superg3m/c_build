@@ -16,14 +16,16 @@ class Project:
         self.project_name = project_config["project_name"]
         self.project_debug_with_visual_studio = project_config.get("project_debug_with_visual_studio", True)
         self.should_rebuild = project_config.get("project_rebuild_project_dependencies", False)
-        self.project_executable_procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in project_config["project_executable_procedures"]]
+        self.executable_procedures_names = project_config["project_executable_procedures"]
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
+        self.project_executable_procedures = [proc for proc in self.procedures if proc.output_name in self.executable_procedures_names]
+
         self.is_dependency = is_dependency
         self.project_config = project_config
         self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
         self.MANAGER_COMPILER = MANAGER_COMPILER
         self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
-        self.executable_procedures_names = project_config["project_executable_procedures"].values()
+
 
     def __check_procedure_built(self, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
