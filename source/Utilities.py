@@ -32,6 +32,7 @@ git_pull_tasks = []
 
 def GIT_PULL(path: str):
     global git_pull_tasks
+    git_pull_tasks.append(asyncio.create_task(async_command(f"git -C {path} reset --hard origin/main -q")))
     git_pull_tasks.append(asyncio.create_task(async_command(f"git -C {path} pull")))
 
 def SET_LEVEL(value: int):

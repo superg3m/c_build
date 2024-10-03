@@ -77,7 +77,7 @@ class Project:
                 else:
                     FORMAT_PRINT("PULLING")
                     GIT_PULL(dependency)
-                    GIT_PULL("c_build")
+                    GIT_PULL(f"{dependency}/c_build")
                     FORMAT_PRINT("DONE PULLING")
 
                 cache_dir = os.getcwd()
