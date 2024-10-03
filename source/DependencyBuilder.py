@@ -34,13 +34,13 @@ class DependencyBuilder:
         os.chdir(dependency_name)
         if os.name == "nt":
             subprocess.call(
-                f"python -B -m c_build_script --build_type {self.build_type} --is_dependency {True} --execution_type BUILD",
+                f"python -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
                 shell=True,
                 env=env
             )
         else:
             subprocess.call(
-                f"python3 -B -m c_build_script --build_type {self.build_type} --is_dependency {True} --execution_type BUILD",
+                f"python3 -B -m c_build_script --build_type {self.build_type} --is_dependency true --execution_type BUILD",
                 shell=True,
                 env=env
             )
