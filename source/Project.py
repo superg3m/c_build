@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import subprocess
@@ -6,7 +7,7 @@ from linecache import cache
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, git_pull_tasks
 
 
 class Project:
@@ -85,6 +86,7 @@ class Project:
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
 
+                await asyncio.gather(*git_pull_tasks)
                 self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)

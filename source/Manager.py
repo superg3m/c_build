@@ -31,4 +31,3 @@ class Manager:
 
         project = Project(self.INTERNAL_COMPILER, self.project_config, self.procedures_config)
         asyncio.run(project.build())
-        asyncio.run(*git_pull_tasks)
