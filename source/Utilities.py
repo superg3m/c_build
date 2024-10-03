@@ -21,9 +21,9 @@ FATAL = "\033[41m"
 level = 0
 indent_spaces = " " * (level * 4)
 parser = argparse.ArgumentParser()
-parser.add_argument('--build_type', type=str, required=False, help='build_type -> { debug, release }')
-parser.add_argument('--is_dependency', type=str, required=True, help='is_dependency -> { true, false }')
-parser.add_argument('--execution_type', type=str, required=True, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
+parser.add_argument('--build_type', default="debug", type=str, required=False, help='build_type -> { debug, release }')
+parser.add_argument('--is_dependency', default="false", type=str, required=False, help='is_dependency -> { true, false }')
+parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
