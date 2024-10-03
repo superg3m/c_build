@@ -180,4 +180,22 @@ class Project:
             os.chdir(cached_current_directory)
 
     def __clean(self):
-        print("CLEAN")
+        current_dir = os.getcwd()
+        current_dir = current_dir.replace("\\", "/")
+        for proc_config in self.procedures:
+            proc_dir = proc_config["build_directory"]
+
+            current_dir = current_dir + proc_dir.replace("./", "/")
+            if not os.path.exists(proc_dir):
+                return
+            FORMAT_PRINT(f"Cleaning: {current_dir}")
+            for filename in os.listdir(proc_dir):
+                file_path = os.path.join(proc_dir, filename)
+                try:
+                    if os.path.isfile(file_path) or os.path.islink(file_path):
+                        if file_path.endswith(".c") or file_path.endswith(".cpp") or file_path.endswith(".sln"):
+                            continue
+
+                        os.unlink(file_path)
+                except Exception as e:
+                    print('Failed to delete %s. Reason: %s' % (file_path, e))
