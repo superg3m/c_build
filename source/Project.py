@@ -2,6 +2,7 @@ import os
 import time
 from typing import Dict
 
+from .DependencyBuilder import DependencyBuilder
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL
 
 class Project:
@@ -11,6 +12,7 @@ class Project:
         self.project_executable_procedures = project_config["project_executable_procedures"]
         self.procedures = [procedure_data for procedure_data in procedures_config.values()]
         self.is_dependency = is_dependency
+        self.project_config = project_config
 
     def __check_procedure_built(self, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
@@ -30,6 +32,9 @@ class Project:
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
+
+        builder: DependencyBuilder = DependencyBuilder(MANAGER_COMPILER)
+        builder.build_dependencies(self.project_config)
 
         for proc_config in self.procedures:
             build_dir = proc_config["build_directory"]
