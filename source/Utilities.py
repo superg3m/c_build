@@ -31,7 +31,7 @@ def __IS_PULL_REQRUIED(path: str) -> bool:
     cache_dir = os.getcwd()
     os.chdir(path)
 
-    p = subprocess.Popen(["git status"], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+    p = subprocess.Popen(["git", "status"], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
     out, err = p.communicate()
     lines = out.splitlines()
     os.chdir(cache_dir)
