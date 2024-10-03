@@ -31,7 +31,7 @@ def GIT_PULL(path: str):
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard origin/main -q")
-    os.system(f"git pull")
+    os.system(f"git pull -q")
     os.chdir(cache_dir)
 
 def SET_LEVEL(value: int):
