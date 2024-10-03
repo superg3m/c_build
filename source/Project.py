@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import time
+from linecache import cache
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
@@ -33,7 +34,10 @@ class Project:
         if not os.path.exists(dependency_name):
             FORMAT_PRINT(f"missing {dependency_name} cloning...")
             os.system(f"git clone {github_root}/{dependency_name}.git")
+            cache_dir = os.curdir
+            os.chdir(dependency_name)
             os.system(f"git clone https://github.com/superg3m/c_build.git")
+            os.chdir(cache_dir)
         else:
             GIT_PULL(dependency_name)
 
