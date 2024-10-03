@@ -45,7 +45,7 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
     return False
 
 git_had_to_pull = []
-def GIT_PULL(path: str, dep: List[str]):
+def GIT_PULL(path: str, dep):
     global git_had_to_pull
     if not __IS_PULL_REQUIRED(path):
         return
