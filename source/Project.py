@@ -4,7 +4,6 @@ import subprocess
 import time
 from typing import Dict
 
-from .DependencyBuilder import DependencyBuilder
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
     C_BUILD_IS_DEBUG
 

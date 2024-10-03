@@ -1,7 +1,6 @@
 import json
 
 from .Compiler import Compiler
-from .DependencyBuilder import DependencyBuilder
 from .Project import Project
 from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
                         C_BUILD_EXECUTION_TYPE, SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT)
