@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import sys
 from queue import Queue
-from typing import List
+from typing import List, Dict
 
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
@@ -28,7 +28,7 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-git_status_queue = {}
+git_status_queue: Dict = {}
 async def QUEUE_GIT_STATUS(path):
     global git_status_queue
     original_dir = os.getcwd()
@@ -56,10 +56,16 @@ async def QUEUE_GIT_STATUS(path):
 
 def PEEK_GIT_STATUS_CHECK(path):
     global git_status_queue
+    if len(git_status_queue) == 0:
+        return False
+
     return git_status_queue[path]
 
 def CONSUME_GIT_STATUS_CHECK(path):
     global git_status_queue
+    if len(git_status_queue) == 0:
+        return False
+
     return git_status_queue.pop(path)
 
 git_had_to_pull = {}
@@ -80,6 +86,9 @@ def GIT_PULL(path: str):
 
 def CONSUME_GIT_PULL(path):
     global git_had_to_pull
+    if len(git_had_to_pull) == 0:
+        return False
+
     return git_had_to_pull.pop(path)
 
 def SET_LEVEL(value: int):
