@@ -50,7 +50,8 @@ def GIT_PULL(path: str):
         return
 
     git_had_to_pull.append(True)
-    FATAL_PRINT(git_had_to_pull)
+    FATAL_PRINT(f"ARR: {git_had_to_pull}")
+
     cache_dir = os.getcwd()
     os.chdir(path)
     os.system(f"git reset --hard origin/main -q")
@@ -61,7 +62,7 @@ def CHECK_AND_CONSUME_GIT_PULL():
     if len(git_had_to_pull) == 0:
         return False
 
-    FATAL_PRINT(git_had_to_pull)
+    FATAL_PRINT(f"ARR: {git_had_to_pull}")
     return git_had_to_pull.pop()
 
 def SET_LEVEL(value: int):
