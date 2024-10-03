@@ -30,6 +30,7 @@ parser.add_argument('--compiler_name', default="cl", type=str, required=False, h
 
 git_status_queue: List[bool] = []
 async def QUEUE_GIT_STATUS(path: str):
+    global git_status_queue
     original_dir = os.getcwd()
     try:
         os.chdir(path)
@@ -51,6 +52,7 @@ async def QUEUE_GIT_STATUS(path: str):
         os.chdir(original_dir)
 
 def __IS_PULL_REQUIRED(path: str) -> bool:
+    global git_status_queue
     if len(git_status_queue) == 0:
         return False
 
