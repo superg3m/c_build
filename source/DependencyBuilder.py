@@ -3,14 +3,14 @@ import os
 import subprocess
 
 from .Project import Project
-from .Utilities import INTERNAL_COMPILER, C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, \
+from .Utilities import C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, \
     C_BUILD_EXECUTION_TYPE, FORMAT_PRINT, GIT_PULL
 
 
 class DependencyBuilder:
-    def __init__(self):
+    def __init__(self, MANAGER_COMPILER):
         self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
-        self.serialized_name = f"c_build_dependency_cache_{INTERNAL_COMPILER.compiler_name}.json"
+        self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
 
     def is_serialized(self):
         return os.path.exists(self.serialized_name)
