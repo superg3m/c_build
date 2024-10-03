@@ -10,8 +10,11 @@ class Procedure:
         self.MANAGER_COMPILER = MANAGER_COMPILER
         self.build_directory = procedure_config["build_directory"]
         self.output_name = procedure_config["output_name"]
-        self.source_files = RESOLVE_FILE_GLOB(procedure_config["source_files"])
-        FATAL_PRINT(f"HEllo: {self.source_files}")
+        self.source_files = procedure_config["source_files"])
+        aggregate = []
+        for source in self.source_files: 
+            aggregate.extends(RESOLVE_FILE_GLOB(self.source_files))
+        self.source_files = aggregate
         self.additional_libs = procedure_config["additional_libs"]
         self.compile_time_defines = procedure_config["compile_time_defines"]
         self.include_paths = procedure_config["include_paths"]

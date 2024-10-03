@@ -270,7 +270,6 @@ def RESOLVE_FILE_GLOB(maybe_source_glob: str, is_recursive: bool = False) -> Lis
         source_dir = os.path.dirname(maybe_source_glob) or "."
         current_directory = os.getcwd()
 
-        FATAL_PRINT("HELLO")
         try:
             os.chdir(self.build_directory)
             os.chdir(source_dir)
@@ -282,9 +281,7 @@ def RESOLVE_FILE_GLOB(maybe_source_glob: str, is_recursive: bool = False) -> Lis
                             relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\", "/")
                             resolved_files.append(relative_path)
             else:
-                FATAL_PRINT("HELLO")
                 for file in os.listdir(os.getcwd()):
-                    FATAL_PRINT(f"HELLO: {file}")
                     if file.endswith('.c'):
                         relative_path = os.path.join(source_dir, file).replace("\\", "/")
                         resolved_files.append(relative_path)
