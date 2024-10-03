@@ -103,8 +103,7 @@ class Project:
         UP_LEVEL()
         start_time = time.perf_counter()
 
-        builder: DependencyBuilder = DependencyBuilder(self.MANAGER_COMPILER)
-        builder.build_dependencies(self.project_config)
+        self.build_dependencies(self.project_config)
 
         for proc_config in self.procedures:
             build_dir = proc_config["build_directory"]
