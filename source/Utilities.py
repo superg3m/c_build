@@ -35,6 +35,7 @@ def __IS_PULL_REQRUIED(path: str) -> bool:
     out, err = p.communicate()
     lines = out.splitlines()
     os.chdir(cache_dir)
+    FATAL_PRINT(lines)
 
     if "Your branch is behind" in lines or "have diverged" in lines:
         return True
