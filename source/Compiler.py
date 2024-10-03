@@ -244,7 +244,7 @@ class Compiler:
 
             return_code = result.returncode
             if should_build_static_lib:
-                build_static_lib(self.compiler_type, output_name, additional_libs)
+                build_static_lib(self.compiler_name, output_name, additional_libs)
 
             if return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
