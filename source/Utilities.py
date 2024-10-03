@@ -31,13 +31,10 @@ def __IS_PULL_REQRUIED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
         os.chdir(path)
-        subprocess.run(["git", "fetch", "-q"])
-        # output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
-        # lines = output.stdout.splitlines()
-
-        #for line in lines:
-            #if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
-                #return True
+        local_hash = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        remote_hash = subprocess.run(["git", "ls-remote", "--heads", "origin", "HEAD"], capture_output=True, text=True, check=True).stdout.split()[0]
+        if local_hash != remote_hash:
+            return True
     finally:
         os.chdir(original_dir)
 
