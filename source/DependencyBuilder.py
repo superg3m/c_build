@@ -3,12 +3,12 @@ import os
 import subprocess
 
 from .Project import Project
-from .Utilities import C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, \
-    C_BUILD_EXECUTION_TYPE, FORMAT_PRINT, GIT_PULL
+from .Utilities import C_BUILD_IS_DEPENDENCY, GET_LEVEL, C_BUILD_IS_DEBUG, FORMAT_PRINT, GIT_PULL
 
 
 class DependencyBuilder:
     def __init__(self, MANAGER_COMPILER):
+        self.MANAGER_COMPILER = MANAGER_COMPILER
         self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
         self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
 
@@ -25,7 +25,7 @@ class DependencyBuilder:
         else:
             GIT_PULL(dependency_name)
 
-        os.environ['COMPILER'] = INTERNAL_COMPILER.compiler_name
+        os.environ['COMPILER'] = self.MANAGER_COMPILER.compiler_name
         os.environ['LEVEL'] = str(GET_LEVEL())
         os.environ['IS_DEPENDENCY'] = str(True) # Make sure it's a string
         env = os.environ.copy()
@@ -71,4 +71,4 @@ class DependencyBuilder:
             self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
             project_data, procedure_data = self.__deserialize_dependency_data()
             project: Project = Project(project_data, procedure_data, True)
-            project.build()
+            project.build(self.MANAGER_COMPILER)
