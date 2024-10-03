@@ -18,7 +18,6 @@ class Manager:
 
     def build_project(self):
         if C_BUILD_IS_DEPENDENCY():
-            FATAL_PRINT("HELLOO!")
             serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
             serialized_data = {
                 **self.project_config,
