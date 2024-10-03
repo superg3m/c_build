@@ -27,27 +27,21 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-
 def __IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
         os.chdir(path)
+        subprocess.run(["git", "fetch", "-q"])
+        output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
+        lines = output.stdout.splitlines()
 
-        local_hash_result = subprocess.run(["git", "rev-parse", "HEAD"],
-                                           capture_output=True, text=True, check=True)
-        local_hash = local_hash_result.stdout.strip()
-        remote_hash_result = subprocess.run(["git", "ls-remote", "origin", "HEAD"],
-                                            capture_output=True, text=True, check=True)
-        remote_hash = remote_hash_result.stdout.split()[0]
-
-        return local_hash != remote_hash
-
-    except subprocess.CalledProcessError as e:
-        print(f"Error occurred while checking git status: {e.stderr}")
-        return False
-
+        for line in lines:
+            if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
+                return True
     finally:
         os.chdir(original_dir)
+
+    return False
 
 git_had_to_pull = []
 def GIT_PULL(path: str):
