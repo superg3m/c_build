@@ -55,11 +55,9 @@ class Project:
             )
         os.chdir(original_cached_directory)
 
-    def __deserialize_dependency_data(self, dependency_name):
-        cache_dir = os.getcwd()
-        os.chdir(dependency_name)
+    def __deserialize_dependency_data(self):
         serialized_file = open(self.serialized_name)
-        os.chdir(cache_dir)
+
         config = json.load(serialized_file)
         project_config = {}
         procedure_config = {}
@@ -81,10 +79,13 @@ class Project:
 
         for dependency in project_dependencies:
             if dependency:
+                cache_dir = os.getcwd()
+                os.chdir(dependency)
                 self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
-                project_data, procedure_data = self.__deserialize_dependency_data(dependency)
+                project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
                 project.build()
+                os.chdir(cache_dir)
 
     def build(self):
         execution_type = C_BUILD_EXECUTION_TYPE()
