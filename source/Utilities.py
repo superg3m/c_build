@@ -27,6 +27,14 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
+# Global task queue
+git_pull_tasks = []
+
+def GIT_PULL(path: str):
+    global git_pull_tasks
+    # Append the git pull task to the global task queue
+    git_pull_tasks.append(asyncio.create_task(async_command(f"git -C {path} pull")))
+
 def SET_LEVEL(value: int):
     global level, indent_spaces
     level = value
@@ -76,17 +84,6 @@ async def async_command(cmd):
     if process.returncode != 0:
         print(f"Error running command: {cmd}\n{stderr.decode().strip()}")
     return stdout.decode().strip()
-
-
-async def GIT_PULL(path: str):
-    current_directory = os.getcwd()
-    os.chdir(path)
-
-    await async_command("git fetch origin -q")
-    await async_command("git reset --hard origin/main -q")
-    await async_command("git pull -q")
-
-    os.chdir(current_directory)
 
 def IS_WINDOWS_PROCESS_RUNNING(process_name):
     programs = str(subprocess.check_output('tasklist'))

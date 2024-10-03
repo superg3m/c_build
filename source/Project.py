@@ -6,7 +6,7 @@ from linecache import cache
 from typing import Dict
 
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, GET_LEVEL, GIT_PULL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, async_command
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT
 
 
 class Project:
@@ -68,11 +68,19 @@ class Project:
             if dependency:
                 if not os.path.exists(dependency):
                     FORMAT_PRINT(f"missing {dependency} cloning...")
-                    await async_command(f"git clone https://github.com/superg3m/{dependency}.git")
-                    await async_command(f"git -C {dependency} clone https://github.com/superg3m/c_build.git")
+                    os.system(f"git clone {github_root}/{dependency}.git")
+                    cache_dir = os.getcwd()
+                    os.chdir(dependency)
+                    os.system(f"git clone https://github.com/superg3m/c_build.git")
+                    os.chdir(cache_dir)
                 else:
-                    await async_command(f"git -C {dependency}/c_build pull")
-                    await async_command(f"git -C {dependency} pull")
+                    FORMAT_PRINT("PULLING")
+                    GIT_PULL(dependency)
+                    cache_dir = os.getcwd()
+                    os.chdir(dependency)
+                    GIT_PULL("c_build")
+                    os.chdir(cache_dir)
+                    FORMAT_PRINT("DONE PULLING")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
