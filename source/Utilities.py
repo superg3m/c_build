@@ -56,6 +56,7 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
     if len(git_status_queue) == 0:
         return False
 
+    print(git_status_queue)
     return git_status_queue.pop()
 
 git_had_to_pull = []
