@@ -79,13 +79,15 @@ class Project:
 
         for dependency in project_dependencies:
             if dependency:
-                cache_dir = os.getcwd()
-                FORMAT_PRINT(f"CWD: {cache_dir}")
-                os.chdir(dependency)
                 self.__serialize_dependency_data(github_root, dependency) # only runs if not serialized
+
+                cache_dir = os.getcwd()
+                os.chdir(dependency)
+
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
                 project.build()
+
                 os.chdir(cache_dir)
 
     def build(self):
