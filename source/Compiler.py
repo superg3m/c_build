@@ -231,7 +231,6 @@ class Compiler:
             if not os.path.exists(build_directory):
                 os.mkdir(build_directory)
             os.chdir(build_directory)
-            FORMAT_PRINT(compiler_command)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
