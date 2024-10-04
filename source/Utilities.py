@@ -43,11 +43,13 @@ async def ASYNC_GIT_STATUS(path: str):
         status_proc = await asyncio.create_subprocess_exec(
             "git", "status",
             stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            text=True
+            stderr=asyncio.subprocess.PIPE
         )
         stdout, _ = await status_proc.communicate()
+
+        stdout = stdout.decode('utf-8')
         lines = stdout.splitlines()
+
         for line in lines:
             if any(keyword in line for keyword in
                    ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
