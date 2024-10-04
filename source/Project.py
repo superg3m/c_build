@@ -125,16 +125,16 @@ class Project:
 
     def __run(self):
         expected_names = [proc.output_name for proc in self.procedures if proc.output_name.endswith(".exe")]
-        project_executable_names = [proc.output_name for proc in self.project_executable_procedures]
-        matching_executables = [exe_name for exe_name in project_executable_names if
-                                any(expected_name in exe_name for expected_name in expected_names)]
+        matching_procedures = [proc for proc in self.project_executable_procedures if
+                               any(expected_name in proc.output_name for expected_name in expected_names)]
 
-        if len(matching_executables) == 0:
+        if len(matching_procedures) == 0:
             FATAL_PRINT("No available executable procedures!")
-            FATAL_PRINT(f"Got: {self.executable_procedures_names} | Expected: {expected_names}")
+            FATAL_PRINT(
+                f"Got: {[proc.output_name for proc in self.project_executable_procedures]} | Expected: {expected_names}")
             exit(-1)
 
-        for proc in self.project_executable_procedures:
+        for proc in matching_procedures:
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
                 proc.compile()
             proc.run()
