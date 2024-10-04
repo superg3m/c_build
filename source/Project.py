@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import subprocess
@@ -6,7 +7,7 @@ from typing import Dict, List
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, PEEK_GIT_PULL, CONSUME_GIT_PULL
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, PEEK_GIT_PULL, CONSUME_GIT_PULL, ASYNC_GIT_STATUS
 
 
 class Project:
@@ -92,6 +93,14 @@ class Project:
 
                 os.chdir(cache_dir)
 
+    async def async_git_status_dependencies(self):
+        project_dependencies = self.project_config["project_dependencies"]
+        for dependency in project_dependencies:
+            if dependency:
+                await ASYNC_GIT_STATUS(dependency)
+                await ASYNC_GIT_STATUS("c_build")
+
+
     def build(self, override = False):
         execution_type = C_BUILD_EXECUTION_TYPE()
         if execution_type == "RUN" and not override:
@@ -104,9 +113,8 @@ class Project:
             self.__clean()
             return
 
-        #if self.is_dependency:
-            #ASYNC_GIT_STATUS(self.project_name)
-            #ASYNC_GIT_STATUS("c_build")
+
+        asyncio.run(self.async_git_status_dependencies())
 
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
