@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import subprocess
@@ -142,8 +143,9 @@ class Project:
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
                 proc.compile()
 
-            proc.output_name = executable_name_with_args
-            proc.run()
+            deep_copy_proc = copy.deepcopy(proc)
+            deep_copy_proc.output_name = executable_name_with_args
+            deep_copy_proc.run()
 
 
     def __debug(self):
