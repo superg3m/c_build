@@ -137,9 +137,10 @@ class Project:
 
         for i in range(len(self.executable_procedures_names)):
             executable_name_with_args = self.executable_procedures_names.pop(0)
-            proc = next((proc for proc in self.executable_procedures_names if proc.output_name in executable_name_with_args), None)
+            proc = next((proc for proc in self.project_executable_procedures if proc.output_name in executable_name_with_args), None)
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
                 proc.compile()
+
             proc.output_name = executable_name_with_args
             proc.run()
 
