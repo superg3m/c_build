@@ -127,7 +127,7 @@ class Project:
     def __run(self):
         expected_names = [proc.output_name for proc in self.procedures if proc.output_name.endswith(".exe")]
         FATAL_PRINT(f"Expected executables: {expected_names}")
-        FATAL_PRINT(f"Found procedure: {[proc.output_name for proc in self.project_executable_procedures]}")
+        FATAL_PRINT(f"Found procedure: {self.executable_procedures_names}")
 
         # Find procedures in project_executable_procedures that match the expected names (ignoring case)
         matching_procedures = [proc for proc in self.project_executable_procedures if
