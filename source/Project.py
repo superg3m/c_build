@@ -21,7 +21,7 @@ class Project:
         for proc in self.procedures:
             for name in self.executable_procedures_names:
                 FATAL_PRINT(f"{proc.output_name} | {name}")
-                if name in proc.output_name:
+                if proc.output_name in name:
                     self.project_executable_procedures.append(proc)
 
         self.is_dependency = is_dependency
