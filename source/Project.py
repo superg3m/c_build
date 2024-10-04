@@ -113,12 +113,13 @@ class Project:
             return
 
 
-        asyncio.run(self.async_git_status_dependencies())
+
 
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
-
+        
+        asyncio.run(self.async_git_status_dependencies())
         self.build_dependencies(self.project_config)
 
         for proc in self.procedures:
