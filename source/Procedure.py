@@ -1,6 +1,7 @@
 import os
+import re
 import subprocess
-from typing import Dict, re
+from typing import Dict
 
 from .Utilities import IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOB, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, NORMAL_PRINT
 
