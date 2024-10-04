@@ -52,7 +52,7 @@ async def ASYNC_GIT_STATUS(path: str):
 
         for line in lines:
             if any(keyword in line for keyword in
-                   ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
+                   ["Your branch is behind", "have diverged"]):
                 git_status_queue[path] = True
                 return
 

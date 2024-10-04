@@ -94,14 +94,11 @@ class Project:
                 os.chdir(cache_dir)
 
     async def async_git_status_dependencies(self):
-        tasks = []
         project_dependencies = self.project_config["project_dependencies"]
-        for dependency in project_dependencies:
-            if dependency:
-                tasks.append(ASYNC_GIT_STATUS(dependency))
-                tasks.append(ASYNC_GIT_STATUS("c_build"))
-                
-        await asyncio.gather(*tasks)
+        for dep in project_dependencies:
+            if dep:
+                await ASYNC_GIT_STATUS(dep)
+                await ASYNC_GIT_STATUS(f"{dep}/c_build")
 
     def build(self, override = False):
         execution_type = C_BUILD_EXECUTION_TYPE()
