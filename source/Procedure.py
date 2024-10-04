@@ -70,13 +70,10 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             quoted_values = re.findall(r'"([^"]*)"', self.output_name)
-            FATAL_PRINT(quoted_values)
             executable_name = self.output_name.split()[0]
-            FATAL_PRINT(executable_name)
             executable_path = os.path.join('.', executable_name) if not IS_WINDOWS() else f".\\{executable_name}"
-            FATAL_PRINT(executable_path)
             command = [executable_path] + quoted_values
-            FATAL_PRINT(command)
+            FORMAT_PRINT(command)
             result = subprocess.run(command, check=True)
         except FileNotFoundError:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
