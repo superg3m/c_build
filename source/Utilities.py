@@ -45,14 +45,13 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
     return False
 
 git_had_to_pull = []
-def GIT_PULL(path: str, dep):
+def GIT_PULL(path: str):
     global git_had_to_pull
     if not __IS_PULL_REQUIRED(path):
         return
 
     if "c_build" not in path:
-        for i in range(len(dep)):
-            git_had_to_pull.append(True)
+        git_had_to_pull.append(True)
 
     cache_dir = os.getcwd()
     os.chdir(path)
@@ -60,11 +59,18 @@ def GIT_PULL(path: str, dep):
     os.system(f"git pull -q")
     os.chdir(cache_dir)
 
-def CHECK_AND_CONSUME_GIT_PULL():
+
+def PEEK_GIT_PULL():
     if len(git_had_to_pull) == 0:
         return False
 
-    return git_had_to_pull.pop()
+    return git_had_to_pull[0]
+
+def CONSUME_GIT_PULL():
+    if len(git_had_to_pull) == 0:
+        return False
+
+    return git_had_to_pull.pop(0)
 
 
 def SET_LEVEL(value: int):

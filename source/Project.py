@@ -6,7 +6,8 @@ from typing import Dict, List
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, CHECK_AND_CONSUME_GIT_PULL
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, PEEK_GIT_PULL, CONSUME_GIT_PULL
+
 
 class Project:
     def __init__(self, MANAGER_COMPILER, project_config: Dict, procedures_config: Dict, is_dependency = False,):
@@ -77,8 +78,8 @@ class Project:
                     os.system(f"git clone https://github.com/superg3m/c_build.git")
                     os.chdir(cache_dir)
                 else:
-                    GIT_PULL(dependency, self.procedures)
-                    GIT_PULL(f"{dependency}/c_build", [])
+                    GIT_PULL(dependency)
+                    GIT_PULL(f"{dependency}/c_build")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
@@ -103,6 +104,10 @@ class Project:
             self.__clean()
             return
 
+        #if self.is_dependency:
+            #ASYNC_GIT_STATUS(self.project_name)
+            #ASYNC_GIT_STATUS("c_build")
+
         FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
@@ -111,10 +116,11 @@ class Project:
 
         for proc in self.procedures:
             if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
-                self.is_dependency and not self.should_rebuild and not CHECK_AND_CONSUME_GIT_PULL()):
+                self.is_dependency and not self.should_rebuild and not PEEK_GIT_PULL()):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             proc.compile()
+        CONSUME_GIT_PULL()
 
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
