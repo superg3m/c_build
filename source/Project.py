@@ -17,7 +17,7 @@ class Project:
         self.should_rebuild = project_config.get("project_rebuild_project_dependencies", False)
         self.executable_procedures_names = project_config["project_executable_procedures"]
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
-        self.project_executable_procedures = [proc for proc in self.procedures if proc.output_name in self.executable_procedures_names]
+        self.project_executable_procedures = [proc for proc in self.procedures if any(proc.output_name == name for name in self.executable_procedures_names)]
 
         self.is_dependency = is_dependency
         self.project_config = project_config
@@ -127,7 +127,7 @@ class Project:
     def __run(self):
         expected_names = [proc.output_name for proc in self.procedures if proc.output_name.endswith(".exe")]
         FATAL_PRINT(f"Expected executables: {expected_names}")
-        FATAL_PRINT(f"Found procedure: {self.executable_procedures_names}")
+        FATAL_PRINT(f"Found procedure: {self.project_executable_procedures}")
 
         # Find procedures in project_executable_procedures that match the expected names (ignoring case)
         matching_procedures = [proc for proc in self.project_executable_procedures if
