@@ -17,7 +17,11 @@ class Project:
         self.should_rebuild = project_config.get("project_rebuild_project_dependencies", False)
         self.executable_procedures_names = project_config["project_executable_procedures"]
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
-        self.project_executable_procedures = [proc for proc in self.procedures if any(name in proc.output_name for name in self.executable_procedures_names)]
+        self.project_executable_procedures = []
+        for proc in self.procedures:
+            for name in self.executable_procedures_names:
+                if name in proc.output_name:
+                    self.project_executable_procedures.append(proc)
 
         self.is_dependency = is_dependency
         self.project_config = project_config
