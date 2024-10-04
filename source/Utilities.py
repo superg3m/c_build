@@ -28,62 +28,31 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-git_status_queue: Dict = {}
-async def ASYNC_GIT_STATUS(path: str):
-    global git_status_queue
+def __IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
         os.chdir(path)
-        fetch_proc = await asyncio.create_subprocess_exec(
-            "git", "fetch", "-q",
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE
-        )
-        await fetch_proc.communicate()
-        status_proc = await asyncio.create_subprocess_exec(
-            "git", "status",
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE
-        )
-        stdout, _ = await status_proc.communicate()
-
-        stdout = stdout.decode('utf-8')
-        lines = stdout.splitlines()
+        subprocess.run(["git", "fetch", "-q"])
+        output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
+        lines = output.stdout.splitlines()
 
         for line in lines:
-            if any(keyword in line for keyword in
-                   ["Your branch is behind", "have diverged"]):
-                git_status_queue[path] = True
-                return
-
-        git_status_queue[path] = False
+            if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
+                return True
     finally:
         os.chdir(original_dir)
 
     return False
 
-def __PEEK_GIT_PULL_STATUS(path):
-    global git_status_queue
-    if len(git_status_queue) == 0:
-        return False
-
-    return git_status_queue[path]
-
-def __CONSUME_GIT_PULL_STATUS(path):
-    global git_status_queue
-    if len(git_status_queue) == 0:
-        return False
-
-    return git_status_queue.pop(path)
-
 git_had_to_pull = []
-def GIT_PULL(path: str):
+def GIT_PULL(path: str, dep):
     global git_had_to_pull
-    if not __PEEK_GIT_PULL_STATUS(path):
+    if not __IS_PULL_REQUIRED(path):
         return
 
     if "c_build" not in path:
-        git_had_to_pull.append(True)
+        for i in range(len(dep)):
+            git_had_to_pull.append(True)
 
     cache_dir = os.getcwd()
     os.chdir(path)
