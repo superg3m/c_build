@@ -129,17 +129,20 @@ class Project:
         FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
-        expected_names = [proc.output_name for proc in self.procedures if proc.output_name.endswith(".exe")]
         if len(self.project_executable_procedures) == 0:
             FATAL_PRINT("No available executable procedures!")
             FATAL_PRINT(
-                f"Got: {[proc.output_name for proc in self.project_executable_procedures]} | Expected: {expected_names}")
+                f"Got: {self.executable_procedures_names} | Expected: {[proc.output_name for proc in self.project_executable_procedures]}")
             sys.exit(1)
 
-        for proc in self.project_executable_procedures:
+        for i in range(len(self.executable_procedures_names)):
+            executable_name_with_args = self.executable_procedures_names.pop(0)
+            proc = next((proc for proc in self.executable_procedures_names if proc.output_name in executable_name_with_args), None)
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
                 proc.compile()
+            proc.output_name = executable_name_with_args
             proc.run()
+
 
     def __debug(self):
         self.project_executable_procedures[0].debug(self.project_debug_with_visual_studio)
