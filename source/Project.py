@@ -126,9 +126,10 @@ class Project:
     def __run(self):
         expected_names = [proc.output_name for proc in self.procedures if proc.output_name.endswith(".exe")]
         project_executable_names = [proc.output_name for proc in self.project_executable_procedures]
-        intersection = set(project_executable_names) & set(expected_names)
+        matching_executables = [exe_name for exe_name in project_executable_names if
+                                any(expected_name in exe_name for expected_name in expected_names)]
 
-        if len(intersection) == 0:
+        if len(matching_executables) == 0:
             FATAL_PRINT("No available executable procedures!")
             FATAL_PRINT(f"Got: {self.executable_procedures_names} | Expected: {expected_names}")
             exit(-1)
