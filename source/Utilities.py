@@ -37,7 +37,7 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
         lines = output.stdout.splitlines()
 
         for line in lines:
-            if any(keyword in line for keyword in ["Your branch is behind", "have diverged", "Changes not staged for commit", "Untracked files"]):
+            if any(keyword in line for keyword in ["Your branch is behind", "have diverged"]):
                 return True
     finally:
         os.chdir(original_dir)
