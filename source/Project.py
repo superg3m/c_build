@@ -125,18 +125,9 @@ class Project:
         FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
-        # Get all the expected executable names ending with ".exe"
         expected_names = [proc.output_name for proc in self.procedures if proc.output_name.endswith(".exe")]
-
-        # Debug print to see what we expect
         FATAL_PRINT(f"Expected executables: {expected_names}")
-
-        # Debug print to see what procedures we have
-        if len(self.project_executable_procedures) == 0:
-            FATAL_PRINT("No procedures in project_executable_procedures!")
-
-        for proc in self.project_executable_procedures:
-            FATAL_PRINT(f"Found procedure: {proc.output_name}")
+        FATAL_PRINT(f"Found procedure: {[proc.output_name for proc in self.project_executable_procedures]}")
 
         # Find procedures in project_executable_procedures that match the expected names (ignoring case)
         matching_procedures = [proc for proc in self.project_executable_procedures if
