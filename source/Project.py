@@ -20,7 +20,6 @@ class Project:
         self.project_executable_procedures = []
         for proc in self.procedures:
             for name in self.executable_procedures_names:
-                FATAL_PRINT(f"{proc.output_name} | {name}")
                 if proc.output_name in name:
                     self.project_executable_procedures.append(proc)
 
