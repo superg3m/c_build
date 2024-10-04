@@ -128,14 +128,14 @@ class Project:
         expected_names = [proc.output_name for proc in self.procedures if proc.output_name.endswith(".exe")]
 
         # Debug print to see what we expect
-        INFO_PRINT(f"Expected executables: {expected_names}")
+        FATAL_PRINT(f"Expected executables: {expected_names}")
 
         # Debug print to see what procedures we have
         if len(self.project_executable_procedures) == 0:
-            INFO_PRINT("No procedures in project_executable_procedures!")
+            FATAL_PRINT("No procedures in project_executable_procedures!")
 
         for proc in self.project_executable_procedures:
-            INFO_PRINT(f"Found procedure: {proc.output_name}")
+            FATAL_PRINT(f"Found procedure: {proc.output_name}")
 
         # Find procedures in project_executable_procedures that match the expected names (ignoring case)
         matching_procedures = [proc for proc in self.project_executable_procedures if
@@ -151,10 +151,10 @@ class Project:
         for proc in matching_procedures:
             # Add some logging for debug purposes
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
-                INFO_PRINT(f"Procedure {proc.output_name} not built, compiling...")
+                FATAL_PRINT(f"Procedure {proc.output_name} not built, compiling...")
                 proc.compile()
 
-            INFO_PRINT(f"Running procedure {proc.output_name}...")
+            FATAL_PRINT(f"Running procedure {proc.output_name}...")
             proc.run()
 
     def __debug(self):
