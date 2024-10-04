@@ -70,6 +70,7 @@ class Procedure:
             os.chdir(self.build_directory)
             executable_path = f"./{self.output_name}" if not IS_WINDOWS() else f".\\{self.output_name}"
             subprocess.run([executable_path])
+            FORMAT_PRINT(executable_path)
         except FileNotFoundError:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
             exit(-1)
