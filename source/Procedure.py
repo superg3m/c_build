@@ -1,6 +1,6 @@
 import os
 import subprocess
-from typing import Dict
+from typing import Dict, re
 
 from .Utilities import IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOB, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, NORMAL_PRINT
 
@@ -68,9 +68,11 @@ class Procedure:
         cached_current_directory = os.getcwd()
         try:
             os.chdir(self.build_directory)
-            executable_path = f"./{self.output_name}" if not IS_WINDOWS() else f".\\{self.output_name}"
-            subprocess.run([executable_path])
-            FORMAT_PRINT(executable_path)
+            quoted_values = re.findall(r'"([^"]*)"', self.output_name)
+            executable_name = self.output_name.split()[0]
+            executable_path = os.path.join('.', executable_name) if not IS_WINDOWS() else f".\\{executable_name}"
+            command = [executable_path] + quoted_values
+            result = subprocess.run(command, check=True)
         except FileNotFoundError:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
             exit(-1)
