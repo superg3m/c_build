@@ -133,7 +133,7 @@ class Project:
         if len(self.project_executable_procedures) == 0:
             FATAL_PRINT("No available executable procedures!")
             FATAL_PRINT(
-                f"Got: {self.executable_procedures_names} | Expected: {[proc.output_name for proc in self.project_executable_procedures]}")
+                f"Got: {self.executable_procedures_names} | Expected: {[proc.output_name for proc in self.procedures]}")
             sys.exit(1)
 
         initial_range = len(self.executable_procedures_names)
