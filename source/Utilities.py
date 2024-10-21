@@ -272,13 +272,18 @@ def IS_LINUX():
 def IS_DARWIN():
     return os.name == "posix" and os.uname().sysname == "Darwin"
 
-
-def RESOLVE_FILE_GLOB(build_directory, maybe_source_glob: str, is_recursive: bool = False) -> List[str]:
+def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive: bool = False) -> List[str]:
     resolved_files = []
+
     if not os.path.exists(build_directory):
         os.mkdir(build_directory)
 
-    if '*.c' in maybe_source_glob:
+    extensions_to_check = ['.c', '.cpp']
+
+    def matches_extension(file: str) -> bool:
+        return any(file.endswith(ext) for ext in extensions_to_check)
+
+    if any(ext in maybe_source_glob for ext in extensions_to_check):
         source_dir = os.path.dirname(maybe_source_glob) or "."
         current_directory = os.getcwd()
 
@@ -289,18 +294,19 @@ def RESOLVE_FILE_GLOB(build_directory, maybe_source_glob: str, is_recursive: boo
             if is_recursive:
                 for root, _, files in os.walk(os.getcwd()):
                     for file in files:
-                        if file.endswith('.c'):
-                            relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\", "/")
+                        if matches_extension(file):
+                            relative_path = source_dir + "/" + os.path.relpath(os.path.join(root, file)).replace("\\",
+                                                                                                                 "/")
                             resolved_files.append(relative_path)
             else:
                 for file in os.listdir(os.getcwd()):
-                    if file.endswith('.c'):
+                    if matches_extension(file):
                         relative_path = os.path.join(source_dir, file).replace("\\", "/")
                         resolved_files.append(relative_path)
         finally:
             os.chdir(current_directory)
 
-    elif '.c' in maybe_source_glob:
+    elif any(ext in maybe_source_glob for ext in extensions_to_check):
         resolved_files.append(maybe_source_glob)
 
     return resolved_files

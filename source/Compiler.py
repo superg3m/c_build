@@ -9,8 +9,12 @@ from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
 class CompilerType(Enum):
     INVALID = -1
     CL = 0
-    GCC_CC_CLANG = 1
+    GPP_GCC_CC_CLANG = 1
 
+class PL(Enum):
+    INVALID = -1
+    C = 0
+    CPP = 1
 
 class CompilerAction(Enum):
     NO_ACTION = -1
@@ -46,7 +50,7 @@ compiler_lookup_table: List[List[str]] = [
         "/WX"    # WARNINGS_AS_ERRORS
     ],
 
-    [ # Compiler GCC_CC_CLANG
+    [ # Compiler GPP_GCC_CC_CLANG
         "-std=",  # STD_VERSION
         None,  # NO_LOGO
         "-c",  # OBJECT_FLAG
@@ -69,6 +73,7 @@ class Compiler:
         self.compiler_name: str = ""
         self.compiler_std_version: str  = "c11"
         self.compiler_type: CompilerType = CompilerType.INVALID
+        self.programming_language: PL = PL.INVALID
         self.compiler_warning_level: str = ""
         self.compiler_disable_specific_warnings: List[str] = []
         self.compiler_treat_warnings_as_errors: bool = False
@@ -78,17 +83,25 @@ class Compiler:
         self.compiler_name = config["compiler_name"]
         self.compiler_std_version = config["compiler_std_version"]
         self.compiler_type: CompilerType = self.choose_compiler_type()
+        self.programming_language: PL = PL.C if "c++" in self.compiler_std_version else PL.CPP
         self.compiler_warning_level = config["compiler_warning_level"]
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
         self.compiler_treat_warnings_as_errors = config["compiler_treat_warnings_as_errors"]
 
     def std_is_valid(self) -> bool:
-        acceptable_versions: Dict[int, List[str]] = {
+        c_versions: Dict[int, List[str]] = {
             0: ["c11", "c17", "clatest"],  # CL
-            1: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # GCC_CC_CLANG
+            1: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # GPP_GCC_CC_CLANG
         }
 
-        return self.compiler_std_version in acceptable_versions[self.compiler_type.value]
+        cpp_versions: Dict[int, List[str]] = {
+            0: ["c++11", "c++14", "c++17", "c++20", "c++23", "c++latest"],  # CL
+            1: ["c++98", "c++03", "c++11", "c++14", "c++17", "c++20", "c++23"],  # GPP_GCC_CC_CLANG
+        }
+
+        table_to_check = c_versions if self.programming_language == PL.C else cpp_versions
+
+        return self.compiler_std_version in table_to_check[self.compiler_type.value]
 
     def IS_MSVC(self):
         return self.compiler_type == CompilerType.CL
@@ -97,8 +110,8 @@ class Compiler:
         temp = CompilerType.INVALID
         if self.compiler_name == "cl":
             temp = CompilerType.CL
-        elif self.compiler_name in ["gcc", "cc", "clang"]:
-            temp = CompilerType.GCC_CC_CLANG
+        elif self.compiler_name in ["g++", "gcc", "cc", "clang"]:
+            temp = CompilerType.GPP_GCC_CC_CLANG
         return temp
 
     def get_compiler_lookup(self, action: CompilerAction) -> str:
