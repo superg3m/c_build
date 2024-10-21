@@ -111,7 +111,6 @@ class Compiler:
         compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
 
         for source_name in source_files:
-            FATAL_PRINT(f"{source_name} | {True if '.cpp' in source_name else False}")
             if ".cpp" in source_name:
                 self.programming_language = PL.CPP
                 compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
