@@ -293,7 +293,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
     original_directory = os.getcwd()
 
     def matches_extension(file_name: str) -> bool:
-        FATAL_PRINT(f"FILE_NAME: {file_name}, EXTENSION: {extensions_to_check}, RESULT: {True if extensions_to_check in file_name else False}")
+        FATAL_PRINT(f"{maybe_source_glob} | FILE_NAME: {file_name}, EXTENSION: {extensions_to_check}, RESULT: {True if extensions_to_check in file_name else False}")
         return True if extensions_to_check in file_name else False
 
     try:
