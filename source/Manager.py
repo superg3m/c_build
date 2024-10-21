@@ -1,12 +1,10 @@
-import asyncio
 import json
 import os
 
 from .Compiler import Compiler
 from .Project import Project
 from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
-                        C_BUILD_EXECUTION_TYPE, SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, FORMAT_PRINT,
-                        C_BUILD_COMPILER_NAME, GIT_PULL, FATAL)
+                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, GIT_PULL)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.compiler_config = compiler_config
@@ -27,7 +25,6 @@ class Manager:
 
         if C_BUILD_IS_DEPENDENCY():
             filtered_project_config = self.project_config.copy()
-            filtered_project_config.pop("project_rebuild_project_dependencies", None)
             filtered_project_config.pop("project_debug_with_visual_studio", None)
             serialized_data = {
                 **filtered_project_config,

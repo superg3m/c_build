@@ -9,9 +9,8 @@ compiler_treat_warnings_as_errors = True
 
 project_name = "some-project"
 project_dependencies = [""]
-project_rebuild_project_dependencies = True
-project_debug_with_visual_studio = True
 project_executable_procedures = ["test_ckg.exe"]
+project_debug_with_visual_studio = True
 
 if compiler_name == "cl":
     project_warning_level = "2"
@@ -19,10 +18,11 @@ if compiler_name == "cl":
 elif compiler_name in ["gcc", "cc", "clang"]:
     project_warning_level = "all"
 
+ckit_lib = C_BUILD_LIB('ckit', compiler_name)
 procedures_config = {
     "something_lib": {
         "build_directory": f"./build_{compiler_name}",
-        "output_name": f"{C_BUILD_LIB('ckit', compiler_name)}",
+        "output_name": f"{ckit_lib}",
         "source_files": ["../ckg/ckg.c", "../ckit.c"],
         "additional_libs": [] if compiler_name == "cl" else ["-lUser32", "-lGDI32"],
         "compile_time_defines": [],
@@ -32,7 +32,7 @@ procedures_config = {
         "build_directory": f"./Tests/CoreTest/build_{compiler_name}",
         "output_name": "ckit_test.exe",
         "source_files": ["../*.c"],
-        "additional_libs": [f"../../../build_{compiler_name}/{C_BUILD_LIB('ckit', compiler_name)}"],
+        "additional_libs": [f"../../../build_{compiler_name}/{ckit_lib}"],
         "compile_time_defines": [],
         "include_paths": [],
     },

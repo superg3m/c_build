@@ -71,7 +71,7 @@ class Compiler:
     def __init__(self):
         self.debug: bool = False
         self.compiler_name: str = ""
-        self.compiler_std_version: str  = "c11"
+        self.compiler_std_version: str  = ""
         self.compiler_type: CompilerType = CompilerType.INVALID
         self.programming_language: PL = PL.INVALID
         self.compiler_warning_level: str = ""
@@ -81,13 +81,13 @@ class Compiler:
     def set_config(self, is_debug, config):
         self.debug = is_debug
         self.compiler_name = config["compiler_name"]
-        self.compiler_std_version = config["compiler_std_version"]
         self.compiler_type: CompilerType = self.choose_compiler_type()
-        self.programming_language: PL = PL.CPP if "c++" in self.compiler_std_version else PL.C
+        self.programming_language: PL = PL.C
         self.compiler_warning_level = config["compiler_warning_level"]
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
         self.compiler_treat_warnings_as_errors = config["compiler_treat_warnings_as_errors"]
 
+    # Unused
     def std_is_valid(self) -> bool:
         c_versions: Dict[int, List[str]] = {
             0: ["c11", "c17", "clatest"],  # CL
@@ -124,6 +124,15 @@ class Compiler:
         additional_libs = procedure.additional_libs
         compile_time_defines = procedure.compile_time_defines
         include_paths = procedure.include_paths
+
+        for source_name in source_files:
+            if ".cpp" in source_name:
+                self.programming_language = PL.CPP
+                if self.compiler_type.CL:
+                    self.compiler_std_version = "c++latest"
+                else:
+                    self.compiler_std_version = "c++20"
+                break
 
         should_build_executable = False
         should_build_static_lib = False
@@ -243,8 +252,6 @@ class Compiler:
             compiler_command.extend([lib for lib in additional_libs if lib])
 
         cached_current_directory = os.getcwd()
-        return_code = 0
-
         try:
             if not os.path.exists(build_directory):
                 os.mkdir(build_directory)
@@ -265,7 +272,7 @@ class Compiler:
 
             if return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
-                exit(-1)
+                exit(return_code)
             else:
                 FORMAT_PRINT(f"Compilation of {output_name} successful")
 

@@ -1,12 +1,10 @@
 import argparse
-import asyncio
 import glob
 import os
 import shutil
 import subprocess
 import sys
-from queue import Queue
-from typing import List, Dict
+from typing import List
 
 RED: str = '\033[91m'
 GREEN: str = '\033[92m'
@@ -283,8 +281,8 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
 
     extensions_to_check = ['.c', '.cpp']
 
-    def matches_extension(file: str) -> bool:
-        return any(file.endswith(ext) for ext in extensions_to_check)
+    def matches_extension(file_: str) -> bool:
+        return any(file_.endswith(ext) for ext in extensions_to_check)
 
     if any(ext in maybe_source_glob for ext in extensions_to_check):
         source_dir = os.path.dirname(maybe_source_glob) or "."

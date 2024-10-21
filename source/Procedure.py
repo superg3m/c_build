@@ -56,7 +56,7 @@ class Procedure:
             if debugger_running:
                 NORMAL_PRINT(f"Debugger already running attaching to process...")
             else:
-                process = subprocess.Popen(debug_command)
+                subprocess.Popen(debug_command)
                 NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
 
         except FileNotFoundError:
@@ -74,7 +74,7 @@ class Procedure:
             executable_path = os.path.join('.', executable_name) if not IS_WINDOWS() else f".\\{executable_name}"
             command = [executable_path] + quoted_values
             FORMAT_PRINT(command)
-            result = subprocess.run(command, check=True)
+            subprocess.run(command, check=True)
         except FileNotFoundError:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
             exit(-1)

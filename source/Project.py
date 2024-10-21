@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 import time
-from typing import Dict, List
+from typing import Dict
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
@@ -15,7 +15,6 @@ class Project:
     def __init__(self, MANAGER_COMPILER, project_config: Dict, procedures_config: Dict, is_dependency = False,):
         self.project_name = project_config["project_name"]
         self.project_debug_with_visual_studio = project_config.get("project_debug_with_visual_studio", True)
-        self.should_rebuild = project_config.get("project_rebuild_project_dependencies", False)
         self.executable_procedures_names = project_config["project_executable_procedures"]
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
         self.project_executable_procedures = []
@@ -37,7 +36,7 @@ class Project:
     def is_serialized(self):
         return os.path.exists(self.serialized_name)
 
-    def __serialize_dependency_data(self, github_root, dependency_name):
+    def __serialize_dependency_data(self):
         if self.is_serialized():
             return
 
@@ -90,10 +89,9 @@ class Project:
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
 
-                self.__serialize_dependency_data(github_root, dependency)  # only runs if not serialized
+                self.__serialize_dependency_data() # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
-                project.should_rebuild = self.should_rebuild
                 project.build()
 
                 os.chdir(cache_dir)
@@ -118,7 +116,7 @@ class Project:
 
         for proc in self.procedures:
             if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
-                self.is_dependency and not self.should_rebuild and not PEEK_GIT_PULL()):
+                self.is_dependency and not PEEK_GIT_PULL()):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             proc.compile()
