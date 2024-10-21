@@ -278,7 +278,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
 
     os.makedirs(build_directory, exist_ok=True)
 
-    if os.path.exists(maybe_source_glob):
+    if "*" not in maybe_source_glob:
         resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
 
