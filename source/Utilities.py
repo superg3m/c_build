@@ -284,6 +284,12 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
         extensions_to_check = ['.c']
     elif "*.cpp" in maybe_source_glob:
         extensions_to_check = ['.cpp']
+    elif ".c" in maybe_source_glob:
+        resolved_files.append(maybe_source_glob)
+        return resolved_files
+    elif ".cpp" in maybe_source_glob:
+        resolved_files.append(maybe_source_glob)
+        return resolved_files
     else:
         raise ValueError("Invalid glob pattern. Use '*.c' or '*.cpp'.")
 
