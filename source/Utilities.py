@@ -276,46 +276,45 @@ def IS_DARWIN():
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive: bool = False) -> List[str]:
     resolved_files = []
 
-    if not os.path.exists(build_directory):
-        os.mkdir(build_directory)
+    # Create the build directory if it doesn't exist.
+    os.makedirs(build_directory, exist_ok=True)
 
-    # Determine which extension should be included based on the glob pattern.
-    if "*.c" in maybe_source_glob:
-        extensions_to_check = ['.c']
-    elif "*.cpp" in maybe_source_glob:
-        extensions_to_check = ['.cpp']
-    elif ".c" in maybe_source_glob:
-        resolved_files.append(maybe_source_glob)
-        return resolved_files
-    elif ".cpp" in maybe_source_glob:
-        resolved_files.append(maybe_source_glob)
-        return resolved_files
+    # Check the type of glob or file pattern.
+    if maybe_source_glob.endswith(".c"):
+        extensions_to_check = ['.c'] if "*.c" in maybe_source_glob else None
+    elif maybe_source_glob.endswith(".cpp"):
+        extensions_to_check = ['.cpp'] if "*.cpp" in maybe_source_glob else None
     else:
-        raise ValueError("Invalid glob pattern. Use '*.c' or '*.cpp'.")
+        raise ValueError("Invalid pattern. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
-    def matches_extension(file_: str) -> bool:
-        return any(file_.endswith(ext) for ext in extensions_to_check)
+    if extensions_to_check is None:
+        if os.path.isfile(maybe_source_glob):
+            resolved_files.append(maybe_source_glob.replace("\\", "/"))
+        return resolved_files
 
     source_dir = os.path.dirname(maybe_source_glob) or "."
-    current_directory = os.getcwd()
+    original_directory = os.getcwd()
+
+    def matches_extension(file_name: str) -> bool:
+        return any(file_name.endswith(ext) for ext in extensions_to_check)
 
     try:
         os.chdir(build_directory)
         os.chdir(source_dir)
 
         if is_recursive:
-            for root, _, files in os.walk(os.getcwd()):
+            for root, _, files in os.walk("."):
                 for file in files:
                     if matches_extension(file):
-                        relative_path = os.path.join(source_dir, os.path.relpath(os.path.join(root, file)))
-                        resolved_files.append(relative_path.replace("\\", "/"))
+                        resolved_files.append(
+                            os.path.join(source_dir, os.path.relpath(os.path.join(root, file))).replace("\\", "/")
+                        )
         else:
-            for file in os.listdir(os.getcwd()):
-                if matches_extension(file):
-                    relative_path = os.path.join(source_dir, file).replace("\\", "/")
-                    resolved_files.append(relative_path)
+            resolved_files.extend(
+                os.path.join(source_dir, file).replace("\\", "/")
+                for file in os.listdir(".") if matches_extension(file)
+            )
     finally:
-        # Restore the original directory after processing.
-        os.chdir(current_directory)
+        os.chdir(original_directory)
 
     return resolved_files
