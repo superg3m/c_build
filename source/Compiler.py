@@ -127,6 +127,7 @@ class Compiler:
         include_paths = procedure.include_paths
 
         for source_name in source_files:
+            FATAL_PRINT(source_name)
             if source_name.endswith(".cpp"):
                 self.programming_language = PL.CPP
                 self.compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
