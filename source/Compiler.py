@@ -71,8 +71,8 @@ class Compiler:
     def __init__(self):
         self.debug: bool = False
         self.compiler_name: str = ""
-        self.compiler_std_version: str  = "clatest" if self.compiler_type == CompilerType.CL else "c17"
         self.compiler_type: CompilerType = CompilerType.INVALID
+        self.compiler_std_version: str  = ""
         self.programming_language: PL = PL.INVALID
         self.compiler_warning_level: str = ""
         self.compiler_disable_specific_warnings: List[str] = []
@@ -81,8 +81,9 @@ class Compiler:
     def set_config(self, is_debug, config):
         self.debug = is_debug
         self.compiler_name = config["compiler_name"]
-        self.compiler_type: CompilerType = self.choose_compiler_type()
-        self.programming_language: PL = PL.C
+        self.compiler_type = self.choose_compiler_type()
+        self.compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
+        self.programming_language = PL.C
         self.compiler_warning_level = config["compiler_warning_level"]
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
         self.compiler_treat_warnings_as_errors = config["compiler_treat_warnings_as_errors"]
