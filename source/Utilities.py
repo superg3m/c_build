@@ -45,10 +45,11 @@ def __IS_PULL_REQUIRED(path: str) -> bool:
     return False
 
 git_had_to_pull = []
-def GIT_PULL(path: str):
+# Returns true if there was a git pull required
+def GIT_PULL(path: str) -> bool:
     global git_had_to_pull
     if not __IS_PULL_REQUIRED(path):
-        return
+        return False
 
     if "c_build" not in path:
         git_had_to_pull.append(True)
@@ -59,6 +60,8 @@ def GIT_PULL(path: str):
     os.system(f"git reset --hard -q")
     os.system(f"git pull -q")
     os.chdir(cache_dir)
+
+    return True
 
 
 def PEEK_GIT_PULL():

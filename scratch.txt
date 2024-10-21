@@ -1,1 +1,0 @@
-projects are composed of procedures and procedures can be multi-threaded

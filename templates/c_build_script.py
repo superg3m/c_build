@@ -3,7 +3,6 @@ from c_build.source.Utilities import *
 from c_build.source.Manager import *
 # --------------------------------------------------------------------------------------
 compiler_name = C_BUILD_COMPILER_NAME() if C_BUILD_IS_DEPENDENCY() else "gcc"
-compiler_std_version = "c11"
 compiler_warning_level = ""
 compiler_disable_specific_warnings = []
 compiler_treat_warnings_as_errors = True
@@ -20,10 +19,9 @@ if compiler_name == "cl":
 elif compiler_name in ["gcc", "cc", "clang"]:
     project_warning_level = "all"
 
-build_suffix = f"build_{compiler_name}"
 procedures_config = {
     "something_lib": {
-        "build_directory": f"./{build_suffix}",
+        "build_directory": f"./build_{compiler_name}",
         "output_name": f"{C_BUILD_LIB('ckit', compiler_name)}",
         "source_files": ["../ckg/ckg.c", "../ckit.c"],
         "additional_libs": [] if compiler_name == "cl" else ["-lUser32", "-lGDI32"],
@@ -31,10 +29,10 @@ procedures_config = {
         "include_paths": [],
     },
     "something_test": {
-        "build_directory": f"./Tests/CoreTest/{build_suffix}",
+        "build_directory": f"./Tests/CoreTest/build_{compiler_name}",
         "output_name": "ckit_test.exe",
         "source_files": ["../*.c"],
-        "additional_libs": [f"../../../{build_suffix}/{C_BUILD_LIB('ckit', compiler_name)}"],
+        "additional_libs": [f"../../../build_{compiler_name}/{C_BUILD_LIB('ckit', compiler_name)}"],
         "compile_time_defines": [],
         "include_paths": [],
     },
