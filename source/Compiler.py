@@ -134,7 +134,7 @@ class Compiler:
 
                 if self.compiler_name == "clang":
                     self.compiler_name = "clang++"
-                    
+
                 break
             elif source_name.endswith(".c"):
                 self.compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
