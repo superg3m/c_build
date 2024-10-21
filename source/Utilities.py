@@ -283,9 +283,9 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
         return resolved_files
 
     if "*.c" in maybe_source_glob:
-        extensions_to_check = ['.c']
+        extensions_to_check = ".c"
     elif "*.cpp" in maybe_source_glob:
-        extensions_to_check = ['.cpp']
+        extensions_to_check = ".cpp"
     else:
         raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
@@ -293,7 +293,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
     original_directory = os.getcwd()
 
     def matches_extension(file_name: str) -> bool:
-        return any(file_name.endswith(ext) for ext in extensions_to_check)
+        return True if extensions_to_check in file_name else False
 
     try:
         os.chdir(build_directory)
