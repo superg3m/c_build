@@ -95,7 +95,7 @@ class Compiler:
         }
 
         cpp_versions: Dict[int, List[str]] = {
-            0: ["c++11", "c++14", "c++17", "c++20", "c++23", "c++latest"],  # CL
+            0: ["c++17", "c++20", "c++23", "c++latest"],  # CL
             1: ["c++98", "c++03", "c++11", "c++14", "c++17", "c++20", "c++23"],  # GPP_GCC_CC_CLANG
         }
 
@@ -158,6 +158,10 @@ class Compiler:
         report_full_path_flag = self.get_compiler_lookup(CompilerAction.REPORT_FULL_PATH)
         if report_full_path_flag:
             compiler_command.append(report_full_path_flag)
+
+        # Add unwind semantics
+        if self.IS_MSVC() and self.programming_language == PL.CPP:
+            compiler_command.append(f"/EHsc")
 
         # Add compile time defines
         compile_time_define_flag = self.get_compiler_lookup(CompilerAction.COMPILE_TIME_DEFINES)
