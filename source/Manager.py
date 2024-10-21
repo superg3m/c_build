@@ -21,8 +21,9 @@ class Manager:
     def build_project(self):
         serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
         for dependency_name in self.project_config["project_dependencies"]:
-            if GIT_PULL(dependency_name):
-                os.remove(f"./{dependency_name}/{serialized_name}")
+            if dependency_name:
+                if GIT_PULL(dependency_name):
+                    os.remove(f"./{dependency_name}/{serialized_name}")
 
 
         if C_BUILD_IS_DEPENDENCY():
