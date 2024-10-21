@@ -276,21 +276,18 @@ def IS_DARWIN():
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive: bool = False) -> List[str]:
     resolved_files = []
 
-    # Create the build directory if it doesn't exist.
     os.makedirs(build_directory, exist_ok=True)
 
-    # Check the type of glob or file pattern.
-    if maybe_source_glob.endswith(".c"):
-        extensions_to_check = ['.c'] if "*.c" in maybe_source_glob else None
-    elif maybe_source_glob.endswith(".cpp"):
-        extensions_to_check = ['.cpp'] if "*.cpp" in maybe_source_glob else None
-    else:
-        raise ValueError("Invalid pattern. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
-
-    if extensions_to_check is None:
-        if os.path.isfile(maybe_source_glob):
-            resolved_files.append(maybe_source_glob.replace("\\", "/"))
+    if os.path.exists(maybe_source_glob):
+        resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
+
+    if "*.c" in maybe_source_glob:
+        extensions_to_check = ['.c']
+    elif "*.cpp" in maybe_source_glob:
+        extensions_to_check = ['.cpp']
+    else:
+        raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
     source_dir = os.path.dirname(maybe_source_glob) or "."
     original_directory = os.getcwd()
