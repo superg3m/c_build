@@ -24,8 +24,6 @@ class Manager:
             if dependency_name:
                 if GIT_PULL(dependency_name) and os.path.exists(f"./{dependency_name}/{serialized_name}"):
                     os.remove(f"./{dependency_name}/{serialized_name}")
-                    FATAL_PRINT("tsetst")
-
 
         if C_BUILD_IS_DEPENDENCY():
             filtered_project_config = self.project_config.copy()
