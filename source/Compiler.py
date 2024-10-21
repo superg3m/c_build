@@ -128,7 +128,7 @@ class Compiler:
 
         for source_name in source_files:
             FATAL_PRINT(source_name)
-            if "cpp" in source_name:
+            if ".cpp" in source_name:
                 self.programming_language = PL.CPP
                 self.compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
                 if self.compiler_name == "gcc":
