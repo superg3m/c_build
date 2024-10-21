@@ -71,7 +71,7 @@ class Compiler:
     def __init__(self):
         self.debug: bool = False
         self.compiler_name: str = ""
-        self.compiler_std_version: str  = ""
+        self.compiler_std_version: str  = "clatest" if self.compiler_type == CompilerType.CL else "c17"
         self.compiler_type: CompilerType = CompilerType.INVALID
         self.programming_language: PL = PL.INVALID
         self.compiler_warning_level: str = ""
@@ -136,8 +136,6 @@ class Compiler:
                     self.compiler_name = "clang++"
 
                 break
-            elif source_name.endswith(".c"):
-                self.compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
 
         should_build_executable = False
         should_build_static_lib = False
