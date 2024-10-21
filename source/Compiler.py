@@ -1,7 +1,7 @@
 import os
 import subprocess
 from enum import Enum
-from typing import List, Dict
+from typing import List
 
 from .Procedure import Procedure
 from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
@@ -72,7 +72,6 @@ class Compiler:
         self.debug: bool = False
         self.compiler_name: str = ""
         self.compiler_type: CompilerType = CompilerType.INVALID
-        self.compiler_std_version: str  = ""
         self.programming_language: PL = PL.INVALID
         self.compiler_warning_level: str = ""
         self.compiler_disable_specific_warnings: List[str] = []
@@ -82,27 +81,10 @@ class Compiler:
         self.debug = is_debug
         self.compiler_name = config["compiler_name"]
         self.compiler_type = self.choose_compiler_type()
-        self.compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
         self.programming_language = PL.C
         self.compiler_warning_level = config["compiler_warning_level"]
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
         self.compiler_treat_warnings_as_errors = config["compiler_treat_warnings_as_errors"]
-
-    # Unused
-    def std_is_valid(self) -> bool:
-        c_versions: Dict[int, List[str]] = {
-            0: ["c11", "c17", "clatest"],  # CL
-            1: ["c89", "c90", "c99", "c11", "c17", "c18", "c23"],  # GPP_GCC_CC_CLANG
-        }
-
-        cpp_versions: Dict[int, List[str]] = {
-            0: ["c++17", "c++20", "c++23", "c++latest"],  # CL
-            1: ["c++98", "c++03", "c++11", "c++14", "c++17", "c++20", "c++23"],  # GPP_GCC_CC_CLANG
-        }
-
-        table_to_check = c_versions if self.programming_language == PL.C else cpp_versions
-
-        return self.compiler_std_version in table_to_check[self.compiler_type.value]
 
     def IS_MSVC(self):
         return self.compiler_type == CompilerType.CL
@@ -126,11 +108,13 @@ class Compiler:
         compile_time_defines = procedure.compile_time_defines
         include_paths = procedure.include_paths
 
+        compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
+
         for source_name in source_files:
             FATAL_PRINT(f"{source_name} | {True if '.cpp' in source_name else False}")
             if ".cpp" in source_name:
                 self.programming_language = PL.CPP
-                self.compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
+                compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
                 if self.compiler_name == "gcc":
                     self.compiler_name = "g++"
 
@@ -163,7 +147,7 @@ class Compiler:
 
         # Add std version flag
         std_version_flags = self.get_compiler_lookup(CompilerAction.STD_VERSION)
-        compiler_command.append(f"{std_version_flags}{self.compiler_std_version}")
+        compiler_command.append(f"{std_version_flags}{compiler_std_version}")
 
         report_full_path_flag = self.get_compiler_lookup(CompilerAction.REPORT_FULL_PATH)
         if report_full_path_flag:
