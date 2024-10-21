@@ -282,10 +282,10 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
         resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
 
-    if "*.c" in maybe_source_glob:
-        extensions_to_check = ".c"
-    elif "*.cpp" in maybe_source_glob:
+    if "*.cpp" in maybe_source_glob:
         extensions_to_check = ".cpp"
+    elif "*.c" in maybe_source_glob:
+        extensions_to_check = ".c"
     else:
         raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
