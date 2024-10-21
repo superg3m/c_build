@@ -126,13 +126,12 @@ class Compiler:
         include_paths = procedure.include_paths
 
         for source_name in source_files:
-            if ".cpp" in source_name:
+            if source_name.endswith(".cpp"):
                 self.programming_language = PL.CPP
-                if self.compiler_type.CL:
-                    self.compiler_std_version = "c++latest"
-                else:
-                    self.compiler_std_version = "c++20"
+                self.compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
                 break
+            elif source_name.endswith(".c"):
+                self.compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
 
         should_build_executable = False
         should_build_static_lib = False
