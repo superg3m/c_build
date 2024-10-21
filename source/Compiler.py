@@ -158,11 +158,7 @@ class Compiler:
 
         # Add std version flag
         std_version_flags = self.get_compiler_lookup(CompilerAction.STD_VERSION)
-        if self.std_is_valid():
-            compiler_command.append(f"{std_version_flags}{self.compiler_std_version}")
-        else:
-            FORMAT_PRINT(f"Std version: {self.compiler_std_version} not supported, falling back on default")
-            compiler_command.append(f"{std_version_flags}c11")
+        compiler_command.append(f"{std_version_flags}{self.compiler_std_version}")
 
         report_full_path_flag = self.get_compiler_lookup(CompilerAction.REPORT_FULL_PATH)
         if report_full_path_flag:
