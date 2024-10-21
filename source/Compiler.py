@@ -129,6 +129,12 @@ class Compiler:
             if source_name.endswith(".cpp"):
                 self.programming_language = PL.CPP
                 self.compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
+                if self.compiler_name == "gcc":
+                    self.compiler_name = "g++"
+
+                if self.compiler_name == "clang":
+                    self.compiler_name = "clang++"
+                    
                 break
             elif source_name.endswith(".c"):
                 self.compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
