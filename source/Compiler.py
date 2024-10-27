@@ -9,7 +9,7 @@ from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
 class CompilerType(Enum):
     INVALID = -1
     CL = 0
-    GPP_GCC_CC_CLANG = 1
+    GCC_CC_CLANG = 1
 
 class PL(Enum):
     INVALID = -1
@@ -93,8 +93,8 @@ class Compiler:
         temp = CompilerType.INVALID
         if self.compiler_name == "cl":
             temp = CompilerType.CL
-        elif self.compiler_name in ["g++", "gcc", "cc", "clang"]:
-            temp = CompilerType.GPP_GCC_CC_CLANG
+        elif self.compiler_name in ["g++", "gcc", "cc", "clang", "clang++"]:
+            temp = CompilerType.GCC_CC_CLANG
         return temp
 
     def get_compiler_lookup(self, action: CompilerAction) -> str:
@@ -109,16 +109,17 @@ class Compiler:
         include_paths = procedure.include_paths
 
         compiler_std_version = "clatest" if self.compiler_type == CompilerType.CL else "c17"
+        compiler_maybe_promoted_name = self.compiler_name
 
         for source_name in source_files:
             if ".cpp" in source_name:
                 self.programming_language = PL.CPP
                 compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
-                if self.compiler_name == "gcc":
-                    self.compiler_name = "g++"
+                if compiler_maybe_promoted_name == "gcc":
+                    compiler_maybe_promoted_name = "g++"
 
-                if self.compiler_name == "clang":
-                    self.compiler_name = "clang++"
+                if compiler_maybe_promoted_name == "clang":
+                    compiler_maybe_promoted_name = "clang++"
 
                 break
 
@@ -136,7 +137,7 @@ class Compiler:
         else:
             should_build_executable = True  # For Linux
 
-        compiler_command: List[str] = [self.compiler_name]
+        compiler_command: List[str] = [compiler_maybe_promoted_name]
         compiler_command.extend([source for source in source_files if source])
 
         # Add no logo flag
@@ -252,7 +253,7 @@ class Compiler:
 
             return_code = result.returncode
             if should_build_static_lib:
-                build_static_lib(self.compiler_name, output_name, additional_libs)
+                build_static_lib(compiler_maybe_promoted_name, output_name, additional_libs)
 
             if return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
