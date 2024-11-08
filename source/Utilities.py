@@ -26,7 +26,7 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
-def __IS_PULL_REQUIRED(path: str) -> bool:
+def IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
         os.chdir(path)
@@ -46,8 +46,9 @@ git_had_to_pull = []
 # Returns true if there was a git pull required
 def GIT_PULL(path: str) -> bool:
     global git_had_to_pull
-    if "c_build" not in path:
-        if not __IS_PULL_REQUIRED(path):
+
+    if path.find("c_build") == -1: # didn't find c_build
+        if not IS_PULL_REQUIRED(path):
             git_had_to_pull.append(False)
             return False
 
@@ -72,7 +73,7 @@ def CONSUME_GIT_PULL():
     if len(git_had_to_pull) == 0:
         return False
 
-    return git_had_to_pull.pop(0)
+    return git_had_to_pull.pop()
 
 
 def SET_LEVEL(value: int):

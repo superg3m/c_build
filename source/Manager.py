@@ -5,7 +5,8 @@ from multiprocessing.util import ForkAwareThreadLock
 from .Compiler import Compiler
 from .Project import Project
 from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
-                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, GIT_PULL, FATAL, FATAL_PRINT)
+                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, FATAL, FATAL_PRINT,
+                        IS_PULL_REQUIRED)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.compiler_config = compiler_config
@@ -21,8 +22,7 @@ class Manager:
         serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
         for dependency_name in self.project_config["project_dependencies"]:
             if dependency_name and os.path.exists(f"./{dependency_name}"):
-                if os.path.exists(f"./{dependency_name}/{serialized_name}") and GIT_PULL(dependency_name):
-                    FATAL_PRINT(f"PULLING: {dependency_name}")
+                if os.path.exists(f"./{dependency_name}/{serialized_name}") and IS_PULL_REQUIRED(dependency_name):
                     os.remove(f"./{dependency_name}/{serialized_name}")
 
         if C_BUILD_IS_DEPENDENCY():
