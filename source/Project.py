@@ -8,7 +8,7 @@ from typing import Dict
 
 from .Procedure import Procedure
 from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, PEEK_GIT_PULL, CONSUME_GIT_PULL
+    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, PEEK_GIT_PULL, CONSUME_GIT_PULL, git_had_to_pull
 
 
 class Project:
@@ -120,6 +120,7 @@ class Project:
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             proc.compile()
+        FATAL_PRINT(git_had_to_pull)
         CONSUME_GIT_PULL()
 
         end_time = time.perf_counter()
