@@ -4,7 +4,7 @@ import os
 from .Compiler import Compiler
 from .Project import Project
 from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
-                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, GIT_PULL)
+                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, GIT_PULL, FATAL, FATAL_PRINT)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.compiler_config = compiler_config
@@ -21,6 +21,7 @@ class Manager:
         for dependency_name in self.project_config["project_dependencies"]:
             if dependency_name and os.path.exists(f"./{dependency_name}"):
                 if GIT_PULL(dependency_name) and os.path.exists(f"./{dependency_name}/{serialized_name}"):
+                    FATAL_PRINT(f"GIT PULLED: {dependency_name}")
                     os.remove(f"./{dependency_name}/{serialized_name}")
 
         if C_BUILD_IS_DEPENDENCY():
