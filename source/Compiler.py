@@ -3,6 +3,7 @@ import subprocess
 from enum import Enum
 from typing import List
 
+from templates.c_build_script import compiler_name
 from .Procedure import Procedure
 from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
 
@@ -112,7 +113,7 @@ class Compiler:
         compiler_maybe_promoted_name = self.compiler_name
 
         for source_name in source_files:
-            if ".cpp" in source_name:
+            if (".cpp" in source_name) or compiler_name in ["g++", "clang++"]:
                 self.programming_language = PL.CPP
                 compiler_std_version = "c++latest" if self.compiler_type == CompilerType.CL else "c++20"
                 if compiler_maybe_promoted_name == "gcc":
