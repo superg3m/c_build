@@ -70,13 +70,10 @@ class Project:
         project_name = project_config["project_name"]
         project_dependencies = project_config["project_dependencies"]
 
-        if len(project_dependencies) == 0:
-            return
-
         if len(project_dependencies) != 0 and project_dependencies[0] != "":
             FORMAT_PRINT(f"{project_name} depends on:")
 
-        for dependency in project_dependencies:
+        for dependency in project_dependencies: # This exists early if there are no dependencies
             if dependency:
                 if not os.path.exists(dependency):
                     FORMAT_PRINT(f"missing {dependency} cloning...")
