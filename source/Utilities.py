@@ -46,13 +46,12 @@ git_had_to_pull = []
 # Returns true if there was a git pull required
 def GIT_PULL(path: str) -> bool:
     global git_had_to_pull
-    if not __IS_PULL_REQUIRED(path):
-        git_had_to_pull.append(False)
-        return False
-
     if "c_build" not in path:
-        git_had_to_pull.append(True)
+        if not __IS_PULL_REQUIRED(path):
+            git_had_to_pull.append(False)
+            return False
 
+        git_had_to_pull.append(True)
 
     cache_dir = os.getcwd()
     os.chdir(path)
