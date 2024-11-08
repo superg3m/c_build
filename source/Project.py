@@ -120,7 +120,6 @@ class Project:
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
             proc.compile()
-        FATAL_PRINT(git_had_to_pull)
         CONSUME_GIT_PULL()
 
         end_time = time.perf_counter()
