@@ -70,6 +70,9 @@ class Project:
         project_name = project_config["project_name"]
         project_dependencies = project_config["project_dependencies"]
 
+        if len(project_dependencies) == 0:
+            return
+
         if len(project_dependencies) != 0 and project_dependencies[0] != "":
             FORMAT_PRINT(f"{project_name} depends on:")
 
