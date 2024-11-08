@@ -67,7 +67,7 @@ def PEEK_GIT_PULL():
     if len(git_had_to_pull) == 0:
         return False
 
-    return git_had_to_pull[0]
+    return git_had_to_pull[-1]
 
 def CONSUME_GIT_PULL():
     if len(git_had_to_pull) == 0:
