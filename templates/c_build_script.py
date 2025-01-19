@@ -2,30 +2,39 @@
 from c_build.source.Utilities import *
 from c_build.source.Manager import *
 # --------------------------------------------------------------------------------------
-compiler_name = C_BUILD_COMPILER_NAME() if C_BUILD_IS_DEPENDENCY() else "gcc"
+compiler_name = C_BUILD_COMPILER_NAME() if C_BUILD_IS_DEPENDENCY() else "cl"
+compiler_std_version = "c11"
 compiler_warning_level = ""
 compiler_disable_specific_warnings = []
 compiler_treat_warnings_as_errors = True
 
-project_name = "some-project-name"
-project_dependencies = [""]
-project_executable_procedures = ["test.exe"]
-project_debug_with_visual_studio = True
+project_name = "some_project"
+project_dependencies = ["ckit"]
+project_rebuild_project_dependencies = False
+project_debug_with_visual_studio = False
+project_executable_procedures = ["some_project.exe"]
 
 if compiler_name == "cl":
     project_warning_level = "2"
     project_disable_specific_warnings = ["5105", "4668", "4820"]
 elif compiler_name in ["gcc", "cc", "clang"]:
-    project_warning_level = "all"
+    project_warning_level = ""
+
+
+ckit_lib = C_BUILD_LIB('ckit', compiler_name)
+libs = [f"../ckit/build_{compiler_name}/{ckit_lib}"]
 
 procedures_config = {
-    "test executable": {
+    "OpenGL_TechDemo": {
         "build_directory": f"./build_{compiler_name}",
-        "output_name": "test.exe",
-        "source_files": ["../*.c"],
-        "additional_libs": [],
+        "output_name": f"some_project.exe",
+        "source_files": ["../Source/*.c"],
+        "additional_libs": libs,
         "compile_time_defines": [],
-        "include_paths": [],
+        "include_paths": [
+            "../Include", 
+            "../ckit"
+        ],
     },
 }
 
