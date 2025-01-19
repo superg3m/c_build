@@ -223,6 +223,11 @@ class Compiler:
             else:
                 compiler_command.append("-O2")
 
+        # Add additional compiler args
+        for arg in procedure.compiler_inject_into_args:
+            if arg:
+                self.compiler_command.append(arg)
+
         # Add include paths
         for include_path in include_paths:
             if include_path:

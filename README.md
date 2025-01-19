@@ -34,3 +34,12 @@ The project is moving towards using CMake for better organization and cross-plat
 
 ## Dev Notes: (For me)
 - Add a way to easily get started some type of template
+
+- This is how you do command line args
+project_executable_procedures = [
+	"test.exe \"encode\" \"../asm_input/listing_0038_many_register_mov.asm\"",
+	"8086_instruction_coder.exe \"decode\" \"../asm_output/listing_0038_many_register_mov\""
+]
+
+- I somehow forgot this so i'm leaving this here
+"compiler_inject_into_args": [],
