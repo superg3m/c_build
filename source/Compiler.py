@@ -226,7 +226,7 @@ class Compiler:
         # Add additional compiler args
         for arg in procedure.compiler_inject_into_args:
             if arg:
-                self.compiler_command.append(arg)
+                compiler_command.append(arg)
 
         # Add include paths
         for include_path in include_paths:
