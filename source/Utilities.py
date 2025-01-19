@@ -109,6 +109,11 @@ def NORMAL_PRINT(msg):
     if msg:
         print(f"{indent_spaces}{msg}")
 
+def WARN_PRINT(msg):
+    global indent_spaces
+    color = YELLOW
+    if msg:
+        print(f"{color}{indent_spaces}{msg}{DEFAULT}")
 
 def FATAL_PRINT(msg):
     global indent_spaces

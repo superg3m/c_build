@@ -81,7 +81,7 @@ class Procedure:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
             exit(-1)
         except Exception as e:
-            FATAL_PRINT(f"Error running executable '{self.output_name}': {e}")
+            WARN_PRINT(f"Error running executable '{self.output_name}': {e}")
             exit(-1)
         finally:
             os.chdir(cached_current_directory)
