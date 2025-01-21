@@ -14,8 +14,9 @@ from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION
 class Project:
     def __init__(self, MANAGER_COMPILER, project_config: Dict, procedures_config: Dict, is_dependency = False,):
         self.project_name = project_config["project_name"]
-        self.project_debug_with_visual_studio = project_config.get("project_debug_with_visual_studio", True)
+        self.project_debug_with_visual_studio: bool = project_config.get("project_debug_with_visual_studio", True)
         self.executable_procedures_names = project_config["project_executable_procedures"]
+        self.project_rebuild_project_dependencies: bool = project_config["project_rebuild_project_dependencies"]
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
         self.project_executable_procedures = []
         for proc in self.procedures:
@@ -115,7 +116,7 @@ class Project:
         self.build_dependencies(self.project_config)
 
         for proc in self.procedures:
-            if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
+            if (not self.project_rebuild_project_dependencies and self.__check_procedure_built(proc.build_directory, proc.output_name) and
                 self.is_dependency and PEEK_GIT_PULL() == False):
                 NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                 continue
