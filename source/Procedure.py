@@ -48,6 +48,7 @@ class Procedure:
 
     def debug(self, debug_with_visual_studio):
         debugger = ["raddbg", "devenv"]
+        print(f"{debugger[debug_with_visual_studio]} {self.output_name}")
         debug_command = [debugger[debug_with_visual_studio], self.output_name]
         cached_current_directory = os.getcwd()
         try:
