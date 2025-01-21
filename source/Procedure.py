@@ -49,7 +49,8 @@ class Procedure:
     def debug(self, debug_with_visual_studio):
         debugger = ["raddbg", "devenv"]
 
-        debug_command = [debugger[debug_with_visual_studio], self.output_name]
+        output_splat = self.output_name.split(" ")
+        debug_command = [debugger[debug_with_visual_studio], *output_splat]
         cached_current_directory = os.getcwd()
         try:
             os.chdir(self.build_directory)
