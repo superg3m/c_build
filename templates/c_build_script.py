@@ -22,8 +22,10 @@ elif compiler_name in ["gcc", "cc", "clang"]:
     project_warning_level = ""
 
 
-ckit_lib = C_BUILD_LIB('ckit', compiler_name)
-libs = [f"../ckit/build_{compiler_name}/{ckit_lib}"]
+libs = [f"../ckit/build_{compiler_name}/{C_BUILD_LIB('ckit', compiler_name)}"]
+if IS_WINDOWS():
+	windows_libs = ["User32.lib", "Gdi32.lib"] if compiler_name == "cl" else ["-lUser32", "-lGdi32"]
+	libs += windows_libs
 
 procedures_config = {
     "OpenGL_TechDemo": {
