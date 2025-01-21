@@ -16,7 +16,6 @@ class Project:
         self.project_name = project_config["project_name"]
         self.project_debug_with_visual_studio: bool = project_config.get("project_debug_with_visual_studio", True)
         self.executable_procedures_names = project_config["project_executable_procedures"]
-        self.project_rebuild_project_dependencies: bool = project_config["project_rebuild_project_dependencies"]
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
         self.project_executable_procedures = []
         for proc in self.procedures:
@@ -25,8 +24,12 @@ class Project:
                     self.project_executable_procedures.append(proc)
 
         self.is_dependency = is_dependency
+
+        if not self.is_dependency:
+            self.project_rebuild_project_dependencies: bool = project_config["project_rebuild_project_dependencies"]
+            self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
+
         self.project_config = project_config
-        self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
         self.MANAGER_COMPILER = MANAGER_COMPILER
         self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
 
@@ -93,6 +96,8 @@ class Project:
                 self.__serialize_dependency_data() # only runs if not serialized
                 project_data, procedure_data = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
+                project.project_rebuild_project_dependencies = self.project_rebuild_project_dependencies
+                project.build_type = self.build_type
                 project.build()
 
                 os.chdir(cache_dir)
