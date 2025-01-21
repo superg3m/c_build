@@ -48,13 +48,13 @@ class Procedure:
 
     def debug(self, debug_with_visual_studio):
         debugger = ["raddbg", "devenv"]
-        print(f"{debugger[debug_with_visual_studio]} {self.output_name}")
+
         debug_command = [debugger[debug_with_visual_studio], self.output_name]
         cached_current_directory = os.getcwd()
         try:
             os.chdir(self.build_directory)
             debugger_name = debugger[debug_with_visual_studio]
-
+            print(f"{debugger_name} {self.output_name}")
             # Check if the debugger process is already running
             debugger_running = IS_WINDOWS_PROCESS_RUNNING(debugger_name)
             if debugger_running:
