@@ -59,8 +59,8 @@ class Procedure:
             if debugger_running:
                 NORMAL_PRINT(f"Debugger already running attaching to process...")
             else:
-                subprocess.Popen(debug_command)
                 NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
+                subprocess.Popen(debug_command)
 
         except FileNotFoundError:
             FATAL_PRINT(f"{debug_command} compiler or executable not found")
