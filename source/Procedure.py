@@ -72,10 +72,10 @@ class Procedure:
         cached_current_directory = os.getcwd()
         try:
             os.chdir(self.build_directory)
-            quoted_values = re.findall(r'"([^"]*)"', self.output_name)
-            executable_name = self.output_name.split()[0]
+            args: list[str] = self.output_name.split(" ")
+            executable_name = args.pop(0) # Remove executable name
             executable_path = os.path.join('.', executable_name) if not IS_WINDOWS() else f".\\{executable_name}"
-            command = [executable_path] + quoted_values
+            command = [executable_path] + args
             FORMAT_PRINT(command)
             subprocess.run(command, check=True)
         except FileNotFoundError:

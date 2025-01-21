@@ -147,6 +147,7 @@ class Project:
 
 
     def __debug(self):
+        self.project_executable_procedures[0].output_name = self.executable_procedures_names
         self.project_executable_procedures[0].debug(self.project_debug_with_visual_studio)
 
     def __clean(self):
