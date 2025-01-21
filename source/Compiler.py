@@ -4,7 +4,7 @@ from enum import Enum
 from typing import List
 
 from .Procedure import Procedure
-from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT
+from .Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT, WARN_PRINT
 
 class CompilerType(Enum):
     INVALID = -1
@@ -192,7 +192,7 @@ class Compiler:
             warning_level_flag = self.get_compiler_lookup(CompilerAction.WARNING_LEVEL)
             compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
         elif self.compiler_disable_warnings:
-            FORMAT_PRINT("Can't set warning level warnings are disabled. To re-enable this feature set\n compiler_disable_warnings = False")
+            WARN_PRINT("Can't set warning level warnings are disabled. To re-enable this feature set compiler_disable_warnings = False")
 
         # Add disable specific warning flag
         disable_specific_warning_flag = self.get_compiler_lookup(CompilerAction.DISABLE_SPECIFIC_WARNING)
@@ -201,7 +201,7 @@ class Compiler:
                 if warning:
                     compiler_command.append(f"{disable_specific_warning_flag}{warning}")
         elif self.compiler_disable_warnings:
-            FORMAT_PRINT("Can't disable specifc warnings because warnings are disabled. To re-enable this feature set\n compiler_disable_warnings = False")
+            WARN_PRINT("Can't disable specifc warnings because warnings are disabled. To re-enable this feature set compiler_disable_warnings = False")
 
         # Add warnings as errors flag
         if self.compiler_treat_warnings_as_errors:
