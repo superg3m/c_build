@@ -191,7 +191,7 @@ class Compiler:
         if self.compiler_warning_level and not self.compiler_disable_warnings:
             warning_level_flag = self.get_compiler_lookup(CompilerAction.WARNING_LEVEL)
             compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
-        elif self.compiler_disable_warnings:
+        elif self.compiler_warning_level and self.compiler_disable_warnings:
             WARN_PRINT("Can't set warning level warnings are disabled. To re-enable this feature set compiler_disable_warnings = False")
 
         # Add disable specific warning flag
@@ -200,8 +200,8 @@ class Compiler:
             for warning in self.compiler_disable_specific_warnings:
                 if warning:
                     compiler_command.append(f"{disable_specific_warning_flag}{warning}")
-        elif self.compiler_disable_warnings:
-            WARN_PRINT("Can't disable specifc warnings because warnings are disabled. To re-enable this feature set compiler_disable_warnings = False")
+        elif len(self.compiler_disable_specific_warnings) >= 1 and self.compiler_disable_warnings:
+            WARN_PRINT("Can't disable specific warnings because warnings are disabled. To re-enable this feature set compiler_disable_warnings = False")
 
         # Add warnings as errors flag
         if self.compiler_treat_warnings_as_errors:
