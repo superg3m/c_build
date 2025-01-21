@@ -122,7 +122,6 @@ class Project:
 
         for proc in self.procedures:
             if not self.project_rebuild_project_dependencies:
-                print("WHAT: ", self.project_rebuild_project_dependencies)
                 if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
                     self.is_dependency and PEEK_GIT_PULL() == False):
                     NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
