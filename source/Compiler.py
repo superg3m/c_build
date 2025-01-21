@@ -76,6 +76,7 @@ class Compiler:
         self.compiler_warning_level: str = ""
         self.compiler_disable_specific_warnings: List[str] = []
         self.compiler_treat_warnings_as_errors: bool = False
+        self.compiler_disable_warnings: bool = False
 
     def set_config(self, is_debug, config):
         self.debug = is_debug
@@ -85,6 +86,7 @@ class Compiler:
         self.compiler_warning_level = config["compiler_warning_level"]
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
         self.compiler_treat_warnings_as_errors = config["compiler_treat_warnings_as_errors"]
+        self.compiler_disable_warnings = config["compiler_disable_warnings"]
 
     def IS_MSVC(self):
         return self.compiler_type == CompilerType.CL
@@ -180,25 +182,26 @@ class Compiler:
         if multi_threading_flag:
             compiler_command.append(multi_threading_flag)
 
-        # Add warning level flag
-        if self.compiler_warning_level:
-            warning_level_flag = self.get_compiler_lookup(CompilerAction.WARNING_LEVEL)
-            compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
-
-        # Add specifc warning flags to disable
-        if self.compiler_disable_specific_warnings:
+        # DISABLE ALL WARNINGS
+        if self.compiler_disable_warnings:
             disable_warnings_flag = self.get_compiler_lookup(CompilerAction.DISABLE_WARNINGS)
             compiler_command.append(disable_warnings_flag)
 
+        # Add warning level flag
+        if self.compiler_warning_level and not self.compiler_disable_warnings:
+            warning_level_flag = self.get_compiler_lookup(CompilerAction.WARNING_LEVEL)
+            compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
+        elif self.compiler_disable_warnings:
+            FORMAT_PRINT("Can't set warning level warnings are disabled. To re-enable this feature set\n compiler_disable_warnings = False")
+
         # Add disable specific warning flag
         disable_specific_warning_flag = self.get_compiler_lookup(CompilerAction.DISABLE_SPECIFIC_WARNING)
-        compiler_command.extend(
-            [
-             f"{disable_specific_warning_flag}{warning}"
-             for warning in self.compiler_disable_specific_warnings
-             if warning
-            ]
-        )
+        if not self.compiler_disable_warnings:
+            for warning in self.compiler_disable_specific_warnings:
+                if warning:
+                    compiler_command.append(f"{disable_specific_warning_flag}{warning}")
+        elif self.compiler_disable_warnings:
+            FORMAT_PRINT("Can't disable specifc warnings because warnings are disabled. To re-enable this feature set\n compiler_disable_warnings = False")
 
         # Add warnings as errors flag
         if self.compiler_treat_warnings_as_errors:
