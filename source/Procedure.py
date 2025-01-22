@@ -16,7 +16,7 @@ class Procedure:
         aggregate = []
         for source in self.source_files:
             if source:
-                aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source))
+                aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source, False))
         self.source_files = aggregate
         self.additional_libs = procedure_config["additional_libs"]
         self.compile_time_defines = procedure_config["compile_time_defines"]
