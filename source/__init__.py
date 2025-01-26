@@ -1,1 +1,1 @@
-# This is dumb python
+# This is fucking retard python is dumb
