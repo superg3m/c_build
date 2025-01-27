@@ -211,9 +211,8 @@ class Compiler:
         # Add optimization flag
         if self.debug:
             # Add address sanitizer flag
-            if os.name != 'nt':
-                address_sanitizer_flag = self.get_compiler_lookup(CompilerAction.ADDRESS_SANITIZER)
-                compiler_command.append(address_sanitizer_flag)
+            address_sanitizer_flag = self.get_compiler_lookup(CompilerAction.ADDRESS_SANITIZER)
+            compiler_command.append(address_sanitizer_flag)
 
             if self.IS_MSVC():
                 compiler_command.append("/Od")
