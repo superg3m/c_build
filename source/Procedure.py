@@ -1,10 +1,11 @@
 import os
 import re
 import subprocess
+import time
 from typing import Dict
 
 from .Utilities import (IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOB, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, \
-                        NORMAL_PRINT, WARN_PRINT)
+                        NORMAL_PRINT, WARN_PRINT, GREEN)
 
 
 class Procedure:
@@ -79,7 +80,11 @@ class Procedure:
             executable_path = os.path.join('.', executable_name) if not IS_WINDOWS() else f".\\{executable_name}"
             command = [executable_path] + args
             FORMAT_PRINT(command)
+            start_time = time.perf_counter()
             subprocess.run(command, check=True)
+            end_time = time.perf_counter()
+            elapsed_time = end_time - start_time
+            print(f"Process took: ")
         except FileNotFoundError:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
             exit(-1)
