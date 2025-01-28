@@ -5,7 +5,7 @@ import time
 from typing import Dict
 
 from .Utilities import (IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOB, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, \
-                        NORMAL_PRINT, WARN_PRINT, GREEN)
+                        NORMAL_PRINT, WARN_PRINT, GREEN, DEFAULT)
 
 
 class Procedure:
@@ -84,7 +84,7 @@ class Procedure:
             subprocess.run(command, check=True)
             end_time = time.perf_counter()
             elapsed_time = end_time - start_time
-            print(f"Process took: ")
+            print(f"Process took: {GREEN}{elapsed_time}{DEFAULT}")
         except FileNotFoundError:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
             exit(-1)
