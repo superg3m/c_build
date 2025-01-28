@@ -84,7 +84,7 @@ class Procedure:
             subprocess.run(command, check=True)
             end_time = time.perf_counter()
             elapsed_time = end_time - start_time
-            print(f"Process took: {GREEN}{elapsed_time}{DEFAULT}")
+            print(f"Process took: {GREEN}{elapsed_time:.2f}seconds{DEFAULT}")
         except FileNotFoundError:
             FATAL_PRINT(f"Executable '{self.output_name}' not found in directory '{self.build_directory}'")
             exit(-1)
