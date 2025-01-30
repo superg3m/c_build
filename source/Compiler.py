@@ -77,6 +77,7 @@ class Compiler:
         self.compiler_disable_specific_warnings: List[str] = []
         self.compiler_treat_warnings_as_errors: bool = False
         self.compiler_disable_warnings: bool = False
+        self.compiler_disable_sanitizer: bool = False
 
     def set_config(self, is_debug, config):
         self.debug = is_debug
@@ -87,6 +88,7 @@ class Compiler:
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
         self.compiler_treat_warnings_as_errors = config["compiler_treat_warnings_as_errors"]
         self.compiler_disable_warnings = config["compiler_disable_warnings"]
+        self.compiler_disable_sanitizer = config["compiler_disable_sanitizer"]
 
     def IS_MSVC(self):
         return self.compiler_type == CompilerType.CL
@@ -211,8 +213,9 @@ class Compiler:
         # Add optimization flag
         if self.debug:
             # Add address sanitizer flag
-            address_sanitizer_flag = self.get_compiler_lookup(CompilerAction.ADDRESS_SANITIZER)
-            compiler_command.append(address_sanitizer_flag)
+            if not self.compiler_disable_sanitizer:
+                address_sanitizer_flag = self.get_compiler_lookup(CompilerAction.ADDRESS_SANITIZER)
+                compiler_command.append(address_sanitizer_flag)
 
             if self.IS_MSVC():
                 compiler_command.append("/Od")
