@@ -176,7 +176,7 @@ class MSVC_CL_Compiler:
             compiler_command.append("/Od")
             compiler_command.append("/Zi")
         else:
-            compiler_command.append("/O3")
+            compiler_command.append("/O2")
 
         # Add additional compiler args
         for arg in procedure.compiler_inject_into_args:
