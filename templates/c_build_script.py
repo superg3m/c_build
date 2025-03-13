@@ -41,6 +41,7 @@ procedures_config = {
         "source_files": ["../Source/*.c"],
         "additional_libs": [],
         "compile_time_defines": [],
+        "compiler_inject_into_args": [],
         "include_paths": [],
     },
 }
