@@ -76,11 +76,7 @@ class ProcedureConfigElement:
     def to_dict(self):
         return self.__dict__
 
-is_required_to_pull_map = {}
 def IS_PULL_REQUIRED(path: str) -> bool:
-    if path in is_required_to_pull_map:
-        return is_required_to_pull_map[path]
-
     original_dir = os.getcwd()
     try:
         os.chdir(path)
@@ -90,10 +86,8 @@ def IS_PULL_REQUIRED(path: str) -> bool:
 
         for line in lines:
             if any(keyword in line for keyword in ["Your branch is behind", "have diverged"]):
-                is_required_to_pull_map[path] = True
                 return True
 
-        is_required_to_pull_map[path] = False
     finally:
         os.chdir(original_dir)
 
