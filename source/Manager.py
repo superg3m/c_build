@@ -30,7 +30,7 @@ class Manager:
             if os.path.exists(f"./{dependency_name}/{serialized_name}") and IS_PULL_REQUIRED(dependency_name):
                 os.remove(f"./{dependency_name}/{serialized_name}")
 
-        FATAL_PRINT(serialized_name)
+        FATAL_PRINT(f"{self.project_config.project_name} | {serialized_name}")
         if C_BUILD_IS_DEPENDENCY() and not os.path.exists(serialized_name):
             FATAL_PRINT("IN DEPEDENCY BUILD THINGS")
             filtered_project_config = self.project_config.to_dict()
