@@ -31,12 +31,13 @@ class Manager:
             filtered_project_config = self.project_config.to_dict().copy()
             filtered_project_config.pop("project_debug_with_visual_studio", None)
 
-            FATAL_PRINT(self.procedures_config)
-            FATAL_PRINT(filtered_project_config)
+            filtered_procedure_config = {}
+            for key, value in self.procedures_config:
+                filtered_procedure_config[key] = value.to_dict()
 
             serialized_data = {
                 **filtered_project_config,
-
+                **filtered_procedure_config
             }
             with open(serialized_name, "w") as file:
                 json.dump(serialized_data, file, indent=4)
