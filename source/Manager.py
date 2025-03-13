@@ -21,14 +21,9 @@ class Manager:
         self.procedures_config = procedures_config
 
     def build_project(self):
-        FATAL_PRINT(f"Project: {self.project_config.project_name} | Compiler: {self.INTERNAL_COMPILER.cc.compiler_name}")
-        serialized_name = f"c_build_dependency_cache_{self.INTERNAL_COMPILER.cc.compiler_name}.json"
-        for dependency_name in self.project_config.project_dependencies:
-            if dependency_name and os.path.exists(f"./{dependency_name}"):
-                if os.path.exists(f"./{dependency_name}/{serialized_name}") and IS_PULL_REQUIRED(dependency_name):
-                    os.remove(f"./{dependency_name}/{serialized_name}")
-
-        if C_BUILD_IS_DEPENDENCY() or not os.path.exists(f"./{serialized_name}"):
+        FATAL_PRINT(f"Project: {self.project_config.project_name} | Compiler: {C_BUILD_COMPILER_NAME()}")
+        if C_BUILD_IS_DEPENDENCY():
+            serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
             filtered_project_config = self.project_config.to_dict()
             filtered_procedure_config = {}
             for key, value in self.procedures_config.items():
@@ -40,6 +35,7 @@ class Manager:
             }
             with open(serialized_name, "w") as file:
                 json.dump(serialized_data, file, indent=4)
+
             return
 
         project = Project(self.INTERNAL_COMPILER, self.project_config, self.procedures_config)
