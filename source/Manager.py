@@ -30,6 +30,9 @@ class Manager:
         if C_BUILD_IS_DEPENDENCY():
             filtered_project_config = self.project_config.__dict__.copy()
             filtered_project_config.pop("project_debug_with_visual_studio", None)
+
+            FATAL_PRINT(**self.procedures_config.__dict__)
+
             serialized_data = {
                 **filtered_project_config,
                 **self.procedures_config.__dict__
