@@ -75,8 +75,9 @@ class Project:
                     os.system(f"git clone https://github.com/superg3m/c_build.git")
                     os.chdir(cache_dir)
                 else:
-                    GIT_PULL(dependency)
-                    GIT_PULL(f"{dependency}/c_build")
+                    pass
+                    # GIT_PULL(dependency)
+                    # GIT_PULL(f"{dependency}/c_build")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
