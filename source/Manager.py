@@ -1,6 +1,6 @@
 import json
 
-from .Compilers.CLANG_GCC import *
+from .Compilers.CLANG_CC_GCC import *
 from .Compilers.MSVC_CL import *
 
 from .Project import Project
@@ -12,11 +12,10 @@ class Manager:
         if compiler_config["compiler_name"] == "cl":
             self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
             SET_MSVC_VARS_FROM_CACHE()
-        elif compiler_config["compiler_name"] in ["gcc", "g++", "clang", "clang++"]:
-
+        elif compiler_config["compiler_name"] in ["cc", "gcc", "g++", "clang", "clang++"]:
             self.INTERNAL_COMPILER = CLANG_GCC_Compiler(compiler_config)
         else:
-            FATAL_PRINT(f"Unsupported Compiler: {compiler_config["compiler_name"]}\n Supported Compilers: [cl, gcc, g++, clang, clang++]")
+            FATAL_PRINT(f"Unsupported Compiler: {compiler_config["compiler_name"]}\n Supported Compilers: [cl, cc, gcc, g++, clang, clang++]")
 
         self.project_config = project_config
         self.procedures_config = procedures_config
