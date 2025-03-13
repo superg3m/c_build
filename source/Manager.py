@@ -36,7 +36,7 @@ class Manager:
 
             serialized_data = {
                 **filtered_project_config,
-                self.procedures_config.to_dict()
+                
             }
             with open(serialized_name, "w") as file:
                 json.dump(serialized_data, file, indent=4)
