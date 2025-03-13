@@ -21,12 +21,14 @@ class Manager:
         self.procedures_config = procedures_config
 
     def build_project(self):
-        serialized_name = f"c_build_dependency_cache_{self.INTERNAL_COMPILER.cc.compiler_name}.json"
+        compiler_names_to_remove = ['cc', 'cl', 'gcc', 'g++', 'clang', 'clang++']
         for dependency_name in self.project_config.project_dependencies:
-            if dependency_name:
-                if GIT_PULL(dependency_name) and os.path.exists(f"./{dependency_name}/{serialized_name}"):
-                    os.remove(f"./{dependency_name}/{serialized_name}")
-
+            if dependency_name and GIT_PULL(dependency_name):
+                for compiler_name in compiler_names_to_remove:
+                    serialized_name = f"c_build_dependency_cache_{compiler_name}.json"
+                    json_to_remove = f"./{dependency_name}/{serialized_name}"
+                    if os.path.exists(json_to_remove):
+                        os.remove(json_to_remove)
 
         if C_BUILD_IS_DEPENDENCY():
             serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
