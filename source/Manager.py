@@ -28,7 +28,7 @@ class Manager:
                     os.remove(f"./{dependency_name}/{serialized_name}")
 
         if C_BUILD_IS_DEPENDENCY():
-            filtered_project_config = self.project_config.__dict__.copy()
+            filtered_project_config = self.project_config.to_dict().copy()
             filtered_project_config.pop("project_debug_with_visual_studio", None)
 
             FATAL_PRINT(self.procedures_config)
@@ -36,7 +36,7 @@ class Manager:
 
             serialized_data = {
                 **filtered_project_config,
-                
+
             }
             with open(serialized_name, "w") as file:
                 json.dump(serialized_data, file, indent=4)
