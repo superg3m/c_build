@@ -25,7 +25,6 @@ class Project:
         self.MANAGER_COMPILER = MANAGER_COMPILER
         self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.cc.compiler_name}.json"
 
-
     def __check_procedure_built(self, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
 
@@ -33,6 +32,7 @@ class Project:
         return os.path.exists(self.serialized_name)
 
     def __serialize_dependency_data(self):
+        FATAL_PRINT(f"HERE COMPIELR: {self.MANAGER_COMPILER.cc.compiler_name}")
         if IS_WINDOWS():
             subprocess.call(
                 f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.cc.compiler_name}",
@@ -71,13 +71,8 @@ class Project:
                 if not os.path.exists(dependency):
                     FORMAT_PRINT(f"missing {dependency} cloning...")
                     os.system(f"git clone {github_root}/{dependency}.git")
-                    cache_dir = os.getcwd()
-                    os.chdir(dependency)
-                    os.system(f"git clone https://github.com/superg3m/c_build.git")
-                    os.chdir(cache_dir)
                 else:
-                    GIT_PULL(dependency)
-                    GIT_PULL(f"{dependency}/c_build")
+                    GIT_PULL(dependency) # This will be optional!
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
