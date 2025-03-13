@@ -93,8 +93,8 @@ class Project:
                 os.chdir(dependency)
 
                 self.__serialize_dependency_data() # only runs if not serialized
-                project_data, procedure_data = self.__deserialize_dependency_data()
-                project: Project = Project(self.MANAGER_COMPILER, project_data, procedure_data, True)
+                project_config, procedure_config = self.__deserialize_dependency_data()
+                project: Project = Project(self.MANAGER_COMPILER, project_config, procedure_config, True)
                 project.project_rebuild_project_dependencies = self.project_rebuild_project_dependencies
                 project.build_type = self.build_type
                 project.build()
