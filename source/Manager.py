@@ -8,7 +8,6 @@ from .Utilities import (C_BUILD_IS_DEPENDENCY, SET_MSVC_VARS_FROM_CACHE, C_BUILD
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.INTERNAL_COMPILER = None
-        WARN_PRINT(f"COMPILER: {compiler_config["compiler_name"]}")
         if compiler_config["compiler_name"] == "cl":
             self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
             SET_MSVC_VARS_FROM_CACHE()
