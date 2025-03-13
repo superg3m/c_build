@@ -78,7 +78,7 @@ class ProcedureConfigElement:
 
 is_required_to_pull_map = {}
 def IS_PULL_REQUIRED(path: str) -> bool:
-    if path in is_required_to_pull_map[path]:
+    if path in is_required_to_pull_map:
         return is_required_to_pull_map[path]
 
     original_dir = os.getcwd()
