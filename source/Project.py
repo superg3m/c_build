@@ -73,6 +73,9 @@ class Project:
                     os.system(f"git clone {github_root}/{dependency}.git")
                 else:
                     GIT_PULL(dependency) # Optional Eventually!
+                    serialized_name = f"c_build_dependency_cache_{self.MANAGER_COMPILER.cc.compiler_name}.json"
+                    if PEEK_GIT_PULL():
+                        os.remove(f"./{dependency}/{serialized_name}")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
