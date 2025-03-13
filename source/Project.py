@@ -30,7 +30,7 @@ class Project:
 
         self.project_config = project_config
         self.MANAGER_COMPILER = MANAGER_COMPILER
-        self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
+        self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.cc.compiler_name}.json"
 
 
     def __check_procedure_built(self, build_dir, output_name):
@@ -45,12 +45,12 @@ class Project:
 
         if IS_WINDOWS():
             subprocess.call(
-                f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
+                f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.cc.compiler_name}",
                 shell=True
             )
         else:
             subprocess.call(
-                f"python3 -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
+                f"python3 -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.cc.compiler_name}",
                 shell=True
             )
 
