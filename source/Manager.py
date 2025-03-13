@@ -28,9 +28,7 @@ class Manager:
                     os.remove(f"./{dependency_name}/{serialized_name}")
 
         if C_BUILD_IS_DEPENDENCY():
-            filtered_project_config = self.project_config.to_dict().copy()
-            filtered_project_config.pop("project_debug_with_visual_studio", None)
-
+            filtered_project_config = self.project_config.to_dict()
             filtered_procedure_config = {}
             for key, value in self.procedures_config:
                 filtered_procedure_config[key] = value.to_dict()
