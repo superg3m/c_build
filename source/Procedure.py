@@ -22,7 +22,7 @@ class Procedure:
         self.additional_libs = procedure_config["additional_libs"]
         self.compile_time_defines = procedure_config["compile_time_defines"]
         self.include_paths = procedure_config["include_paths"]
-        self.compiler_inject_into_args = procedure_config.get("compiler_inject_into_args", [])
+        self.compiler_inject_into_args = procedure_config.get("compiler_inject_into_args")
 
     def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)
