@@ -26,6 +26,8 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
+import json
+
 class ProjectConfig:
     def __init__(self, project_name, project_dependencies, project_debug_with_visual_studio, project_rebuild_project_dependencies, project_executable_procedures):
         self.project_name: str = project_name
@@ -33,6 +35,10 @@ class ProjectConfig:
         self.project_debug_with_visual_studio: bool = project_debug_with_visual_studio
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
         self.project_executable_procedures: list[str] = project_executable_procedures
+
+    def __repr__(self):
+        return json.dumps(self.__dict__, indent=4)
+
 
 class CompilerConfig:
     def __init__(self, compiler_name, compiler_warning_level, compiler_disable_specific_warnings, compiler_treat_warnings_as_errors, compiler_disable_warnings, compiler_disable_sanitizer):
@@ -43,6 +49,10 @@ class CompilerConfig:
         self.compiler_disable_warnings: bool = compiler_disable_warnings
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
 
+    def __repr__(self):
+        return json.dumps(self.__dict__, indent=4)
+
+
 class ProcedureConfigElement:
     def __init__(self, build_directory, output_name, source_files, additional_libs, compile_time_defines, compiler_inject_into_args, include_paths):
         self.build_directory: str = build_directory
@@ -52,6 +62,10 @@ class ProcedureConfigElement:
         self.compile_time_defines: list[str] = compile_time_defines
         self.compiler_inject_into_args: list[str] = compiler_inject_into_args
         self.include_paths: list[str] = include_paths
+
+    def __repr__(self):
+        return json.dumps(self.__dict__, indent=4)
+
         
 def IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
