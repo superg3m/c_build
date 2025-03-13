@@ -25,7 +25,7 @@ class Project:
         self.is_dependency = is_dependency
 
         if not self.is_dependency:
-            self.project_rebuild_project_dependencies: bool = project_config["project_rebuild_project_dependencies"]
+            self.project_rebuild_project_dependencies: bool = project_config.project_rebuild_project_dependencies.
             self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
 
         self.project_config = project_config
