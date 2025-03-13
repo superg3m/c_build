@@ -32,7 +32,7 @@ class Project:
         return os.path.exists(self.serialized_name)
 
     def __serialize_dependency_data(self):
-        FATAL_PRINT("HERE")
+        FATAL_PRINT(f"HERE COMPIELR: {self.MANAGER_COMPILER.cc.compiler_name}")
         if IS_WINDOWS():
             subprocess.call(
                 f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.cc.compiler_name}",
