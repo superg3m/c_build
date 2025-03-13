@@ -12,6 +12,7 @@ class Manager:
             self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
             SET_MSVC_VARS_FROM_CACHE()
         elif C_BUILD_COMPILER_NAME() in ["gcc", "g++", "clang", "clang++"]:
+            WARN_PRINT("GOT HERE?")
             self.INTERNAL_COMPILER = CLANG_GCC_Compiler(compiler_config)
         else:
             FATAL_PRINT(f"Unsupported Compiler: {C_BUILD_COMPILER_NAME()}\n Supported Compilers: [cl, gcc, g++, clang, clang++]")
