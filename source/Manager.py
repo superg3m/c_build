@@ -29,7 +29,7 @@ class Manager:
             if os.path.exists(f"./{dependency_name}/{serialized_name}") and IS_PULL_REQUIRED(dependency_name):
                 os.remove(f"./{dependency_name}/{serialized_name}")
 
-        if C_BUILD_IS_DEPENDENCY() and not os.path.exists(serialized_name):
+        if C_BUILD_IS_DEPENDENCY() and os.path.exists(serialized_name):
             filtered_project_config = self.project_config.to_dict()
             filtered_procedure_config = {}
             for key, value in self.procedures_config.items():
