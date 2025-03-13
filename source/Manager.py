@@ -21,7 +21,6 @@ class Manager:
         self.procedures_config = procedures_config
 
     def build_project(self):
-        FATAL_PRINT(f"Project: {self.project_config.project_name} | Compiler: {C_BUILD_COMPILER_NAME()}")
         if C_BUILD_IS_DEPENDENCY():
             serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
             filtered_project_config = self.project_config.to_dict()
