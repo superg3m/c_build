@@ -1,8 +1,4 @@
-import os
-import subprocess
 from enum import Enum
-from typing import List
-
 from ..Procedure import Procedure
 from ..Utilities import *
 
@@ -25,12 +21,7 @@ class CompilerAction(Enum):
 class CLANG_GCC_Compiler:
     def __init__(self, compiler_config: CompilerConfig):
         self.debug: bool = C_BUILD_IS_DEBUG()
-        self.compiler_name: str = ""
-        self.compiler_warning_level: str = ""
-        self.compiler_disable_specific_warnings: List[str] = []
-        self.compiler_treat_warnings_as_errors: bool = False
-        self.compiler_disable_warnings: bool = False
-        self.compiler_disable_sanitizer: bool = False
+        self.cc = compiler_config
         self.compiler_lookup_table: List[str] = [
             "-std=",              # STD_VERSION
             None,                 # NO_LOGO
@@ -47,16 +38,6 @@ class CLANG_GCC_Compiler:
             "-Werror"             # WARNINGS_AS_ERRORS
         ]
 
-        self.set_config(compiler_config)
-
-    def set_config(self, compiler_config):
-        self.compiler_name = compiler_config.compiler_name
-        self.compiler_warning_level = compiler_config.compiler_warning_level
-        self.compiler_disable_specific_warnings = compiler_config.compiler_disable_specific_warnings
-        self.compiler_treat_warnings_as_errors = compiler_config.compiler_treat_warnings_as_errors
-        self.compiler_disable_warnings = compiler_config.compiler_disable_warnings
-        self.compiler_disable_sanitizer = compiler_config.compiler_disable_sanitizer
-
     def get_compiler_lookup(self, action: CompilerAction) -> str:
         return self.compiler_lookup_table[action.value]
 
@@ -68,14 +49,14 @@ class CLANG_GCC_Compiler:
         compile_time_defines = procedure.compile_time_defines
         include_paths = procedure.include_paths
 
-        compiler_std_version = "c17"
-        compiler_maybe_promoted_name = self.compiler_name
+        self.cc.compiler_std_version = self.cc.compiler_std_version if self.cc.compiler_std_version else "c17"
+        compiler_maybe_promoted_name = self.cc.compiler_name
         detected_cpp = False
 
         for source_name in source_files:
-            if (".cpp" in source_name) or self.compiler_name in ["g++", "clang++"]:
+            if (".cpp" in source_name) or self.cc.compiler_name in ["g++", "clang++"]:
                 detected_cpp = True
-                compiler_std_version = "c++20"
+                self.cc.compiler_std_version = "c++20"
                 if compiler_maybe_promoted_name == "gcc":
                     compiler_maybe_promoted_name = "g++"
 
@@ -108,7 +89,7 @@ class CLANG_GCC_Compiler:
 
         # Add std version flag
         std_version_flags = self.get_compiler_lookup(CompilerAction.STD_VERSION)
-        compiler_command.append(f"{std_version_flags}{compiler_std_version}")
+        compiler_command.append(f"{std_version_flags}{self.cc.compiler_std_version}")
 
         report_full_path_flag = self.get_compiler_lookup(CompilerAction.REPORT_FULL_PATH)
         if report_full_path_flag:
@@ -138,35 +119,35 @@ class CLANG_GCC_Compiler:
             compiler_command.append(multi_threading_flag)
 
         # DISABLE ALL WARNINGS
-        if self.compiler_disable_warnings:
+        if self.cc.compiler_disable_warnings:
             disable_warnings_flag = self.get_compiler_lookup(CompilerAction.DISABLE_WARNINGS)
             compiler_command.append(disable_warnings_flag)
 
         # Add warning level flag
-        if self.compiler_warning_level and not self.compiler_disable_warnings:
+        if self.cc.compiler_warning_level and not self.cc.compiler_disable_warnings:
             warning_level_flag = self.get_compiler_lookup(CompilerAction.WARNING_LEVEL)
-            compiler_command.append(f"{warning_level_flag}{self.compiler_warning_level}")
-        elif self.compiler_warning_level and self.compiler_disable_warnings:
+            compiler_command.append(f"{warning_level_flag}{self.cc.compiler_warning_level}")
+        elif self.cc.compiler_warning_level and self.cc.compiler_disable_warnings:
             WARN_PRINT("Can't set warning level warnings are disabled. To re-enable this feature set compiler_disable_warnings = False")
 
         # Add disable specific warning flag
         disable_specific_warning_flag = self.get_compiler_lookup(CompilerAction.DISABLE_SPECIFIC_WARNING)
-        if not self.compiler_disable_warnings:
-            for warning in self.compiler_disable_specific_warnings:
+        if not self.cc.compiler_disable_warnings:
+            for warning in self.cc.compiler_disable_specific_warnings:
                 if warning:
                     compiler_command.append(f"{disable_specific_warning_flag}{warning}")
-        elif len(self.compiler_disable_specific_warnings) >= 1 and self.compiler_disable_warnings:
+        elif len(self.cc.compiler_disable_specific_warnings) >= 1 and self.cc.compiler_disable_warnings:
             WARN_PRINT("Can't disable specific warnings because warnings are disabled. To re-enable this feature set compiler_disable_warnings = False")
 
         # Add warnings as errors flag
-        if self.compiler_treat_warnings_as_errors:
+        if self.cc.compiler_treat_warnings_as_errors:
             warning_as_errors_flag = self.get_compiler_lookup(CompilerAction.WARNINGS_AS_ERRORS)
             compiler_command.append(warning_as_errors_flag)
 
         # Add optimization flag
         if self.debug:
             # Add address sanitizer flag
-            if not self.compiler_disable_sanitizer:
+            if not self.cc.compiler_disable_sanitizer:
                 address_sanitizer_flag = self.get_compiler_lookup(CompilerAction.ADDRESS_SANITIZER)
                 compiler_command.append(address_sanitizer_flag)
 

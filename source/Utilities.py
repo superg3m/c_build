@@ -44,8 +44,9 @@ class ProjectConfig:
 
 
 class CompilerConfig:
-    def __init__(self, compiler_name: str, compiler_warning_level: str, compiler_disable_specific_warnings: list[str], compiler_treat_warnings_as_errors: bool, compiler_disable_warnings: bool, compiler_disable_sanitizer: bool):
+    def __init__(self, compiler_name: str, compiler_std_version: str, compiler_warning_level: str, compiler_disable_specific_warnings: list[str], compiler_treat_warnings_as_errors: bool, compiler_disable_warnings: bool, compiler_disable_sanitizer: bool):
         self.compiler_name: str = compiler_name
+        self.compiler_std_version: str = compiler_std_version
         self.compiler_warning_level: str = compiler_warning_level
         self.compiler_disable_specific_warnings: list[str] = compiler_disable_specific_warnings
         self.compiler_treat_warnings_as_errors: bool = compiler_treat_warnings_as_errors
