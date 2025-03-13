@@ -31,6 +31,7 @@ class Manager:
                 os.remove(f"./{dependency_name}/{serialized_name}")
 
         if C_BUILD_IS_DEPENDENCY() and not os.path.exists(serialized_name):
+            FATAL_PRINT("IN DEPEDENCY BUILD THINGS")
             filtered_project_config = self.project_config.to_dict()
             filtered_procedure_config = {}
             for key, value in self.procedures_config.items():
