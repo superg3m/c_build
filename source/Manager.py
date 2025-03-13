@@ -21,7 +21,7 @@ class Manager:
         self.procedures_config = procedures_config
 
     def build_project(self):
-        serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
+        serialized_name = f"c_build_dependency_cache_{self.INTERNAL_COMPILER.cc.compiler_name}.json"
 
         for dependency_name in self.project_config.project_dependencies:
             if not dependency_name:
