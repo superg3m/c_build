@@ -39,6 +39,9 @@ class ProjectConfig:
     def __repr__(self):
         return json.dumps(self.__dict__, indent=4)
 
+    def to_dict(self):
+        return self.__dict__
+
 
 class CompilerConfig:
     def __init__(self, compiler_name, compiler_warning_level, compiler_disable_specific_warnings, compiler_treat_warnings_as_errors, compiler_disable_warnings, compiler_disable_sanitizer):
@@ -51,6 +54,9 @@ class CompilerConfig:
 
     def __repr__(self):
         return json.dumps(self.__dict__, indent=4)
+
+    def to_dict(self):
+        return self.__dict__
 
 
 class ProcedureConfigElement:
@@ -65,6 +71,9 @@ class ProcedureConfigElement:
 
     def __repr__(self):
         return json.dumps(self.__dict__, indent=4)
+
+    def to_dict(self):
+        return self.__dict__
 
         
 def IS_PULL_REQUIRED(path: str) -> bool:
