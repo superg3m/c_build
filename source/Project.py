@@ -76,7 +76,7 @@ class Project:
                     os.chdir(cache_dir)
                 else:
                     GIT_PULL(dependency)
-                    GIT_PULL(f"{dependency}/c_build")
+                    # GIT_PULL(f"{dependency}/c_build")
 
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
