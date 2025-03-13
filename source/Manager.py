@@ -30,7 +30,7 @@ class Manager:
         if C_BUILD_IS_DEPENDENCY():
             filtered_project_config = self.project_config.to_dict()
             filtered_procedure_config = {}
-            for key, value in self.procedures_config:
+            for key, value in self.procedures_config.items():
                 filtered_procedure_config[key] = value.to_dict()
 
             serialized_data = {
