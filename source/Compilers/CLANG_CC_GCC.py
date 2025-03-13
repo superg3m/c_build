@@ -4,7 +4,7 @@ from enum import Enum
 from typing import List
 
 from ..Procedure import Procedure
-from ..Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT, WARN_PRINT, C_BUILD_IS_DEBUG
+from ..Utilities import *
 
 class CompilerAction(Enum):
     NO_ACTION = -1
@@ -23,7 +23,7 @@ class CompilerAction(Enum):
     WARNINGS_AS_ERRORS = 12
 
 class CLANG_GCC_Compiler:
-    def __init__(self, compiler_config):
+    def __init__(self, compiler_config: CompilerConfig):
         self.debug: bool = C_BUILD_IS_DEBUG()
         self.compiler_name: str = ""
         self.compiler_warning_level: str = ""
@@ -49,13 +49,13 @@ class CLANG_GCC_Compiler:
 
         self.set_config(compiler_config)
 
-    def set_config(self, config):
-        self.compiler_name = config["compiler_name"]
-        self.compiler_warning_level = config["compiler_warning_level"]
-        self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
-        self.compiler_treat_warnings_as_errors = config["compiler_treat_warnings_as_errors"]
-        self.compiler_disable_warnings = config["compiler_disable_warnings"]
-        self.compiler_disable_sanitizer = config["compiler_disable_sanitizer"]
+    def set_config(self, compiler_config):
+        self.compiler_name = compiler_config.compiler_name
+        self.compiler_warning_level = compiler_config.compiler_warning_level
+        self.compiler_disable_specific_warnings = compiler_config.compiler_disable_specific_warnings
+        self.compiler_treat_warnings_as_errors = compiler_config.compiler_treat_warnings_as_errors
+        self.compiler_disable_warnings = compiler_config.compiler_disable_warnings
+        self.compiler_disable_sanitizer = compiler_config.compiler_disable_sanitizer
 
     def get_compiler_lookup(self, action: CompilerAction) -> str:
         return self.compiler_lookup_table[action.value]

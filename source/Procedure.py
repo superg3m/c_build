@@ -4,25 +4,23 @@ import subprocess
 import time
 from typing import Dict
 
-from .Utilities import (IS_WINDOWS, FATAL_PRINT, RESOLVE_FILE_GLOB, FORMAT_PRINT, IS_WINDOWS_PROCESS_RUNNING, \
-                        NORMAL_PRINT, WARN_PRINT, GREEN, DEFAULT)
-
+from .Utilities import *
 
 class Procedure:
-    def __init__(self, MANAGER_COMPILER, procedure_config: Dict):
+    def __init__(self, MANAGER_COMPILER, procedure_element: ProcedureConfigElement):
         self.MANAGER_COMPILER = MANAGER_COMPILER
-        self.build_directory = procedure_config["build_directory"]
-        self.output_name = procedure_config["output_name"]
-        self.source_files = procedure_config["source_files"]
+        self.build_directory = procedure_element.build_directory
+        self.output_name = procedure_element.output_name
+        self.source_files = procedure_element.source_files
         aggregate = []
         for source in self.source_files:
             if source:
                 aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source, False))
         self.source_files = aggregate
-        self.additional_libs = procedure_config["additional_libs"]
-        self.compile_time_defines = procedure_config["compile_time_defines"]
-        self.include_paths = procedure_config["include_paths"]
-        self.compiler_inject_into_args = procedure_config["compiler_inject_into_args"]
+        self.additional_libs = procedure_element.additional_libs
+        self.compile_time_defines = procedure_element.compile_time_defines
+        self.include_paths = procedure_element.include_paths
+        self.compiler_inject_into_args = procedure_element.compiler_inject_into_args
 
     def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)

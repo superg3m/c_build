@@ -7,15 +7,14 @@ import time
 from typing import Dict
 
 from .Procedure import Procedure
-from .Utilities import NORMAL_PRINT, FORMAT_PRINT, DOWN_LEVEL, C_BUILD_EXECUTION_TYPE, UP_LEVEL, \
-    C_BUILD_IS_DEBUG, IS_WINDOWS, FATAL_PRINT, GIT_PULL, PEEK_GIT_PULL, CONSUME_GIT_PULL, git_had_to_pull
+from .Utilities import *
 
 
 class Project:
-    def __init__(self, MANAGER_COMPILER, project_config: Dict, procedures_config: Dict, is_dependency = False,):
-        self.project_name = project_config["project_name"]
-        self.project_debug_with_visual_studio: bool = project_config.get("project_debug_with_visual_studio", True)
-        self.executable_procedures_names = project_config["project_executable_procedures"]
+    def __init__(self, MANAGER_COMPILER, project_config: ProjectConfig, procedures_config: dict[str, ProcedureConfigElement], is_dependency = False,):
+        self.project_name = project_config.project_name
+        self.project_debug_with_visual_studio: bool = project_config.project_debug_with_visual_studio
+        self.executable_procedures_names = project_config.project_executable_procedures
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
         self.project_executable_procedures = []
         for proc in self.procedures:
@@ -55,7 +54,7 @@ class Project:
                 shell=True
             )
 
-    def __deserialize_dependency_data(self):
+    def __deserialize_dependency_data(self) -> (ProjectConfig, dict[str, ProcedureConfigElement]):
         serialized_file = open(self.serialized_name)
 
         config = json.load(serialized_file)
@@ -66,13 +65,13 @@ class Project:
             if key.startswith("project_"):
                 project_config[key] = value
             elif isinstance(value, dict):
-                procedure_config[key] = value
+                procedure_config[key] = ProcedureConfigElement(**value)
 
-        return project_config, procedure_config
+        return ProjectConfig(**project_config), procedure_config
 
-    def build_dependencies(self, project_config, github_root = "https://github.com/superg3m"):
-        project_name = project_config["project_name"]
-        project_dependencies = project_config["project_dependencies"]
+    def build_dependencies(self, project_config: ProjectConfig, github_root = "https://github.com/superg3m"):
+        project_name = project_config.project_name
+        project_dependencies = project_config.project_dependencies
 
         if len(project_dependencies) != 0 and project_dependencies[0] != "":
             FORMAT_PRINT(f"{project_name} depends on:")

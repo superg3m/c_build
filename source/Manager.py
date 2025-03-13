@@ -6,7 +6,7 @@ from .Project import Project
 from .Utilities import *
 
 class Manager:
-    def __init__(self, compiler_config: CompilerConfig, project_config: ProjectConfig, procedures_config):
+    def __init__(self, compiler_config: CompilerConfig, project_config: ProjectConfig, procedures_config: dict[str, ProcedureConfigElement]):
         self.INTERNAL_COMPILER = None
         if compiler_config.compiler_name == "cl":
             self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
@@ -37,7 +37,6 @@ class Manager:
             with open(serialized_name, "w") as file:
                 json.dump(serialized_data, file, indent=4)
             return
-
 
         project = Project(self.INTERNAL_COMPILER, self.project_config, self.procedures_config)
         project.build()
