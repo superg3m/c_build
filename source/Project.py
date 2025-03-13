@@ -40,9 +40,6 @@ class Project:
         return os.path.exists(self.serialized_name)
 
     def __serialize_dependency_data(self):
-        if self.is_serialized():
-            return
-
         if IS_WINDOWS():
             subprocess.call(
                 f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.cc.compiler_name}",
@@ -92,7 +89,9 @@ class Project:
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
 
-                self.__serialize_dependency_data() # only runs if not serialized
+                if not self.is_serialized():
+                    self.__serialize_dependency_data()
+
                 project_config, procedure_config = self.__deserialize_dependency_data()
                 project: Project = Project(self.MANAGER_COMPILER, project_config, procedure_config, True)
                 project.project_rebuild_project_dependencies = self.project_rebuild_project_dependencies
