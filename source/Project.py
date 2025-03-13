@@ -25,7 +25,6 @@ class Project:
         self.MANAGER_COMPILER = MANAGER_COMPILER
         self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.cc.compiler_name}.json"
 
-
     def __check_procedure_built(self, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
 
