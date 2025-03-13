@@ -76,7 +76,6 @@ class ProcedureConfigElement:
     def to_dict(self):
         return self.__dict__
 
-        
 def IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
@@ -88,13 +87,14 @@ def IS_PULL_REQUIRED(path: str) -> bool:
         for line in lines:
             if any(keyword in line for keyword in ["Your branch is behind", "have diverged"]):
                 return True
+
     finally:
         os.chdir(original_dir)
 
     return False
 
+
 git_had_to_pull = []
-# Returns true if there was a git pull required
 def GIT_PULL(path: str) -> bool:
     global git_had_to_pull
 
