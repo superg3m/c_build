@@ -21,6 +21,7 @@ class Manager:
         self.procedures_config = procedures_config
 
     def build_project(self):
+        FATAL_PRINT(f"Project: {self.project_config.project_name} | Compiler: {self.INTERNAL_COMPILER.cc.compiler_name}")
         serialized_name = f"c_build_dependency_cache_{self.INTERNAL_COMPILER.cc.compiler_name}.json"
         for dependency_name in self.project_config.project_dependencies:
             if dependency_name and os.path.exists(f"./{dependency_name}"):
