@@ -1,19 +1,20 @@
 import json
 import os
-from multiprocessing.util import ForkAwareThreadLock
 
-from .Compiler import Compiler
+from source.Compilers.CLANG_GCC import *
+from source.Compilers.MSVC_CL import *
+
 from .Project import Project
 from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
-                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, FATAL, FATAL_PRINT,
-                        IS_PULL_REQUIRED)
+                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, IS_PULL_REQUIRED)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
-        self.compiler_config = compiler_config
-        self.INTERNAL_COMPILER: Compiler = Compiler()
-        self.INTERNAL_COMPILER.set_config(C_BUILD_IS_DEBUG(), compiler_config)
-        if self.INTERNAL_COMPILER.compiler_name == "cl":
+        self.INTERNAL_COMPILER = None
+        if C_BUILD_COMPILER_NAME() == "cl":
+            self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
             SET_MSVC_VARS_FROM_CACHE()
+        if C_BUILD_COMPILER_NAME() in ["gcc", "clang", "g++", "clang++"]:
+            self.INTERNAL_COMPILER = CLANG_GCC_Compiler(compiler_config)
 
         self.project_config = project_config
         self.procedures_config = procedures_config

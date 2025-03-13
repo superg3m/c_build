@@ -1,3 +1,2 @@
-msbuild myproject.vcxproj /p:Configuration=Debug
 devenv myproject.vcxproj /Upgrade // THIS CAN BE USED FOR THE TOOLSET HOLY SHIT?
 devenv myproject.sln

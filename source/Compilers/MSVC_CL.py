@@ -1,12 +1,12 @@
 import os
 import subprocess
 from enum import Enum
+from gc import set_debug
 from typing import List
 
-from aiohttp import TraceConnectionReuseconnParams
-
 from ..Procedure import Procedure
-from ..Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT, WARN_PRINT
+from ..Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT, WARN_PRINT, C_BUILD_IS_DEBUG
+
 
 class CompilerAction(Enum):
     NO_ACTION = -1
@@ -25,8 +25,8 @@ class CompilerAction(Enum):
     WARNINGS_AS_ERRORS = 12
 
 class MSVC_CL_Compiler:
-    def __init__(self):
-        self.debug: bool = False
+    def __init__(self, compiler_config):
+        self.debug: bool = C_BUILD_IS_DEBUG()
         self.compiler_name: str = ""
         self.compiler_warning_level: str = ""
         self.compiler_disable_specific_warnings: List[str] = []
@@ -49,8 +49,9 @@ class MSVC_CL_Compiler:
             "/WX"  # WARNINGS_AS_ERRORS
         ]
 
-    def set_config(self, is_debug, config):
-        self.debug = is_debug
+        self.set_config(compiler_config)
+
+    def set_config(self, config):
         self.compiler_name = config["compiler_name"]
         self.compiler_warning_level = config["compiler_warning_level"]
         self.compiler_disable_specific_warnings = config["compiler_disable_specific_warnings"]
@@ -185,13 +186,10 @@ class MSVC_CL_Compiler:
         # Add include paths
         for include_path in include_paths:
             if include_path:
-                if self.IS_MSVC():
-                    compiler_command.append(f"/I{include_path}")
-                else:
-                    compiler_command.append(f"-I{include_path}")
+                compiler_command.append(f"/I{include_path}")
 
         if not should_build_static_lib:
-            if len(additional_libs) > 0 and additional_libs[0] and self.IS_MSVC():
+            if len(additional_libs) > 0 and additional_libs[0]:
                 compiler_command.append("/link")
             compiler_command.extend([lib for lib in additional_libs if lib])
 
