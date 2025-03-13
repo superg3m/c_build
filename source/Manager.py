@@ -11,8 +11,10 @@ class Manager:
         if C_BUILD_COMPILER_NAME() == "cl":
             self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
             SET_MSVC_VARS_FROM_CACHE()
-        if C_BUILD_COMPILER_NAME() in ["gcc", "clang", "g++", "clang++"]:
+        elif C_BUILD_COMPILER_NAME() in ["gcc", "g++", "clang", "clang++"]:
             self.INTERNAL_COMPILER = CLANG_GCC_Compiler(compiler_config)
+        else:
+            FATAL_PRINT(f"Unsupported Compiler: {C_BUILD_COMPILER_NAME()}\n Supported Compilers: [cl, gcc, g++, clang, clang++]")
 
         self.project_config = project_config
         self.procedures_config = procedures_config

@@ -6,7 +6,6 @@ from typing import List
 from ..Procedure import Procedure
 from ..Utilities import FORMAT_PRINT, NORMAL_PRINT, build_static_lib, FATAL_PRINT, WARN_PRINT, C_BUILD_IS_DEBUG
 
-
 class CompilerAction(Enum):
     NO_ACTION = -1
     STD_VERSION = 0
