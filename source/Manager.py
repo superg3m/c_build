@@ -14,7 +14,8 @@ class Manager:
         elif compiler_config["compiler_name"] in ["cc", "gcc", "g++", "clang", "clang++"]:
             self.INTERNAL_COMPILER = CLANG_GCC_Compiler(compiler_config)
         else:
-            FATAL_PRINT(f"Unsupported Compiler: {compiler_config["compiler_name"]}\n Supported Compilers: [cl, cc, gcc, g++, clang, clang++]")
+            FATAL_PRINT(f"Unsupported Compiler: {compiler_config["compiler_name"]}\nSupported Compilers: [cl, cc, gcc, g++, clang, clang++]")
+            exit(-1)
 
         self.project_config = project_config
         self.procedures_config = procedures_config
