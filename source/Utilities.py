@@ -26,6 +26,23 @@ parser.add_argument('--is_dependency', default="false", type=str, required=False
 parser.add_argument('--execution_type', default="BUILD", type=str, required=False, help='Build type -> { BUILD, RUN, CLEAN, DEBUG }')
 parser.add_argument('--compiler_name', default="cl", type=str, required=False, help='Compiler Name -> { cl, gcc, cc, clang }')
 
+class ProjectConfig:
+    def __init__(self):
+        self.project_name: str = ""
+        self.project_dependencies: list[str] = []
+        self.project_debug_with_visual_studio: bool = False
+        self.project_rebuild_project_dependencies: bool = False
+        self.project_executable_procedures: list[str] = []
+
+class CompilerConfig:
+    def __init__(self):
+        self.compiler_name: str = ""
+        self.compiler_warning_level: str = ""
+        self.compiler_disable_specific_warnings: list[str] = []
+        self.compiler_treat_warnings_as_errors: bool = False
+        self.compiler_disable_warnings: bool = False
+        self.compiler_disable_sanitizer: bool = False
+
 def IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
     try:

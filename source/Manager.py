@@ -2,19 +2,19 @@ import json
 
 from .Compilers.CLANG_CC_GCC import *
 from .Compilers.MSVC_CL import *
-
 from .Project import Project
-from .Utilities import (C_BUILD_IS_DEPENDENCY, SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, IS_PULL_REQUIRED)
+from .Utilities import *
+
 class Manager:
-    def __init__(self, compiler_config, project_config, procedures_config):
+    def __init__(self, compiler_config: CompilerConfig, project_config: ProjectConfig, procedures_config):
         self.INTERNAL_COMPILER = None
-        if compiler_config["compiler_name"] == "cl":
+        if compiler_config.compiler_name == "cl":
             self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
             SET_MSVC_VARS_FROM_CACHE()
-        elif compiler_config["compiler_name"] in ["cc", "gcc", "g++", "clang", "clang++"]:
+        elif compiler_config.compiler_name in ["cc", "gcc", "g++", "clang", "clang++"]:
             self.INTERNAL_COMPILER = CLANG_GCC_Compiler(compiler_config)
         else:
-            FATAL_PRINT(f"Unsupported Compiler: {compiler_config["compiler_name"]}\nSupported Compilers: [cl, cc, gcc, g++, clang, clang++]")
+            FATAL_PRINT(f"Unsupported Compiler: {compiler_config.compiler_name}\nSupported Compilers: [cl, cc, gcc, g++, clang, clang++]")
             exit(-1)
 
         self.project_config = project_config
@@ -28,7 +28,7 @@ class Manager:
                     os.remove(f"./{dependency_name}/{serialized_name}")
 
         if C_BUILD_IS_DEPENDENCY():
-            filtered_project_config = self.project_config.copy()
+            filtered_project_config = self.project_config.__dict__.copy()
             filtered_project_config.pop("project_debug_with_visual_studio", None)
             serialized_data = {
                 **filtered_project_config,
