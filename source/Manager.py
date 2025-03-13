@@ -8,11 +8,12 @@ from .Utilities import (C_BUILD_IS_DEPENDENCY, SET_MSVC_VARS_FROM_CACHE, C_BUILD
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.INTERNAL_COMPILER = None
+        WARN_PRINT(f"COMPILER: {C_BUILD_COMPILER_NAME()}")
         if C_BUILD_COMPILER_NAME() == "cl":
             self.INTERNAL_COMPILER = MSVC_CL_Compiler(compiler_config)
             SET_MSVC_VARS_FROM_CACHE()
         elif C_BUILD_COMPILER_NAME() in ["gcc", "g++", "clang", "clang++"]:
-            WARN_PRINT("GOT HERE?")
+
             self.INTERNAL_COMPILER = CLANG_GCC_Compiler(compiler_config)
         else:
             FATAL_PRINT(f"Unsupported Compiler: {C_BUILD_COMPILER_NAME()}\n Supported Compilers: [cl, gcc, g++, clang, clang++]")
