@@ -41,5 +41,6 @@ project_executable_procedures = [
 	"8086_instruction_coder.exe decode ../asm_output/listing_0038_many_register_mov"
 ]
 
+- Make it debug or release cl_build_release and cl_build_debug
 - I somehow forgot this so i'm leaving this here
 "compiler_inject_into_args": [],
