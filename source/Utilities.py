@@ -98,12 +98,11 @@ git_had_to_pull = []
 def GIT_PULL(path: str) -> bool:
     global git_had_to_pull
 
-    if path.find("c_build") == -1: # didn't find c_build
-        if not IS_PULL_REQUIRED(path):
-            git_had_to_pull.append(False)
-            return False
+    if not IS_PULL_REQUIRED(path):
+        git_had_to_pull.append(False)
+        return False
 
-        git_had_to_pull.append(True)
+    git_had_to_pull.append(True)
 
     cache_dir = os.getcwd()
     os.chdir(path)
