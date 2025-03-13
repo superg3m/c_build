@@ -1,12 +1,10 @@
 import json
-import os
 
-from source.Compilers.CLANG_GCC import *
-from source.Compilers.MSVC_CL import *
+from .Compilers.CLANG_GCC import *
+from .Compilers.MSVC_CL import *
 
 from .Project import Project
-from .Utilities import (C_BUILD_IS_DEBUG, C_BUILD_IS_DEPENDENCY, \
-                        SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, IS_PULL_REQUIRED)
+from .Utilities import (C_BUILD_IS_DEPENDENCY, SET_MSVC_VARS_FROM_CACHE, C_BUILD_COMPILER_NAME, IS_PULL_REQUIRED)
 class Manager:
     def __init__(self, compiler_config, project_config, procedures_config):
         self.INTERNAL_COMPILER = None
