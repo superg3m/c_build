@@ -41,7 +41,7 @@ if IS_WINDOWS():
     executable_procedure_libs += windows_libs
 
 procedures_config = {
-    "ckit_lib": ProcedureConfigElement(
+    "some_project_exe": ProcedureConfigElement(
         build_directory = f"./build_{cc.compiler_name}",
         output_name = "some_project.exe",
         source_files = ["../Source/*.c"],
