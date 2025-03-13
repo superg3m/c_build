@@ -258,9 +258,6 @@ def build_static_lib(compiler_name, output_name, additional_libs):
 def C_BUILD_IS_DEBUG():
     return parser.parse_args().build_type == "debug"
 
-def C_BUILD_GET_DEBUG():
-    return parser.parse_args().build_type
-
 def C_BUILD_COMPILER_NAME():
     return parser.parse_args().compiler_name
 
