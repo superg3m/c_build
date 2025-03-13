@@ -70,10 +70,6 @@ class Project:
                 if not os.path.exists(dependency):
                     FORMAT_PRINT(f"missing {dependency} cloning...")
                     os.system(f"git clone {github_root}/{dependency}.git")
-                    cache_dir = os.getcwd()
-                    os.chdir(dependency)
-                    os.system(f"git clone https://github.com/superg3m/c_build.git")
-                    os.chdir(cache_dir)
                 else:
                     GIT_PULL(dependency) # This will be optional!
 
