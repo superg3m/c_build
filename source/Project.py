@@ -1,7 +1,7 @@
 import copy
 import time
 from .Procedure import Procedure
-from source.Utils.InternalUtilities import *
+from .Utils.InternalUtilities import *
 
 class Project:
     def __init__(self, MANAGER_COMPILER, project_config: ProjectConfig, procedures_config: dict[str, ProcedureConfigElement], is_dependency = False,):

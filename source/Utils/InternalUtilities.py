@@ -2,10 +2,10 @@ import glob
 import shutil
 import sys
 
-from source.Utils.ColorUtils import *
-from source.Utils.MSVC_Utils import *
-from source.Utils.TypesUtils import *
-from source.Utils.DependencyUtils import *
+from .ColorUtils import *
+from .MSVC_Utils import *
+from .TypesUtils import *
+from .DependencyUtils import *
 
 level = 0
 indent_spaces = " " * (level * 4)
