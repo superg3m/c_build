@@ -2,8 +2,7 @@ from enum import Enum
 from typing import List
 
 from ..Procedure import Procedure
-from ..UserUtilities import *
-import subprocess
+from ..Utils.InternalUtilities import *
 
 class CompilerAction(Enum):
     NO_ACTION = -1
