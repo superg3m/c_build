@@ -86,15 +86,17 @@ class Project:
 
                 os.chdir(cache_dir)
 
-    def build(self, override = False):
+    def invalidate_dependency_cache(self):
         for dependency_name in self.project_config.project_dependencies:
             if dependency_name and os.path.exists(dependency_name) and GIT_PULL(dependency_name):
-                # Invalidate Dependency Cache
                 for compiler_name in VALID_COMPILERS:
                     serialized_name = f"c_build_dependency_cache_{compiler_name}.json"
                     json_to_remove = f"./{dependency_name}/{serialized_name}"
                     if os.path.exists(json_to_remove):
                         os.remove(json_to_remove)
+
+    def build(self, override = False):
+        self.invalidate_dependency_cache()
 
         execution_type = C_BUILD_EXECUTION_TYPE()
         if execution_type == "RUN" and not override:
