@@ -139,7 +139,6 @@ def IS_PULL_REQUIRED(path: str) -> bool:
 
     return False
 
-
 git_had_to_pull = []
 def GIT_PULL(path: str) -> bool:
     global git_had_to_pull
