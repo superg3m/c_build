@@ -1,5 +1,5 @@
 import time
-from .InternalUtilities import *
+from source.Utils.InternalUtilities import *
 
 class Procedure:
     def __init__(self, MANAGER_COMPILER, procedure_element: ProcedureConfigElement):

@@ -1,9 +1,7 @@
-import json
-
 from .Compilers.CLANG_CC_GCC import *
 from .Compilers.MSVC_CL import *
 from .Project import Project
-from .InternalUtilities import *
+from .Utils.InternalUtilities import SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, VALID_COMPILERS, GIT_PULL
 
 class Manager:
     def __init__(self, compiler_config: CompilerConfig, project_config: ProjectConfig, procedures_config: dict[str, ProcedureConfigElement]):

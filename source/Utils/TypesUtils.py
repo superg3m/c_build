@@ -1,5 +1,7 @@
 import json
 
+VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
+
 class ProjectConfig:
     def __init__(self, project_name: str, project_dependencies: list[str], project_debug_with_visual_studio: bool, project_rebuild_project_dependencies: bool, project_executable_procedures: list[str]):
         self.project_name: str = project_name

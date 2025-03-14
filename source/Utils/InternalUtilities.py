@@ -2,14 +2,13 @@ import glob
 import shutil
 import sys
 
-from .Utils.ColorUtils import *
-from .Utils.MSVC_Utils import *
-from .Utils.TypesUtils import *
-from .Utils.DependencyUtils import *
+from source.Utils.ColorUtils import *
+from source.Utils.MSVC_Utils import *
+from source.Utils.TypesUtils import *
+from source.Utils.DependencyUtils import *
 
 level = 0
 indent_spaces = " " * (level * 4)
-VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
 
 def SET_LEVEL(value: int):
     global level, indent_spaces
@@ -195,7 +194,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
         os.chdir(source_dir)
 
         if is_recursive:
-            for root, _, files in os.walk("Utils"):
+            for root, _, files in os.walk(""):
                 for file in files:
                     if matches_extension(file):
                         resolved_files.append(
@@ -204,7 +203,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
         else:
             resolved_files.extend(
                 os.path.join(source_dir, file).replace("\\", "/")
-                for file in os.listdir("Utils") if matches_extension(file)
+                for file in os.listdir("") if matches_extension(file)
             )
     finally:
         os.chdir(original_directory)
