@@ -130,9 +130,6 @@ def IS_PULL_REQUIRED(path: str) -> bool:
         output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
         lines = output.stdout.splitlines()
 
-        FATAL_PRINT(path)
-        FATAL_PRINT(lines)
-
         for line in lines:
             if any(keyword in line for keyword in ["Your branch is behind", "have diverged"]):
                 return True
