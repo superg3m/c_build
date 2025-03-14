@@ -20,8 +20,9 @@ class Manager:
 
     def build_project(self):
         for dependency_name in self.project_config.project_dependencies:
+            FATAL_PRINT("THIS SHOULD WORK?")
             if dependency_name and os.path.exists(dependency_name) and GIT_PULL(dependency_name):
-                FATAL_PRINT("THIS SHOULD WORK?")
+
                 # Invalidate Dependency Cache
                 for compiler_name in VALID_COMPILERS:
                     serialized_name = f"c_build_dependency_cache_{compiler_name}.json"
