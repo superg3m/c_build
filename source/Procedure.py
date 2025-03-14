@@ -1,10 +1,5 @@
-import os
-import re
-import subprocess
 import time
-from typing import Dict
-
-from .Utilities import *
+from .InternalUtilities import *
 
 class Procedure:
     def __init__(self, MANAGER_COMPILER, procedure_element: ProcedureConfigElement):
