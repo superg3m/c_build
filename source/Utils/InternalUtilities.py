@@ -3,10 +3,12 @@ import os
 import shutil
 import subprocess
 import sys
+from typing import List
 
 from .ColorUtils import *
 from .TypesUtils import *
 from .DependencyUtils import *
+from .PlatformUtils import *
 
 level = 0
 indent_spaces = " " * (level * 4)

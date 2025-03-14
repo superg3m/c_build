@@ -1,6 +1,6 @@
 from enum import Enum
 from ..Procedure import Procedure
-from ..UserUtilities import *
+from ..Utils.InternalUtilities import *
 
 class CompilerAction(Enum):
     NO_ACTION = -1
