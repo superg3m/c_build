@@ -3,6 +3,7 @@ from typing import List
 
 from ..Procedure import Procedure
 from ..UserUtilities import *
+import subprocess
 
 class CompilerAction(Enum):
     NO_ACTION = -1
