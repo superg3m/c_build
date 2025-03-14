@@ -129,6 +129,8 @@ def IS_PULL_REQUIRED(path: str) -> bool:
         subprocess.run(["git", "fetch", "-q"])
         output = subprocess.run(["git", "status"], capture_output=True, text=True, check=True)
         lines = output.stdout.splitlines()
+
+        FATAL_PRINT(path)
         FATAL_PRINT(lines)
 
         for line in lines:
