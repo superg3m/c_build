@@ -190,14 +190,14 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
     original_directory = os.getcwd()
 
     def matches_extension(file_name: str) -> bool:
-        return True if extensions_to_check in file_name else False
+        return file_name.endswith(extensions_to_check)
 
     try:
         os.chdir(build_directory)
         os.chdir(source_dir)
 
         if is_recursive:
-            for root, _, files in os.walk(""):
+            for root, _, files in os.walk("."):  # Use "." instead of ""
                 for file in files:
                     if matches_extension(file):
                         resolved_files.append(
@@ -206,12 +206,13 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
         else:
             resolved_files.extend(
                 os.path.join(source_dir, file).replace("\\", "/")
-                for file in os.listdir("") if matches_extension(file)
+                for file in os.listdir(".") if matches_extension(file)  # Use "." instead of ""
             )
     finally:
         os.chdir(original_directory)
 
     return resolved_files
+
 
 MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
 
