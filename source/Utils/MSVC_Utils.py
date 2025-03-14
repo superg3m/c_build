@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from source.InternalUtilities import FATAL_PRINT
+from .InternalUtilities import FATAL_PRINT
 
 MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
 
