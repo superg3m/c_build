@@ -1,11 +1,7 @@
 # c_build 
 
-`c_build` is a tool designed to easily and quickly build C projects and their dependencies. 
-It allows you to build C dependencies, such as libraries, that you have created.
-The project is moving towards using CMake for better organization and cross-platform support.
-
-- [ ] ADD SOMETHING TO THE CONFIG THAT STOPS IT FROM PULLING TO MAKE SURE DEPENDENCIES ARE UP TO DATE.
-   - git_pull_dependencies = true
+`c_build` is a build tool designed to easily and quickly build C/C++ projects and their dependencies. 
+It allows you to build C/C++ dependencies, such as libraries that you created or library you are pulling in.
 
 ## Features
 - Checks for the presence of `c_build.py` to identify project dependencies.
@@ -15,7 +11,7 @@ The project is moving towards using CMake for better organization and cross-plat
 ## Dependencies
 - python
 - powershell
-- c compiler (MSVC, GCC, CLANG, CC)
+- c|c++ compiler (MSVC (Visual Studio), GCC, CLANG, CC)
 
 ## Planned Improvements
 - Add a good way to do "./core/*/*.c" where ./core/*/ mean recursively search in that directory (do it on default?)
@@ -33,7 +29,18 @@ The project is moving towards using CMake for better organization and cross-plat
    - ./bootstrap.ps1
 
 ## Dev Notes: (For me)
-- Add a way to easily get started some type of template
+- Need to do a full rewrite for the 6th time, its almost so good its just rough around the edges
+- I mostly need to rethink dependencies the system got more complex than I would like just because 
+- of handling dependencies
+- REGRESSION Testing has to happen I no longer can keep up with everything in my head
+
+- Need to add a better way to handle dependencies i'm thinking something like:
+```
+    project_dependencies = [
+        Dependency("ckit", GITHUB_ALWAYS_PULL, "https://github.com/superg3m/ckit.git") 
+        Dependency("cj", LOCAL, BUILD_CJ) // BUILD_CJ is a custom function to be ran can be left blank
+    ]
+```
 
 - This is how you do command line args
 project_executable_procedures = [
