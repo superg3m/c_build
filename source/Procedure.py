@@ -50,7 +50,6 @@ class Procedure:
             os.chdir(self.build_directory)
             debugger_name = debugger[debug_with_visual_studio]
             debugger_running = IS_WINDOWS_PROCESS_RUNNING(debugger_name)
-            NORMAL_PRINT(f"{self.build_directory}")
             if debugger_running:
                 NORMAL_PRINT(f"Debugger already running attaching to process...")
             else:
