@@ -49,8 +49,9 @@ class Procedure:
         try:
             os.chdir(self.build_directory)
             debugger_name = debugger[debug_with_visual_studio]
+            print(f"BuildDir: {self.build_directory}")
             print(f"{debugger_name} {self.output_name}")
-            # Check if the debugger process is already running
+
             debugger_running = IS_WINDOWS_PROCESS_RUNNING(debugger_name)
             if debugger_running:
                 NORMAL_PRINT(f"Debugger already running attaching to process...")
@@ -59,7 +60,7 @@ class Procedure:
                 subprocess.Popen(debug_command)
 
         except FileNotFoundError:
-            FATAL_PRINT(f"{debug_command} compiler or executable not found")
+            FATAL_PRINT(f"{debug_command} debugger or executable not found")
             exit(-1)
         finally:
             os.chdir(cached_current_directory)
