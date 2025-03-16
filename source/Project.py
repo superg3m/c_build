@@ -13,6 +13,7 @@ class Project:
         for proc in self.procedures:
             for name in self.executable_procedures_names:
                 if proc.output_name in name:
+                    FATAL_PRINT(f"{proc.build_directory} | {proc.output_name}")
                     self.project_executable_procedures.append(proc)
 
         self.is_dependency = is_dependency
