@@ -138,16 +138,15 @@ class Project:
                 f"Got: {self.executable_procedures_names} | Expected: {[proc.output_name for proc in self.procedures]}")
             sys.exit(1)
 
-        initial_range = len(self.executable_procedures_names)
+        initial_range = len(self.project_executable_procedures)
         for i in range(initial_range):
             executable_name_with_args = self.executable_procedures_names.pop(0)
-            proc = next((proc for proc in self.project_executable_procedures if proc.output_name in executable_name_with_args), None)
+            proc = self.project_executable_procedures[i]
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
                 proc.compile()
 
-            deep_copy_proc = copy.deepcopy(proc)
-            deep_copy_proc.output_name = executable_name_with_args
-            deep_copy_proc.run()
+            proc.output_name = executable_name_with_args
+            proc.run()
 
 
     def __debug(self):
