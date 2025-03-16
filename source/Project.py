@@ -10,10 +10,9 @@ class Project:
         self.executable_procedures_names = project_config.project_executable_procedures
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
         self.project_executable_procedures = []
-        for proc in self.procedures:
-            for name in self.executable_procedures_names:
+        for name in self.executable_procedures_names:
+            for proc in self.procedures:
                 if proc.output_name in name:
-                    FATAL_PRINT(f"{proc.build_directory} | {proc.output_name}")
                     self.project_executable_procedures.append(proc)
 
         self.is_dependency = is_dependency
