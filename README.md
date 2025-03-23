@@ -33,6 +33,7 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
 - I mostly need to rethink dependencies the system got more complex than I would like just because 
 - of handling dependencies
 - REGRESSION Testing has to happen I no longer can keep up with everything in my head
+- git clone -b <branch> <remote_repo> (Need to allow you to clone a branch)
 
 - Need to add a better way to handle dependencies i'm thinking something like:
 ```
@@ -48,4 +49,5 @@ project_executable_procedures = [
 	"8086_instruction_coder.exe decode ../asm_output/listing_0038_many_register_mov"
 ]
 
-- "compiler_inject_into_args": [],
+- "compiler_inject_into_args": []
+
