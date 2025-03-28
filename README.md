@@ -34,6 +34,8 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
 - of handling dependencies
 - REGRESSION Testing has to happen I no longer can keep up with everything in my head
 - git clone -b <branch> <remote_repo> (Need to allow you to clone a branch)
+- C build DLL watch to recompile, while process is running
+- Recompile DLLs when sources change of that procedure.
 
 - Need to add a better way to handle dependencies i'm thinking something like:
 ```
