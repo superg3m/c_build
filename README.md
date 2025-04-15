@@ -44,8 +44,16 @@ ProjectConfig have defaults!
 - Need to add a better way to handle dependencies i'm thinking something like:
 ```
     project_dependencies = [
-        Dependency("ckit", GITHUB_ALWAYS_PULL, "https://github.com/superg3m/ckit.git") 
-        Dependency("cj", LOCAL, BUILD_CJ) // BUILD_CJ is a custom function to be ran can be left blank
+        GitDependency(
+        	compiler, 
+			"ckit", 
+			GITHUB_NEVER_PULL, 
+			"https://github.com/superg3m/ckit.git", 
+			"branch_name", 
+			C_BUILD
+        ), # C_BUILD is a provided function to be ran
+       
+        LocalDependency("cj", BUILD_CJ) # BUILD_CJ is a custom function to be ran
     ]
 ```
 
