@@ -3,8 +3,11 @@ import time
 from .Procedure import Procedure
 from .Utils.InternalUtilities import *
 
+
 class Project:
-    def __init__(self, MANAGER_COMPILER, project_config: ProjectConfig, procedures_config: dict[str, ProcedureConfigElement], is_dependency = False,):
+    def __init__(self, MANAGER_COMPILER, project_config: ProjectConfig,
+                 procedures_config: dict[str, ProcedureConfigElement], is_dependency=False):
+        self.is_dependency = is_dependency
         self.project_name = project_config.project_name
         self.project_debug_with_visual_studio: bool = project_config.project_debug_with_visual_studio
         self.executable_procedures_names = project_config.project_executable_procedures
@@ -15,8 +18,6 @@ class Project:
                 if proc.output_name in name:
                     self.project_executable_procedures.append(proc)
 
-        self.is_dependency = is_dependency
-
         if not self.is_dependency:
             self.project_rebuild_project_dependencies: bool = project_config.project_rebuild_project_dependencies
             self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
@@ -24,7 +25,6 @@ class Project:
         self.project_config = project_config
         self.MANAGER_COMPILER = MANAGER_COMPILER
         self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.cc.compiler_name}.json"
-
 
     def __check_procedure_built(self, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
@@ -59,14 +59,15 @@ class Project:
 
         return ProjectConfig(**project_config), procedure_config
 
-    def build_dependencies(self, project_config: ProjectConfig, github_root = "https://github.com/superg3m"):
+    # Clean this up
+    def build_dependencies(self, project_config: ProjectConfig, github_root="https://github.com/superg3m"):
         project_name = project_config.project_name
         project_dependencies = project_config.project_dependencies
 
         if len(project_dependencies) != 0 and project_dependencies[0] != "":
             FORMAT_PRINT(f"{project_name} depends on:")
 
-        for dependency in project_dependencies: # This exists early if there are no dependencies
+        for dependency in project_dependencies:  # This exits early if there are no dependencies
             if dependency:
                 if not os.path.exists(dependency):
                     FORMAT_PRINT(f"missing {dependency} cloning...")
@@ -86,6 +87,7 @@ class Project:
 
                 os.chdir(cache_dir)
 
+    # Make this more apparent when you do this?
     def invalidate_dependency_cache(self):
         for dependency_name in self.project_config.project_dependencies:
             if dependency_name and os.path.exists(dependency_name) and GIT_PULL(dependency_name):
@@ -95,7 +97,8 @@ class Project:
                     if os.path.exists(json_to_remove):
                         os.remove(json_to_remove)
 
-    def build(self, override = False):
+    # Restructure this
+    def build(self, override=False):
         self.invalidate_dependency_cache()
 
         execution_type = C_BUILD_EXECUTION_TYPE()
@@ -109,7 +112,8 @@ class Project:
             self.__clean()
             return
 
-        FORMAT_PRINT(f"|----------------------------------------- {self.project_name} -----------------------------------------|")
+        FORMAT_PRINT(
+            f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
 
@@ -118,8 +122,9 @@ class Project:
         for proc in self.procedures:
             if not self.project_rebuild_project_dependencies:
                 if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
-                    self.is_dependency and PEEK_GIT_PULL() == False):
-                    NORMAL_PRINT(f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
+                        self.is_dependency and PEEK_GIT_PULL() == False):
+                    NORMAL_PRINT(
+                        f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                     continue
 
             proc.compile()
@@ -129,7 +134,8 @@ class Project:
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
         DOWN_LEVEL()
-        FORMAT_PRINT(f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
+        FORMAT_PRINT(
+            f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
         if len(self.project_executable_procedures) == 0:
@@ -147,7 +153,6 @@ class Project:
 
             proc.output_name = executable_name_with_args
             proc.run()
-
 
     def __debug(self):
         self.project_executable_procedures[0].output_name = self.executable_procedures_names[0]
