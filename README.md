@@ -39,6 +39,7 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
 - I need a better way to know if i'm pulling a new version and then if i'm a dependency or not
 - Make it so you don't have to have all of the argument filled out for something like
 ProjectConfig have defaults!
+- Separate folders for Release and Debug
 
 - Need to add a better way to handle dependencies i'm thinking something like:
 ```
