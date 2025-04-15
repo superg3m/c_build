@@ -9,13 +9,18 @@ def choose_internal_compiler(cc: CompilerConfig):
         SET_MSVC_VARS_FROM_CACHE()
         return MSVC_CL_Compiler(compiler_config)
     elif cc.compiler_name in ["cc", "gcc", "g++", "clang", "clang++"]:
-        return CLANG_GCC_Compiler(compiler_config)
+        return CLANG_GCC_Compiler(cc)
     else:
-        FATAL_PRINT(f"Unsupported Compiler: {compiler_config.compiler_name}")
+        FATAL_PRINT(f"Unsupported Compiler: {cc.compiler_name}")
         FATAL_PRINT(f"Supported Compilers: [cl, cc, gcc, g++, clang, clang++]")
         exit(-1)
 
 
+# I don't like these configs going around like this I think this should be cleaned up
+# I think they should just belong to a single class
+
+# initialize_compiler()
+# initalize_project_data(project_config, procedure_config)
 class Manager:
     def __init__(self, compiler_config: CompilerConfig, project_config: ProjectConfig,
                  procedures_config: dict[str, ProcedureConfigElement]):

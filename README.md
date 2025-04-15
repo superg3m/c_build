@@ -37,6 +37,8 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
 - C build DLL watch to recompile, while process is running
 - Recompile DLLs when sources change of that procedure.
 - I need a better way to know if i'm pulling a new version and then if i'm a dependency or not
+- Make it so you don't have to have all of the argument filled out for something like
+ProjectConfig have defaults!
 
 - Need to add a better way to handle dependencies i'm thinking something like:
 ```
