@@ -7,7 +7,7 @@ from .Utils.InternalUtilities import SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, VALI
 def choose_internal_compiler(cc: CompilerConfig):
     if cc.compiler_name == "cl":
         SET_MSVC_VARS_FROM_CACHE()
-        return MSVC_CL_Compiler(compiler_config)
+        return MSVC_CL_Compiler(cc)
     elif cc.compiler_name in ["cc", "gcc", "g++", "clang", "clang++"]:
         return CLANG_GCC_Compiler(cc)
     else:
