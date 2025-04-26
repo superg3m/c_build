@@ -23,7 +23,7 @@ class CompilerAction(Enum):
 class MSVC_CL_Compiler(CompilerConfig):
     def __init__(self, compiler_config: CompilerConfig):
         super().__init__(**compiler_config.to_dict())
-        self.debug: bool = C_BUILD_IS_DEBUG()
+        self.debug: bool = C_BUILD_BUILD_TYPE() == "debug"
         self.compiler_lookup_table: List[str] = [
             "/std:",  # STD_VERSION
             "/nologo",  # NO_LOGO

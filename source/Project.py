@@ -9,24 +9,23 @@ class Project(ProjectConfig):
         super().__init__(**pc.to_dict())
         self.MANAGER_COMPILER = MANAGER_COMPILER
         self.pc = pc
-        self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
         self.is_dependency = is_dependency
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures.values()]
         self.executable_procedures = []
+
         for name in self.project_executable_names:
             for proc in self.procedures:
                 if proc.output_name in name:
                     self.executable_procedures.append(proc)
 
         if not self.is_dependency:
-            self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
+            self.build_type = C_BUILD_BUILD_TYPE()
+
+        self.serialized_name = f"c_build_dependency_cache_{self.MANAGER_COMPILER.compiler_name}_{self.build_type}.json"
 
     @classmethod
     def __check_procedure_built(cls, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
-
-    def is_serialized(self):
-        return os.path.exists(self.serialized_name)
 
     def __serialize_dependency_data(self):
         if IS_WINDOWS():
@@ -41,7 +40,8 @@ class Project(ProjectConfig):
             )
 
     def __deserialize_dependency_data(self) -> (ProjectConfig, dict[str, ProcedureConfig]):
-        serialized_file = open(self.serialized_name)
+        serialized_name = f"c_build_dependency_cache_{self.MANAGER_COMPILER.compiler_name}_{self.build_type}.json"
+        serialized_file = open(serialized_name)
 
         config = json.load(serialized_file)
         project_config = {}
@@ -72,7 +72,7 @@ class Project(ProjectConfig):
                 cache_dir = os.getcwd()
                 os.chdir(dependency)
 
-                if not self.is_serialized():
+                if not os.path.exists(self.serialized_name):
                     self.__serialize_dependency_data()
 
                 project_config, procedure_config = self.__deserialize_dependency_data()
@@ -87,11 +87,10 @@ class Project(ProjectConfig):
     def invalidate_dependency_cache(self):
         for dependency_name in self.project_dependencies:
             if dependency_name and os.path.exists(dependency_name) and GIT_PULL(dependency_name):
-                for compiler_name in VALID_COMPILERS:
-                    serialized_name = f"c_build_dependency_cache_{compiler_name}.json"
-                    json_to_remove = f"./{dependency_name}/{serialized_name}"
-                    if os.path.exists(json_to_remove):
-                        os.remove(json_to_remove)
+                json_to_remove = f"./{dependency_name}/{self.serialized_name}"
+                if os.path.exists(json_to_remove):
+                    os.remove(json_to_remove)
+
 
     def build(self):
         execution_type = C_BUILD_EXECUTION_TYPE()

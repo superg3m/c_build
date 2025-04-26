@@ -22,7 +22,7 @@ class Manager:
         self.INTERNAL_COMPILER = choose_internal_compiler(cc)
 
     def serialize_to_json(self):
-        serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
+        serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}_{C_BUILD_BUILD_TYPE()}.json"
         filtered_procedure_config = {}
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()

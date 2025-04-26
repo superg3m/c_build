@@ -15,8 +15,5 @@ def C_BUILD_EXECUTION_TYPE() -> str:
 def C_BUILD_COMPILER_NAME() -> str:
     return parser.parse_args().compiler_name
 
-def C_BUILD_IS_DEBUG() -> bool:
-    return parser.parse_args().build_type == "debug"
-
 def C_BUILD_IS_DEPENDENCY() -> bool:
     return parser.parse_args().is_dependency == "true"
