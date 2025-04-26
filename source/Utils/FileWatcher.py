@@ -4,7 +4,7 @@ from typing import List, Callable, Set
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler, FileModifiedEvent, FileCreatedEvent
 
-from source.Procedure import Procedure
+from ..Procedure import Procedure
 
 
 class FileWatcherEventHandler(FileSystemEventHandler):
