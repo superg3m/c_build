@@ -18,8 +18,8 @@ class Project(ProjectConfig):
                 if proc.output_name in name:
                     self.executable_procedures.append(proc)
 
-        if not self.is_dependency:
-            self.build_type = C_BUILD_BUILD_TYPE()
+
+        self.build_type = C_BUILD_BUILD_TYPE()
 
         self.serialized_name = f"c_build_dependency_cache_{self.MANAGER_COMPILER.compiler_name}_{self.build_type}.json"
 
