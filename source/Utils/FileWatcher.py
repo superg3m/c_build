@@ -65,7 +65,6 @@ class FileWatcher:
 
         self.observer.start()
         self.is_watching = True
-        print(f"Watching: {self.files_to_watch}")
 
     def stop(self):
         if not self.is_watching:
@@ -74,4 +73,3 @@ class FileWatcher:
         self.observer.stop()
         self.observer.join()
         self.is_watching = False
-        print(f"Stopped Watching: {self.files_to_watch}")
