@@ -23,11 +23,14 @@ class Manager:
 
     def serialize_to_json(self):
         serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}.json"
+        filtered_procedure_config = {}
+        for key, value in self.procedures.items():
+            filtered_procedure_config[key] = value.to_dict()
 
         #prob issue here
         serialized_data = {
             **self.pc.to_dict(),
-            **self.procedures
+            **filtered_procedure_config
         }
 
         with open(serialized_name, "w") as file:
