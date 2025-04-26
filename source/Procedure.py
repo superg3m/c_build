@@ -1,4 +1,6 @@
 import time
+from typing import Any
+
 from .Utils.InternalUtilities import *
 
 class Procedure(ProcedureConfig):
@@ -12,8 +14,8 @@ class Procedure(ProcedureConfig):
                 aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source, False))
         self.source_files = aggregate
 
-    def __repr__(self) -> str:
-        return json.dumps(self.__dict__, indent=4)
+    def __repr__(self) -> dict[str, Any]:
+        return self.__dict__
 
     def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)
