@@ -11,4 +11,8 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-python -B -m c_build_script --execution_type "RUN"
+if ($args[0] -eq "-debug") {
+    python -B -m c_build_script --build_type "debug" --execution_type "RUN"
+} else {
+    python -B -m c_build_script --build_type "release" --execution_type "RUN"
+}

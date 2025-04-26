@@ -18,6 +18,17 @@ class CompilerAction(Enum):
     DYNAMIC_LIB = 11
     WARNINGS_AS_ERRORS = 12
 
+def canonicalize_source(source_files):
+    new_sources = []
+
+    for source in source_files:
+        if source.startswith("./"):
+            new_sources.append("." + source)
+        else:
+            new_sources.append("../" + source)
+
+    return new_sources
+
 class CLANG_GCC_Compiler(CompilerConfig):
     def __init__(self, compiler_config: CompilerConfig):
         super().__init__(**compiler_config.to_dict())
@@ -44,7 +55,7 @@ class CLANG_GCC_Compiler(CompilerConfig):
     def compile_procedure(self, procedure: Procedure):
         build_directory = procedure.build_directory
         output_name = procedure.output_name
-        source_files = procedure.source_files
+        source_files = canonicalize_source(procedure.source_files)
         additional_libs = procedure.additional_libs
         compile_time_defines = procedure.compile_time_defines
         include_paths = procedure.include_paths
