@@ -119,17 +119,18 @@ class Project(ProjectConfig):
         self.build_dependencies(self.pc)
 
         for proc in self.procedures:
-            if (self.project_rebuild_project_dependencies == False or
-                (self.MANAGER_COMPILER.compiler_disable_sanitize == False and
-                 self.build_type == "debug")):
-                if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
-                    self.is_dependency and PEEK_GIT_PULL() == False and
-                    (not self.MANAGER_COMPILER.compiler_disable_sanitizer and self.build_type == "debug")):
-                    NORMAL_PRINT(
-                        f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
-                    continue
+            sanitizer_enabled_and_debug = not self.MANAGER_COMPILER.compiler_disable_sanitizer and self.build_type == "debug"
+            if self.project_rebuild_project_dependencies or sanitizer_enabled_and_debug:
+                proc.compile()
+                continue
 
-            proc.compile()
+            already_built = self.__check_procedure_built(proc.build_directory, proc.output_name)
+            no_git_changes = not PEEK_GIT_PULL()
+            if already_built and self.is_dependency and no_git_changes:
+                proc_name = os.path.join(proc.build_directory, proc.output_name)
+                NORMAL_PRINT(f"Already built procedure: {proc_name}, skipping...")
+            else:
+                proc.compile()
 
         CONSUME_GIT_PULL()
 
