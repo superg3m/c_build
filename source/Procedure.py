@@ -1,21 +1,16 @@
 import time
 from .Utils.InternalUtilities import *
 
-class Procedure:
-    def __init__(self, MANAGER_COMPILER, procedure_element: ProcedureConfigElement):
+class Procedure(ProcedureConfig):
+    def __init__(self, MANAGER_COMPILER, procedure: ProcedureConfig):
+        super().__init__(**procedure.to_dict())
         self.MANAGER_COMPILER = MANAGER_COMPILER
-        self.build_directory = procedure_element.build_directory
-        self.output_name = procedure_element.output_name
-        self.source_files = procedure_element.source_files
+
         aggregate = []
         for source in self.source_files:
             if source:
                 aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source, False))
         self.source_files = aggregate
-        self.additional_libs = procedure_element.additional_libs
-        self.compile_time_defines = procedure_element.compile_time_defines
-        self.include_paths = procedure_element.include_paths
-        self.compiler_inject_into_args = procedure_element.compiler_inject_into_args
 
     def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)

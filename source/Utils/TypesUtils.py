@@ -1,14 +1,17 @@
 import json
-
+from enum import Enum
+from typing import List, Optional, Dict, Any
 VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
 
 class ProjectConfig:
-    def __init__(self, project_name: str, project_dependencies: list[str], project_debug_with_visual_studio: bool, project_rebuild_project_dependencies: bool, project_executable_procedures: list[str]):
+    def __init__(self, project_name: str, project_dependencies: Optional[list[str]] = None,
+                 project_debug_with_visual_studio: bool = True, project_rebuild_project_dependencies: bool = False,
+                 executable_procedures_names: Optional[List[str]] = None):
         self.project_name: str = project_name
-        self.project_dependencies: list[str] = project_dependencies
+        self.project_dependencies: list[str] = project_dependencies or []
         self.project_debug_with_visual_studio: bool = project_debug_with_visual_studio
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
-        self.project_executable_procedures: list[str] = project_executable_procedures
+        self.executable_procedures_names: List[str] = executable_procedures_names or []
 
     def __repr__(self):
         return json.dumps(self.__dict__, indent=4)
@@ -16,13 +19,23 @@ class ProjectConfig:
     def to_dict(self):
         return self.__dict__
 
+    @classmethod
+    def from_json(cls, json_str):
+        def decoder(obj) -> ProjectConfig:
+            return ProjectConfig(**obj)
+
+        return json.loads(json_str, object_hook=decoder)
+
 
 class CompilerConfig:
-    def __init__(self, compiler_name: str, compiler_std_version: str, compiler_warning_level: str, compiler_disable_specific_warnings: list[str], compiler_treat_warnings_as_errors: bool, compiler_disable_warnings: bool, compiler_disable_sanitizer: bool):
+    def __init__(self, compiler_name: str, compiler_std_version: str = "c11",
+                 compiler_warning_level: str = "", compiler_disable_specific_warnings: Optional[list[str]] = None,
+                 compiler_treat_warnings_as_errors: bool = True, compiler_disable_warnings: bool = False,
+                 compiler_disable_sanitizer: bool = True):
         self.compiler_name: str = compiler_name
         self.compiler_std_version: str = compiler_std_version
         self.compiler_warning_level: str = compiler_warning_level
-        self.compiler_disable_specific_warnings: list[str] = compiler_disable_specific_warnings
+        self.compiler_disable_specific_warnings: list[str] = compiler_disable_specific_warnings or []
         self.compiler_treat_warnings_as_errors: bool = compiler_treat_warnings_as_errors
         self.compiler_disable_warnings: bool = compiler_disable_warnings
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
@@ -33,19 +46,48 @@ class CompilerConfig:
     def to_dict(self):
         return self.__dict__
 
+    @classmethod
+    def from_json(cls, json_str):
+        def decoder(obj) -> CompilerConfig:
+            return CompilerConfig(**obj)
 
-class ProcedureConfigElement:
-    def __init__(self, build_directory: str, output_name: str, source_files: list[str], additional_libs: list[str], compile_time_defines: list[str], compiler_inject_into_args: list[str], include_paths: list[str]):
+        return json.loads(json_str, object_hook=decoder)
+
+class ProcedureConfig:
+    def __init__(
+            self,
+            build_directory: str,
+            output_name: str,
+            source_files: List[str],
+            additional_libs: Optional[List[str]] = None,
+            compile_time_defines: Optional[List[str]] = None,
+            compiler_inject_into_args: Optional[List[str]] = None,
+            include_paths: Optional[List[str]] = None,
+            should_compile: bool = True,
+            on_source_change_recompile: bool = True
+    ):
         self.build_directory: str = build_directory
         self.output_name: str = output_name
-        self.source_files: list[str] = source_files
-        self.additional_libs: list[str] = additional_libs
-        self.compile_time_defines: list[str] = compile_time_defines
-        self.compiler_inject_into_args: list[str] = compiler_inject_into_args
-        self.include_paths: list[str] = include_paths
+        self.source_files: List[str] = source_files
+        self.additional_libs: List[str] = additional_libs or []
+        self.compile_time_defines: List[str] = compile_time_defines or []
+        self.compiler_inject_into_args: List[str] = compiler_inject_into_args or []
+        self.include_paths: List[str] = include_paths or []
+        self.should_compile: bool = should_compile
+        self.on_source_change_recompile: bool = on_source_change_recompile
 
-    def __repr__(self):
-        return json.dumps(self.__dict__, indent=4)
+    def __repr__(self) -> str:
+        return json.dumps(self, indent=4)
 
     def to_dict(self):
         return self.__dict__
+
+    @classmethod
+    def from_json(cls, json_str):
+        def decoder(obj) -> ProcedureConfig:
+            return ProcedureConfig(**obj)
+
+        return json.loads(json_str, object_hook=decoder)
+
+    def to_json(self):
+        return json.dumps(self, indent=4)

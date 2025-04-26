@@ -1,17 +1,17 @@
-import copy
 import time
 from .Procedure import Procedure
+from .Utils.FileWatcher import FileWatcher
 from .Utils.InternalUtilities import *
 
 
-class Project:
-    def __init__(self, MANAGER_COMPILER, project_config: ProjectConfig,
-                 procedures_config: dict[str, ProcedureConfigElement], is_dependency=False):
+class Project(ProjectConfig):
+    def __init__(self, MANAGER_COMPILER, pc: ProjectConfig, procedures: dict[str, ProcedureConfig], is_dependency=False):
+        super().__init__(**pc.to_dict())
+        self.MANAGER_COMPILER = MANAGER_COMPILER
+        self.pc = pc
+        self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
         self.is_dependency = is_dependency
-        self.project_name = project_config.project_name
-        self.project_debug_with_visual_studio: bool = project_config.project_debug_with_visual_studio
-        self.executable_procedures_names = project_config.project_executable_procedures
-        self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures_config.values()]
+        self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures.values()]
         self.project_executable_procedures = []
         for name in self.executable_procedures_names:
             for proc in self.procedures:
@@ -19,14 +19,10 @@ class Project:
                     self.project_executable_procedures.append(proc)
 
         if not self.is_dependency:
-            self.project_rebuild_project_dependencies: bool = project_config.project_rebuild_project_dependencies
             self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
 
-        self.project_config = project_config
-        self.MANAGER_COMPILER = MANAGER_COMPILER
-        self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.cc.compiler_name}.json"
-
-    def __check_procedure_built(self, build_dir, output_name):
+    @classmethod
+    def __check_procedure_built(cls, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
 
     def is_serialized(self):
@@ -35,16 +31,16 @@ class Project:
     def __serialize_dependency_data(self):
         if IS_WINDOWS():
             subprocess.call(
-                f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.cc.compiler_name}",
+                f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
                 shell=True
             )
         else:
             subprocess.call(
-                f"python3 -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.cc.compiler_name}",
+                f"python3 -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
                 shell=True
             )
 
-    def __deserialize_dependency_data(self) -> (ProjectConfig, dict[str, ProcedureConfigElement]):
+    def __deserialize_dependency_data(self) -> (ProjectConfig, dict[str, ProcedureConfig]):
         serialized_file = open(self.serialized_name)
 
         config = json.load(serialized_file)
@@ -55,7 +51,7 @@ class Project:
             if key.startswith("project_"):
                 project_config[key] = value
             elif isinstance(value, dict):
-                procedure_config[key] = ProcedureConfigElement(**value)
+                procedure_config[key] = ProcedureConfig(**value)
 
         return ProjectConfig(**project_config), procedure_config
 
@@ -89,7 +85,7 @@ class Project:
 
     # Make this more apparent when you do this?
     def invalidate_dependency_cache(self):
-        for dependency_name in self.project_config.project_dependencies:
+        for dependency_name in self.project_dependencies:
             if dependency_name and os.path.exists(dependency_name) and GIT_PULL(dependency_name):
                 for compiler_name in VALID_COMPILERS:
                     serialized_name = f"c_build_dependency_cache_{compiler_name}.json"
@@ -97,27 +93,30 @@ class Project:
                     if os.path.exists(json_to_remove):
                         os.remove(json_to_remove)
 
-    # Restructure this
-    def build(self, override=False):
-        self.invalidate_dependency_cache()
-
+    def build(self):
         execution_type = C_BUILD_EXECUTION_TYPE()
-        if execution_type == "RUN" and not override:
+        if execution_type == "BUILD":
+            self.invalidate_dependency_cache()
+            self.__build()
+            return
+        if execution_type == "RUN":
             self.__run()
             return
-        elif execution_type == "DEBUG" and not override:
+        elif execution_type == "DEBUG":
             self.__debug()
             return
-        elif execution_type == "CLEAN" and not override:
+        elif execution_type == "CLEAN":
             self.__clean()
             return
 
+
+    def __build(self):
         FORMAT_PRINT(
             f"|----------------------------------------- {self.project_name} -----------------------------------------|")
         UP_LEVEL()
         start_time = time.perf_counter()
 
-        self.build_dependencies(self.project_config)
+        self.build_dependencies(self.pc)
 
         for proc in self.procedures:
             if not self.project_rebuild_project_dependencies:
@@ -152,7 +151,15 @@ class Project:
                 proc.compile()
 
             proc.output_name = executable_name_with_args
+
+            def on_file_change(proc: Procedure, file_name: str):
+                print(f"File changed: {file_name}")
+                proc.compile()
+
+            watcher = FileWatcher(proc.source_files, on_file_change)
+            watcher.start()
             proc.run()
+            watcher.stop()
 
     def __debug(self):
         self.project_executable_procedures[0].output_name = self.executable_procedures_names[0]
