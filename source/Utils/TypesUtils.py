@@ -64,7 +64,7 @@ class ProcedureConfig:
             compiler_inject_into_args: Optional[List[str]] = None,
             include_paths: Optional[List[str]] = None,
             should_compile: bool = True,
-            on_source_change_recompile: bool = True
+            on_source_change_recompile: bool = False
     ):
         self.build_directory: str = build_directory
         self.output_name: str = output_name
