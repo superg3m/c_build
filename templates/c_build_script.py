@@ -46,9 +46,10 @@ if IS_WINDOWS():
     windows_libs = [GET_LIB_FLAG(cc, "User32"), GET_LIB_FLAG(cc, "Gdi32")]
     executable_procedure_libs += windows_libs
 
+build_postfix = f"build_{cc.compiler_name}/{C_BUILD_BUILD_TYPE()}"
 procedures: Dict[str, ProcedureConfig] = {
     "project_exe": ProcedureConfig(
-        build_directory=f"./build_{cc.compiler_name}/{C_BUILD_BUILD_TYPE()}",
+        build_directory=f"./{build_postfix}",
         output_name="some_project.exe",
         source_files=["../Source/*.c"],
         additional_libs=executable_procedure_libs

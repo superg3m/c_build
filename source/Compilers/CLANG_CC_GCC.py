@@ -172,7 +172,7 @@ class CLANG_GCC_Compiler(CompilerConfig):
         try:
             if not os.path.exists(build_directory):
                 os.mkdir(build_directory)
-                
+
             os.chdir(build_directory)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
