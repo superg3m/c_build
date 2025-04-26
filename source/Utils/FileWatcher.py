@@ -33,13 +33,13 @@ class FileWatcherEventHandler(FileSystemEventHandler):
         if not event.is_directory and isinstance(event, FileCreatedEvent):
             file_path = os.path.abspath(event.src_path)
             if file_path in self.file_paths:
-                self.on_file_change(file_path)
+                self.on_file_change(self.procedure, event.src_path)
 
 
 class FileWatcher:
     def __init__(self, procedure: Procedure, on_file_change: Callable[[Procedure, str], None]):
         self.procedure = procedure
-        self.files_to_watch = procedure.source_files
+        self.files_to_watch = [os.path.join(self.procedure.build_directory, file_name) for file_name in self.procedure.source_files]
         self.on_file_change = on_file_change
         self.observer = None
         self.is_watching = False
