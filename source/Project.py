@@ -20,7 +20,6 @@ class Project(ProjectConfig):
 
 
         self.build_type = C_BUILD_BUILD_TYPE()
-
         self.serialized_name = f"c_build_dependency_cache_{self.MANAGER_COMPILER.compiler_name}_{self.build_type}.json"
 
     @classmethod
@@ -118,9 +117,9 @@ class Project(ProjectConfig):
         self.build_dependencies(self.pc)
 
         for proc in self.procedures:
-            if not self.project_rebuild_project_dependencies:
+            if not self.project_rebuild_project_dependencies or self.MANAGER_COMPILER.compiler_disable_sanitizer:
                 if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
-                        self.is_dependency and PEEK_GIT_PULL() == False):
+                    self.is_dependency and PEEK_GIT_PULL() == False):
                     NORMAL_PRINT(
                         f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                     continue
