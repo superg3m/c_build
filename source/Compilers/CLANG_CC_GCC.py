@@ -183,7 +183,12 @@ class CLANG_GCC_Compiler(CompilerConfig):
         try:
             if not os.path.exists(build_directory):
                 os.mkdir(build_directory)
-            os.chdir(build_directory)
+
+            build_type_directory = os.path.join(build_directory, C_BUILD_BUILD_TYPE())
+            if not os.path.exists(build_type_directory):
+                os.mkdir(build_type_directory)
+
+            os.chdir(build_type_directory)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
