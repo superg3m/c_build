@@ -11,4 +11,8 @@ git reset --hard origin/main -q
 git pull -q
 Pop-Location
 
-python -B -m c_build_script --execution_type "CLEAN"
+if ($args[0] -eq "-debug") {
+    python -B -m c_build_script --execution_type "CLEAN" --build_type "debug"
+} else {
+    python -B -m c_build_script --execution_type "CLEAN" --build_type "release"
+}

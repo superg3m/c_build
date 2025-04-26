@@ -12,7 +12,7 @@ git pull -q
 Pop-Location
 
 if ($args[0] -eq "-debug") {
-    python -B -m c_build_script --build_type "debug" --execution_type "RUN"
+    python -B -m c_build_script --execution_type "RUN" --build_type "debug"
 } else {
-    python -B -m c_build_script --build_type "release" --execution_type "RUN"
+    python -B -m c_build_script --execution_type "RUN" --build_type "release"
 }
