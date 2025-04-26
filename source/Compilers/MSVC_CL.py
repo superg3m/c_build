@@ -196,7 +196,6 @@ class MSVC_CL_Compiler(CompilerConfig):
 
             if return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
-                exit(return_code)
             else:
                 FORMAT_PRINT(f"Compilation of {output_name} successful")
 

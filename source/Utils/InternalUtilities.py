@@ -120,7 +120,6 @@ def build_static_lib(compiler_name, output_name, additional_libs):
     finally:
         if error_occurred:
             FATAL_PRINT(f"FAILED TO COMPILE LIB: {output_name}")
-            sys.exit(-1)
 
 def IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
