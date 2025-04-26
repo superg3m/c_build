@@ -12,11 +12,11 @@ class Project(ProjectConfig):
         self.serialized_name = f"c_build_dependency_cache_{MANAGER_COMPILER.compiler_name}.json"
         self.is_dependency = is_dependency
         self.procedures = [Procedure(MANAGER_COMPILER, procedure_data) for procedure_data in procedures.values()]
-        self.project_executable_procedures = []
-        for name in self.executable_procedures_names:
+        self.executable_procedures = []
+        for name in self.project_executable_names:
             for proc in self.procedures:
                 if proc.output_name in name:
-                    self.project_executable_procedures.append(proc)
+                    self.executable_procedures.append(proc)
 
         if not self.is_dependency:
             self.build_type = "debug" if C_BUILD_IS_DEBUG() else "release"
@@ -137,16 +137,16 @@ class Project(ProjectConfig):
             f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
-        if len(self.project_executable_procedures) == 0:
+        if len(self.project_executable_names) == 0:
             FATAL_PRINT("No available executable procedures!")
             FATAL_PRINT(
-                f"Got: {self.executable_procedures_names} | Expected: {[proc.output_name for proc in self.procedures]}")
+                f"Got: {self.project_executable_names} | Expected: {[proc.output_name for proc in self.procedures]}")
             sys.exit(1)
 
-        initial_range = len(self.project_executable_procedures)
+        initial_range = len(self.project_executable_names)
         for i in range(initial_range):
-            executable_name_with_args = self.executable_procedures_names.pop(0)
-            proc = self.project_executable_procedures[i]
+            executable_name_with_args = self.project_executable_names.pop(0)
+            proc = self.executable_procedures[i]
             if not self.__check_procedure_built(proc.build_directory, proc.output_name):
                 proc.compile()
 
@@ -162,8 +162,8 @@ class Project(ProjectConfig):
             watcher.stop()
 
     def __debug(self):
-        self.project_executable_procedures[0].output_name = self.executable_procedures_names[0]
-        self.project_executable_procedures[0].debug(self.project_debug_with_visual_studio)
+        self.executable_procedures[0].output_name = self.project_executable_names[0]
+        self.executable_procedures[0].debug(self.project_debug_with_visual_studio)
 
     def __clean(self):
         for proc in self.procedures:

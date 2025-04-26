@@ -19,7 +19,7 @@ pc: ProjectConfig = ProjectConfig(
     project_name = "some_project",
     project_dependencies = [],
     project_debug_with_visual_studio = True,
-    project_executable_procedures = ["some_project.exe"]
+    project_executable_names = ["some_project.exe"]
 )
 
 cc: CompilerConfig = CompilerConfig(

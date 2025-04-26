@@ -6,12 +6,12 @@ VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
 class ProjectConfig:
     def __init__(self, project_name: str, project_dependencies: Optional[list[str]] = None,
                  project_debug_with_visual_studio: bool = True, project_rebuild_project_dependencies: bool = False,
-                 executable_procedures_names: Optional[List[str]] = None):
+                 project_executable_names: Optional[List[str]] = None):
         self.project_name: str = project_name
         self.project_dependencies: list[str] = project_dependencies or []
         self.project_debug_with_visual_studio: bool = project_debug_with_visual_studio
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
-        self.executable_procedures_names: List[str] = executable_procedures_names or []
+        self.project_executable_names: List[str] = project_executable_names or []
 
     def __repr__(self):
         return json.dumps(self.__dict__, indent=4)
