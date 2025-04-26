@@ -6,7 +6,6 @@ from watchdog.events import FileSystemEventHandler, FileModifiedEvent, FileCreat
 
 from ..Procedure import Procedure
 
-
 class FileWatcherEventHandler(FileSystemEventHandler):
     def __init__(self, procedure: Procedure, file_paths: List[str], on_file_change: Callable[[Procedure, str], None]):
         self.file_paths = {os.path.abspath(p) for p in file_paths}
@@ -37,35 +36,46 @@ class FileWatcherEventHandler(FileSystemEventHandler):
 
 
 class FileWatcher:
-    def __init__(self, procedure: Procedure, on_file_change: Callable[[Procedure, str], None]):
-        self.procedure = procedure
-        self.files_to_watch = [os.path.join(self.procedure.build_directory, file_name) for file_name in self.procedure.source_files]
+    def __init__(self, procedures: List[Procedure], on_file_change: Callable[[Procedure, str], None]):
+        self.procedures = procedures
         self.on_file_change = on_file_change
         self.observer = None
         self.is_watching = False
         self.watched_dirs = set()
+        self.watched_procedures = {}
+
+        for procedure in self.procedures:
+            if hasattr(procedure, 'on_source_change_recompile') and procedure.on_source_change_recompile:
+                file_paths = [os.path.join(procedure.build_directory, file_name)
+                              for file_name in procedure.source_files]
+                self.watched_procedures[procedure] = file_paths
 
     def start(self):
         if self.is_watching:
             return
 
         self.observer = Observer()
-        handler = FileWatcherEventHandler(self.procedure, self.files_to_watch, self.on_file_change)
 
-        for file_path in self.files_to_watch:
-            if not os.path.exists(file_path):
-                print(f"Warning: File not found: {file_path}")
-                continue
+        for procedure, file_paths in self.watched_procedures.items():
+            handler = FileWatcherEventHandler(procedure, file_paths, self.on_file_change)
 
-            dir_path = os.path.dirname(os.path.abspath(file_path))
+            for file_path in file_paths:
+                if not os.path.exists(file_path):
+                    print(f"Warning: File not found: {file_path}")
+                    continue
 
-            if dir_path not in self.watched_dirs:
-                self.watched_dirs.add(dir_path)
-                self.observer.schedule(handler, dir_path, recursive=False)
+                dir_path = os.path.dirname(os.path.abspath(file_path))
 
-        self.observer.start()
-        self.is_watching = True
-        print(f"Watching: {self.files_to_watch}")
+                if dir_path not in self.watched_dirs:
+                    self.watched_dirs.add(dir_path)
+                    self.observer.schedule(handler, dir_path, recursive=False)
+
+        if self.watched_dirs:
+            self.observer.start()
+            self.is_watching = True
+            print(f"Watching files for {len(self.watched_procedures)} procedures with auto-recompile enabled")
+        else:
+            print("No files to watch. No procedures with on_source_change_recompile flag were found.")
 
     def stop(self):
         if not self.is_watching:
@@ -74,4 +84,4 @@ class FileWatcher:
         self.observer.stop()
         self.observer.join()
         self.is_watching = False
-        print(f"Stopped Watching: {self.files_to_watch}")
+        print("File watching stopped")
