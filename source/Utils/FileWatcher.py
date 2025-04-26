@@ -45,13 +45,10 @@ class FileWatcher:
         self.watched_procedures = {}
 
         for procedure in self.procedures:
-            print(procedure.output_name)
-            print(procedure.on_source_change_recompile)
             if procedure.on_source_change_recompile:
                 file_paths = [os.path.join(procedure.build_directory, file_name)
                               for file_name in procedure.source_files]
                 self.watched_procedures[procedure] = file_paths
-                print(f"WOW: {file_paths}")
 
     def start(self):
         if self.is_watching:
