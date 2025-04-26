@@ -21,16 +21,16 @@ class CompilerAction(Enum):
     WARNINGS_AS_ERRORS = 12
 
 
-def canonicalize_source(source_files):
-    new_sources = []
+def canonicalize_paths(paths):
+    new_paths = []
 
-    for source in source_files:
-        if source.startswith("./"):
-            new_sources.append("." + source)
+    for path in paths:
+        if path.startswith("./"):
+            new_paths.append("." + path)
         else:
-            new_sources.append("../" + source)
+            new_paths.append("../" + path)
 
-    return new_sources
+    return new_paths
 
 
 class MSVC_CL_Compiler(CompilerConfig):
@@ -59,8 +59,8 @@ class MSVC_CL_Compiler(CompilerConfig):
     def compile_procedure(self, procedure: Procedure):
         build_directory = procedure.build_directory
         output_name = procedure.output_name
-        source_files = canonicalize_source(procedure.source_files)
-        additional_libs = procedure.additional_libs
+        source_files = canonicalize_paths(procedure.source_files)
+        additional_libs = canonicalize_paths(procedure.additional_libs)
         compile_time_defines = procedure.compile_time_defines
         include_paths = procedure.include_paths
 
