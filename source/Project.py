@@ -152,14 +152,17 @@ class Project(ProjectConfig):
 
             proc.output_name = executable_name_with_args
 
-            def on_file_change(proc: Procedure, file_name: str):
-                print(f"File changed: {file_name}")
-                proc.compile()
+            if proc.on_source_change_recompile:
+                def on_file_change(proc: Procedure, file_name: str):
+                    print(f"File changed: {file_name}")
+                    proc.compile()
 
-            watcher = FileWatcher(proc, on_file_change)
-            watcher.start()
-            proc.run()
-            watcher.stop()
+                watcher = FileWatcher(proc, on_file_change)
+                watcher.start()
+                proc.run()
+                watcher.stop()
+            else:
+                proc.run()
 
     def __debug(self):
         self.executable_procedures[0].output_name = self.project_executable_names[0]
