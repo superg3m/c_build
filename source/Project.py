@@ -1,4 +1,6 @@
 import time
+from doctest import debug
+
 from .Procedure import Procedure
 from .Utils.FileWatcher import FileWatcher
 from .Utils.InternalUtilities import *
@@ -117,9 +119,10 @@ class Project(ProjectConfig):
         self.build_dependencies(self.pc)
 
         for proc in self.procedures:
-            if not self.project_rebuild_project_dependencies or not self.MANAGER_COMPILER.compiler_disable_sanitizer:
+            if not self.project_rebuild_project_dependencies:
                 if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
-                    self.is_dependency and PEEK_GIT_PULL() == False):
+                    self.is_dependency and PEEK_GIT_PULL() == False and
+                    (not self.MANAGER_COMPILER.compiler_disable_sanitizer and self.build_type == "debug")):
                     NORMAL_PRINT(
                         f"Already built procedure: {os.path.join(proc.build_directory, proc.output_name)}, skipping...")
                     continue
