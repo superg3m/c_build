@@ -7,11 +7,13 @@ from watchdog.events import FileSystemEventHandler, FileModifiedEvent, FileCreat
 from ..Procedure import Procedure
 
 class FileWatcherEventHandler(FileSystemEventHandler):
-    def __init__(self, procedure: Procedure, file_paths: List[str], on_file_change: Callable[[Procedure, str], None]):
+    def __init__(self, original_directory,
+                 procedure: Procedure, file_paths: List[str], on_file_change: Callable[[str, Procedure, str], None]):
         self.file_paths = {os.path.abspath(p) for p in file_paths}
         self.procedure = procedure
         self.on_file_change = on_file_change
         self.recently_modified: Set[str] = set()
+        self.original_director = original_directory
         super().__init__()
 
     def on_modified(self, event):
@@ -26,7 +28,7 @@ class FileWatcherEventHandler(FileSystemEventHandler):
             self.recently_modified.add(file_path)
             threading.Timer(0.5, lambda: self.recently_modified.discard(file_path)).start()
 
-            self.on_file_change(self.procedure, event.src_path)
+            self.on_file_change(self.original_director, self.procedure, event.src_path)
 
     def on_created(self, event):
         if not event.is_directory and isinstance(event, FileCreatedEvent):
@@ -36,7 +38,8 @@ class FileWatcherEventHandler(FileSystemEventHandler):
 
 
 class FileWatcher:
-    def __init__(self, procedures: List[Procedure], on_file_change: Callable[[Procedure, str], None]):
+    def __init__(self, original_directory, procedures: List[Procedure], on_file_change: Callable[[str, Procedure, str], None]):
+        self.original_directory = original_directory
         self.procedures = procedures
         self.on_file_change = on_file_change
         self.observer = None
@@ -58,7 +61,7 @@ class FileWatcher:
         all_watched_files = []
 
         for procedure, file_paths in self.watched_procedures.items():
-            handler = FileWatcherEventHandler(procedure, file_paths, self.on_file_change)
+            handler = FileWatcherEventHandler(self.original_directory, procedure, file_paths, self.on_file_change)
 
             for file_path in file_paths:
                 abs_path = os.path.abspath(file_path)

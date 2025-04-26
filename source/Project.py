@@ -150,12 +150,17 @@ class Project(ProjectConfig):
 
         initial_range = len(self.project_executable_names)
 
-        def on_file_change(proc: Procedure, file_name: str):
+        def on_file_change(original_directory, proc: Procedure, file_name: str):
             print(f"File changed: {file_name}")
             print(f"Procedure: {proc.output_name}")
-            proc.compile()
+            cached_current_directory = os.getcwd()
+            try:
+                os.chdir(original_directory)
+                proc.compile()
+            finally:
+                os.chdir(cached_current_directory)
 
-        watcher = FileWatcher(self.procedures, on_file_change)
+        watcher = FileWatcher(os.getcwd(), self.procedures, on_file_change)
         watcher.start()
         for i in range(initial_range):
             executable_name_with_args = self.project_executable_names.pop(0)
