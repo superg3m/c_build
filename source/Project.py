@@ -30,12 +30,12 @@ class Project(ProjectConfig):
     def __serialize_dependency_data(self):
         if IS_WINDOWS():
             subprocess.call(
-                f"python -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
+                f"python -B -m c_build_script --is_dependency true --build_type {self.build_type} --compiler_name {self.MANAGER_COMPILER.compiler_name}",
                 shell=True
             )
         else:
             subprocess.call(
-                f"python3 -B -m c_build_script --is_dependency true --compiler_name {self.MANAGER_COMPILER.compiler_name}",
+                f"python3 -B -m c_build_script --is_dependency true --build_type {self.build_type} --compiler_name {self.MANAGER_COMPILER.compiler_name}",
                 shell=True
             )
 
