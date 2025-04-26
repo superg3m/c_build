@@ -12,6 +12,9 @@ class Procedure(ProcedureConfig):
                 aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source, False))
         self.source_files = aggregate
 
+    def __repr__(self) -> str:
+        return json.dumps(self, indent=4)
+
     def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)
 

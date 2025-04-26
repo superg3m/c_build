@@ -43,7 +43,7 @@ class FileWatcher:
         self.is_watching = False
         self.watched_dirs = set()
         self.watched_procedures = {}
-        
+
         for procedure in self.procedures:
             print(procedure)
             if procedure.on_source_change_recompile:
