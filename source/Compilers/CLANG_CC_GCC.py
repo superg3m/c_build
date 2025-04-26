@@ -18,17 +18,6 @@ class CompilerAction(Enum):
     DYNAMIC_LIB = 11
     WARNINGS_AS_ERRORS = 12
 
-def canonicalize_paths(paths):
-    new_paths = []
-
-    for path in paths:
-        if path.startswith("./"):
-            new_paths.append("." + path)
-        else:
-            new_paths.append("../" + path)
-
-    return new_paths
-
 class CLANG_GCC_Compiler(CompilerConfig):
     def __init__(self, compiler_config: CompilerConfig):
         super().__init__(**compiler_config.to_dict())
@@ -55,8 +44,8 @@ class CLANG_GCC_Compiler(CompilerConfig):
     def compile_procedure(self, procedure: Procedure):
         build_directory = procedure.build_directory
         output_name = procedure.output_name
-        source_files = canonicalize_paths(procedure.source_files)
-        additional_libs = canonicalize_paths(procedure.additional_libs)
+        source_files = procedure.source_files
+        additional_libs = procedure.additional_libs
         compile_time_defines = procedure.compile_time_defines
         include_paths = procedure.include_paths
 
@@ -183,12 +172,8 @@ class CLANG_GCC_Compiler(CompilerConfig):
         try:
             if not os.path.exists(build_directory):
                 os.mkdir(build_directory)
-
-            build_type_directory = os.path.join(build_directory, C_BUILD_BUILD_TYPE())
-            if not os.path.exists(build_type_directory):
-                os.mkdir(build_type_directory)
-
-            os.chdir(build_type_directory)
+                
+            os.chdir(build_directory)
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
