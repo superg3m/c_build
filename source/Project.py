@@ -119,9 +119,9 @@ class Project(ProjectConfig):
         self.build_dependencies(self.pc)
 
         for proc in self.procedures:
-            if (not self.project_rebuild_project_dependencies or
-                (self.MANAGER_COMPILER.compiler_disable_sanitizer
-                 and self.build_type == "debug")):
+            if (self.project_rebuild_project_dependencies == False or
+                (self.MANAGER_COMPILER.compiler_disable_sanitize == False and
+                 self.build_type == "debug")):
                 if (self.__check_procedure_built(proc.build_directory, proc.output_name) and
                     self.is_dependency and PEEK_GIT_PULL() == False and
                     (not self.MANAGER_COMPILER.compiler_disable_sanitizer and self.build_type == "debug")):
