@@ -152,6 +152,7 @@ class Project(ProjectConfig):
 
         def on_file_change(proc: Procedure, file_name: str):
             print(f"File changed: {file_name}")
+            print(f"Procedure: {proc.output_name}")
             proc.compile()
 
         watcher = FileWatcher(self.procedures, on_file_change)
