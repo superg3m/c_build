@@ -156,7 +156,7 @@ class Project(ProjectConfig):
                 print(f"File changed: {file_name}")
                 proc.compile()
 
-            watcher = FileWatcher(proc.source_files, on_file_change)
+            watcher = FileWatcher(proc, on_file_change)
             watcher.start()
             proc.run()
             watcher.stop()
