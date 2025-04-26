@@ -1,3 +1,4 @@
+import copy
 import time
 from doctest import debug
 
@@ -153,7 +154,7 @@ class Project(ProjectConfig):
             print(f"File changed: {file_name}")
             proc.compile()
 
-        watcher = FileWatcher(self.executable_procedures.copy(), on_file_change)
+        watcher = FileWatcher(copy.deepcopy(self.executable_procedures), on_file_change)
         watcher.start()
         for i in range(initial_range):
             executable_name_with_args = self.project_executable_names.pop(0)
