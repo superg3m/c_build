@@ -13,7 +13,7 @@ class Procedure(ProcedureConfig):
         self.source_files = aggregate
 
     def __repr__(self) -> str:
-        return json.dumps(self, indent=4)
+        return json.dumps(self.__dict__, indent=4)
 
     def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)
