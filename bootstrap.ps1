@@ -23,6 +23,7 @@ if (Test-Path -Path $venvActivateScript) {
     Write-Output "Could not find python venv activation script at $venvActivateScript"
 }
 
+python.exe -m pip install -q --upgrade pip
 pip install -q watchdog
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
