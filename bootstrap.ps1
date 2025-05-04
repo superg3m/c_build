@@ -47,5 +47,3 @@ foreach ($templateFile in $templateFiles) {
 Pop-Location
 
 Write-Host "c_build bootstrap is complete!" -ForegroundColor Green
-
-#changing
