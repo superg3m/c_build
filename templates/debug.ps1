@@ -15,8 +15,6 @@ $venvPath = "./.venv"
 $venvActivateScript = "$venvPath\Scripts\Activate.ps1"
 if (Test-Path -Path $venvActivateScript) {
     . $venvActivateScript
-} else {
-    Write-Output "Could not find python venv activation script at $venvActivateScript"
 }
 Pop-Location
 
