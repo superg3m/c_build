@@ -10,10 +10,22 @@ Push-Location "./c_build"
 $templatesDir = "./templates"
 $resolvedTemplatesDir = "../"
 
-$templateFiles = Get-ChildItem -Path $templatesDir -File
 
+$venvPath = "./.venv"
+if (-not (Test-Path -Path $venvPath)) {
+    python -m venv $venvPath
+}
+
+$venvActivateScript = "$venvPath\Scripts\Activate.ps1"
+if (Test-Path -Path $venvActivateScript) {
+    . $venvActivateScript
+} else {
+    Write-Output "Could not find python venv activation script at $venvActivateScript"
+}
+
+
+$templateFiles = Get-ChildItem -Path $templatesDir -File
 $configFilePath = "c_build_script.py"
-Write-Host
 
 # Check if config.json already exists in the destination directory
 $has_exisiting_config = $false

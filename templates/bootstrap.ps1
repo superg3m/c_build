@@ -11,18 +11,6 @@ if (-not (Test-Path -Path $directoryPath)) {
     git clone $repositoryUrl
 }
 
-$venvPath = "./.venv"
-if (-not (Test-Path -Path $venvPath)) {
-    python -m venv $venvPath
-}
-
-$venvActivateScript = "$venvPath\Scripts\Activate.ps1"
-if (Test-Path -Path $venvActivateScript) {
-    . $venvActivateScript
-} else {
-    Write-Output "Could not find python venv activation script at $venvActivateScript"
-}
-
 . ./c_build/validate_temp_files.ps1 $MyInvocation.MyCommand.Name
 
 $bootstrapScriptPath = "$directoryPath/bootstrap.ps1"
