@@ -52,7 +52,7 @@ class Procedure(ProcedureConfig):
                 subprocess.Popen(debug_command)
 
         except FileNotFoundError:
-            FATAL_PRINT(f"{debug_command} debugger or executable not found")
+            FATAL_PRINT(f"{" ".join(debug_command)} debugger or executable not found")
             exit(-1)
         finally:
             os.chdir(cached_current_directory)
