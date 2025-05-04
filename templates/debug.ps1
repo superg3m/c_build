@@ -10,6 +10,13 @@ Push-Location  "./c_build"
 git fetch origin -q
 git reset --hard origin/main -q
 git pull -q
+
+$venvActivateScript = "$venvPath\Scripts\Activate.ps1"
+if (Test-Path -Path $venvActivateScript) {
+    . $venvActivateScript
+} else {
+    Write-Output "Could not find python venv activation script at $venvActivateScript"
+}
 Pop-Location
 
 python -B -m c_build_script --execution_type "BUILD" --build_type "debug"
