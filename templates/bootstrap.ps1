@@ -19,4 +19,3 @@ if (Test-Path -Path $bootstrapScriptPath) {
 } else {
     Write-Output "Bootstrap script not found at $bootstrapScriptPath"
 }
-
