@@ -11,6 +11,7 @@ git fetch origin -q
 git reset --hard origin/main -q
 git pull -q
 
+$venvPath = "./.venv"
 $venvActivateScript = "$venvPath\Scripts\Activate.ps1"
 if (Test-Path -Path $venvActivateScript) {
     . $venvActivateScript
