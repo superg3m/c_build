@@ -192,7 +192,7 @@ class CLANG_GCC_Compiler(CompilerConfig):
                 FATAL_PRINT("FAILED TO COMPILE!")
                 exit(return_code)
             else:
-                FORMAT_PRINT(f"Compilation of {output_name} successful")
+                FORMAT_PRINT(f"Compilation of {" ".join(output_name)} successful")
 
         finally:
             os.chdir(cached_current_directory)
