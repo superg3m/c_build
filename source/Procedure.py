@@ -49,11 +49,28 @@ class Procedure(ProcedureConfig):
                 NORMAL_PRINT(f"Debugger already running attaching to process...")
             else:
                 NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
-                subprocess.Popen(debug_command)
+                debugger_process = subprocess.Popen(
+                    debug_command,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
 
-        except FileNotFoundError:
-            FATAL_PRINT(f"{" ".join(debug_command)} debugger or executable not found")
+                stdout, stderr = debugger_process.communicate(timeout=5)
+                if stdout:
+                    print("Debugger STDOUT:", stdout)
+                if stderr:
+                    print("Debugger STDERR:", stderr)
+
+        except subprocess.TimeoutExpired:
+            print("Debugger is taking too long to respond")
             exit(-1)
+        except FileNotFoundError as e:
+            print(f"FileNotFoundError: {e}")
+            FATAL_PRINT(f"Failed to find the debugger or executable: {' '.join(debug_command)}")
+            exit(-1)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
         finally:
             os.chdir(cached_current_directory)
 
