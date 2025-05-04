@@ -23,6 +23,7 @@ if (Test-Path -Path $venvActivateScript) {
     Write-Output "Could not find python venv activation script at $venvActivateScript"
 }
 
+pip install watchdog
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 $configFilePath = "c_build_script.py"
