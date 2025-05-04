@@ -36,7 +36,8 @@ class Procedure(ProcedureConfig):
 
 
     def debug(self, debug_with_visual_studio):
-        debugger = ["raddbg", "devenv"]
+        raddbg_path = shutil.which("raddbg")
+        debugger = [raddbg_path, "devenv"]
 
         output_splat = self.output_name.split(" ")
         debug_command = [debugger[debug_with_visual_studio], *output_splat]
