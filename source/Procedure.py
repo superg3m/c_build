@@ -37,6 +37,9 @@ class Procedure(ProcedureConfig):
 
     def debug(self, debug_with_visual_studio):
         raddbg_path = shutil.which("raddbg")
+        if not raddbg_path:
+            FATAL_PRINT("'raddbg' not found in PATH. Please add it or provide full path.")
+
         debugger = [raddbg_path, "devenv"]
 
         output_splat = self.output_name.split(" ")
