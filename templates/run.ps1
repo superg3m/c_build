@@ -3,6 +3,7 @@ if ($PSVersionTable.Platform -eq "Unix") {
     Set-Alias python python3
 }
 
+. ./c_build/validate_temp_files.ps1 bootstrap.ps1
 . ./c_build/validate_temp_files.ps1 $MyInvocation.MyCommand.Name
 
 Push-Location  "./c_build"
