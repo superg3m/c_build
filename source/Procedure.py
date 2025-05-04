@@ -35,87 +35,10 @@ class Procedure(ProcedureConfig):
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
+    # NOTE: if rad didn't work delete the c_build directory and bootstrap
+    # its possible for the python venv vars to be de-synced.
     def debug(self, debug_with_visual_studio):
-        import os
 
-        def print_environment_variables_by_category():
-            # Get all environment variables
-            all_vars = dict(os.environ.items())
-
-            # Initialize categories
-            system_vars = {}
-            user_vars = {}
-            path_vars = {}
-            shell_vars = {}
-            app_vars = {}
-            other_vars = {}
-
-            # Common system variable prefixes/names
-            system_prefixes = ['SYSTEM', 'OS', 'PROCESSOR', 'NUMBER_OF', 'COMPUTER', 'WIN', 'LANG',
-                               'TERM', 'DISPLAY', 'XDG_']
-
-            # Common user variable prefixes/names
-            user_prefixes = ['USER', 'HOME', 'LOGNAME', 'USERNAME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH']
-
-            # Common path-related variables
-            path_related = ['PATH', 'PYTHONPATH', 'LD_LIBRARY_PATH', 'CLASSPATH', 'GOPATH', 'JAVA_HOME',
-                            'ANDROID_HOME', 'MAVEN_HOME']
-
-            # Common shell variables
-            shell_related = ['SHELL', 'BASH', 'PS1', 'PS2', 'PROMPT', 'ZSH', 'HISTSIZE', 'HISTFILESIZE']
-
-            # Common application variables
-            app_prefixes = ['PYTHON', 'JAVA', 'RUBY', 'NODE', 'NPM', 'DOCKER', 'KUBE', 'AWS', 'AZURE',
-                            'VIRTUAL_ENV', 'CONDA']
-
-            # Categorize variables
-            for key, value in all_vars.items():
-                # Check for path variables first
-                if key in path_related or key.endswith('PATH') or key.endswith('_HOME'):
-                    path_vars[key] = value
-                # Check for system variables
-                elif any(key.startswith(prefix) for prefix in system_prefixes):
-                    system_vars[key] = value
-                # Check for user variables
-                elif any(key.startswith(prefix) for prefix in user_prefixes):
-                    user_vars[key] = value
-                # Check for shell variables
-                elif any(key.startswith(prefix) for prefix in shell_related):
-                    shell_vars[key] = value
-                # Check for application-specific variables
-                elif any(key.startswith(prefix) for prefix in app_prefixes):
-                    app_vars[key] = value
-                # Everything else
-                else:
-                    other_vars[key] = value
-
-            # Print categories
-            print("=== SYSTEM VARIABLES ===")
-            for key, value in sorted(system_vars.items()):
-                print(f"{key}={value}")
-
-            print("\n=== USER VARIABLES ===")
-            for key, value in sorted(user_vars.items()):
-                print(f"{key}={value}")
-
-            print("\n=== PATH VARIABLES ===")
-            for key, value in sorted(path_vars.items()):
-                print(f"{key}={value}")
-
-            print("\n=== SHELL VARIABLES ===")
-            for key, value in sorted(shell_vars.items()):
-                print(f"{key}={value}")
-
-            print("\n=== APPLICATION VARIABLES ===")
-            for key, value in sorted(app_vars.items()):
-                print(f"{key}={value}")
-
-            print("\n=== OTHER VARIABLES ===")
-            for key, value in sorted(other_vars.items()):
-                print(f"{key}={value}")
-
-        # Run the function
-        print_environment_variables_by_category()
 
         debugger = ["raddbg", "devenv"]
 
