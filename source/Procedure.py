@@ -38,8 +38,6 @@ class Procedure(ProcedureConfig):
     # NOTE: if rad didn't work delete the c_build directory and bootstrap
     # its possible for the python venv vars to be de-synced.
     def debug(self, debug_with_visual_studio):
-
-
         debugger = ["raddbg", "devenv"]
 
         output_splat = self.output_name.split(" ")
@@ -53,22 +51,7 @@ class Procedure(ProcedureConfig):
                 NORMAL_PRINT(f"Debugger already running attaching to process...")
             else:
                 NORMAL_PRINT(f"Started new debugger with command: {debug_command}")
-                debugger_process = subprocess.Popen(
-                    debug_command,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    text=True
-                )
-
-                stdout, stderr = debugger_process.communicate(timeout=5)
-                if stdout:
-                    print("Debugger STDOUT:", stdout)
-                if stderr:
-                    print("Debugger STDERR:", stderr)
-
-        except subprocess.TimeoutExpired:
-            print("Debugger is taking too long to respond")
-            exit(-1)
+                debugger_process = subprocess.Popen(debug_command
         except FileNotFoundError as e:
             print(f"FileNotFoundError: {e}")
             FATAL_PRINT(f"Failed to find the debugger or executable: {' '.join(debug_command)}")
