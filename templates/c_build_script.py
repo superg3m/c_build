@@ -51,7 +51,7 @@ procedures: Dict[str, ProcedureConfig] = {
     "project_exe": ProcedureConfig(
         build_directory=f"./{build_postfix}",
         output_name="some_project.exe",
-        source_files=["../Source/*.c"],
+        source_files=["../../Source/*.c"],
         additional_libs=executable_procedure_libs
     )
 }
