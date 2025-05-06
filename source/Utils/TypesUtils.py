@@ -3,12 +3,22 @@ from enum import Enum
 from typing import List, Optional, Dict, Any
 VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
 
+GITHUB_ALWAYS_PULL = 0
+GITHUB_NEVER_PULL = 1
+
+class Dependency:
+    def __init__(self, name: str, host: str = "https://github.com/superg3m/", branch_name: str = "main", always_pull: bool = True):
+        self.name: str = name
+        self.host: str = host
+        self.branch_name = branch_name,
+        self.always_pull: bool = always_pull
+
 class ProjectConfig:
-    def __init__(self, project_name: str, project_dependencies: Optional[list[str]] = None,
+    def __init__(self, project_name: str, project_dependencies: Optional[list[Dependency]] = None,
                  project_debug_with_visual_studio: bool = True, project_rebuild_project_dependencies: bool = False,
                  project_executable_names: Optional[List[str]] = None):
         self.project_name: str = project_name
-        self.project_dependencies: list[str] = project_dependencies or []
+        self.project_dependencies: list[Dependency] = project_dependencies or []
         self.project_debug_with_visual_studio: bool = project_debug_with_visual_studio
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
         self.project_executable_names: List[str] = project_executable_names or []

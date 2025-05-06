@@ -27,7 +27,6 @@ class Manager:
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()
 
-        #prob issue here
         serialized_data = {
             **self.pc.to_dict(),
             **filtered_procedure_config

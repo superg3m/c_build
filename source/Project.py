@@ -58,7 +58,7 @@ class Project(ProjectConfig):
         return ProjectConfig(**project_config), procedure_config
 
     # Clean this up
-    def build_dependencies(self, project_config: ProjectConfig, github_root="https://github.com/superg3m"):
+    def build_dependencies(self, project_config: ProjectConfig):
         project_name = project_config.project_name
         project_dependencies = project_config.project_dependencies
 
@@ -66,30 +66,33 @@ class Project(ProjectConfig):
             FORMAT_PRINT(f"{project_name} depends on:")
 
         for dependency in project_dependencies:  # This exits early if there are no dependencies
-            if dependency:
-                if not os.path.exists(dependency):
-                    FORMAT_PRINT(f"missing {dependency} cloning...")
-                    os.system(f"git clone {github_root}/{dependency}.git")
+            if not dependency.name:
+                continue
 
-                cache_dir = os.getcwd()
-                os.chdir(dependency)
+            if not os.path.exists(dependency.name):
+                FORMAT_PRINT(f"missing {dependency.name} cloning...")
+                os.system(f"git clone {dependency.host}/{dependency}")
 
-                if not os.path.exists(self.serialized_name):
-                    self.__serialize_dependency_data()
+            cache_dir = os.getcwd()
+            os.chdir(dependency.name)
 
-                project_config, procedure_config = self.__deserialize_dependency_data()
-                project: Project = Project(self.MANAGER_COMPILER, project_config, procedure_config, True)
-                project.project_rebuild_project_dependencies = self.project_rebuild_project_dependencies
-                project.build_type = self.build_type
-                project.build()
+            if not os.path.exists(self.serialized_name):
+                self.__serialize_dependency_data()
 
-                os.chdir(cache_dir)
+            project_config, procedure_config = self.__deserialize_dependency_data()
+            project: Project = Project(self.MANAGER_COMPILER, project_config, procedure_config, True)
+            project.project_rebuild_project_dependencies = self.project_rebuild_project_dependencies
+            project.build_type = self.build_type
+            project.build()
+
+            os.chdir(cache_dir)
+
 
     # Make this more apparent when you do this?
     def invalidate_dependency_cache(self):
-        for dependency_name in self.project_dependencies:
-            if dependency_name and os.path.exists(dependency_name) and GIT_PULL(dependency_name):
-                json_to_remove = f"./{dependency_name}/{self.serialized_name}"
+        for dependency in self.project_dependencies:
+            if dependency.name and os.path.exists(dependency.name) and GIT_PULL(dependency.name):
+                json_to_remove = f"./{dependency.name}/{self.serialized_name}"
                 if os.path.exists(json_to_remove):
                     os.remove(json_to_remove)
 
