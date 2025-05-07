@@ -43,6 +43,8 @@ class Project(ProjectConfig):
 
     def __deserialize_dependency_data(self) -> (ProjectConfig, dict[str, ProcedureConfig]):
         serialized_name = f"c_build_dependency_cache_{self.MANAGER_COMPILER.compiler_name}_{self.build_type}.json"
+
+        print(self.MANAGER_COMPILER.compiler_name)
         serialized_file = open(serialized_name)
 
         config = json.load(serialized_file)
