@@ -110,4 +110,4 @@ class ProcedureConfig:
         return json.loads(json_str, object_hook=decoder)
 
     def to_json(self):
-        return json.dumps(self, indent=4)
+        return json.dumps(self, indent=4).replace("'", "\"")
