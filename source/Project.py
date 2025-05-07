@@ -79,7 +79,7 @@ class Project(ProjectConfig):
             if not os.path.exists(dependency.name):
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
                 result = subprocess.run(
-                    ["git", "clone", "-b ", f"{dependency.branch_name}", f"{dependency.host}/{dependency.name}"],
+                    ["git", "clone", "-b", dependency.branch_name, f"{dependency.host}/{dependency.name}"],
                     capture_output=True, text=True)
                 if result.returncode != 0:
                     WARN_PRINT("Fail to clone")
