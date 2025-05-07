@@ -191,7 +191,11 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
         source_file_name = os.path.basename(maybe_source_glob) # maybe_source_glob[maybe_source_glob.rindex("/"):len(maybe_source_glob)]
 
     globing = False
-    if "*.cpp" in maybe_source_glob:
+    if ".cpp" in maybe_source_glob:
+        extensions_to_check = ".cpp"
+    elif ".c" in maybe_source_glob:
+        extensions_to_check = ".c"
+    elif "*.cpp" in maybe_source_glob:
         extensions_to_check = ".cpp"
         globing = True
     elif "*.c" in maybe_source_glob:
