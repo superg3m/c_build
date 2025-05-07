@@ -84,6 +84,8 @@ class Project(ProjectConfig):
                 os.chdir(dependency.name)
                 current_branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
                 print(current_branch)
+                print(dependency.branch_name)
+                print(dependency.branch_name != current_branchs)
                 if dependency.branch_name != current_branch:
                     result = subprocess.run(["git", "checkout", dependency.branch_name])
                     if result.returncode != 0:
