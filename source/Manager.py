@@ -24,7 +24,9 @@ class Manager:
 
         for dependency in self.pc.project_dependencies:
             if not isinstance(dependency, Dependency):
-                FATAL_PRINT(f"{pc.project_name} build error {dependency} is not of type 'Dependency' its likely a string")
+                FATAL_PRINT(f"ProjectName: {pc.project_name}\n"
+                            f"DependencyName: {dependency}"
+                            f"ErrorMessage: '{dependency}' is not of type 'Dependency' its likely a string")
                 exit(-1)
 
     def serialize_to_json(self):
