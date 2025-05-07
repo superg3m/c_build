@@ -91,23 +91,18 @@ def build_static_lib(compiler_name, output_name, additional_libs):
 
     lib_command.extend([lib for lib in additional_libs if lib])
     error_occurred = False
+    result = None
     try:
         if shutil.which(lib_command[0]) is None:
             raise FileNotFoundError(f"{lib_command[0]} command not found")
 
         result = subprocess.run(lib_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        for line_2 in result.stdout.splitlines():
-            NORMAL_PRINT(line_2.strip())
-
-        for line_2 in result.stderr.splitlines():
-            NORMAL_PRINT(line_2.strip())
-
         FORMAT_PRINT(f'; {" ".join(lib_command)}', end="", should_indent=False)
     except FileNotFoundError:
         FATAL_PRINT(f"{lib_command[0]} command not found")
         error_occurred = True
     except subprocess.CalledProcessError as e:
-        FORMAT_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======")
+        WARN_PRINT(f"======= Error: static lib failed with return code {e.returncode} =======")
         if e.stdout:
             error_lines = e.stdout.splitlines()
             for line_2 in error_lines:
@@ -115,9 +110,15 @@ def build_static_lib(compiler_name, output_name, additional_libs):
                     FATAL_PRINT(f"Compilation error | {line_2.strip()}")
 
         NORMAL_PRINT(f"Lib Command: {e.cmd}")
-        FORMAT_PRINT(f"==========================================================================")
+        WARN_PRINT(f"==========================================================================")
         error_occurred = True
     finally:
+        for line_2 in result.stdout.splitlines():
+            NORMAL_PRINT(line_2.strip())
+
+        for line_2 in result.stderr.splitlines():
+            NORMAL_PRINT(line_2.strip())
+
         if error_occurred:
             FATAL_PRINT(f"FAILED TO COMPILE LIB: {output_name}")
 
