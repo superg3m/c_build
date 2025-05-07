@@ -4,6 +4,7 @@ BLUE: str = '\033[94m'
 CYAN: str = '\033[96m'
 WHITE: str = '\033[97m'
 YELLOW: str = '\033[93m'
+WARN_YELLOW = "\033[38;5;178m"
 MAGENTA: str = '\033[95m'
 GREY: str = '\033[90m'
 BLACK: str = '\033[90m'

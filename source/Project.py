@@ -85,8 +85,8 @@ class Project(ProjectConfig):
                     result = subprocess.run(["git", "checkout", dependency.branch_name])
                     if result.returncode != 0:
                         os.chdir(dependency.name)
-                        FATAL_PRINT(result.stderr)
-                        FATAL_PRINT(
+                        WARN_PRINT(f"Failed to checkout {dependency.branch_name} branch")
+                        WARN_PRINT(
                             f"Available Branches:\n{subprocess.run(["git", "branch", "-r"], capture_output=True, text=True).stdout}")
                         os.chdir(cache_dir)
 

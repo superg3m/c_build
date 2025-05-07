@@ -46,7 +46,7 @@ def NORMAL_PRINT(msg):
 
 def WARN_PRINT(msg):
     global indent_spaces
-    color = YELLOW
+    color = WARN_YELLOW
     if msg:
         print(f"{color}{indent_spaces}{msg}{DEFAULT}")
 
