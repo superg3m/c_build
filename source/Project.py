@@ -75,10 +75,9 @@ class Project(ProjectConfig):
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
                 result = subprocess.run(["git", "clone", "-b ", f"{dependency.branch_name}", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
                 if result.returncode != 0:
-                    os.chdir(dependency.name)
-                    FATAL_PRINT(result.stderr)
-                    FATAL_PRINT(f"Available Branches:\n{subprocess.run(["git", "branch"], capture_output=True, text=True).stdout}")
-                    os.chdir(cache_dir)
+                    WARN_PRINT(result.stderr)
+                    WARN_PRINT("Retrying clone with main branch")
+                    subprocess.run(["git", "clone", "-b ", "main", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
             else:
                 pass
                 current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
