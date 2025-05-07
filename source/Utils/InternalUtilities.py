@@ -169,29 +169,69 @@ def CONSUME_GIT_PULL():
 
     return git_had_to_pull.pop()
 
+
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]:
+    resolved_files = []
+
     os.makedirs(build_directory, exist_ok=True)
-    glob_path = maybe_source_glob.replace("\\", "/")
 
-    if "*" not in glob_path and os.path.isfile(glob_path):
-        return [os.path.normpath(glob_path).replace("\\", "/")]
+    # Handle single file case
+    if "*" not in maybe_source_glob:
+        if os.path.isfile(maybe_source_glob):
+            resolved_files.append(maybe_source_glob.replace("\\", "/"))
+        return resolved_files
 
-    if "*.cpp" in glob_path:
-        extensions = [".cpp"]
-    elif "*.c" in glob_path:
-        extensions = [".c"]
+    # Determine extensions to check based on glob pattern
+    if "*.cpp" in maybe_source_glob:
+        extensions_to_check = ".cpp"
+    elif "*.c" in maybe_source_glob:
+        extensions_to_check = ".c"
     else:
-        extensions = [".c", ".cpp"]
+        raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
-    is_recursive = "**" in glob_path
-    matched_files = glob.glob(glob_path, recursive=is_recursive)
+    is_recursive = "/**/" in maybe_source_glob
 
-    filtered_files = []
-    for file_path in matched_files:
-        if os.path.isfile(file_path) and any(file_path.endswith(ext) for ext in extensions):
-            filtered_files.append(os.path.normpath(file_path).replace("\\", "/"))
+    if is_recursive:
+        split = maybe_source_glob.split("/**/")
+        if len(split) > 2:
+            raise ValueError("Only one '/**/' pattern is allowed")
 
-    return filtered_files
+        source_dir = split[0] or "."
+        pattern = split[1] if len(split) > 1 else f"*.{extensions_to_check}"
+    else:
+        source_dir = os.path.dirname(maybe_source_glob) or "."
+
+    original_directory = os.getcwd()
+
+    def matches_extension(file_name: str) -> bool:
+        return file_name.endswith(extensions_to_check)
+
+    try:
+        os.chdir(build_directory)
+        if os.path.exists(source_dir):
+            os.chdir(source_dir)
+        else:
+            return resolved_files
+
+        if is_recursive:
+            for root, _, files in os.walk("."):
+                for file in files:
+                    if matches_extension(file):
+                        file_path = os.path.join(root, file)
+                        normalized_path = os.path.normpath(os.path.join(source_dir,
+                                                                        file_path[2:] if file_path.startswith(
+                                                                            './') or file_path.startswith(
+                                                                            '.\\') else file_path))
+                        resolved_files.append(normalized_path.replace("\\", "/"))
+        else:
+            for file in os.listdir("."):
+                if os.path.isfile(file) and matches_extension(file):
+                    normalized_path = os.path.normpath(os.path.join(source_dir, file))
+                    resolved_files.append(normalized_path.replace("\\", "/"))
+    finally:
+        os.chdir(original_directory)
+
+    return resolved_files
 
 
 MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
