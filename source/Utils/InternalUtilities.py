@@ -170,53 +170,28 @@ def CONSUME_GIT_PULL():
     return git_had_to_pull.pop()
 
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]:
-    resolved_files = []
-
     os.makedirs(build_directory, exist_ok=True)
+    glob_path = maybe_source_glob.replace("\\", "/")
+    if not ("*" in glob_path or glob_path.endswith((".c", ".cpp"))):
+        return [glob_path]
 
-    if "*" not in maybe_source_glob:
-        resolved_files.append(maybe_source_glob.replace("\\", "/"))
-        return resolved_files
-
-    is_recursive = True if "/**/" in maybe_source_glob else False
-
-    if "*.cpp" in maybe_source_glob:
-        extensions_to_check = ".cpp"
-    elif "*.c" in maybe_source_glob:
-        extensions_to_check = ".c"
+    if "*.cpp" in glob_path:
+        extensions = [".cpp"]
+    elif "*.c" in glob_path:
+        extensions = [".c"]
     else:
-        raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
+        extensions = [".c", ".cpp"]
 
-    source_dir = os.path.dirname(maybe_source_glob) or "."
-    original_directory = os.getcwd()
+    recursive = "**" in glob_path
+    matched_files = glob.glob(glob_path, recursive=recursive)
 
-    def matches_extension(file_name: str) -> bool:
-        return file_name.endswith(extensions_to_check)
+    def matches_extension(path: str) -> bool:
+        return any(path.endswith(ext) for ext in extensions)
 
-    try:
-        os.chdir(build_directory)
-        os.chdir(source_dir)
-
-        if is_recursive:
-            for root, _, files in os.walk("."):  # Use "." instead of ""
-                for file in files:
-                    if matches_extension(file):
-                        resolved_files.append(
-                            os.path.join(source_dir, os.path.relpath(os.path.join(root, file))).replace("\\", "/")
-                        )
-        else:
-            resolved_files.extend(
-                os.path.join(source_dir, file).replace("\\", "/")
-                for file in os.listdir(".") if matches_extension(file)  # Use "." instead of ""
-            )
-    finally:
-        os.chdir(original_directory)
-
-    return resolved_files
+    return [os.path.normpath(f).replace("\\", "/") for f in matched_files if matches_extension(f)]
 
 
 MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
-
 def find_vs_path() -> str:
     vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
     result = subprocess.run(
