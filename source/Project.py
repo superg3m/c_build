@@ -55,7 +55,13 @@ class Project(ProjectConfig):
             elif isinstance(value, dict):
                 procedure_config[key] = ProcedureConfig(**value)
 
-        return ProjectConfig(**project_config), procedure_config
+        proj_config = ProjectConfig(**project_config)
+        for dependency in proj_config.project_dependencies:
+            dependency.always_pull = C_BUILD_ALWAYS_PULL()
+            print(dependency.always_pull)
+            print(C_BUILD_ALWAYS_PULL())
+
+        return proj_config, procedure_config
 
     # Clean this up
     def build_dependencies(self, project_config: ProjectConfig):

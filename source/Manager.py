@@ -36,11 +36,6 @@ class Manager:
     def serialize_to_json(self):
         serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}_{C_BUILD_BUILD_TYPE()}.json"
 
-        for dependency in self.pc.project_dependencies:
-            dependency.always_pull = C_BUILD_ALWAYS_PULL()
-            print(dependency.always_pull)
-            print(C_BUILD_ALWAYS_PULL())
-
         filtered_procedure_config = {}
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()
