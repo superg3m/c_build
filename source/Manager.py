@@ -27,12 +27,12 @@ class Manager:
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()
 
-        print(self.pc.from_json(str(self.pc)))
-
         serialized_data = {
             **self.pc.to_dict(),
             **filtered_procedure_config
         }
+
+        print(serialized_data)
 
         with open(serialized_name, "w") as file:
             json.dump(serialized_data, file, indent=4)

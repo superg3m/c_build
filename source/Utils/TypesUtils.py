@@ -24,11 +24,11 @@ class Dependency:
         return json.loads(json_str, object_hook=decoder)
 
 class ProjectConfig:
-    def __init__(self, project_name: str, project_dependencies: Optional[list[Dependency]] = None,
+    def __init__(self, project_name: str, project_dependencies: Optional[List[Dependency]] = None,
                  project_debug_with_visual_studio: bool = True, project_rebuild_project_dependencies: bool = False,
                  project_executable_names: Optional[List[str]] = None):
         self.project_name: str = project_name
-        self.project_dependencies: list[Dependency] = project_dependencies or []
+        self.project_dependencies: List[Dependency] = project_dependencies or []
         self.project_debug_with_visual_studio: bool = project_debug_with_visual_studio
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
         self.project_executable_names: List[str] = project_executable_names or []
