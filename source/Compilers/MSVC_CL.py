@@ -194,7 +194,7 @@ class MSVC_CL_Compiler(CompilerConfig):
             if should_build_static_lib:
                 build_static_lib(compiler_maybe_promoted_name, output_name, additional_libs)
 
-            FORMAT_PRINT(f'; cd "{cached_current_directory}"', should_indent=False)
+            FORMAT_PRINT(f' ; cd "{cached_current_directory}"', should_indent=False)
 
             if return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
