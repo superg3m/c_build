@@ -28,7 +28,7 @@ pc: ProjectConfig = ProjectConfig(
     project_dependencies: list[Dependency] = [
         Dependency(
             name="ckit",
-            host="https://github.com/superg3m/",
+            host="https://github.com/superg3m",
             branch_name="main",
             always_pull=True,
         ),
