@@ -215,7 +215,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]
 
 
     def matches_pattern(file_name: str) -> bool:
-        return file_name.endswith(extension) or file_name in source_file_name
+        return file_name.endswith(extension)
 
     original_directory = os.getcwd()
     try:
