@@ -32,12 +32,13 @@ def DOWN_LEVEL():
     level -= 1
     indent_spaces = " " * (level * 4)
 
-def FORMAT_PRINT(msg):
+def FORMAT_PRINT(msg, end="\n", should_indent=True):
     global indent_spaces
+    canonical_indent = indent_spaces if should_indent else ""
     color_lookup = [GREEN, BLUE, YELLOW, MAGENTA, CYAN, RED]
     color = color_lookup[level % len(color_lookup)]
     if msg:
-        print(f"{color}{indent_spaces}{msg}{DEFAULT}")
+        print(f"{color}{canonical_indent}{msg}{DEFAULT}", end=end)
 
 def NORMAL_PRINT(msg):
     global indent_spaces
