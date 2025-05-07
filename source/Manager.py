@@ -36,10 +36,11 @@ class Manager:
 
 
         serialized_data = {
+            **self.pc.to_dict()
             **filtered_procedure_config
         }
 
-        print(self.pc.to_json())
+        print(serialized_data)
 
         exit(-1)
 
