@@ -46,14 +46,13 @@ def NORMAL_PRINT(msg):
 
 def WARN_PRINT(msg):
     global indent_spaces
-    color = WARN_YELLOW
     if msg:
-        print(f"{color}{indent_spaces}{msg}{DEFAULT}")
+        print(f"{WARN_YELLOW}{indent_spaces}[WARN]: {msg}{DEFAULT}")
 
 def FATAL_PRINT(msg):
     global indent_spaces
     if msg:
-        print(f"{FATAL}{indent_spaces}{msg}{DEFAULT}")
+        print(f"{FATAL}{indent_spaces}[FATAL]: {msg}{DEFAULT}")
 
 def IS_WINDOWS_PROCESS_RUNNING(process_name):
     programs = str(subprocess.check_output('tasklist'))
