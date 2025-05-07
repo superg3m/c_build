@@ -24,23 +24,21 @@ class Manager:
         self.INTERNAL_COMPILER = choose_internal_compiler(cc)
 
     def serialize_to_json(self):
-        serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}_{C_BUILD_BUILD_TYPE()}.json"
+        serialized_name = f"c_build_dependency_cache_compiler_build_type.json"  # You may want to pass in these values
+
         filtered_procedure_config = {}
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()
 
-
-        print(json.dumps(self.pc, indent=4))
-
         serialized_data = {
-            **self.pc.to_dict(),
+            **self.pc.to_dict(),  # Now using the to_dict method
             **filtered_procedure_config
         }
 
-        WARN_PRINT(json.dumps(serialized_data, indent=4))
-
         with open(serialized_name, "w") as file:
             json.dump(serialized_data, file, indent=4)
+
+        return json.dumps(serialized_data, indent=4)
 
     def build_project(self):
         if C_BUILD_IS_DEPENDENCY():

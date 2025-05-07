@@ -1,39 +1,39 @@
 import json
-from typing import Optional, List
+from enum import Enum
+from typing import List, Optional, Dict, Any
 
-
-class CustomEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if hasattr(obj, "to_dict"):
-            return obj.to_dict()
-        elif hasattr(obj, "__dict__"):
-            return vars(obj)
-        return super().default(obj)
-
+VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
 
 GITHUB_ALWAYS_PULL = 0
 GITHUB_NEVER_PULL = 1
-VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
+
 
 class Dependency:
-    def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main", always_pull: bool = True):
+    def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main",
+                 always_pull: bool = True):
         self.name: str = name
         self.host: str = host
         self.branch_name: str = branch_name
         self.always_pull: bool = always_pull
 
     def __repr__(self):
-        return json.dumps(self, indent=4, cls=CustomEncoder)
+        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
 
     def to_dict(self):
         return self.__dict__
 
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
+
     @classmethod
     def from_json(cls, json_str):
-        def decoder(obj) -> Dependency:
-            return Dependency(**obj)
-
-        return json.loads(json_str, object_hook=decoder)
+        if isinstance(json_str, str):
+            data = json.loads(json_str)
+        elif isinstance(json_str, dict):
+            data = json_str
+        else:
+            raise TypeError("Expected string or dictionary")
+        return cls(**data)
 
 
 class ProjectConfig:
@@ -47,54 +47,66 @@ class ProjectConfig:
         self.project_executable_names: List[str] = project_executable_names or []
 
     def __repr__(self):
-        return json.dumps(self, indent=4, cls=CustomEncoder)
+        return json.dumps(self.to_dict(), indent=4)
 
     def to_dict(self):
-        return {
-            key: [
-                item.to_dict() if hasattr(item, "to_dict") else item
-                for item in value
-            ] if isinstance(value, list)
-            else value.to_dict() if hasattr(value, "to_dict")
-            else value
-            for key, value in self.__dict__.items()
-        }
+        result = {k: v for k, v in self.__dict__.items()}
+        # Handle the dependencies list specially
+        if self.project_dependencies:
+            result['project_dependencies'] = [dep.to_dict() for dep in self.project_dependencies]
+        return result
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
 
     @classmethod
     def from_json(cls, json_str):
-        def decoder(obj) -> ProjectConfig:
-            deps = obj.get("project_dependencies", [])
-            obj["project_dependencies"] = [Dependency(**dep) if isinstance(dep, dict) else dep for dep in deps]
-            return ProjectConfig(**obj)
+        if isinstance(json_str, str):
+            data = json.loads(json_str)
+        elif isinstance(json_str, dict):
+            data = json_str
+        else:
+            raise TypeError("Expected string or dictionary")
 
-        return json.loads(json_str, object_hook=decoder)
+        # Handle dependencies specially
+        if 'project_dependencies' in data:
+            deps = data['project_dependencies']
+            data['project_dependencies'] = [Dependency.from_json(dep) for dep in deps]
+
+        return cls(**data)
 
 
 class CompilerConfig:
     def __init__(self, compiler_name: str, compiler_std_version: str = "c11",
-                 compiler_warning_level: str = "", compiler_disable_specific_warnings: Optional[List[str]] = None,
+                 compiler_warning_level: str = "", compiler_disable_specific_warnings: Optional[list[str]] = None,
                  compiler_treat_warnings_as_errors: bool = True, compiler_disable_warnings: bool = False,
                  compiler_disable_sanitizer: bool = True):
         self.compiler_name: str = compiler_name
         self.compiler_std_version: str = compiler_std_version
         self.compiler_warning_level: str = compiler_warning_level
-        self.compiler_disable_specific_warnings: List[str] = compiler_disable_specific_warnings or []
+        self.compiler_disable_specific_warnings: list[str] = compiler_disable_specific_warnings or []
         self.compiler_treat_warnings_as_errors: bool = compiler_treat_warnings_as_errors
         self.compiler_disable_warnings: bool = compiler_disable_warnings
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
 
     def __repr__(self):
-        return json.dumps(self, indent=4, cls=CustomEncoder)
+        return json.dumps(self.to_dict(), indent=4).replace("'", "\"")
 
     def to_dict(self):
         return self.__dict__
 
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
+
     @classmethod
     def from_json(cls, json_str):
-        def decoder(obj) -> CompilerConfig:
-            return CompilerConfig(**obj)
-
-        return json.loads(json_str, object_hook=decoder)
+        if isinstance(json_str, str):
+            data = json.loads(json_str)
+        elif isinstance(json_str, dict):
+            data = json_str
+        else:
+            raise TypeError("Expected string or dictionary")
+        return cls(**data)
 
 
 class ProcedureConfig:
@@ -121,17 +133,20 @@ class ProcedureConfig:
         self.on_source_change_recompile: bool = on_source_change_recompile
 
     def __repr__(self) -> str:
-        return json.dumps(self, indent=4, cls=CustomEncoder)
+        return json.dumps(self.to_dict(), indent=4).replace("'", "\"")
 
     def to_dict(self):
         return self.__dict__
 
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
+
     @classmethod
     def from_json(cls, json_str):
-        def decoder(obj) -> ProcedureConfig:
-            return ProcedureConfig(**obj)
-
-        return json.loads(json_str, object_hook=decoder)
-
-    def to_json(self):
-        return json.dumps(self, indent=4, cls=CustomEncoder)
+        if isinstance(json_str, str):
+            data = json.loads(json_str)
+        elif isinstance(json_str, dict):
+            data = json_str
+        else:
+            raise TypeError("Expected string or dictionary")
+        return cls(**data)
