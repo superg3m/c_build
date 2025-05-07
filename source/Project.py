@@ -51,7 +51,12 @@ class Project(ProjectConfig):
 
         for key, value in config.items():
             if key.startswith("project_"):
-                project_config[key] = value
+                if key == "project_dependencies":
+                    project_config[key] = [
+                        Dependency(**dependency) for dependency in config.get("project_dependencies", [])
+                    ]
+                else:
+                    project_config[key] = value
             elif isinstance(value, dict):
                 procedure_config[key] = ProcedureConfig(**value)
 

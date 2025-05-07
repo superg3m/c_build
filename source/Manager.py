@@ -40,8 +40,6 @@ class Manager:
             **filtered_procedure_config
         }
 
-        print(json.dumps(serialized_data, indent=4, default=lambda o: o.__dict__))
-
         with open(serialized_name, "w") as file:
             json.dump(serialized_data, fp=file, indent=4,  default=lambda o: o.__dict__)
 
