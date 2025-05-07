@@ -30,7 +30,7 @@ class Manager:
         print(self.pc.from_json(str(self.pc)))
 
         serialized_data = {
-            **self.pc.to_json(),
+            **self.pc.to_dict(),
             **filtered_procedure_config
         }
 
