@@ -10,7 +10,7 @@ class Dependency:
     def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main", always_pull: bool = True):
         self.name: str = name
         self.host: str = host
-        self.branch_name = branch_name,
+        self.branch_name: str = branch_name
         self.always_pull: bool = always_pull
 
 class ProjectConfig:
