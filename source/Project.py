@@ -81,16 +81,18 @@ class Project(ProjectConfig):
                     WARN_PRINT("Retrying clone with main branch")
                     os.system(f"git clone -b main {dependency.host}/{dependency.name}")
             else:
+                os.chdir(dependency.name)
                 current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
                 if dependency.branch_name != current_branch:
                     result = subprocess.run(["git", "checkout", dependency.branch_name])
                     if result.returncode != 0:
-                        os.chdir(dependency.name)
                         FATAL_PRINT(f"Failed to checkout '{dependency.branch_name}' branch from {dependency.name}")
                         WARN_PRINT(
                             f"Available Branches:\n{subprocess.run(["git", "branch", "-r"], capture_output=True, text=True).stdout}")
                         os.chdir(cache_dir)
                         exit(-1)
+
+                os.chdir(cache_dir)
 
             os.chdir(dependency.name)
 
