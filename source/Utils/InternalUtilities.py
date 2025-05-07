@@ -183,7 +183,8 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
     else:
         extensions = [".c", ".cpp"]
 
-    matched_files = glob.glob(glob_path, recursive="**" in glob_path)
+    is_recursive = "**" in glob_path
+    matched_files = glob.glob(glob_path, recursive=is_recursive)
 
     def matches_extension(path: str) -> bool:
         return any(path.endswith(ext) for ext in extensions)
