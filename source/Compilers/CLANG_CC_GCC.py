@@ -182,13 +182,13 @@ class CLANG_GCC_Compiler(CompilerConfig):
             for line in result.stderr.splitlines():
                 NORMAL_PRINT(line.strip())
 
-            FORMAT_PRINT(f'cd "{build_directory}" ; {" ".join(compiler_command)}')
+            FORMAT_PRINT(f'cd "{build_directory}" ; {" ".join(compiler_command)}', end="",)
 
             return_code = result.returncode
             if should_build_static_lib:
                 build_static_lib(compiler_maybe_promoted_name, output_name, additional_libs)
 
-            FORMAT_PRINT(f'; cd "{cached_current_directory}"')
+            FORMAT_PRINT(f'; cd "{cached_current_directory}"', should_indent=False)
 
             if return_code:
                 FATAL_PRINT("FAILED TO COMPILE!")
