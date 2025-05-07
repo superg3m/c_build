@@ -1,39 +1,17 @@
 import json
 from enum import Enum
 from typing import List, Optional, Dict, Any
-
 VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
 
 GITHUB_ALWAYS_PULL = 0
 GITHUB_NEVER_PULL = 1
 
-
 class Dependency:
-    def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main",
-                 always_pull: bool = True):
+    def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main", always_pull: bool = True):
         self.name: str = name
         self.host: str = host
         self.branch_name: str = branch_name
         self.always_pull: bool = always_pull
-
-    def __repr__(self):
-        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
-
-    def to_dict(self):
-        return self.__dict__
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-    @classmethod
-    def from_json(cls, json_str):
-        if isinstance(json_str, str):
-            data = json.loads(json_str)
-        elif isinstance(json_str, dict):
-            data = json_str
-        else:
-            raise TypeError("Expected string or dictionary")
-        return cls(**data)
 
 
 class ProjectConfig:
@@ -46,35 +24,8 @@ class ProjectConfig:
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
         self.project_executable_names: List[str] = project_executable_names or []
 
-    def __repr__(self):
-        return json.dumps(self.to_dict(), indent=4)
-
     def to_dict(self):
-        result = {k: v for k, v in self.__dict__.items()}
-        # Handle the dependencies list specially
-        if self.project_dependencies:
-            result['project_dependencies'] = [dep.to_dict() for dep in self.project_dependencies]
-        return result
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-    @classmethod
-    def from_json(cls, json_str):
-        if isinstance(json_str, str):
-            data = json.loads(json_str)
-        elif isinstance(json_str, dict):
-            data = json_str
-        else:
-            raise TypeError("Expected string or dictionary")
-
-        # Handle dependencies specially
-        if 'project_dependencies' in data:
-            deps = data['project_dependencies']
-            data['project_dependencies'] = [Dependency.from_json(dep) for dep in deps]
-
-        return cls(**data)
-
+        return self.__dict__
 
 class CompilerConfig:
     def __init__(self, compiler_name: str, compiler_std_version: str = "c11",
@@ -89,25 +40,8 @@ class CompilerConfig:
         self.compiler_disable_warnings: bool = compiler_disable_warnings
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
 
-    def __repr__(self):
-        return json.dumps(self.to_dict(), indent=4).replace("'", "\"")
-
     def to_dict(self):
         return self.__dict__
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-    @classmethod
-    def from_json(cls, json_str):
-        if isinstance(json_str, str):
-            data = json.loads(json_str)
-        elif isinstance(json_str, dict):
-            data = json_str
-        else:
-            raise TypeError("Expected string or dictionary")
-        return cls(**data)
-
 
 class ProcedureConfig:
     def __init__(
@@ -132,21 +66,5 @@ class ProcedureConfig:
         self.should_compile: bool = should_compile
         self.on_source_change_recompile: bool = on_source_change_recompile
 
-    def __repr__(self) -> str:
-        return json.dumps(self.to_dict(), indent=4).replace("'", "\"")
-
     def to_dict(self):
         return self.__dict__
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-    @classmethod
-    def from_json(cls, json_str):
-        if isinstance(json_str, str):
-            data = json.loads(json_str)
-        elif isinstance(json_str, dict):
-            data = json_str
-        else:
-            raise TypeError("Expected string or dictionary")
-        return cls(**data)

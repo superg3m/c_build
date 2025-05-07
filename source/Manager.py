@@ -31,12 +31,14 @@ class Manager:
             filtered_procedure_config[key] = value.to_dict()
 
         serialized_data = {
-            **self.pc.to_dict(),  # Now using the to_dict method
+            **self.pc.to_dict(),
             **filtered_procedure_config
         }
 
+        import jsonpickle
+
         with open(serialized_name, "w") as file:
-            json.dump(serialized_data, file, indent=4)
+            json.dump(jsonpickle.encode(serialized_data), file, indent=4)
 
         return json.dumps(serialized_data, indent=4)
 
