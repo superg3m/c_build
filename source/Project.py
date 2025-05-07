@@ -71,8 +71,7 @@ class Project(ProjectConfig):
 
             if not os.path.exists(dependency.name):
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
-                FORMAT_PRINT(f"git clone -b {dependency.branch_name} {dependency.host}/{dependency}")
-                os.system(f"git clone -b {dependency.branch_name} {dependency.host}/{dependency}")
+                os.system(f"git clone -b {dependency.branch_name} {dependency.host}/{dependency.name}")
 
             cache_dir = os.getcwd()
             os.chdir(dependency.name)
