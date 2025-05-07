@@ -69,22 +69,28 @@ class Project(ProjectConfig):
             if not dependency.name:
                 continue
 
+            cache_dir = os.getcwd()
+
             if not os.path.exists(dependency.name):
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
                 result = subprocess.run(["git", "clone", "-b ", f"{dependency.branch_name}", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
                 if result.returncode != 0:
+                    os.chdir(dependency.name)
                     FATAL_PRINT(result.stderr)
                     FATAL_PRINT(f"Available Branches:\n{subprocess.run(["git", "branch"], capture_output=True, text=True).stdout}")
+                    os.chdir(cache_dir)
             else:
                 pass
                 current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
                 if dependency.branch_name != current_branch:
                     result = subprocess.run(["checkout", dependency.branch_name])
                     if result.returncode != 0:
+                        os.chdir(dependency.name)
                         FATAL_PRINT(result.stderr)
-                        FATAL_PRINT(f"Available Branches:\n{subprocess.run(["git", "branch"], capture_output=True, text=True).stdout}")
+                        FATAL_PRINT(
+                            f"Available Branches:\n{subprocess.run(["git", "branch"], capture_output=True, text=True).stdout}")
+                        os.chdir(cache_dir)
 
-            cache_dir = os.getcwd()
             os.chdir(dependency.name)
 
             if not os.path.exists(self.serialized_name):
