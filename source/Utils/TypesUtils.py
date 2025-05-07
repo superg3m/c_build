@@ -34,7 +34,7 @@ class ProjectConfig:
         self.project_executable_names: List[str] = project_executable_names or []
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
+        return json.dumps(self.__dict__, indent=4)
 
     def to_dict(self):
         return self.__dict__
