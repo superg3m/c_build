@@ -13,6 +13,19 @@ class Dependency:
         self.branch_name: str = branch_name
         self.always_pull: bool = always_pull
 
+    def __repr__(self):
+        return json.dumps(self.__dict__, indent=4)
+
+    def to_dict(self):
+        return self.__dict__
+
+    @classmethod
+    def from_json(cls, json_str):
+        def decoder(obj) -> Dependency:
+            return Dependency(**obj)
+
+        return json.loads(json_str, object_hook=decoder)
+
 class ProjectConfig:
     def __init__(self, project_name: str, project_dependencies: Optional[list[Dependency]] = None,
                  project_debug_with_visual_studio: bool = True, project_rebuild_project_dependencies: bool = False,
