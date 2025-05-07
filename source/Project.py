@@ -29,17 +29,12 @@ class Project(ProjectConfig):
     def __check_procedure_built(cls, build_dir, output_name):
         return os.path.exists(os.path.join(build_dir, output_name))
 
-    def __serialize_dependency_data(self):
-        if IS_WINDOWS():
-            subprocess.call(
-                f"python -B -m c_build_script --is_dependency true --build_type {self.build_type} --compiler_name {self.MANAGER_COMPILER.compiler_name}",
-                shell=True
-            )
-        else:
-            subprocess.call(
-                f"python3 -B -m c_build_script --is_dependency true --build_type {self.build_type} --compiler_name {self.MANAGER_COMPILER.compiler_name}",
-                shell=True
-            )
+    def __serialize_dependency_data(self, dependency: Dependency):
+        python = "python" if IS_WINDOWS() else "python3"
+        subprocess.call(
+            f"{python} -B -m c_build_script --is_dependency true --always_pull {dependency.always_pull} --build_type {self.build_type} --compiler_name {self.MANAGER_COMPILER.compiler_name}",
+            shell=True
+        )
 
     def __deserialize_dependency_data(self) -> (ProjectConfig, dict[str, ProcedureConfig]):
         serialized_name = f"c_build_dependency_cache_{self.MANAGER_COMPILER.compiler_name}_{self.build_type}.json"
@@ -102,7 +97,7 @@ class Project(ProjectConfig):
             os.chdir(dependency.name)
 
             if not os.path.exists(self.serialized_name):
-                self.__serialize_dependency_data()
+                self.__serialize_dependency_data(dependency)
 
             project_config, procedure_config = self.__deserialize_dependency_data()
             project: Project = Project(self.MANAGER_COMPILER, project_config, procedure_config, True)
