@@ -29,7 +29,7 @@ class Manager:
         self.INTERNAL_COMPILER = choose_internal_compiler(cc)
 
     def serialize_to_json(self):
-        serialized_name = f"c_build_dependency_cache_compiler_build_type.json"  # You may want to pass in these values
+        serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}_{C_BUILD_BUILD_TYPE()}.json"
 
         filtered_procedure_config = {}
         for key, value in self.procedures.items():
