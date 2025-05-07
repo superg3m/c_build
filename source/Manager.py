@@ -43,7 +43,7 @@ class Manager:
             filtered_procedure_config[key] = value.to_dict()
 
 
-        print(class_to_json(self.pc))
+        print(class_to_json(self.pc.to_dict()))
 
         serialized_data = {
             **self.pc.to_dict(),
