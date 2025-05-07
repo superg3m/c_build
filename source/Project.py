@@ -164,11 +164,6 @@ class Project(ProjectConfig):
 
             already_built = self.__check_procedure_built(proc.build_directory, proc.output_name)
             no_git_changes = not PEEK_GIT_PULL()
-
-            WARN_PRINT(already_built)
-            WARN_PRINT(no_git_changes)
-            WARN_PRINT(self.is_dependency)
-
             if already_built and self.is_dependency and no_git_changes:
                 proc_name = os.path.join(proc.build_directory, proc.output_name)
                 NORMAL_PRINT(f"Already built procedure: {proc_name}, skipping...")
