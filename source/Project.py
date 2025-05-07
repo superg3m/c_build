@@ -151,13 +151,24 @@ class Project(ProjectConfig):
         self.build_dependencies(self.pc)
 
         for proc in self.procedures:
+            if self.project_rebuild_project_dependencies:
+                NORMAL_PRINT(f"Forcing recompile because project_rebuild_project_dependencies")
+                proc.compile()
+                continue
+
             sanitizer_enabled_and_debug = not self.MANAGER_COMPILER.compiler_disable_sanitizer and self.build_type == "debug"
-            if self.project_rebuild_project_dependencies or sanitizer_enabled_and_debug:
+            if sanitizer_enabled_and_debug:
+                NORMAL_PRINT(f"Forcing recompile because sanitizer_enabled_and_debug")
                 proc.compile()
                 continue
 
             already_built = self.__check_procedure_built(proc.build_directory, proc.output_name)
             no_git_changes = not PEEK_GIT_PULL()
+
+            WARN_PRINT(already_built)
+            WARN_PRINT(no_git_changes)
+            WARN_PRINT(self.is_dependency)
+
             if already_built and self.is_dependency and no_git_changes:
                 proc_name = os.path.join(proc.build_directory, proc.output_name)
                 NORMAL_PRINT(f"Already built procedure: {proc_name}, skipping...")
