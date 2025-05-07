@@ -80,8 +80,7 @@ class Project(ProjectConfig):
                     WARN_PRINT("Fail to clone")
                     WARN_PRINT("Retrying clone with main branch")
                     os.system(f"git clone -b main {dependency.host}/{dependency.name}")
-
-            if dependency.always_pull:
+            else:
                 current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
                 if dependency.branch_name != current_branch:
                     result = subprocess.run(["git", "checkout", dependency.branch_name])
