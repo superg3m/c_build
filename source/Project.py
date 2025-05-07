@@ -77,7 +77,7 @@ class Project(ProjectConfig):
                 if result.returncode != 0:
                     WARN_PRINT(result.stderr)
                     WARN_PRINT("Retrying clone with main branch")
-                    subprocess.run(["git", "clone", "-b ", "main", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
+                    os.system(f"git clone -b main {dependency.host}/{dependency.name}")
             else:
                 pass
                 current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
