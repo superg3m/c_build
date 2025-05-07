@@ -13,9 +13,6 @@ class Dependency:
         self.branch_name: str = branch_name
         self.always_pull: bool = always_pull
 
-    def __repr__(self):
-        json.dumps(self.__dict__, indent=4)
-
     def to_dict(self):
         return self.__dict__
 
@@ -36,9 +33,6 @@ class ProjectConfig:
         self.project_debug_with_visual_studio: bool = project_debug_with_visual_studio
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
         self.project_executable_names: List[str] = project_executable_names or []
-
-    def __repr__(self):
-        json.dumps(self.__dict__, indent=4)
 
     def to_dict(self):
         return self.__dict__
@@ -62,9 +56,6 @@ class CompilerConfig:
         self.compiler_treat_warnings_as_errors: bool = compiler_treat_warnings_as_errors
         self.compiler_disable_warnings: bool = compiler_disable_warnings
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
-
-    def __repr__(self):
-        json.dumps(self.__dict__, indent=4)
 
     def to_dict(self):
         return self.__dict__
@@ -98,9 +89,6 @@ class ProcedureConfig:
         self.include_paths: List[str] = include_paths or []
         self.should_compile: bool = should_compile
         self.on_source_change_recompile: bool = on_source_change_recompile
-
-    def __repr__(self):
-        json.dumps(self.__dict__, indent=4)
 
     def to_dict(self):
         return self.__dict__
