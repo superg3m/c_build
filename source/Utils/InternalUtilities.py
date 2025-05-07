@@ -172,8 +172,9 @@ def CONSUME_GIT_PULL():
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]:
     os.makedirs(build_directory, exist_ok=True)
     glob_path = maybe_source_glob.replace("\\", "/")
-    if not ("*" in glob_path or glob_path.endswith((".c", ".cpp"))):
-        return [glob_path]
+
+    if "*" not in glob_path and os.path.isfile(glob_path):
+        return [os.path.normpath(glob_path).replace("\\", "/")]
 
     if "*.cpp" in glob_path:
         extensions = [".cpp"]
@@ -182,8 +183,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
     else:
         extensions = [".c", ".cpp"]
 
-    recursive = "**" in glob_path
-    matched_files = glob.glob(glob_path, recursive=recursive)
+    matched_files = glob.glob(glob_path, recursive="**" in glob_path)
 
     def matches_extension(path: str) -> bool:
         return any(path.endswith(ext) for ext in extensions)
