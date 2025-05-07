@@ -55,5 +55,14 @@ class Manager:
             self.serialize_to_json()
             return
 
+        execution_type = C_BUILD_EXECUTION_TYPE()
+        if execution_type == "BUILD":
+            if self.pc.project_rebuild_project_dependencies:
+                WARN_PRINT(f"Forcing recompile because project_rebuild_project_dependencies")
+            else:
+                sanitizer_enabled_and_debug = not self.INTERNAL_COMPILER.compiler_disable_sanitizer and C_BUILD_BUILD_TYPE() == "debug"
+                if sanitizer_enabled_and_debug:
+                    WARN_PRINT(f"Forcing recompile because sanitizer_enabled_and_debug")
+
         project = Project(self.INTERNAL_COMPILER, self.pc, self.procedures)
         project.build()

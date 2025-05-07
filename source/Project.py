@@ -128,25 +128,14 @@ class Project(ProjectConfig):
     def build(self):
         execution_type = C_BUILD_EXECUTION_TYPE()
         if execution_type == "BUILD":
-            if self.pc.project_rebuild_project_dependencies:
-                WARN_PRINT(f"Forcing recompile because project_rebuild_project_dependencies")
-            else:
-                sanitizer_enabled_and_debug = not self.MANAGER_COMPILER.compiler_disable_sanitizer and C_BUILD_BUILD_TYPE() == "debug"
-                if sanitizer_enabled_and_debug:
-                    WARN_PRINT(f"Forcing recompile because sanitizer_enabled_and_debug")
-
             self.invalidate_dependency_cache()
             self.__build()
-            return
         if execution_type == "RUN":
             self.__run()
-            return
         elif execution_type == "DEBUG":
             self.__debug()
-            return
         elif execution_type == "CLEAN":
             self.__clean()
-            return
 
 
     def __build(self):
