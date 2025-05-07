@@ -14,10 +14,7 @@ class Dependency:
         self.always_pull: bool = always_pull
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4)
-
-    def to_dict(self):
-        return self.__dict__
+        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
 
     @classmethod
     def from_json(cls, json_str):
@@ -37,7 +34,7 @@ class ProjectConfig:
         self.project_executable_names: List[str] = project_executable_names or []
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4)
+        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
 
     def to_dict(self):
         return self.__dict__
@@ -64,7 +61,7 @@ class CompilerConfig:
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4)
+        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
 
     def to_dict(self):
         return self.__dict__
@@ -100,7 +97,7 @@ class ProcedureConfig:
         self.on_source_change_recompile: bool = on_source_change_recompile
 
     def __repr__(self) -> str:
-        return json.dumps(self, indent=4)
+        return json.dumps(self, indent=4).replace("'", "\"")
 
     def to_dict(self):
         return self.__dict__
