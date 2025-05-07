@@ -171,7 +171,7 @@ def CONSUME_GIT_PULL():
     return git_had_to_pull.pop()
 
 
-def resolve_file_glob(build_directory: str, maybe_source_glob: str) -> list[str]:
+def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]:
     resolved_files = []
     os.makedirs(build_directory, exist_ok=True)
 
