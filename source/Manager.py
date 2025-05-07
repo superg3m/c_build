@@ -37,16 +37,13 @@ class Manager:
 
         serialized_data = {
             **self.pc.to_dict(),
-            ** filtered_procedure_config
+            **filtered_procedure_config
         }
 
-        print(serialized_data)
+        print(json.dumps(serialized_data, indent=4, default=lambda o: o.__dict__))
 
-        exit(-1)
-
-        """
         with open(serialized_name, "w") as file:
-            json.dump(jsonpickle.encode(serialized_data), file, indent=4)
+            json.dump(serialized_data, indent=4, file=file, default=lambda o: o.__dict__)
         """
         return json.dumps(serialized_data, indent=4, default=lambda o: o.__dict__)
 
