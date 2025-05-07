@@ -186,10 +186,12 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
     is_recursive = "**" in glob_path
     matched_files = glob.glob(glob_path, recursive=is_recursive)
 
-    def matches_extension(path: str) -> bool:
-        return any(path.endswith(ext) for ext in extensions)
+    filtered_files = []
+    for file_path in matched_files:
+        if os.path.isfile(file_path) and any(file_path.endswith(ext) for ext in extensions):
+            filtered_files.append(os.path.normpath(file_path).replace("\\", "/"))
 
-    return [os.path.normpath(f).replace("\\", "/") for f in matched_files if matches_extension(f)]
+    return filtered_files
 
 
 MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
