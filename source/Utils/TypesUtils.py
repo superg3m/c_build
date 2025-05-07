@@ -20,16 +20,10 @@ class Dependency:
         self.always_pull: bool = always_pull
 
     def __repr__(self):
-        return json.dumps(self.to_dict(), indent=4, cls=CustomJSONEncoder)
+        return json.dumps(self.__dict__, indent=4)
 
     def to_dict(self):
-        result = {}
-        for key, value in self.__dict__.items():
-            if key == 'project_dependencies':
-                result[key] = [dep.to_dict() for dep in value]
-            else:
-                result[key] = value
-        return result
+        return self.__dict__
 
     @classmethod
     def from_json(cls, dictionary):
@@ -53,7 +47,16 @@ class ProjectConfig:
         return json.dumps(self.to_dict(), indent=4, cls=CustomJSONEncoder)
 
     def to_dict(self):
-        return self.__dict__
+        result = {}
+        for key, value in self.__dict__.items():
+            if key == 'project_dependencies':
+                result[key] = [dep.to_dict() for dep in value]
+            else:
+                result[key] = value
+        return result
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4, cls=CustomJSONEncoder)
 
     @classmethod
     def from_json(cls, dictionary):

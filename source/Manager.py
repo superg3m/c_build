@@ -39,7 +39,7 @@ class Manager:
             **filtered_procedure_config
         }
 
-        print(json.dumps(self.pc.to_dict(), indent=4))
+        print(self.pc.to_json())
 
         exit(-1)
 
