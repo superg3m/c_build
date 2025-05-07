@@ -182,7 +182,7 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]
 
     if is_recursive:
         source_pair = maybe_source_glob.split("/**/")
-        if len(source_pair) > 2:
+        if len(source_pair) > 2 or "/**/**/" in maybe_source_glob:
             FATAL_PRINT(f"Invalid Source: {maybe_source_glob} | two or more '/**/' present")
             exit(-1)
 
