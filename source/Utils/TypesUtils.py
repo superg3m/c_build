@@ -19,13 +19,6 @@ class Dependency:
     def to_dict(self):
         return self.__dict__
 
-    @classmethod
-    def from_json(cls, dictionary):
-        def decoder(obj) -> Dependency:
-            return Dependency(**obj)
-
-        return json.loads(dictionary, object_hook=decoder)
-
 
 class ProjectConfig:
     def __init__(self, project_name: str, project_dependencies: Optional[List[Dependency]] = None,
@@ -42,13 +35,6 @@ class ProjectConfig:
 
     def to_dict(self):
         return self.__dict__
-
-    @classmethod
-    def from_json(cls, dictionary):
-        def decoder(obj) -> ProjectConfig:
-            return ProjectConfig(**obj)
-
-        return json.loads(dictionary, object_hook=decoder)
 
 class CompilerConfig:
     def __init__(self, compiler_name: str, compiler_std_version: str = "c11",
@@ -68,13 +54,6 @@ class CompilerConfig:
 
     def to_dict(self):
         return self.__dict__
-
-    @classmethod
-    def from_json(cls, dictionary):
-        def decoder(obj) -> CompilerConfig:
-            return CompilerConfig(**obj)
-
-        return json.loads(dictionary, object_hook=decoder)
 
 class ProcedureConfig:
     def __init__(
@@ -104,10 +83,3 @@ class ProcedureConfig:
 
     def to_dict(self):
         return self.__dict__
-
-    @classmethod
-    def from_json(cls, dictionary):
-        def decoder(obj) -> ProcedureConfig:
-            return ProcedureConfig(**obj)
-
-        return json.loads(dictionary, object_hook=decoder)
