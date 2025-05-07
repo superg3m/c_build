@@ -32,7 +32,7 @@ class Project(ProjectConfig):
     def __serialize_dependency_data(self, dependency: Dependency):
         python = "python" if IS_WINDOWS() else "python3"
         subprocess.call(
-            f"{python} -B -m c_build_script --is_dependency true --always_pull {dependency.always_pull} --build_type {self.build_type} --compiler_name {self.MANAGER_COMPILER.compiler_name}",
+            f"{python} -B -m c_build_script --is_dependency true --build_type {self.build_type} --compiler_name {self.MANAGER_COMPILER.compiler_name}",
             shell=True
         )
 
@@ -55,12 +55,7 @@ class Project(ProjectConfig):
             elif isinstance(value, dict):
                 procedure_config[key] = ProcedureConfig(**value)
 
-        proj_config = ProjectConfig(**project_config)
-        for dependency in proj_config.project_dependencies:
-            FATAL_PRINT(C_BUILD_ALWAYS_PULL())
-            dependency.always_pull = C_BUILD_ALWAYS_PULL()
-
-        return proj_config, procedure_config
+        return ProjectConfig(**project_config), procedure_config
 
     # Clean this up
     def build_dependencies(self, project_config: ProjectConfig):
@@ -105,6 +100,10 @@ class Project(ProjectConfig):
                 self.__serialize_dependency_data(dependency)
 
             project_config, procedure_config = self.__deserialize_dependency_data()
+
+            for local_dependency in project_config.project_dependencies:
+                local_dependency.always_pull = dependency.always_pull
+
             project: Project = Project(self.MANAGER_COMPILER, project_config, procedure_config, True)
             project.project_rebuild_project_dependencies = self.project_rebuild_project_dependencies
             project.build_type = self.build_type
