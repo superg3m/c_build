@@ -82,10 +82,10 @@ class Project(ProjectConfig):
                     os.system(f"git clone -b main {dependency.host}/{dependency.name}")
             else:
                 os.chdir(dependency.name)
-                current_branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
+                current_branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout.strip()
                 print(current_branch)
                 print(dependency.branch_name)
-                print(dependency.branch_name != current_branchs)
+                print(dependency.branch_name != current_branch)
                 if dependency.branch_name != current_branch:
                     result = subprocess.run(["git", "checkout", dependency.branch_name])
                     if result.returncode != 0:
