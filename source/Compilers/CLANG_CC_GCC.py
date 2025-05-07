@@ -182,7 +182,7 @@ class CLANG_GCC_Compiler(CompilerConfig):
             for line in result.stderr.splitlines():
                 NORMAL_PRINT(line.strip())
 
-            FORMAT_PRINT(f"{compiler_command}")
+            FORMAT_PRINT(f"{" ".join(compiler_command)}")
 
             return_code = result.returncode
             if should_build_static_lib:
@@ -192,7 +192,7 @@ class CLANG_GCC_Compiler(CompilerConfig):
                 FATAL_PRINT("FAILED TO COMPILE!")
                 exit(return_code)
             else:
-                FORMAT_PRINT(f"Compilation of {" ".join(output_name)} successful")
+                FORMAT_PRINT(f"Compilation of {output_name} successful")
 
         finally:
             os.chdir(cached_current_directory)
