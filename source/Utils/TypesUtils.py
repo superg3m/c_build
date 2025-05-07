@@ -13,6 +13,19 @@ class Dependency:
         self.branch_name: str = branch_name
         self.always_pull: bool = always_pull
 
+    def __repr__(self):
+        json.dumps(self.__dict__, indent=4)
+
+    def to_dict(self):
+        return self.__dict__
+
+    @classmethod
+    def from_json(cls, dictionary):
+        def decoder(obj) -> Dependency:
+            return Dependency(**obj)
+
+        return json.loads(dictionary, object_hook=decoder)
+
 
 class ProjectConfig:
     def __init__(self, project_name: str, project_dependencies: Optional[List[Dependency]] = None,
@@ -24,8 +37,18 @@ class ProjectConfig:
         self.project_rebuild_project_dependencies: bool = project_rebuild_project_dependencies
         self.project_executable_names: List[str] = project_executable_names or []
 
+    def __repr__(self):
+        json.dumps(self.__dict__, indent=4)
+
     def to_dict(self):
         return self.__dict__
+
+    @classmethod
+    def from_json(cls, dictionary):
+        def decoder(obj) -> ProjectConfig:
+            return ProjectConfig(**obj)
+
+        return json.loads(dictionary, object_hook=decoder)
 
 class CompilerConfig:
     def __init__(self, compiler_name: str, compiler_std_version: str = "c11",
@@ -42,6 +65,13 @@ class CompilerConfig:
 
     def to_dict(self):
         return self.__dict__
+
+    @classmethod
+    def from_json(cls, dictionary):
+        def decoder(obj) -> CompilerConfig:
+            return CompilerConfig(**obj)
+
+        return json.loads(dictionary, object_hook=decoder)
 
 class ProcedureConfig:
     def __init__(
@@ -68,3 +98,10 @@ class ProcedureConfig:
 
     def to_dict(self):
         return self.__dict__
+
+    @classmethod
+    def from_json(cls, dictionary):
+        def decoder(obj) -> ProcedureConfig:
+            return ProcedureConfig(**obj)
+
+        return json.loads(dictionary, object_hook=decoder)
