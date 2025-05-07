@@ -6,6 +6,7 @@ class Procedure(ProcedureConfig):
         super().__init__(**procedure.to_dict())
         self.MANAGER_COMPILER = MANAGER_COMPILER
 
+    def compile(self):
         aggregate = []
         for source in self.source_files:
             if source:
@@ -13,8 +14,6 @@ class Procedure(ProcedureConfig):
                 print(found)
                 aggregate.extend(found)
         self.source_files = aggregate
-
-    def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)
 
     def clean(self):
