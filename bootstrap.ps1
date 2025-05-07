@@ -25,6 +25,7 @@ if (Test-Path -Path $venvActivateScript) {
 
 python.exe -m pip install -q --upgrade pip
 pip install -q watchdog
+pip install -q jsonpickle
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 $configFilePath = "c_build_script.py"

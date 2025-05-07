@@ -1,3 +1,5 @@
+import jsonpickle
+
 from typing import Dict
 
 from .Compilers.CLANG_CC_GCC import *
@@ -35,7 +37,7 @@ class Manager:
             **filtered_procedure_config
         }
 
-        import jsonpickle
+
 
         with open(serialized_name, "w") as file:
             json.dump(jsonpickle.encode(serialized_data), file, indent=4)
