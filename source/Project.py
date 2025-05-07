@@ -71,7 +71,7 @@ class Project(ProjectConfig):
 
             if not os.path.exists(dependency.name):
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
-                os.system(f"git clone {dependency.host}/{dependency}")
+                os.system(f"git clone -b {dependency.branch_name} {dependency.host}/{dependency}")
 
             cache_dir = os.getcwd()
             os.chdir(dependency.name)
@@ -91,7 +91,10 @@ class Project(ProjectConfig):
     # Make this more apparent when you do this?
     def invalidate_dependency_cache(self):
         for dependency in self.project_dependencies:
-            if dependency.name and os.path.exists(dependency.name) and GIT_PULL(dependency.name):
+            if not dependency.name or not os.path.exists(dependency.name):
+                continue
+
+            if dependency.always_pull and GIT_PULL(dependency.name):
                 json_to_remove = f"./{dependency.name}/{self.serialized_name}"
                 if os.path.exists(json_to_remove):
                     os.remove(json_to_remove)
