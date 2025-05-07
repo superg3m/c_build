@@ -170,14 +170,16 @@ def CONSUME_GIT_PULL():
 
     return git_had_to_pull.pop()
 
-def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]:
+
+def resolve_file_glob(build_directory: str, maybe_source_glob: str) -> list[str]:
     resolved_files = []
     os.makedirs(build_directory, exist_ok=True)
 
+    extension = ".INVALID"
+    is_recursive = "/**/" in maybe_source_glob
     source_dir = ""
     source_file_name = ""
 
-    is_recursive = "/**/" in maybe_source_glob
     if is_recursive:
         source_pair = maybe_source_glob.split("/**/")
         if len(source_pair) > 2:
@@ -188,47 +190,48 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
         source_file_name = source_pair[1]
     else:
         source_dir = os.path.dirname(maybe_source_glob) or "."
-        source_file_name = os.path.basename(maybe_source_glob) # maybe_source_glob[maybe_source_glob.rindex("/"):len(maybe_source_glob)]
+        source_file_name = os.path.basename(maybe_source_glob)
 
-    globing = False
-    if ".cpp" in maybe_source_glob:
-        extensions_to_check = ".cpp"
-    elif ".c" in maybe_source_glob:
-        extensions_to_check = ".c"
-    elif "*.cpp" in maybe_source_glob:
-        extensions_to_check = ".cpp"
-        globing = True
+
+    if "*.cpp" in maybe_source_glob:
+        extension = ".cpp"
+        using_wildcard = True
     elif "*.c" in maybe_source_glob:
-        extensions_to_check = ".c"
-        globing = True
+        extension = ".c"
+        using_wildcard = True
+    elif ".cpp" in maybe_source_glob:
+        extension = ".cpp"
+        using_wildcard = False
+    elif ".c" in maybe_source_glob:
+        extension = ".c"
+        using_wildcard = False
     else:
         raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
-    if not is_recursive and not globing:
+
+    if not is_recursive and not using_wildcard:
         resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
 
+
+    def matches_pattern(file_name: str) -> bool:
+        return file_name.endswith(extension) or file_name in source_file_name
+
     original_directory = os.getcwd()
-
-    def matches(file_name: str) -> bool:
-        return file_name.endswith(extensions_to_check) or file_name in source_file_name
-
     try:
         os.chdir(build_directory)
         os.chdir(source_dir)
-
         if is_recursive:
-            for root, _, files in os.walk("."):  # Use "." instead of ""
+            for root, _, files in os.walk("."):
                 for file in files:
-                    if matches(file):
-                        resolved_files.append(
-                            os.path.join(source_dir, os.path.relpath(os.path.join(root, file))).replace("\\", "/")
-                        )
+                    if matches_pattern(file):
+                        file_path = os.path.join(source_dir, os.path.relpath(os.path.join(root, file)))
+                        resolved_files.append(file_path.replace("\\", "/"))
         else:
-            resolved_files.extend(
-                os.path.join(source_dir, file).replace("\\", "/")
-                for file in os.listdir(".") if matches(file)  # Use "." instead of ""
-            )
+            for file in os.listdir("."):
+                if matches_pattern(file):
+                    file_path = os.path.join(source_dir, file)
+                    resolved_files.append(file_path.replace("\\", "/"))
     finally:
         os.chdir(original_directory)
 
