@@ -63,6 +63,9 @@ class CompilerConfig:
         self.compiler_disable_warnings: bool = compiler_disable_warnings
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
 
+    def __repr__(self):
+        json.dumps(self.__dict__, indent=4)
+
     def to_dict(self):
         return self.__dict__
 
@@ -95,6 +98,9 @@ class ProcedureConfig:
         self.include_paths: List[str] = include_paths or []
         self.should_compile: bool = should_compile
         self.on_source_change_recompile: bool = on_source_change_recompile
+
+    def __repr__(self):
+        json.dumps(self.__dict__, indent=4)
 
     def to_dict(self):
         return self.__dict__
