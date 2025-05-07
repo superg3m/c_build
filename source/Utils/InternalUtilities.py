@@ -115,10 +115,10 @@ def build_static_lib(compiler_name, output_name, additional_libs):
         error_occurred = True
     finally:
         for line_2 in result.stdout.splitlines():
-            NORMAL_PRINT(line_2.strip())
+            WARN_PRINT(line_2.strip())
 
         for line_2 in result.stderr.splitlines():
-            NORMAL_PRINT(line_2.strip())
+            WARN_PRINT(line_2.strip())
 
         if error_occurred:
             FATAL_PRINT(f"FAILED TO COMPILE LIB: {output_name}")
