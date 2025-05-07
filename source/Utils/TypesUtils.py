@@ -6,13 +6,6 @@ VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
 GITHUB_ALWAYS_PULL = 0
 GITHUB_NEVER_PULL = 1
 
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if hasattr(obj, 'to_dict'):
-            print("ERHERHSRER")
-            return obj.to_dict()
-        return super().default(obj)
-
 class Dependency:
     def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main", always_pull: bool = True):
         self.name: str = name
@@ -45,7 +38,7 @@ class ProjectConfig:
         self.project_executable_names: List[str] = project_executable_names or []
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4, cls=CustomJSONEncoder)
+        return json.dumps(self.__dict__, indent=4, default=lambda o: o.__dict__)
 
     def to_dict(self):
         return self.__dict__
