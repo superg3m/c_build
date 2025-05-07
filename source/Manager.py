@@ -39,7 +39,7 @@ class Manager:
             **filtered_procedure_config
         }
 
-        print(json.dumps(serialized_data, indent=4))
+        print(serialized_data)
 
         with open(serialized_name, "w") as file:
             json.dump(jsonpickle.encode(serialized_data), file, indent=4)
