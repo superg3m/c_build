@@ -34,16 +34,19 @@ class Manager:
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()
 
+
         serialized_data = {
-            **self.pc.to_dict(),
             **filtered_procedure_config
         }
 
-        print(serialized_data)
+        print(self.pc.to_dict())
 
+        exit(-1)
+
+        """
         with open(serialized_name, "w") as file:
             json.dump(jsonpickle.encode(serialized_data), file, indent=4)
-
+        """
         return json.dumps(serialized_data, indent=4)
 
     def build_project(self):
