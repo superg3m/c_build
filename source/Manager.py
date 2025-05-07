@@ -25,7 +25,7 @@ class Manager:
         for dependency in self.pc.project_dependencies:
             if not isinstance(dependency, Dependency):
                 FATAL_PRINT(f"ProjectName: {pc.project_name}\n"
-                            f"DependencyName: {dependency}"
+                            f"DependencyName: {dependency}\n"
                             f"ErrorMessage: '{dependency}' is not of type 'Dependency' its likely a string")
                 exit(-1)
 
