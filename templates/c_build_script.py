@@ -2,9 +2,6 @@
 import os
 import sys
 
-from source.Utils.TypesUtils import Dependency
-
-
 def FIND_C_BUILD(current_dir):
     if os.path.isdir(os.path.join(current_dir, "c_build")):
         sys.path.insert(0, current_dir)
