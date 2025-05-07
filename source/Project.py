@@ -57,7 +57,7 @@ class Project(ProjectConfig):
 
         proj_config = ProjectConfig(**project_config)
         for dependency in proj_config.project_dependencies:
-            print(C_BUILD_ALWAYS_PULL())
+            FATAL_PRINT(C_BUILD_ALWAYS_PULL())
             dependency.always_pull = C_BUILD_ALWAYS_PULL()
 
         return proj_config, procedure_config
