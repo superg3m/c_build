@@ -27,11 +27,8 @@ class Manager:
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()
 
-        canonical_pc = str(self.pc.to_dict()).replace("'", "\"")
-        print(canonical_pc)
-
         serialized_data = {
-            **self.pc.to_dict(),
+            **self.pc.to_json(),
             **filtered_procedure_config
         }
 
