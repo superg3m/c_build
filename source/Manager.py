@@ -48,7 +48,7 @@ class Manager:
         with open(serialized_name, "w") as file:
             json.dump(jsonpickle.encode(serialized_data), file, indent=4)
         """
-        return json.dumps(serialized_data, indent=4)
+        return json.dumps(serialized_data, indent=4, default=lambda o: o.__dict__)
 
     def build_project(self):
         if C_BUILD_IS_DEPENDENCY():
