@@ -43,7 +43,7 @@ class Manager:
         print(json.dumps(serialized_data, indent=4, default=lambda o: o.__dict__))
 
         with open(serialized_name, "w") as file:
-            json.dump(serialized_data, indent=4, file=file, default=lambda o: o.__dict__)
+            json.dump(serialized_data, fp=file, indent=4,  default=lambda o: o.__dict__)
 
         return json.dumps(serialized_data, indent=4, default=lambda o: o.__dict__)
 
