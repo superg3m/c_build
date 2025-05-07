@@ -188,7 +188,7 @@ class MSVC_CL_Compiler(CompilerConfig):
             for line in result.stderr.splitlines():
                 NORMAL_PRINT(line.strip())
 
-            FORMAT_PRINT(f"{" ".join(compiler_command)}")
+            FORMAT_PRINT(f'cd "{build_directory}" ; {" ".join(compiler_command)} ; cd "{cached_current_directory}"')
 
             return_code = result.returncode
             if should_build_static_lib:
