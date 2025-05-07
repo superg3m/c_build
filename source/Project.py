@@ -54,8 +54,8 @@ class Project(ProjectConfig):
         for key, value in config.items():
             if key.startswith("project_"):
                 if key == "project_dependencies":
+                    project_config["project_dependencies"] = []
                     for dependency in config.get("project_dependencies"):
-                        print(dependency)
                         project_config["project_dependencies"].append(Dependency(**dependency))
                 else:
                     project_config[key] = value
