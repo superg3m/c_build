@@ -76,6 +76,7 @@ class Project(ProjectConfig):
                     raise RuntimeError(f"Git command failed: {result.stderr}")
                 os.system(f"")
             else:
+                pass
                 #subprocess.run(["git"] + args, capture_output=True, text=True)
                 #git "rev-parse" "--abbrev-ref" "HEAD"
 
