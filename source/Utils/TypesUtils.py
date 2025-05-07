@@ -11,6 +11,10 @@ class CustomEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
+GITHUB_ALWAYS_PULL = 0
+GITHUB_NEVER_PULL = 1
+VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
+
 class Dependency:
     def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main", always_pull: bool = True):
         self.name: str = name
