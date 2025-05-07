@@ -1,3 +1,4 @@
+import copy
 import glob
 import os
 import shutil
@@ -169,30 +170,44 @@ def CONSUME_GIT_PULL():
 
     return git_had_to_pull.pop()
 
-
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]:
     resolved_files = []
-
     os.makedirs(build_directory, exist_ok=True)
 
-    if "*" not in maybe_source_glob:
-        resolved_files.append(maybe_source_glob.replace("\\", "/"))
-        return resolved_files
+    source_dir = ""
+    source_file_name = ""
 
-    is_recursive = True if "/**/" in maybe_source_glob else False
+    is_recursive = "/**/" in maybe_source_glob
+    if is_recursive:
+        source_pair = maybe_source_glob.split("/**/")
+        if len(source_pair) > 2:
+            FATAL_PRINT(f"Invalid Source: {maybe_source_glob} | two or more '/**/' present")
+            exit(-1)
 
+        source_dir = source_pair[0]
+        source_file_name = source_pair[1]
+    else:
+        source_dir = os.path.dirname(maybe_source_glob) or "."
+        source_file_name = os.path.basename(maybe_source_glob) # maybe_source_glob[maybe_source_glob.rindex("/"):len(maybe_source_glob)]
+
+    globing = False
     if "*.cpp" in maybe_source_glob:
         extensions_to_check = ".cpp"
+        globing = True
     elif "*.c" in maybe_source_glob:
         extensions_to_check = ".c"
+        globing = True
     else:
         raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
-    source_dir = os.path.dirname(maybe_source_glob) or "."
+    if not is_recursive and not globing:
+        resolved_files.append(maybe_source_glob.replace("\\", "/"))
+        return resolved_files
+
     original_directory = os.getcwd()
 
-    def matches_extension(file_name: str) -> bool:
-        return file_name.endswith(extensions_to_check)
+    def matches(file_name: str) -> bool:
+        return file_name.endswith(extensions_to_check) or file_name in source_file_name
 
     try:
         os.chdir(build_directory)
@@ -201,14 +216,14 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
         if is_recursive:
             for root, _, files in os.walk("."):  # Use "." instead of ""
                 for file in files:
-                    if matches_extension(file):
+                    if matches(file):
                         resolved_files.append(
                             os.path.join(source_dir, os.path.relpath(os.path.join(root, file))).replace("\\", "/")
                         )
         else:
             resolved_files.extend(
                 os.path.join(source_dir, file).replace("\\", "/")
-                for file in os.listdir(".") if matches_extension(file)  # Use "." instead of ""
+                for file in os.listdir(".") if matches(file)  # Use "." instead of ""
             )
     finally:
         os.chdir(original_directory)
