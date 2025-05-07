@@ -71,14 +71,18 @@ class Project(ProjectConfig):
 
             if not os.path.exists(dependency.name):
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
-                result = subprocess.run(["git"] +  ["clone", "-b ", f"{dependency.branch_name}", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
+                result = subprocess.run(["git", "clone", "-b ", f"{dependency.branch_name}", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
                 if result.returncode != 0:
-                    raise RuntimeError(f"Git command failed: {result.stderr}")
-                os.system(f"")
+                    FATAL_PRINT(result.stderr)
+                    FATAL_PRINT(f"Available Branches:\n{subprocess.run(["git", "branch"], capture_output=True, text=True).stdout}")
             else:
                 pass
-                #subprocess.run(["git"] + args, capture_output=True, text=True)
-                #git "rev-parse" "--abbrev-ref" "HEAD"
+                current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
+                if dependency.branch_name != current_branch:
+                    result = subprocess.run(["checkout", dependency.branch_name])
+                    if result.returncode != 0:
+                        FATAL_PRINT(result.stderr)
+                        FATAL_PRINT(f"Available Branches:\n{subprocess.run(["git", "branch"], capture_output=True, text=True).stdout}")
 
             cache_dir = os.getcwd()
             os.chdir(dependency.name)
