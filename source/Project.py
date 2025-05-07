@@ -71,7 +71,13 @@ class Project(ProjectConfig):
 
             if not os.path.exists(dependency.name):
                 FORMAT_PRINT(f"missing {dependency.name} cloning...")
-                os.system(f"git clone -b {dependency.branch_name} {dependency.host}/{dependency.name}")
+                result = subprocess.run([f"git clone -b {dependency.branch_name} {dependency.host}/{dependency.name}"], capture_output=True, text=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Git command failed: {result.stderr}")
+                os.system(f"")
+            else:
+                #subprocess.run(["git"] + args, capture_output=True, text=True)
+                #git "rev-parse" "--abbrev-ref" "HEAD"
 
             cache_dir = os.getcwd()
             os.chdir(dependency.name)
