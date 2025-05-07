@@ -32,7 +32,7 @@ class Manager:
             **filtered_procedure_config
         }
 
-        print(serialized_data)
+        WARN_PRINT(json.dumps(serialized_data, indent=4))
 
         with open(serialized_name, "w") as file:
             json.dump(serialized_data, file, indent=4)
