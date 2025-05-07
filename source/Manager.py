@@ -9,6 +9,7 @@ from .Compilers.MSVC_CL import *
 from .Project import Project
 from .Utils.InternalUtilities import SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, VALID_COMPILERS, GIT_PULL
 
+
 def choose_internal_compiler(cc: CompilerConfig):
     if cc.compiler_name == "cl":
         SET_MSVC_VARS_FROM_CACHE()
@@ -34,10 +35,9 @@ class Manager:
         for key, value in self.procedures.items():
             filtered_procedure_config[key] = value.to_dict()
 
-
         serialized_data = {
-            **self.pc.to_dict()
-            **filtered_procedure_config
+            **self.pc.to_dict(),
+            ** filtered_procedure_config
         }
 
         print(serialized_data)
