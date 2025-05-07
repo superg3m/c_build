@@ -169,7 +169,7 @@ def CONSUME_GIT_PULL():
 
     return git_had_to_pull.pop()
 
-def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive: bool = False) -> List[str]:
+def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]:
     resolved_files = []
 
     os.makedirs(build_directory, exist_ok=True)
@@ -177,6 +177,8 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str, is_recursive
     if "*" not in maybe_source_glob:
         resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
+
+    is_recursive = True if "/**/" in maybe_source_glob else False
 
     if "*.cpp" in maybe_source_glob:
         extensions_to_check = ".cpp"

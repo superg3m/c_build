@@ -9,7 +9,7 @@ class Procedure(ProcedureConfig):
         aggregate = []
         for source in self.source_files:
             if source:
-                aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source, False))
+                aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source))
         self.source_files = aggregate
 
     def compile(self):
