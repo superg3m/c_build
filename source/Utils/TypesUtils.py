@@ -39,9 +39,6 @@ class ProjectConfig:
     def to_dict(self):
         return self.__dict__
 
-    def to_json(self):
-        return json.dumps(self.__dict__, indent=4)
-
     @classmethod
     def from_json(cls, json_str):
         def decoder(obj) -> ProjectConfig:
