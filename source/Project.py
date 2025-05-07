@@ -152,13 +152,11 @@ class Project(ProjectConfig):
 
         for proc in self.procedures:
             if self.project_rebuild_project_dependencies:
-                WARN_PRINT(f"Forcing recompile because project_rebuild_project_dependencies")
                 proc.compile()
                 continue
 
             sanitizer_enabled_and_debug = not self.MANAGER_COMPILER.compiler_disable_sanitizer and self.build_type == "debug"
             if sanitizer_enabled_and_debug:
-                WARN_PRINT(f"Forcing recompile because sanitizer_enabled_and_debug")
                 proc.compile()
                 continue
 
