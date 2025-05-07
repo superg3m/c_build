@@ -38,6 +38,8 @@ class Manager:
 
         for dependency in self.pc.project_dependencies:
             dependency.always_pull = C_BUILD_ALWAYS_PULL()
+            print(dependency.always_pull)
+            print(C_BUILD_ALWAYS_PULL())
 
         filtered_procedure_config = {}
         for key, value in self.procedures.items():
