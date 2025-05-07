@@ -1,10 +1,15 @@
 import json
-from enum import Enum
-from typing import List, Optional, Dict, Any
-VALID_COMPILERS = ["cl", "gcc", "g++", "cc", "clang", "clang++"]
+from typing import Optional, List
 
-GITHUB_ALWAYS_PULL = 0
-GITHUB_NEVER_PULL = 1
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if hasattr(obj, "to_dict"):
+            return obj.to_dict()
+        elif hasattr(obj, "__dict__"):
+            return vars(obj)
+        return super().default(obj)
+
 
 class Dependency:
     def __init__(self, name: str, host: str = "https://github.com/superg3m", branch_name: str = "main", always_pull: bool = True):
@@ -14,7 +19,10 @@ class Dependency:
         self.always_pull: bool = always_pull
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
+        return json.dumps(self, indent=4, cls=CustomEncoder)
+
+    def to_dict(self):
+        return self.__dict__
 
     @classmethod
     def from_json(cls, json_str):
@@ -22,6 +30,7 @@ class Dependency:
             return Dependency(**obj)
 
         return json.loads(json_str, object_hook=decoder)
+
 
 class ProjectConfig:
     def __init__(self, project_name: str, project_dependencies: Optional[List[Dependency]] = None,
@@ -34,14 +43,24 @@ class ProjectConfig:
         self.project_executable_names: List[str] = project_executable_names or []
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4)
+        return json.dumps(self, indent=4, cls=CustomEncoder)
 
     def to_dict(self):
-        return self.__dict__
+        return {
+            key: [
+                item.to_dict() if hasattr(item, "to_dict") else item
+                for item in value
+            ] if isinstance(value, list)
+            else value.to_dict() if hasattr(value, "to_dict")
+            else value
+            for key, value in self.__dict__.items()
+        }
 
     @classmethod
     def from_json(cls, json_str):
         def decoder(obj) -> ProjectConfig:
+            deps = obj.get("project_dependencies", [])
+            obj["project_dependencies"] = [Dependency(**dep) if isinstance(dep, dict) else dep for dep in deps]
             return ProjectConfig(**obj)
 
         return json.loads(json_str, object_hook=decoder)
@@ -49,19 +68,19 @@ class ProjectConfig:
 
 class CompilerConfig:
     def __init__(self, compiler_name: str, compiler_std_version: str = "c11",
-                 compiler_warning_level: str = "", compiler_disable_specific_warnings: Optional[list[str]] = None,
+                 compiler_warning_level: str = "", compiler_disable_specific_warnings: Optional[List[str]] = None,
                  compiler_treat_warnings_as_errors: bool = True, compiler_disable_warnings: bool = False,
                  compiler_disable_sanitizer: bool = True):
         self.compiler_name: str = compiler_name
         self.compiler_std_version: str = compiler_std_version
         self.compiler_warning_level: str = compiler_warning_level
-        self.compiler_disable_specific_warnings: list[str] = compiler_disable_specific_warnings or []
+        self.compiler_disable_specific_warnings: List[str] = compiler_disable_specific_warnings or []
         self.compiler_treat_warnings_as_errors: bool = compiler_treat_warnings_as_errors
         self.compiler_disable_warnings: bool = compiler_disable_warnings
         self.compiler_disable_sanitizer: bool = compiler_disable_sanitizer
 
     def __repr__(self):
-        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
+        return json.dumps(self, indent=4, cls=CustomEncoder)
 
     def to_dict(self):
         return self.__dict__
@@ -72,6 +91,7 @@ class CompilerConfig:
             return CompilerConfig(**obj)
 
         return json.loads(json_str, object_hook=decoder)
+
 
 class ProcedureConfig:
     def __init__(
@@ -97,7 +117,7 @@ class ProcedureConfig:
         self.on_source_change_recompile: bool = on_source_change_recompile
 
     def __repr__(self) -> str:
-        return json.dumps(self, indent=4).replace("'", "\"")
+        return json.dumps(self, indent=4, cls=CustomEncoder)
 
     def to_dict(self):
         return self.__dict__
@@ -110,4 +130,4 @@ class ProcedureConfig:
         return json.loads(json_str, object_hook=decoder)
 
     def to_json(self):
-        return json.dumps(self, indent=4).replace("'", "\"")
+        return json.dumps(self, indent=4, cls=CustomEncoder)

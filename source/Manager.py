@@ -1,22 +1,9 @@
+from typing import Dict
+
 from .Compilers.CLANG_CC_GCC import *
 from .Compilers.MSVC_CL import *
 from .Project import Project
 from .Utils.InternalUtilities import SET_MSVC_VARS_FROM_CACHE, FATAL_PRINT, VALID_COMPILERS, GIT_PULL
-
-def class_to_json(cls):
-    def serialize(o):
-        if isinstance(o, (int, float, str, bool)) or o is None:
-            return o
-        elif isinstance(o, list):
-            return [serialize(i) for i in o]
-        elif isinstance(o, dict):
-            return {key: serialize(value) for key, value in o.items()}
-        elif hasattr(o, 'dict'):
-            return {key: serialize(value) for key, value in o.dict.items()}
-        else:
-            assert False, "EEWRKFEKJL"
-
-    return json.dumps(serialize(cls), indent=4)
 
 def choose_internal_compiler(cc: CompilerConfig):
     if cc.compiler_name == "cl":
@@ -43,7 +30,7 @@ class Manager:
             filtered_procedure_config[key] = value.to_dict()
 
 
-        print(class_to_json(self.pc.to_dict()))
+        print(json.dumps(self.pc, indent=4))
 
         serialized_data = {
             **self.pc.to_dict(),
