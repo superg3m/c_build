@@ -175,13 +175,10 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
 
     os.makedirs(build_directory, exist_ok=True)
 
-    # Handle single file case
     if "*" not in maybe_source_glob:
-        if os.path.isfile(maybe_source_glob):
-            resolved_files.append(maybe_source_glob.replace("\\", "/"))
+        resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
 
-    # Determine extensions to check based on glob pattern
     if "*.cpp" in maybe_source_glob:
         extensions_to_check = ".cpp"
     elif "*.c" in maybe_source_glob:
@@ -190,17 +187,10 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
         raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
     is_recursive = "/**/" in maybe_source_glob
-
     if is_recursive:
-        split = maybe_source_glob.split("/**/")
-        if len(split) > 2:
-            raise ValueError("Only one '/**/' pattern is allowed")
-
-        source_dir = split[0] or "."
-        pattern = split[1] if len(split) > 1 else f"*.{extensions_to_check}"
-    else:
-        source_dir = os.path.dirname(maybe_source_glob) or "."
-
+        split[0] # this i sthe root dir from here serach all cirectories recursively for split[1]
+        # if trhere are two instances of /**/ that is not allowed
+    source_dir = os.path.dirname(maybe_source_glob) or "."
     original_directory = os.getcwd()
 
     def matches_extension(file_name: str) -> bool:
@@ -208,26 +198,22 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
 
     try:
         os.chdir(build_directory)
-        if os.path.exists(source_dir):
-            os.chdir(source_dir)
-        else:
-            return resolved_files
+        os.chdir(source_dir)
+
+
 
         if is_recursive:
-            for root, _, files in os.walk("."):
+            for root, _, files in os.walk("."):  # Use "." instead of ""
                 for file in files:
                     if matches_extension(file):
-                        file_path = os.path.join(root, file)
-                        normalized_path = os.path.normpath(os.path.join(source_dir,
-                                                                        file_path[2:] if file_path.startswith(
-                                                                            './') or file_path.startswith(
-                                                                            '.\\') else file_path))
-                        resolved_files.append(normalized_path.replace("\\", "/"))
+                        resolved_files.append(
+                            os.path.join(source_dir, os.path.relpath(os.path.join(root, file))).replace("\\", "/")
+                        )
         else:
-            for file in os.listdir("."):
-                if os.path.isfile(file) and matches_extension(file):
-                    normalized_path = os.path.normpath(os.path.join(source_dir, file))
-                    resolved_files.append(normalized_path.replace("\\", "/"))
+            resolved_files.extend(
+                os.path.join(source_dir, file).replace("\\", "/")
+                for file in os.listdir(".") if matches_extension(file)  # Use "." instead of ""
+            )
     finally:
         os.chdir(original_directory)
 
