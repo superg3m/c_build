@@ -40,7 +40,7 @@ class ProjectConfig:
         return self.__dict__
 
     def to_json(self):
-        return json.dumps(self.__dict__, indent=4).replace("'", "\"")
+        return json.dumps(self.__dict__, indent=4)
 
     @classmethod
     def from_json(cls, json_str):
