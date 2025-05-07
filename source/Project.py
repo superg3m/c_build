@@ -100,9 +100,7 @@ class Project(ProjectConfig):
                 self.__serialize_dependency_data(dependency)
 
             project_config, procedure_config = self.__deserialize_dependency_data()
-
             for local_dependency in project_config.project_dependencies:
-                FATAL_PRINT(dependency.always_pull)
                 local_dependency.always_pull = dependency.always_pull
 
             project: Project = Project(self.MANAGER_COMPILER, project_config, procedure_config, True)
