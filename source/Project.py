@@ -71,24 +71,25 @@ class Project(ProjectConfig):
 
             cache_dir = os.getcwd()
 
-            if not os.path.exists(dependency.name):
-                FORMAT_PRINT(f"missing {dependency.name} cloning...")
-                result = subprocess.run(["git", "clone", "-b ", f"{dependency.branch_name}", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
-                if result.returncode != 0:
-                    WARN_PRINT("Fail to clone")
-                    WARN_PRINT("Retrying clone with main branch")
-                    os.system(f"git clone -b main {dependency.host}/{dependency.name}")
-            else:
-                pass
-                current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
-                if dependency.branch_name != current_branch:
-                    result = subprocess.run(["git", "checkout", dependency.branch_name])
+            if not dependency.always_pull:
+                if not os.path.exists(dependency.name):
+                    FORMAT_PRINT(f"missing {dependency.name} cloning...")
+                    result = subprocess.run(["git", "clone", "-b ", f"{dependency.branch_name}", f"{dependency.host}/{dependency.name}"], capture_output=True, text=True)
                     if result.returncode != 0:
-                        os.chdir(dependency.name)
-                        WARN_PRINT(f"Failed to checkout '{dependency.branch_name}' branch")
-                        WARN_PRINT(
-                            f"Available Branches:\n{subprocess.run(["git", "branch", "-r"], capture_output=True, text=True).stdout}")
-                        os.chdir(cache_dir)
+                        WARN_PRINT("Fail to clone")
+                        WARN_PRINT("Retrying clone with main branch")
+                        os.system(f"git clone -b main {dependency.host}/{dependency.name}")
+                else:
+                    pass
+                    current_branch = subprocess.run(["git"] + ["rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout
+                    if dependency.branch_name != current_branch:
+                        result = subprocess.run(["git", "checkout", dependency.branch_name])
+                        if result.returncode != 0:
+                            os.chdir(dependency.name)
+                            WARN_PRINT(f"Failed to checkout '{dependency.branch_name}' branch")
+                            WARN_PRINT(
+                                f"Available Branches:\n{subprocess.run(["git", "branch", "-r"], capture_output=True, text=True).stdout}")
+                            os.chdir(cache_dir)
 
             os.chdir(dependency.name)
 
