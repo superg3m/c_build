@@ -22,6 +22,11 @@ class Manager:
         self.procedures: Dict[str, ProcedureConfig] = procedures
         self.INTERNAL_COMPILER = choose_internal_compiler(cc)
 
+        for dependency in self.pc.project_dependencies:
+            if not isinstance(dependency, Dependency):
+                FATAL_PRINT("Dependencies are not of type 'Dependency' its likely just a string")
+                exit(-1)
+
     def serialize_to_json(self):
         serialized_name = f"c_build_dependency_cache_{C_BUILD_COMPILER_NAME()}_{C_BUILD_BUILD_TYPE()}.json"
 
