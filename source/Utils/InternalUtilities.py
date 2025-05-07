@@ -179,6 +179,8 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
         resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
 
+    is_recursive = True if "/**/" in maybe_source_glob else False
+
     if "*.cpp" in maybe_source_glob:
         extensions_to_check = ".cpp"
     elif "*.c" in maybe_source_glob:
@@ -186,10 +188,6 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
     else:
         raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
-    is_recursive = "/**/" in maybe_source_glob
-    if is_recursive:
-        split[0] # this i sthe root dir from here serach all cirectories recursively for split[1]
-        # if trhere are two instances of /**/ that is not allowed
     source_dir = os.path.dirname(maybe_source_glob) or "."
     original_directory = os.getcwd()
 
@@ -199,8 +197,6 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> List[str]
     try:
         os.chdir(build_directory)
         os.chdir(source_dir)
-
-
 
         if is_recursive:
             for root, _, files in os.walk("."):  # Use "." instead of ""
