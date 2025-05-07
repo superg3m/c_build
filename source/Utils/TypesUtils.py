@@ -9,6 +9,7 @@ GITHUB_NEVER_PULL = 1
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, 'to_dict'):
+            print("ERHERHSRER")
             return obj.to_dict()
         return super().default(obj)
 
@@ -44,19 +45,10 @@ class ProjectConfig:
         self.project_executable_names: List[str] = project_executable_names or []
 
     def __repr__(self):
-        return json.dumps(self.to_dict(), indent=4, cls=CustomJSONEncoder)
+        return json.dumps(self.__dict__, indent=4, cls=CustomJSONEncoder)
 
     def to_dict(self):
-        result = {}
-        for key, value in self.__dict__.items():
-            if key == 'project_dependencies':
-                result[key] = [dep.to_dict() for dep in value]
-            else:
-                result[key] = value
-        return result
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4, cls=CustomJSONEncoder)
+        return self.__dict__
 
     @classmethod
     def from_json(cls, dictionary):
