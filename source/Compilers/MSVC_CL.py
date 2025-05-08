@@ -154,9 +154,11 @@ class MSVC_CL_Compiler(CompilerConfig):
                 address_sanitizer_flag = self.get_compiler_lookup(CompilerAction.ADDRESS_SANITIZER)
                 compiler_command.append(address_sanitizer_flag)
 
+            compiler_command += ["/MTd", "/D_ITERATOR_DEBUG_LEVEL=2", "/D_DEBUG"]
             compiler_command.append("/Od")
             compiler_command.append("/Zi")
         else:
+            compiler_command += ["/MT", "/DNDEBUG", "/D_ITERATOR_DEBUG_LEVEL = 0"]
             compiler_command.append("/O2")
 
         # Add additional compiler args
