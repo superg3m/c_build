@@ -39,5 +39,9 @@ project_executable_procedures = [
 	"8086_instruction_coder.exe decode ../asm_output/listing_0038_many_register_mov"
 ]
 
+- Feature Idea:
+- Use file watcher to check if any files have been modified
+- Store the cache inside the build directory
+
 - Source files are allowed to be searched recursively with /**/
 - source_files = ["../../Source/*.c", "../../Libraries/**/glad.c", "../../source/**/*.cpp"]
