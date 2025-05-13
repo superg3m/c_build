@@ -155,21 +155,14 @@ def GIT_PULL(path: str) -> bool:
     os.chdir(cache_dir)
 
     git_had_to_pull.append(True)
-
     return True
 
-def PEEK_GIT_PULL():
-    if len(git_had_to_pull) == 0:
-        return False
+def GIT_HAS_PULL():
+    for pull in git_had_to_pull:
+        if pull:
+            return True
 
-    return git_had_to_pull[-1]
-
-def CONSUME_GIT_PULL():
-    if len(git_had_to_pull) == 0:
-        return False
-
-    return git_had_to_pull.pop()
-
+    return False
 
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]:
     resolved_files = []
