@@ -158,7 +158,6 @@ class Project(ProjectConfig):
             # TODO(Jovanni): if there is a pull anywhere just rebuild everything
             # this is the trivial way to solve the problem, the other solution is crawl through all dependencies
             has_git_changes = GIT_HAS_PULL()
-            NORMAL_PRINT(f"NAME: {self.project_name} | NO_PULL: {has_git_changes}")
             if already_built and self.is_dependency and not has_git_changes:
                 proc_name = os.path.join(proc.build_directory, proc.output_name)
                 NORMAL_PRINT(f"Already built procedure: {proc_name}, skipping...")
