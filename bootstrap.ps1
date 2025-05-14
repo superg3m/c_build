@@ -7,7 +7,7 @@ Pop-Location
 ###################################################
 
 Push-Location "./c_build"
-$templatesDir = "./templates"
+$templatesDir = "./templates/ps1"
 $resolvedTemplatesDir = "../"
 
 $templateFiles = Get-ChildItem -Path $templatesDir -File
