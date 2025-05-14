@@ -16,7 +16,7 @@ if (-not (Test-Path -Path $venvPath)) {
     python -m venv $venvPath
 }
 
-$venvActivateScript = "$venvPath\Scripts\Activate.ps1"
+$venvActivateScript = "$venvPath/Scripts/Activate.ps1"
 if (Test-Path -Path $venvActivateScript) {
     . $venvActivateScript
 } else {
