@@ -1,1 +1,1 @@
-# This is fucking retard python is dumb
+# I need this for modules I guess
