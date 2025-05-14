@@ -188,7 +188,7 @@ class MSVC_CL_Compiler(CompilerConfig):
                 NORMAL_PRINT(line.strip())
 
             for line in result.stderr.splitlines():
-                WARN_PRINT(line.strip())
+                NORMAL_PRINT(line.strip())
 
             FORMAT_PRINT(f'cd "{build_directory}" ; {" ".join(compiler_command)}', end="",)
 
