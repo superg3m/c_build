@@ -3,7 +3,7 @@ param(
      [string]$current_filename
  )
 
-$template_content = Get-Content -Path "./c_build/templates/$current_filename"
+$template_content = Get-Content -Path "./c_build/templates/ps1/$current_filename"
 $current_content = Get-Content -Path $current_filename
 $differences = Compare-Object -ReferenceObject $current_content -DifferenceObject $template_content
 

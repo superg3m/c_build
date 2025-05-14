@@ -11,7 +11,7 @@ if [ -z "$current_filename" ]; then
   exit 1
 fi
 
-templates_dir="./c_build/templates"
+templates_dir="./c_build/templates/bash"
 template_file="$templates_dir/$current_filename"
 current_file="./$current_filename"
 
