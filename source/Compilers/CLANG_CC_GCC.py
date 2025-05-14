@@ -177,10 +177,10 @@ class CLANG_GCC_Compiler(CompilerConfig):
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
-                FATAL_PRINT(line.strip())
+                NORMAL_PRINT(line.strip())
 
             for line in result.stderr.splitlines():
-                FATAL_PRINT(line.strip())
+                NORMAL_PRINT(line.strip())
 
             FORMAT_PRINT(f'cd "{build_directory}" ; {" ".join(compiler_command)}', end="",)
 
