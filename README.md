@@ -14,7 +14,9 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
 - c|c++ compiler (MSVC (Visual Studio), GCC, CLANG, CC)
 
 ## Planned Improvements
-- Add a good way to do "./core/*/*.c" where ./core/*/ mean recursively search in that directory (do it on default?)
+- Feature Idea:
+- Use file watcher to check if any files have been modified
+- Store the cache inside the build directory
 
 ## Usage
 ### Scripts
@@ -39,9 +41,7 @@ project_executable_procedures = [
 	"8086_instruction_coder.exe decode ../asm_output/listing_0038_many_register_mov"
 ]
 
-- Feature Idea:
-- Use file watcher to check if any files have been modified
-- Store the cache inside the build directory
+
 
 - Source files are allowed to be searched recursively with /**/
 - source_files = ["../../Source/*.c", "../../Libraries/**/glad.c", "../../source/**/*.cpp"]
