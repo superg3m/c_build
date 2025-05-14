@@ -44,4 +44,4 @@ project_executable_procedures = [
 
 
 - Source files are allowed to be searched recursively with /**/
-- source_files = ["../../Source/*.c", "../../Libraries/**/glad.c", "../../source/**/*.cpp"]
+- `source_files = ["../../Source/*.c", "../../Libraries/**/glad.c", "../../source/**/*.cpp"]`
