@@ -10,22 +10,6 @@ Push-Location "./c_build"
 $templatesDir = "./templates"
 $resolvedTemplatesDir = "../"
 
-
-$venvPath = "./.venv"
-if (-not (Test-Path -Path $venvPath)) {
-    python -m venv $venvPath
-}
-
-$venvActivateScript = "$venvPath/Scripts/Activate.ps1"
-if (Test-Path -Path $venvActivateScript) {
-    . $venvActivateScript
-} else {
-    Write-Output "Could not find python venv activation script at $venvActivateScript"
-}
-
-python.exe -m pip install -q --upgrade pip
-pip install -q watchdog
-
 $templateFiles = Get-ChildItem -Path $templatesDir -File
 $configFilePath = "c_build_script.py"
 
