@@ -22,7 +22,7 @@ cc: CompilerConfig = CompilerConfig(
 
 pc: ProjectConfig = ProjectConfig(
     project_name = "some_project",
-    project_dependencies: list[Dependency] = [
+    project_dependencies = [
         Dependency(
             name="ckit",
             host="https://github.com/superg3m",
