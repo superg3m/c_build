@@ -128,7 +128,7 @@ class Project(ProjectConfig):
         if execution_type == "BUILD":
             self.invalidate_dependency_cache()
             self.__build()
-        if execution_type == "RUN":
+        elif execution_type == "RUN":
             self.__run()
         elif execution_type == "DEBUG":
             self.__debug()
@@ -194,9 +194,6 @@ class Project(ProjectConfig):
         for i in range(initial_range):
             executable_name_with_args = self.project_executable_names.pop(0)
             proc = self.executable_procedures[i]
-            if not self.__check_procedure_built(proc.build_directory, proc.output_name):
-                proc.compile()
-
             proc.output_name = executable_name_with_args
             proc.run()
 
