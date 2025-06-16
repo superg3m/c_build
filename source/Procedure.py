@@ -6,14 +6,12 @@ class Procedure(ProcedureConfig):
         super().__init__(**procedure.to_dict())
         self.MANAGER_COMPILER = MANAGER_COMPILER
 
-        # TODO(JOVANNI): It seems like this could go in compile() and it tested it looked ok?
+    def compile(self):
         aggregate = []
         for source in self.source_files:
             if source:
                 aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source))
         self.source_files = aggregate
-
-    def compile(self):
         self.MANAGER_COMPILER.compile_procedure(self)
 
     def clean(self):
