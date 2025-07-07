@@ -6,12 +6,15 @@ class Procedure(ProcedureConfig):
         super().__init__(**procedure.to_dict())
         self.MANAGER_COMPILER = MANAGER_COMPILER
 
-    def compile(self):
+    def resolve_source_files(self):
         aggregate = []
         for source in self.source_files:
             if source:
                 aggregate.extend(RESOLVE_FILE_GLOB(self.build_directory, source))
         self.source_files = aggregate
+
+    def compile(self):
+        self.resolve_source_files()
         self.MANAGER_COMPILER.compile_procedure(self)
 
     def clean(self):

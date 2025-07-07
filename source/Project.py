@@ -171,6 +171,9 @@ class Project(ProjectConfig):
             f"|------------------------------- Time elapsed: {elapsed_time:.2f} seconds -------------------------------|")
 
     def __run(self):
+        for proc in self.procedures:
+            proc.resolve_source_files()
+
         if len(self.project_executable_names) == 0:
             FATAL_PRINT("No available executable procedures!")
             FATAL_PRINT(
