@@ -15,7 +15,7 @@ if (-not ($Build -or $Run -or $Debugger)) {
     exit 1
 }
 
-$directoryPath = "./c_buildsdfsd"
+$directoryPath = "./c_build"
 $repositoryUrl = "https://github.com/superg3m/c_build.git"
 if (-not (Test-Path -Path $directoryPath)) {
     Write-Output "Directory does not exist. Cloning the repository..."
