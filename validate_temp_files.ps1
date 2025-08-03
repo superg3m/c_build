@@ -12,6 +12,6 @@ Write-Host "WOW: $current_filename"
 if ($differences) {
     Write-Host "Template content for '$current_filename' is out of sync; running ./c_build/bootstrap.ps1" -ForegroundColor yellow
     ./c_build/bootstrap.ps1
-
-    exit
 }
+
+exit
