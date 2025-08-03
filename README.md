@@ -20,15 +20,12 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
 
 ## Usage
 ### Scripts
-- **Bootstrap:** `./bootstrap.ps1`
-- **Build:** `./build.ps1` or `./build.ps1 -debug`
-- **Run:** `./run.ps1`
-- **Debug:** `./debug.ps1` (Opens the debugger)
-- **Clean:** `./clean.ps1` (Cleans everything, including dependencies)
+- **Bootstrap:** `./c_build/bootstrap.ps1`
+- **c_build.ps1:** `./c_build.ps1 -BuildType debug -Clean -Build -Run` or `./c_build.ps1 -Debugger`
 
 ## Getting Started
 1. Run the bootstrap script to initialize the project.
-   - ./bootstrap.ps1
+   - ./c_build/bootstrap.ps1
 
 ## Dev Notes: (For me)
 - REGRESSION Testing has to happen I no longer can keep up with everything in my head
@@ -40,8 +37,6 @@ project_executable_procedures = [
 	"test.exe encode ../asm_input/listing_0038_many_register_mov.asm",
 	"8086_instruction_coder.exe decode ../asm_output/listing_0038_many_register_mov"
 ]
-
-
 
 - Source files are allowed to be searched recursively with /**/
 - `source_files = ["../../Source/*.c", "../../Libraries/**/glad.c", "../../source/**/*.cpp"]`
