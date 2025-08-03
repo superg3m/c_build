@@ -1,11 +1,11 @@
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [ValidateSet("debug", "release")]
     [string]$BuildType,
 
     [switch]$Clean,
     [switch]$Build,
-    [switch]$Debug,
+    [switch]$DebugMode,
     [switch]$Run
 )
 
@@ -38,7 +38,7 @@ if ($Build) {
     python -B -m c_build_script --execution_type "BUILD" --build_type $BuildType
 }
 
-if ($Debug) {
+if ($DebugMode) {
     python -B -m c_build_script --execution_type "BUILD" --build_type "debug"
     python -B -m c_build_script --execution_type "DEBUG" --build_type "debug"
 }
