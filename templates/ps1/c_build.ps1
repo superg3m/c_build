@@ -9,12 +9,6 @@ param (
     [switch]$Run
 )
 
-. ./c_build/validate_temp_files.ps1 $MyInvocation.MyCommand.Name
-if (-not ($Build -or $Run -or $Debugger)) {
-    Write-Error "You must specify at least one of -Build, -Run, or -Debugger."
-    exit 1
-}
-
 $directoryPath = "./c_build"
 $repositoryUrl = "https://github.com/superg3m/c_build.git"
 if (-not (Test-Path -Path $directoryPath)) {
@@ -26,6 +20,12 @@ if (-not (Test-Path -Path $directoryPath)) {
     git reset --hard origin/main -q
     git pull -q
     Pop-Location
+}
+
+. ./c_build/validate_temp_files.ps1 $MyInvocation.MyCommand.Name
+if (-not ($Build -or $Run -or $Debugger)) {
+    Write-Error "You must specify at least one of -Build, -Run, or -Debugger."
+    exit 1
 }
 
 $BuildType = $BuildType.ToLower()
