@@ -33,10 +33,10 @@ if ! diff -q "$current_file" "$template_file" > /dev/null; then
 
   if [ "$current_filename" = "bootstrap.sh" ]; then
     echo -e "${YELLOW}Template content for '$current_filename' is out of sync; running ./c_build/bootstrap.sh${NC}"
-    bash ./c_build/bootstrap.sh
+    bash ./c_build/c_build.sh
   else
     echo -e "${YELLOW}Template content for '$current_filename' is out of sync; running ./bootstrap.sh${NC}"
-    bash ./bootstrap.sh
+    bash ./c_build.sh
   fi
 
   exit 0

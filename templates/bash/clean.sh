@@ -7,7 +7,7 @@ if [[ "$(uname)" != "Windows_NT" ]]; then
     alias python=python3
 fi
 
-# Run validation script for bootstrap.sh and this script
+# Run validation script for c_build.sh and this script
 if [ -f "./c_build/validate_temp_files.sh" ]; then
     bash ./c_build/validate_temp_files.sh "bootstrap.sh"
     bash ./c_build/validate_temp_files.sh "$(basename "$0")"
