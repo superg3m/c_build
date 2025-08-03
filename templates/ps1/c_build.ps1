@@ -14,8 +14,8 @@ if (-not ($Build -or $Run -or $Debugger)) {
     Write-Error "You must specify at least one of -Build, -Run, or -Debugger."
     exit 1
 }
-#test
-$directoryPath = "./c_build"
+
+$directoryPath = "./c_buildsdfsd"
 $repositoryUrl = "https://github.com/superg3m/c_build.git"
 if (-not (Test-Path -Path $directoryPath)) {
     Write-Output "Directory does not exist. Cloning the repository..."
