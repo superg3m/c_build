@@ -174,7 +174,7 @@ class CLANG_GCC_Compiler(CompilerConfig):
                 os.mkdir(build_directory)
 
             os.chdir(build_directory)
-            result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            result = subprocess.run(compiler_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
                 NORMAL_PRINT(line.strip())
