@@ -81,7 +81,6 @@ def build_static_lib(compiler_name, output_name, additional_libs):
             "libtool",
             "-static",
             "-o",
-            "*.o",
             output_name,
         ] + object_files
     else:
