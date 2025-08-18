@@ -161,11 +161,6 @@ class MSVC_CL_Compiler(CompilerConfig):
             compiler_command += ["/MT", "/DNDEBUG", "/D_ITERATOR_DEBUG_LEVEL = 0"]
             compiler_command.append("/O2")
 
-        # Add additional compiler args
-        for arg in procedure.compiler_inject_into_args:
-            if arg:
-                compiler_command.append(arg)
-
         # Add include paths
         for include_path in include_paths:
             if include_path:
@@ -175,6 +170,11 @@ class MSVC_CL_Compiler(CompilerConfig):
             if len(additional_libs) > 0 and additional_libs[0]:
                 compiler_command.append("/link")
             compiler_command.extend([lib for lib in additional_libs if lib])
+
+        # Add additional compiler args
+        for arg in procedure.compiler_inject_into_args:
+            if arg:
+                compiler_command.append(arg)
 
         cached_current_directory = os.getcwd()
         try:

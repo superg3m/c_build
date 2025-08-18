@@ -155,11 +155,6 @@ class CLANG_GCC_Compiler(CompilerConfig):
         else:
             compiler_command.append("-O2")
 
-        # Add additional compiler args
-        for arg in procedure.compiler_inject_into_args:
-            if arg:
-                compiler_command.append(arg)
-
         # Add include paths
         for include_path in include_paths:
             if include_path:
@@ -167,6 +162,11 @@ class CLANG_GCC_Compiler(CompilerConfig):
 
         if not should_build_static_lib:
             compiler_command.extend([lib for lib in additional_libs if lib])
+
+        # Add additional compiler args
+        for arg in procedure.compiler_inject_into_args:
+            if arg:
+                compiler_command.append(arg)
 
         cached_current_directory = os.getcwd()
         try:
