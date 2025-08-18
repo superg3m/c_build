@@ -72,22 +72,23 @@ def build_static_lib(compiler_name, output_name, additional_libs):
 
     if compiler_name == "cl":
         lib_command = [
-          "lib",
-          "/NOLOGO",
-          f"/OUT:{output_name}",
+            "lib",
+            "/NOLOGO",
+            f"/OUT:{output_name}",
         ] + object_files
     elif sys.platform == 'darwin':
         lib_command = [
-          "libtool",
-          "-static",
-          "-o",
-          output_name,
+            "libtool",
+            "-static",
+            "-o",
+            "*.o",
+            output_name,
         ] + object_files
     else:
         lib_command = [
-          "ar",
-          "rcs",
-          output_name,
+            "ar",
+            "rcs",
+            output_name,
         ] + object_files
 
     lib_command.extend([lib for lib in additional_libs if lib])
