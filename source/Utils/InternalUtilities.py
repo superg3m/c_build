@@ -254,6 +254,7 @@ def is_cl_in_path():
 
 def get_vs_environment():
     vs_path = find_vs_path()
+    print(vs_path)
     if not vs_path:
         FATAL_PRINT("Visual Studio not found.")
         exit(-1)
