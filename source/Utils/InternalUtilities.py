@@ -14,24 +14,29 @@ from .PlatformUtils import *
 level = 0
 indent_spaces = " " * (level * 4)
 
+
 def SET_LEVEL(value: int):
     global level, indent_spaces
     level = value
     indent_spaces = " " * (level * 4)
 
+
 def GET_LEVEL():
     global level
     return level
+
 
 def UP_LEVEL():
     global level, indent_spaces
     level += 1
     indent_spaces = " " * (level * 4)
 
+
 def DOWN_LEVEL():
     global level, indent_spaces
     level -= 1
     indent_spaces = " " * (level * 4)
+
 
 def FORMAT_PRINT(msg, end="\n", should_indent=True):
     global indent_spaces
@@ -41,20 +46,24 @@ def FORMAT_PRINT(msg, end="\n", should_indent=True):
     if msg:
         print(f"{color}{canonical_indent}{msg}{DEFAULT}", end=end)
 
+
 def NORMAL_PRINT(msg):
     global indent_spaces
     if msg:
         print(f"{indent_spaces}{msg}")
+
 
 def WARN_PRINT(msg):
     global indent_spaces
     if msg:
         print(f"{WARN_YELLOW}{indent_spaces}[WARN]: {msg}{DEFAULT}")
 
+
 def FATAL_PRINT(msg):
     global indent_spaces
     if msg:
         print(f"{FATAL}{indent_spaces}[FATAL]: {msg}{DEFAULT}")
+
 
 def IS_WINDOWS_PROCESS_RUNNING(process_name):
     programs = str(subprocess.check_output('tasklist'))
@@ -62,6 +71,7 @@ def IS_WINDOWS_PROCESS_RUNNING(process_name):
         return True
     else:
         return False
+
 
 def build_static_lib(compiler_name, output_name, additional_libs):
     lib_command = []
@@ -72,23 +82,23 @@ def build_static_lib(compiler_name, output_name, additional_libs):
 
     if compiler_name == "cl":
         lib_command = [
-            "lib",
-            "/NOLOGO",
-            f"/OUT:{output_name}",
-        ] + object_files
+                          "lib",
+                          "/NOLOGO",
+                          f"/OUT:{output_name}",
+                      ] + object_files
     elif sys.platform == 'darwin':
         lib_command = [
-            "libtool",
-            "-static",
-            "-o",
-            output_name,
-        ] + object_files
+                          "libtool",
+                          "-static",
+                          "-o",
+                          output_name,
+                      ] + object_files
     else:
         lib_command = [
-            "ar",
-            "rcs",
-            output_name,
-        ] + object_files
+                          "ar",
+                          "rcs",
+                          output_name,
+                      ] + object_files
 
     lib_command.extend([lib for lib in additional_libs if lib])
     error_occurred = False
@@ -123,6 +133,7 @@ def build_static_lib(compiler_name, output_name, additional_libs):
         if error_occurred:
             FATAL_PRINT(f"FAILED TO COMPILE LIB: {output_name}")
 
+
 def IS_PULL_REQUIRED(path: str) -> bool:
     original_dir = os.getcwd()
     try:
@@ -140,7 +151,10 @@ def IS_PULL_REQUIRED(path: str) -> bool:
 
     return False
 
+
 git_had_to_pull = []
+
+
 def GIT_PULL(path: str) -> bool:
     global git_had_to_pull
 
@@ -157,12 +171,14 @@ def GIT_PULL(path: str) -> bool:
     git_had_to_pull.append(True)
     return True
 
+
 def GIT_HAS_PULL():
     for pull in git_had_to_pull:
         if pull:
             return True
 
     return False
+
 
 def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]:
     resolved_files = []
@@ -185,7 +201,6 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]
         source_dir = os.path.dirname(maybe_source_glob) or "."
         source_file_name = os.path.basename(maybe_source_glob)
 
-
     if "*.cpp" in maybe_source_glob:
         extension = ".cpp"
         using_wildcard = True
@@ -201,11 +216,9 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]
     else:
         raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
 
-
     if not is_recursive and not using_wildcard:
         resolved_files.append(maybe_source_glob.replace("\\", "/"))
         return resolved_files
-
 
     def matches_pattern(file_name: str) -> bool:
         return (file_name.endswith(extension) and using_wildcard) or file_name == source_file_name
@@ -232,10 +245,13 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]
 
 
 MSVC_CACHED_NAME: str = "./c_build/source/c_build_cl_vars_cache.txt"
+
+
 def find_vs_path() -> str:
     vswhere_path = r"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
     result = subprocess.run(
-        [vswhere_path, "-latest", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property", "installationPath"],
+        [vswhere_path, "-latest", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property",
+         "installationPath"],
         capture_output=True,
         text=True
     )
@@ -246,15 +262,16 @@ def find_vs_path() -> str:
         FATAL_PRINT("Could not find Visual Studio installation path.")
         exit(-1)
 
+
 def is_cl_in_path():
     for path in os.environ.get("PATH", "").split(os.pathsep):
         if os.path.isfile(os.path.join(path, "cl.exe")) and os.path.isfile(os.path.join(path, "lib.exe")):
             return True
     return False
 
+
 def get_vs_environment():
     vs_path = find_vs_path()
-    print(vs_path)
     if not vs_path:
         FATAL_PRINT("Visual Studio not found.")
         exit(-1)
@@ -276,6 +293,7 @@ def get_vs_environment():
 
     return list(return_set)
 
+
 def generate_vars_file_cache():
     if os.path.exists(MSVC_CACHED_NAME):
         return
@@ -286,10 +304,8 @@ def generate_vars_file_cache():
         for line in lines_to_write:
             generated_file.write(line + "\n")
 
-def SET_MSVC_VARS_FROM_CACHE():
-    if is_cl_in_path():
-        return ""
 
+def SET_MSVC_VARS_FROM_CACHE():
     generate_vars_file_cache()
     with open(MSVC_CACHED_NAME, "r") as file:
         for line in file.readlines():
