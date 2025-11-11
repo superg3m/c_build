@@ -299,6 +299,9 @@ def generate_vars_file_cache():
         return
 
     lines_to_write = get_vs_environment()
+    if len(lines_to_write) == 0:
+        FATAL_PRINT("Failed to generate vcvars cache because failed to get vs env")
+        exit(-1)
 
     with open(MSVC_CACHED_NAME, "w") as generated_file:
         for line in lines_to_write:
@@ -312,8 +315,12 @@ def SET_MSVC_VARS_FROM_CACHE():
         return ""
 
     generate_vars_file_cache()
-    with open(MSVC_CACHED_NAME, "r") as file:
-        for line in file.readlines():
-            if "=" in line:
-                name, value = line.strip().split("=", 1)
-                os.environ[name] = value
+    try:
+        with open(MSVC_CACHED_NAME, "r") as file:
+            for line in file.readlines():
+                if "=" in line:
+                    name, value = line.strip().split("=", 1)
+                    os.environ[name] = value
+    except IOError as e:
+        FATAL_PRINT(f"Failed to open vscache, Error: {e}")
+        exit(-1)
