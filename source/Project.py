@@ -149,7 +149,7 @@ class Project(ProjectConfig):
                 proc.compile()
                 continue
 
-            sanitizer_enabled_and_debug = not self.MANAGER_COMPILER.compiler_disable_sanitizer and self.build_type == "debug"
+            sanitizer_enabled_and_debug = self.MANAGER_COMPILER.compiler_enable_sanitizer and self.build_type == "debug"
             if sanitizer_enabled_and_debug:
                 proc.compile()
                 continue

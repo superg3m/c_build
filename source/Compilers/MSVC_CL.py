@@ -150,7 +150,7 @@ class MSVC_CL_Compiler(CompilerConfig):
         # -------- Add optimization flag --------
         if self.debug:
             # -------- Add address sanitizer flag --------
-            if not self.compiler_disable_sanitizer:
+            if self.compiler_enable_sanitizer:
                 address_sanitizer_flag = self.get_compiler_lookup(CompilerAction.ADDRESS_SANITIZER)
                 compiler_command.append(address_sanitizer_flag)
 
