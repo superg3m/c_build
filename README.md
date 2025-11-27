@@ -1,4 +1,4 @@
-# c_build 
+# c_build
 
 `c_build` is a build tool designed to easily and quickly build C/C++ projects and their dependencies. 
 It allows you to build C/C++ dependencies, such as libraries that you created or library you are pulling in.
@@ -11,12 +11,7 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
 ## Dependencies
 - python
 - powershell
-- c|c++ compiler (MSVC (Visual Studio), GCC, CLANG, CC)
-
-## Planned Improvements
-- Feature Idea:
-- Use file watcher to check if any files have been modified
-- Store the cache inside the build directory
+- c/c++ compiler (MSVC (Visual Studio), GCC, CLANG, CC)
 
 ## Usage
 ### Scripts
@@ -28,8 +23,13 @@ It allows you to build C/C++ dependencies, such as libraries that you created or
    - ./c_build/bootstrap.ps1
 
 ## Dev Notes: (For me)
-- REGRESSION Testing has to happen I no longer can keep up with everything in my head
-- Separate folders for Release and Debug
+- Add a simple tool that you can call on a .c file and it will give you all the includes recrusively and will even detect circular
+includes before compiling. This can be used then to just say ok heres all the source files to make this exe or lib
+and within those are all the .h files watch all of these and cache their modified time if cacheable flag is true.
+- Make files less cluttered maybe rename c_build to .c_build in order to hide it
+- Canonicalize Separate folders for Release and Debug (somehow I would like to make it implicit)
+- Caching file modified times (add flag that says, files_to_cache = [])
+- Make File globing syntax universal example: "./**/*.c, ./**/*.h"
 
 
 - This is how you do command line args
