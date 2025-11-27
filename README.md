@@ -29,7 +29,7 @@ and within those are all the .h files watch all of these and cache their modifie
 - Make files less cluttered maybe rename c_build to .c_build in order to hide it
 - Canonicalize Separate folders for Release and Debug (somehow I would like to make it implicit)
 - Caching file modified times (add flag that says, files_to_cache = [])
-- Make File globing syntax universal example: "./**/*.c, ./**/*.h"
+- Make File globing syntax universal. Example: "./**/*.c, ./**/*.h"
 
 
 - This is how you do command line args
