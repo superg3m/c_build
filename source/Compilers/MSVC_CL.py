@@ -183,10 +183,6 @@ class MSVC_CL_Compiler(CompilerConfig):
 
             os.chdir(build_directory)
 
-            if not is_cl_in_path():
-                FATAL_PRINT("BRO WHAT???")
-                exit(-1)
-
             result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
