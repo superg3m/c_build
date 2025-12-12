@@ -187,7 +187,7 @@ class MSVC_CL_Compiler(CompilerConfig):
                 FATAL_PRINT("BRO WHAT???")
                 exit(-1)
 
-            result = subprocess.run("".join(compiler_command), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            result = subprocess.run(compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             for line in result.stdout.splitlines():
                 NORMAL_PRINT(line.strip())
