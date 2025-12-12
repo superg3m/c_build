@@ -303,6 +303,7 @@ def generate_vars_file_cache():
         FATAL_PRINT("Failed to generate vcvars cache because failed to get vs env")
         exit(-1)
 
+    print("PATH:",  os.getcwd())
     with open(MSVC_CACHED_NAME, "w") as generated_file:
         for line in lines_to_write:
             generated_file.write(line + "\n")
