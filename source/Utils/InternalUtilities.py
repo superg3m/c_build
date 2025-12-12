@@ -295,10 +295,9 @@ def get_vs_environment():
 
 
 def generate_vars_file_cache():
+    print("CWD PATH: ", os.getcwd())
     if os.path.exists(MSVC_CACHED_NAME):
         return
-
-    print("CWD PATH: ", os.getcwd())
 
     lines_to_write = get_vs_environment()
     if len(lines_to_write) == 0:
