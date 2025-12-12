@@ -298,6 +298,8 @@ def generate_vars_file_cache():
     if os.path.exists(MSVC_CACHED_NAME):
         return
 
+    print("CWD PATH: ", os.getcwd())
+
     lines_to_write = get_vs_environment()
     if len(lines_to_write) == 0:
         FATAL_PRINT("Failed to generate vcvars cache because failed to get vs env")
