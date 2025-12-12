@@ -313,6 +313,9 @@ def generate_vars_file_cache():
 
 
 def SET_MSVC_VARS_FROM_CACHE():
+    if is_cl_in_path():
+        return
+
     generate_vars_file_cache()
     try:
         with open(MSVC_CACHED_NAME, "r") as file:
