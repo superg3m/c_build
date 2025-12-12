@@ -97,6 +97,7 @@ class Project(ProjectConfig):
             os.chdir(dependency.name)
 
             if not os.path.exists(self.serialized_name):
+                print("serializing dependency")
                 self.__serialize_dependency_data(dependency)
 
             project_config, procedure_config = self.__deserialize_dependency_data()

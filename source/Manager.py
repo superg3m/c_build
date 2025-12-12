@@ -45,8 +45,13 @@ class Manager:
             **filtered_procedure_config
         }
 
-        with open(serialized_name, "w") as file:
-            json.dump(serialized_data, fp=file, indent=4,  default=lambda o: o.__dict__)
+        try:
+            with open(serialized_name, "w") as file:
+                json.dump(serialized_data, fp=file, indent=4,  default=lambda o: o.__dict__)
+        except Exception as e:
+            print(e)
+            exit(-1)
+
 
         return json.dumps(serialized_data, indent=4, default=lambda o: o.__dict__)
 
