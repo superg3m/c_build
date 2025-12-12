@@ -323,6 +323,7 @@ def SET_MSVC_VARS_FROM_CACHE():
                     os.environ[name] = value
 
         if not is_cl_in_path():
+            FATAL_PRINT("BRO WHAT???")
             exit(-1)
     except IOError as e:
         FATAL_PRINT(f"Failed to open vscache, Error: {e}")
