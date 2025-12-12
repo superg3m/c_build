@@ -295,7 +295,6 @@ def get_vs_environment():
 
 
 def generate_vars_file_cache():
-    print("CWD PATH: ", os.getcwd())
     if os.path.exists(MSVC_CACHED_NAME):
         return
 
@@ -315,12 +314,13 @@ def SET_MSVC_VARS_FROM_CACHE():
     if is_cl_in_path():
         return
 
-    print("Got here")
-
     generate_vars_file_cache()
     try:
         with open(MSVC_CACHED_NAME, "r") as file:
+            print("LENGTH: ", len(file.readlines()))
             for line in file.readlines():
+
+
                 if "=" in line:
                     name, value = line.strip().split("=", 1)
                     os.environ[name] = value
