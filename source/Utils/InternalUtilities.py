@@ -317,10 +317,7 @@ def SET_MSVC_VARS_FROM_CACHE():
     generate_vars_file_cache()
     try:
         with open(MSVC_CACHED_NAME, "r") as file:
-            print("LENGTH: ", len(file.readlines()))
             for line in file.readlines():
-
-
                 if "=" in line:
                     name, value = line.strip().split("=", 1)
                     os.environ[name] = value
