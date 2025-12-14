@@ -281,6 +281,7 @@ def get_vs_environment():
     original_set = set(result.stdout.splitlines())
 
     vcvarsall_path = os.path.join(vs_path, "VC", "Auxiliary", "Build", "vcvarsall.bat")
+    print(vcvarsall_path)
     command = f'cmd.exe /c "call \"{vcvarsall_path}\" x64 > nul && set"'
     result = subprocess.run(command, capture_output=True, text=True, shell=True)
     new_set = set(result.stdout.splitlines())
