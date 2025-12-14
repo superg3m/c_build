@@ -326,7 +326,7 @@ def SET_MSVC_VARS_FROM_CACHE():
 
         if not is_cl_in_path():
             FATAL_PRINT("Visual Studio not found in path")
-            exit(-1)s
+            exit(-1)
     except IOError as e:
         FATAL_PRINT(f"Failed to open vscache, Error: {e}")
         exit(-1)
