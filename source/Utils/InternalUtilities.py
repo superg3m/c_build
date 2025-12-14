@@ -318,6 +318,7 @@ def SET_MSVC_VARS_FROM_CACHE():
         return
 
     generate_vars_file_cache()
+
     try:
         with open(MSVC_CACHED_NAME, "r") as file:
             for line in file.readlines():
@@ -326,8 +327,10 @@ def SET_MSVC_VARS_FROM_CACHE():
                     os.environ[name] = value
 
         if not is_cl_in_path():
-            FATAL_PRINT("Visual Studio not found in path")
-            exit(-1)
+            FATAL_PRINT("Invalidating Cache")
+            os.remove(MSVC_CACHED_NAME)
+            SET_MSVC_VARS_FROM_CACHE() # dangerous but I think it should be ok?
+
     except IOError as e:
         FATAL_PRINT(f"Failed to open vscache, Error: {e}")
         exit(-1)
