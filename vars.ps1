@@ -1,6 +1,6 @@
 # File paths
 $cacheFilePath = "c_build_vcvars_cache.txt"
-$vcvarsallPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
+$vcvarsallPath = "C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat"
 
 # Function to generate cache if it doesn't exist
 function Generate_CacheFile {
