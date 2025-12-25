@@ -22,8 +22,8 @@ if (-not (Test-Path -Path $directoryPath)) {
 }
 
 . ./c_build/validate_temp_files.ps1 $MyInvocation.MyCommand.Name
-if (-not ($Build -or $Run -or $Debugger)) {
-    Write-Error "You must specify at least one of -Build, -Run, or -Debugger."
+if (-not ($Clean -or $Build -or $Run -or $Debugger)) {
+    Write-Error "You must specify at least one of -Clean, -Build, -Run, or -Debugger."
     exit 1
 }
 
@@ -39,13 +39,11 @@ if ($Clean) {
     python -B -m c_build_script --execution_type "CLEAN" --build_type $BuildType
 }
 
-if ($Build) {
-    python -B -m c_build_script --execution_type "BUILD" --build_type $BuildType
-}
-
 if ($Debugger) {
     python -B -m c_build_script --execution_type "BUILD" --build_type "debug"
     python -B -m c_build_script --execution_type "DEBUG" --build_type "debug"
+} elseif ($Build) {
+    python -B -m c_build_script --execution_type "BUILD" --build_type $BuildType
 }
 
 if ($Run) {
