@@ -117,7 +117,7 @@ class Project(ProjectConfig):
             if not dependency.name or not os.path.exists(dependency.name):
                 continue
 
-            if dependency.always_pull and GIT_PULL(dependency.name):
+            if (dependency.always_pull and GIT_PULL(dependency.name)) or self.project_rebuild_project_dependencies:
                 json_to_remove = f"./{dependency.name}/{self.serialized_name}"
                 if os.path.exists(json_to_remove):
                     os.remove(json_to_remove)
