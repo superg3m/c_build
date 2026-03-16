@@ -89,7 +89,6 @@ class CLANG_GCC_Compiler(CompilerConfig):
 
         # Add std version flag
         std_version_flags = self.get_compiler_lookup(CompilerAction.STD_VERSION)
-        WARN_PRINT(f"VERSION: {self.compiler_std_version}")
         compiler_command.append(f"{std_version_flags}{self.compiler_std_version}")
 
         report_full_path_flag = self.get_compiler_lookup(CompilerAction.REPORT_FULL_PATH)
