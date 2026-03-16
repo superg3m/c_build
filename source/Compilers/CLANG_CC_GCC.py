@@ -49,7 +49,7 @@ class CLANG_GCC_Compiler(CompilerConfig):
         compile_time_defines = procedure.compile_time_defines
         include_paths = procedure.include_paths
 
-        self.compiler_std_version = self.compiler_std_version if self.compiler_std_version else "c17"
+        self.compiler_std_version = "c17"
         compiler_maybe_promoted_name = self.compiler_name
         detected_cpp = False
 
