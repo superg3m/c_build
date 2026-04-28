@@ -55,11 +55,12 @@ class MSVC_CL_Compiler(CompilerConfig):
         compiler_maybe_promoted_name = self.compiler_name
         detected_cpp = False
 
-        for source_name in source_files:
-            if (".cpp" in source_name) or self.compiler_name in ["g++", "clang++"]:
-                detected_cpp = True
-                self.compiler_std_version = "c++latest"
-                break
+        if "c++" not in self.compiler_std_version:
+            for source_name in source_files:
+                if (".cpp" in source_name) or self.compiler_name in ["g++", "clang++"]:
+                    detected_cpp = True
+                    self.compiler_std_version = "c++latest"
+                    break
 
         should_build_executable = False
         should_build_static_lib = False
