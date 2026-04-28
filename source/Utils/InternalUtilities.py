@@ -201,20 +201,24 @@ def RESOLVE_FILE_GLOB(build_directory: str, maybe_source_glob: str) -> list[str]
         source_dir = os.path.dirname(maybe_source_glob) or "."
         source_file_name = os.path.basename(maybe_source_glob)
 
-    if "*.cpp" in maybe_source_glob:
-        extension = ".cpp"
-        using_wildcard = True
-    elif "*.c" in maybe_source_glob:
-        extension = ".c"
-        using_wildcard = True
-    elif ".cpp" in maybe_source_glob:
-        extension = ".cpp"
-        using_wildcard = False
-    elif ".c" in maybe_source_glob:
-        extension = ".c"
-        using_wildcard = False
-    else:
-        raise ValueError("Invalid input. Use '*.c', '*.cpp', or specify a single .c/.cpp file.")
+    allowed_extensions = [
+        ".cpp", ".mm",
+        ".c", ".m"
+    ]
+
+    using_wildcard = False
+    for e in allowed_extensions:
+        if ("*" + e) in maybe_source_glob:
+            extension = e
+            using_wildcard = True
+            break
+        elif e in maybe_source_glob:
+            extension = e
+            using_wildcard = False
+            break
+
+    if extension == ".INVALID":
+        raise ValueError("Invalid input. Use '*.c', '*.cpp', '*.m', *.mm, or specify a single .c/.cpp/.m/.mm file.")
 
     if not is_recursive and not using_wildcard:
         resolved_files.append(maybe_source_glob.replace("\\", "/"))
