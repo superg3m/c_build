@@ -76,6 +76,8 @@ class CLANG_GCC_Compiler(CompilerConfig):
             should_build_static_lib = True
         elif extension in [".so", ".o", ".dylib"]:
             should_build_dynamic_lib = True
+        elif extension in [".dll"]:
+            should_build_dynamic_lib = True
         else:
             should_build_executable = True  # For Linux
 
