@@ -6,6 +6,7 @@ param (
     [switch]$Build,
     [switch]$Debugger,
     [switch]$Run
+    [switch]$Offline
 )
 
 $directoryPath = "./c_build"
@@ -13,7 +14,7 @@ $repositoryUrl = "https://github.com/superg3m/c_build.git"
 if (-not (Test-Path -Path $directoryPath)) {
     Write-Output "Directory does not exist. Cloning the repository..."
     git clone $repositoryUrl
-} else {
+} else if (-not $Offline) {
     Push-Location $directoryPath
     git fetch origin -q
     git reset --hard origin/main -q
