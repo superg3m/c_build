@@ -83,6 +83,5 @@ class Procedure(ProcedureConfig):
             exit(-1)
         except Exception as e:
             WARN_PRINT(f"Error running executable '{self.output_name}': {e}")
-            exit(-1)
         finally:
             os.chdir(cached_current_directory)
